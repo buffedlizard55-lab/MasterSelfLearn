@@ -1,26 +1,26 @@
-# STATUS — cycle 13
+# STATUS — cycle 14
 
-Generated `2026-09-22T04:15:17Z` by `msl/docs.py`. Every figure here is read from the same
+Generated `2026-09-22T04:30:49Z` by `msl/docs.py`. Every figure here is read from the same
 objects the site is built from.
 
 ## Last cycle
 
 | | |
 |---|---|
-| Cycle | 13 |
+| Cycle | 14 |
 | Mode | `github-actions` |
-| Duration | 0 ms |
-| Reads (ok / failed) | 64 / 6 |
-| Bytes read | 1,819,709 |
-| Facts extracted | 0 |
-| New claims | 672 |
+| Duration | 52977 ms |
+| Reads (ok / failed) | 66 / 4 |
+| Bytes read | 1,827,422 |
+| Facts extracted | 680 |
+| New claims | 680 |
 | Claims rejected by the gate | 0 |
-| Derived / rechecked / drifted | 0 / 40 / 0 |
-| Topics (new) | 91 (6) |
-| Insights published | 319 |
-| Forecasts issued / scored | 834 / 1216 |
+| Derived / rechecked / drifted | 330 / 40 / 0 |
+| Topics (new) | 97 (6) |
+| Insights published | 330 |
+| Forecasts issued / scored | 804 / 572 |
 | Ideas (promoted) | 14 (0) |
-| Irregularities open (new) | 31 (0) |
+| Irregularities open (new) | 29 (1) |
 | Pipeline errors | 0 |
 
 No pipeline stage raised.
@@ -33,16 +33,15 @@ No pipeline stage raised.
 
 ## Register totals
 
-103 registered — 3 critical,
-59 warn, 41 info;
-31 open, 72 resolved,
+104 registered — 3 critical,
+60 warn, 41 info;
+29 open, 75 resolved,
 15 standing.
 
 ## Recent cycles
 
 | Cycle | At (UTC) | Claims | Topics | New | Forecasts | Scored | Ideas | Irr open | Result |
 |---|---|---|---|---|---|---|---|---|---|
-| 4 | 2026-09-22T01:39:14Z | 2,502 | 37 | 6 | 463 | 82 | 14 | 29 | ok |
 | 5 | 2026-09-22T01:41:22Z | 3,449 | 43 | 6 | 688 | 148 | 14 | 30 | ok |
 | 6 | 2026-09-22T01:47:08Z | 4,405 | 49 | 6 | 723 | 371 | 14 | 30 | ok |
 | 7 | 2026-09-22T01:51:33Z | 5,374 | 55 | 6 | 738 | 401 | 14 | 30 | ok |
@@ -52,6 +51,7 @@ No pipeline stage raised.
 | 11 | 2026-09-22T03:58:55Z | 8,618 | 79 | 6 | 894 | 603 | 14 | 45 | ok |
 | 12 | 2026-09-22T04:12:37Z | 9,343 | 85 | 6 | 894 | 0 | 14 | 40 | ok |
 | 13 | 2026-09-22T04:15:17Z | 10,334 | 91 | 6 | 834 | 1216 | 14 | 31 | ok |
+| 14 | 2026-09-22T04:30:49Z | 11,344 | 97 | 6 | 804 | 572 | 14 | 29 | ok |
 
 ## What runs next
 

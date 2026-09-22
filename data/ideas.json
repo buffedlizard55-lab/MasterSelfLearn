@@ -1,15 +1,15 @@
 {
  "items": [
   {
-   "appearances": 13,
+   "appearances": 14,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
     "evidence": 0.8333,
-    "freshness": 0.9989,
+    "freshness": 0.9988,
     "reproducibility": 1.0
    },
-   "cycle": 13,
+   "cycle": 14,
    "families": [
     "open-source-momentum"
    ],
@@ -80,11 +80,16 @@
      "cycle": 13,
      "lineageSize": 10,
      "robustness": 0.49982783564814814
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 10,
+     "robustness": 0.4998182043650794
     }
    ],
    "id": "ID0001-003",
    "kind": "velocity-outlier",
-   "lastSeenCycle": 13,
+   "lastSeenCycle": 14,
    "lineage": [
     "C000162",
     "C000164",
@@ -109,7 +114,7 @@
    ]
   },
   {
-   "appearances": 13,
+   "appearances": 14,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -117,7 +122,7 @@
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 13,
+   "cycle": 14,
    "families": [
     "open-source-momentum"
    ],
@@ -188,11 +193,16 @@
      "cycle": 13,
      "lineageSize": 26,
      "robustness": 0.4
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 28,
+     "robustness": 0.4
     }
    ],
    "id": "ID0001-001",
    "kind": "velocity-outlier",
-   "lastSeenCycle": 13,
+   "lastSeenCycle": 14,
    "lineage": [
     "C000168",
     "C000170",
@@ -219,7 +229,9 @@
     "C008786",
     "C008788",
     "C009985",
-    "C009987"
+    "C009987",
+    "C010976",
+    "C010978"
    ],
    "robustness": 0.4,
    "sources": [
@@ -234,7 +246,7 @@
    ]
   },
   {
-   "appearances": 13,
+   "appearances": 14,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -242,7 +254,7 @@
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 13,
+   "cycle": 14,
    "families": [
     "open-source-momentum"
    ],
@@ -313,11 +325,16 @@
      "cycle": 13,
      "lineageSize": 26,
      "robustness": 0.4
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 28,
+     "robustness": 0.4
     }
    ],
    "id": "ID0001-002",
    "kind": "velocity-outlier",
-   "lastSeenCycle": 13,
+   "lastSeenCycle": 14,
    "lineage": [
     "C000159",
     "C000161",
@@ -344,7 +361,9 @@
     "C008777",
     "C008779",
     "C009989",
-    "C009991"
+    "C009991",
+    "C010980",
+    "C010982"
    ],
    "robustness": 0.4,
    "sources": [
@@ -360,15 +379,15 @@
    ]
   },
   {
-   "appearances": 13,
+   "appearances": 14,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.75,
+    "evidence": 0.8333,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 13,
+   "cycle": 14,
    "families": [
     "regulatory-flow"
    ],
@@ -439,11 +458,16 @@
      "cycle": 13,
      "lineageSize": 9,
      "robustness": 0.32499999999999996
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 10,
+     "robustness": 0.35
     }
    ],
    "id": "ID0001-004",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 13,
+   "lastSeenCycle": 14,
    "lineage": [
     "C000001",
     "C001923",
@@ -453,9 +477,10 @@
     "C005723",
     "C006353",
     "C008619",
-    "C009692"
+    "C009692",
+    "C010683"
    ],
-   "robustness": 0.325,
+   "robustness": 0.35,
    "sources": [
     "federal_register"
    ],
@@ -467,15 +492,15 @@
    ]
   },
   {
-   "appearances": 10,
+   "appearances": 11,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5,
+    "evidence": 0.5833,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 13,
+   "cycle": 14,
    "families": [
     "ai-research-frontier"
    ],
@@ -531,20 +556,26 @@
      "cycle": 13,
      "lineageSize": 6,
      "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-005",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 13,
+   "lastSeenCycle": 14,
    "lineage": [
     "C001647",
     "C002575",
     "C003523",
     "C004479",
     "C005448",
-    "C009416"
+    "C009416",
+    "C010407"
    ],
-   "robustness": 0.25,
+   "robustness": 0.275,
    "sources": [
     "federal_register"
    ],
@@ -556,15 +587,15 @@
    ]
   },
   {
-   "appearances": 10,
+   "appearances": 11,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5,
+    "evidence": 0.5833,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 13,
+   "cycle": 14,
    "families": [
     "ai-research-frontier"
    ],
@@ -620,20 +651,26 @@
      "cycle": 13,
      "lineageSize": 6,
      "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-006",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 13,
+   "lastSeenCycle": 14,
    "lineage": [
     "C001658",
     "C002586",
     "C003534",
     "C004490",
     "C005459",
-    "C009427"
+    "C009427",
+    "C010418"
    ],
-   "robustness": 0.25,
+   "robustness": 0.275,
    "sources": [
     "federal_register"
    ],
@@ -645,15 +682,15 @@
    ]
   },
   {
-   "appearances": 10,
+   "appearances": 11,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5,
+    "evidence": 0.5833,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 13,
+   "cycle": 14,
    "families": [
     "ai-research-frontier"
    ],
@@ -709,20 +746,26 @@
      "cycle": 13,
      "lineageSize": 6,
      "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-007",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 13,
+   "lastSeenCycle": 14,
    "lineage": [
     "C001669",
     "C002597",
     "C003545",
     "C004501",
     "C005470",
-    "C009438"
+    "C009438",
+    "C010429"
    ],
-   "robustness": 0.25,
+   "robustness": 0.275,
    "sources": [
     "federal_register"
    ],
@@ -734,15 +777,15 @@
    ]
   },
   {
-   "appearances": 10,
+   "appearances": 11,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5,
+    "evidence": 0.5833,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 13,
+   "cycle": 14,
    "families": [
     "ai-research-frontier"
    ],
@@ -798,20 +841,26 @@
      "cycle": 13,
      "lineageSize": 6,
      "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-008",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 13,
+   "lastSeenCycle": 14,
    "lineage": [
     "C001680",
     "C002608",
     "C003556",
     "C004512",
     "C005481",
-    "C009449"
+    "C009449",
+    "C010440"
    ],
-   "robustness": 0.25,
+   "robustness": 0.275,
    "sources": [
     "federal_register"
    ],
@@ -823,15 +872,15 @@
    ]
   },
   {
-   "appearances": 10,
+   "appearances": 11,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5,
+    "evidence": 0.5833,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 13,
+   "cycle": 14,
    "families": [
     "regulatory-flow"
    ],
@@ -887,20 +936,26 @@
      "cycle": 13,
      "lineageSize": 6,
      "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-009",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 13,
+   "lastSeenCycle": 14,
    "lineage": [
     "C001934",
     "C002861",
     "C003810",
     "C004766",
     "C005734",
-    "C009703"
+    "C009703",
+    "C010694"
    ],
-   "robustness": 0.25,
+   "robustness": 0.275,
    "sources": [
     "federal_register"
    ],
@@ -912,15 +967,15 @@
    ]
   },
   {
-   "appearances": 10,
+   "appearances": 11,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5,
+    "evidence": 0.5833,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 13,
+   "cycle": 14,
    "families": [
     "regulatory-flow"
    ],
@@ -976,20 +1031,26 @@
      "cycle": 13,
      "lineageSize": 6,
      "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-010",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 13,
+   "lastSeenCycle": 14,
    "lineage": [
     "C001945",
     "C002872",
     "C003821",
     "C004777",
     "C005745",
-    "C009714"
+    "C009714",
+    "C010705"
    ],
-   "robustness": 0.25,
+   "robustness": 0.275,
    "sources": [
     "federal_register"
    ],
@@ -1001,15 +1062,15 @@
    ]
   },
   {
-   "appearances": 10,
+   "appearances": 11,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5,
+    "evidence": 0.5833,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 13,
+   "cycle": 14,
    "families": [
     "regulatory-flow"
    ],
@@ -1065,20 +1126,26 @@
      "cycle": 13,
      "lineageSize": 6,
      "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-011",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 13,
+   "lastSeenCycle": 14,
    "lineage": [
     "C001956",
     "C002883",
     "C003832",
     "C004788",
     "C005756",
-    "C009725"
+    "C009725",
+    "C010716"
    ],
-   "robustness": 0.25,
+   "robustness": 0.275,
    "sources": [
     "federal_register"
    ],
@@ -1090,15 +1157,15 @@
    ]
   },
   {
-   "appearances": 10,
+   "appearances": 11,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5,
+    "evidence": 0.5833,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 13,
+   "cycle": 14,
    "families": [
     "public-health-policy"
    ],
@@ -1154,20 +1221,26 @@
      "cycle": 13,
      "lineageSize": 6,
      "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-012",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 13,
+   "lastSeenCycle": 14,
    "lineage": [
     "C001972",
     "C002899",
     "C003848",
     "C004804",
     "C005772",
-    "C009741"
+    "C009741",
+    "C010732"
    ],
-   "robustness": 0.25,
+   "robustness": 0.275,
    "sources": [
     "federal_register"
    ],
@@ -1179,15 +1252,15 @@
    ]
   },
   {
-   "appearances": 10,
+   "appearances": 11,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5,
+    "evidence": 0.5833,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 13,
+   "cycle": 14,
    "families": [
     "public-health-policy"
    ],
@@ -1243,20 +1316,26 @@
      "cycle": 13,
      "lineageSize": 6,
      "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-013",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 13,
+   "lastSeenCycle": 14,
    "lineage": [
     "C001983",
     "C002910",
     "C003859",
     "C004815",
     "C005783",
-    "C009752"
+    "C009752",
+    "C010743"
    ],
-   "robustness": 0.25,
+   "robustness": 0.275,
    "sources": [
     "federal_register"
    ],
@@ -1268,15 +1347,15 @@
    ]
   },
   {
-   "appearances": 10,
+   "appearances": 11,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5,
+    "evidence": 0.5833,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 13,
+   "cycle": 14,
    "families": [
     "public-health-policy"
    ],
@@ -1332,20 +1411,26 @@
      "cycle": 13,
      "lineageSize": 6,
      "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-014",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 13,
+   "lastSeenCycle": 14,
    "lineage": [
     "C001994",
     "C002921",
     "C003870",
     "C004826",
     "C005794",
-    "C009763"
+    "C009763",
+    "C010754"
    ],
-   "robustness": 0.25,
+   "robustness": 0.275,
    "sources": [
     "federal_register"
    ],
