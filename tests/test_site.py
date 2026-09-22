@@ -195,3 +195,44 @@ class RenderCheck(unittest.TestCase):
         routed = set(re.findall(r'"([a-z]+\.html)": page', js))
         self.assertEqual(on_disk, routed,
                          "a page exists with no route, or a route with no page")
+
+
+class Workflows(unittest.TestCase):
+    """The cron loop is the product. A workflow that will not parse is a system
+    that silently stops thinking, so the failure mode that already happened here
+    — a commit message written at column 0 inside a `run: |` block, which ends
+    the block scalar and makes the file invalid YAML — gets its own test.
+    """
+
+    def test_no_run_block_is_terminated_by_an_underindented_line(self):
+        wf = sorted((config.ROOT / ".github" / "workflows").glob("*.yml"))
+        self.assertTrue(wf, "no workflow files found")
+        for f in wf:
+            lines = f.read_text(encoding="utf-8").split("\n")
+            block_indent = None
+            for i, line in enumerate(lines, 1):
+                stripped = line.strip()
+                if block_indent is None:
+                    if stripped.endswith("|") and stripped.startswith("run:"):
+                        block_indent = len(line) - len(line.lstrip())
+                    continue
+                if not stripped:
+                    continue
+                indent = len(line) - len(line.lstrip())
+                if indent <= block_indent:
+                    block_indent = None
+                    continue
+                self.assertGreater(
+                    indent, block_indent,
+                    f"{f.name}:{i} is under-indented inside a `run: |` block and "
+                    f"would terminate it, making the workflow invalid YAML")
+                block_indent = indent if False else block_indent
+
+    def test_every_step_in_the_think_workflow_has_a_name_or_a_uses(self):
+        text = (config.ROOT / ".github" / "workflows" / "think.yml").read_text()
+        self.assertIn("python3 -m msl.cli selftest", text)
+        self.assertIn("python3 -m msl.cli cycle", text)
+        self.assertIn("tools/verify_claims.py", text)
+        self.assertIn("git push", text)
+        self.assertIn("permissions:", text)
+        self.assertIn("contents: write", text)

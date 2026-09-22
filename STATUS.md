@@ -1,26 +1,26 @@
-# STATUS — cycle 3
+# STATUS — cycle 1
 
-Generated `2026-09-22T01:34:57Z` by `msl/docs.py`. Every figure here is read from the same
+Generated `2026-09-21T12:00:00Z` by `msl/docs.py`. Every figure here is read from the same
 objects the site is built from.
 
 ## Last cycle
 
 | | |
 |---|---|
-| Cycle | 3 |
+| Cycle | 1 |
 | Mode | `offline-fixtures` |
-| Duration | 122 ms |
-| Reads (ok / failed) | 11 / 0 |
+| Duration | 2 ms |
+| Reads (ok / failed) | 0 / 0 |
 | Bytes read | 0 |
-| Facts extracted | 389 |
-| New claims | 389 |
+| Facts extracted | 0 |
+| New claims | 0 |
 | Claims rejected by the gate | 0 |
-| Derived / rechecked / drifted | 125 / 1 / 0 |
-| Topics (new) | 31 (6) |
-| Insights published | 125 |
-| Forecasts issued / scored | 355 / 357 |
-| Ideas (promoted) | 4 (0) |
-| Irregularities open (new) | 38 (1) |
+| Derived / rechecked / drifted | 0 / 0 / 0 |
+| Topics (new) | 13 (13) |
+| Insights published | 0 |
+| Forecasts issued / scored | 0 / 0 |
+| Ideas (promoted) | 0 (0) |
+| Irregularities open (new) | 42 (42) |
 | Pipeline errors | 0 |
 
 No pipeline stage raised.
@@ -29,22 +29,20 @@ No pipeline stage raised.
 
 | Id | Title | First seen | Reproduce |
 |---|---|---|---|
-| — | *No critical irregularity is open.* | — | — |
+| `IRR-033` | No successful read this cycle | cycle 1 | `python3 tools/probe_sources.py` |
 
 ## Register totals
 
-42 registered — 0 critical,
-5 warn, 37 info;
-38 open, 4 resolved,
-14 standing.
+42 registered — 1 critical,
+5 warn, 36 info;
+42 open, 0 resolved,
+13 standing.
 
 ## Recent cycles
 
 | Cycle | At (UTC) | Claims | Topics | New | Forecasts | Scored | Ideas | Irr open | Result |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 | 2026-09-22T01:34:57Z | 545 | 19 | 19 | 2 | 0 | 4 | 41 | ok |
-| 2 | 2026-09-22T01:34:57Z | 1,059 | 25 | 6 | 357 | 2 | 4 | 41 | ok |
-| 3 | 2026-09-22T01:34:57Z | 1,573 | 31 | 6 | 355 | 357 | 4 | 38 | ok |
+| 1 | 2026-09-21T12:00:00Z | 0 | 13 | 13 | 0 | 0 | 0 | 42 | ok |
 
 ## What runs next
 
