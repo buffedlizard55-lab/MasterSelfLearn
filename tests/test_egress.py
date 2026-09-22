@@ -62,13 +62,20 @@ class EgressIsNotAFinding(TmpDirCase):
         return json.loads((self.dir / "irregularities.json").read_text())["items"]
 
     def test_no_source_is_marked_blocked_by_an_egress_wall(self):
-        """The headline assertion: blocked is a claim about someone else's service."""
+        """The headline assertion: blocked is a claim about someone else's service.
+
+        Compared against the baseline rather than against zero, because the
+        registry legitimately starts with sources already blocked by real HTTP
+        failures recorded in a previous cycle.  What an egress wall must not do is
+        ADD to that set.
+        """
+        baseline = {sid for sid, st, _, _ in self._snap if st == "blocked"}
         with mock.patch("msl.pipeline.fetch", side_effect=lambda u, **k: _egress(u)):
             run_cycle(offline=False, data_dir=self.dir, now_override=NOW,
                       docs_dir=self.dir, max_tasks=8)
-        blocked = [s.id for s in REGISTRY if s.status == "blocked"]
-        self.assertEqual(blocked, [],
-                         f"egress wall marked these blocked: {blocked}")
+        blocked = {s.id for s in REGISTRY if s.status == "blocked"}
+        self.assertEqual(blocked - baseline, set(),
+                         f"egress wall newly marked these blocked: {blocked - baseline}")
 
     def test_an_egress_wall_does_not_escalate_consecutive_failures(self):
         """consecutive_failures drives CRITICAL, so it must not count our outage."""
@@ -136,8 +143,10 @@ class EgressIsNotAFinding(TmpDirCase):
         items = self._register()
         self.assertTrue(any("could not egress" in i["title"] for i in items))
         self.assertTrue(any(i["title"].endswith("could not be read") for i in items))
-        self.assertEqual(len([s for s in REGISTRY if s.status == "blocked"]), 1,
-                         "only the genuinely failing source may be blocked")
+        baseline = {sid for sid, st, _, _ in self._snap if st == "blocked"}
+        newly = {s.id for s in REGISTRY if s.status == "blocked"} - baseline
+        self.assertEqual(len(newly), 1,
+                         f"exactly one source should be newly blocked, got {newly}")
 
     def test_no_claim_is_produced_from_an_unreachable_source(self):
         """The whole point: no evidence, no claim — and no invented substitute."""

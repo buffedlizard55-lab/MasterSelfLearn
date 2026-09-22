@@ -253,6 +253,10 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
     # near-identical irregularities — which is both a false claim about those
     # services and the register spam AGENTS.md §7 warns against.
     egress_failures: List[str] = []
+    # Every read this cycle, for the shared health ledger.  Collecting them here
+    # and writing once at the end keeps the ledger a single record of "last
+    # recorded read per source" instead of two files that disagree.
+    cycle_reads: List[Tuple[Any, Any, str, bool]] = []
 
     for task in plan:
         # An unattended loop cannot afford to die.  Anything unexpected on one
@@ -286,6 +290,10 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
             else:
                 result = fetch(task.url, accept=task.accepts)
                 stats.record(result)
+                if src is not None:
+                    cycle_reads.append((src, result, now,
+                                        (not result.ok)
+                                        and result.error_kind == "EgressBlocked"))
                 if result.ok:
                     try:
                         if src and src.payload_kind == "atom":
@@ -604,6 +612,23 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
                                      "categoriesWithoutSource": _categories_without_source()})
     _write_json(d / "profile.json", profile)
     rep.duration_ms = int((time.monotonic() - t0) * 1000)
+
+    # One health ledger, two writers.  The cycle folds its reads in here so the
+    # Sources page cannot show a probe table that contradicts the registry table
+    # above it.  apply=False: the cycle already folded these results into the
+    # registry inline, and re-applying would double-count live_reads and
+    # consecutive_failures.  Offline runs read fixtures, not endpoints, so they
+    # record nothing — a fixture is not evidence that a service is reachable.
+    if cycle_reads and not offline:
+        try:
+            from .probe import record_reads
+            # Pass the cycle's own data dir: the default is config.DATA, which
+            # would make every test and dry run write the repository's real
+            # ledger instead of its own.
+            record_reads(cycle_reads, path=d / "source_health.json",
+                         mode=f"cycle-{cycle}", apply=False)
+        except Exception as e:  # noqa: BLE001 - bookkeeping must not fail a cycle
+            rep.errors.append(f"health ledger: {type(e).__name__}: {e}")
 
     if publish:
         try:

@@ -24,6 +24,8 @@ import unittest
 from unittest import mock
 
 from msl import probe as probe_mod
+from msl.pipeline import run_cycle
+from tests.helpers import TmpDirCase
 from msl.http import FetchResult
 from msl.sources import REGISTRY, Source, load_probe_results
 
@@ -75,6 +77,12 @@ def _ok(url="", size=10):
 def _http_error(url="", code=403):
     return FetchResult(url=url, status=code, body=b"", attempts=1, elapsed_ms=5,
                        error_kind="HTTPError", error=f"HTTP {code} Forbidden")
+
+
+def _ok_json(url, obj):
+    body = json.dumps(obj).encode()
+    return FetchResult(url=url, status=200, body=body, attempts=1, elapsed_ms=8,
+                       final_url=url, content_type="application/json")
 
 
 def _egress_blocked(url=""):
@@ -479,3 +487,136 @@ class RegistryHonesty(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MergedHealthLedger(unittest.TestCase):
+    """One ledger, two writers.
+
+    The probe and a cycle both read sources.  When only the probe wrote
+    data/source_health.json, the file went stale between the daily probe runs and
+    the Sources page showed a probe table saying "4 ok / 24 inconclusive"
+    directly above a registry table saying "23 verified" — two honest records
+    that visibly contradicted each other.
+    """
+
+    def setUp(self):
+        self.snap = _snapshot()
+        self.addCleanup(_restore, self.snap)
+        self.dir = pathlib.Path(tempfile.mkdtemp(prefix="msl-merge-"))
+        self.addCleanup(lambda: __import__("shutil").rmtree(self.dir, ignore_errors=True))
+        self.ledger = self.dir / "source_health.json"
+
+    def _write_initial(self):
+        self.ledger.write_text(json.dumps({
+            "generatedAt": "2026-09-22T00:00:00Z", "mode": "local",
+            "attempted": 2, "ok": 1, "failed": 0, "inconclusive": 1,
+            "egressBlocked": True, "note": "old", "results": [
+                {"id": "github_search", "ok": True, "httpStatus": 200, "bytes": 10,
+                 "sha256": "aa" * 8, "checkedAt": "2026-09-22T00:00:00Z",
+                 "statusAfter": "verified-live-read", "egressBlocked": False,
+                 "verdict": True, "via": "probe"},
+                {"id": "arxiv", "ok": False, "httpStatus": None, "bytes": 0,
+                 "sha256": "", "checkedAt": "2026-09-22T00:00:00Z",
+                 "statusAfter": "registered", "egressBlocked": True,
+                 "verdict": False, "via": "probe"},
+            ]}), encoding="utf-8")
+
+    def test_reads_not_made_this_cycle_are_preserved(self):
+        """A cycle reading 1 of 28 sources must not erase the other 27."""
+        self._write_initial()
+        src = next(s for s in REGISTRY if s.id == "pypi_json")
+        probe_mod.record_reads([(src, _ok("u"), "2026-09-22T01:00:00Z", False)],
+                               path=self.ledger, mode="cycle-9", apply=False)
+        rows = json.loads(self.ledger.read_text(encoding="utf-8"))["results"]
+        ids = {r["id"] for r in rows}
+        self.assertIn("arxiv", ids, "a source not read this cycle was erased")
+        self.assertIn("github_search", ids)
+        self.assertIn("pypi_json", ids)
+
+    def test_a_cycle_read_replaces_the_stale_probe_row(self):
+        self._write_initial()
+        src = next(s for s in REGISTRY if s.id == "arxiv")
+        probe_mod.record_reads([(src, _ok("u"), "2026-09-22T01:00:00Z", False)],
+                               path=self.ledger, mode="cycle-9", apply=False)
+        rows = {r["id"]: r for r in
+                json.loads(self.ledger.read_text(encoding="utf-8"))["results"]}
+        self.assertTrue(rows["arxiv"]["ok"], "the stale inconclusive row survived")
+        self.assertEqual(rows["arxiv"]["via"], "cycle-9")
+        self.assertFalse(rows["arxiv"]["egressBlocked"])
+
+    def test_apply_false_does_not_double_count(self):
+        """The cycle already folds results into the registry inline."""
+        src = next(s for s in REGISTRY if s.id == "github_search")
+        src.live_reads, src.consecutive_failures = 5, 2
+        probe_mod.record_reads([(src, _ok("u"), "2026-09-22T01:00:00Z", False)],
+                               path=self.ledger, mode="cycle-9", apply=False)
+        self.assertEqual(src.live_reads, 5, "live_reads was double-counted")
+        self.assertEqual(src.consecutive_failures, 2,
+                         "consecutive_failures was double-counted; it drives CRITICAL")
+
+    def test_apply_true_does_count(self):
+        src = next(s for s in REGISTRY if s.id == "github_search")
+        src.live_reads, src.status = 5, "registered"
+        probe_mod.record_reads([(src, _ok("u"), "2026-09-22T01:00:00Z", False)],
+                               path=self.ledger, mode="probe", apply=True)
+        self.assertEqual(src.live_reads, 6)
+        self.assertEqual(src.status, "verified-live-read")
+
+    def test_totals_span_the_merged_rows_not_just_this_write(self):
+        self._write_initial()
+        src = next(s for s in REGISTRY if s.id == "pypi_json")
+        probe_mod.record_reads([(src, _ok("u"), "2026-09-22T01:00:00Z", False)],
+                               path=self.ledger, mode="cycle-9", apply=False)
+        doc = json.loads(self.ledger.read_text(encoding="utf-8"))
+        self.assertEqual(doc["attempted"], 3)
+        self.assertEqual(doc["ok"], 2, "github_search + pypi_json")
+        self.assertEqual(doc["inconclusive"], 1, "arxiv was never re-read")
+        self.assertEqual(doc["lastWriter"], "cycle-9")
+        self.assertEqual(doc["lastWriteCounts"]["ok"], 1, "this write read one source")
+
+    def test_a_corrupt_existing_ledger_is_replaced_not_fatal(self):
+        self.ledger.write_text("{not json", encoding="utf-8")
+        src = next(s for s in REGISTRY if s.id == "github_search")
+        probe_mod.record_reads([(src, _ok("u"), "2026-09-22T01:00:00Z", False)],
+                               path=self.ledger, mode="cycle-9", apply=False)
+        doc = json.loads(self.ledger.read_text(encoding="utf-8"))
+        self.assertEqual(doc["attempted"], 1)
+
+
+class CycleWritesTheLedger(TmpDirCase):
+    """The cycle and the probe must leave one coherent record behind."""
+
+    def setUp(self):
+        super().setUp()
+        self.snap = _snapshot()
+
+        def restore():
+            by_id = {s.id: s for s in REGISTRY}
+            for sid, st, lr, lra, ls, le, cf in self.snap:
+                s = by_id[sid]
+                s.status, s.live_reads, s.last_read_at = st, lr, lra
+                s.last_status, s.last_error, s.consecutive_failures = ls, le, cf
+        self.addCleanup(restore)
+
+    def test_a_live_cycle_records_its_reads(self):
+        with mock.patch("msl.pipeline.fetch",
+                        side_effect=lambda u, **k: _ok_json(u, {"items": []})):
+            run_cycle(offline=False, data_dir=self.dir, now_override="2026-09-22T09:00:00Z",
+                      docs_dir=self.dir, max_tasks=4)
+        p = self.dir / "source_health.json"
+        self.assertTrue(p.exists(), "a live cycle wrote no health ledger")
+        doc = json.loads(p.read_text(encoding="utf-8"))
+        self.assertTrue(doc["lastWriter"].startswith("cycle-"))
+        self.assertGreater(doc["ok"], 0)
+        for r in doc["results"]:
+            self.assertIn("via", r)
+
+    def test_an_offline_cycle_records_nothing(self):
+        """A fixture is not evidence that a service is reachable."""
+        self.seed_into(self.dir)
+        self.cycle("2026-09-22T09:00:00Z")
+        p = self.dir / "source_health.json"
+        if p.exists():
+            doc = json.loads(p.read_text(encoding="utf-8"))
+            self.assertFalse(doc["lastWriter"].startswith("cycle-"),
+                             "an offline run claimed to have read live endpoints")

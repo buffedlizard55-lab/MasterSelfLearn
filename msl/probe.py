@@ -226,3 +226,90 @@ def write_report(rep: ProbeReport, path=None):
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(rep.payload(), indent=1) + "\n", encoding="utf-8")
     return p
+
+
+# --------------------------------------------------------------------------- #
+# merging cycle reads into the same ledger
+# --------------------------------------------------------------------------- #
+def record_reads(reads, path=None, mode: str = "cycle",
+                 apply: bool = True) -> Optional[pathlib.Path]:
+    """Fold reads made during a cycle into the health ledger.  Returns the path.
+
+    The probe is not the only thing that reads a source: a cycle reads most of
+    them too, and promotes them on a real read.  If only the probe wrote this
+    file, the ledger went stale between the daily probe runs — the Sources page
+    ended up showing a probe table saying "4 ok / 24 inconclusive" directly above
+    a registry table saying "23 verified", two honest records that visibly
+    contradicted each other.  One ledger, two writers, each row naming which
+    mechanism produced it.
+
+    ``reads`` is an iterable of (source, FetchResult, at, egress_blocked).
+    Existing rows for sources not read this cycle are preserved, so a cycle that
+    only reads 20 of 28 sources does not erase the other 8.
+
+    ``apply=False`` records the read without touching the source object.  The
+    cycle already folds its own results into the registry inline, so applying
+    them again here would double-count ``live_reads`` and
+    ``consecutive_failures`` — and the latter drives the CRITICAL escalation.
+    """
+    import pathlib as _pl
+
+    p = _pl.Path(config.DATA / "source_health.json") if path is None else _pl.Path(path)
+    existing: Dict[str, Any] = {}
+    meta: Dict[str, Any] = {}
+    if p.exists():
+        try:
+            doc = json.loads(p.read_text(encoding="utf-8"))
+            existing = {r.get("id"): r for r in doc.get("results", [])}
+            meta = doc
+        except (OSError, ValueError):
+            existing, meta = {}, {}
+
+    ok = failed = inconclusive = 0
+    for src, r, at, blocked in reads:
+        if apply:
+            apply_result(src, r, at, egress_blocked=blocked)
+        existing[src.id] = {
+            "id": src.id, "name": src.name, "operator": src.operator,
+            "docsUrl": src.docs_url, "probeUrl": src.probe_url,
+            "url": r.url, "httpStatus": r.status, "ok": r.ok, "bytes": r.size,
+            "elapsedMs": r.elapsed_ms, "attempts": r.attempts,
+            "error": "" if r.ok else r.describe_error(),
+            "sha256": r.sha256[:16] if r.body else "", "checkedAt": at,
+            "statusAfter": src.status, "liveReads": src.live_reads,
+            "consecutiveFailures": src.consecutive_failures,
+            "egressBlocked": bool(blocked), "verdict": not blocked,
+            "via": mode,
+        }
+        if r.ok:
+            ok += 1
+        elif blocked:
+            inconclusive += 1
+        else:
+            failed += 1
+
+    rows = list(existing.values())
+    # Sort by id so the file diffs readably cycle over cycle.
+    rows.sort(key=lambda r: r.get("id") or "")
+    payload = {
+        "generatedAt": _now(),
+        "mode": meta.get("mode") if meta.get("mode") else mode,
+        "lastWriter": mode,
+        "lastWriteCounts": {"ok": ok, "failed": failed, "inconclusive": inconclusive},
+        "attempted": len(rows),
+        "ok": sum(1 for r in rows if r.get("ok")),
+        "failed": sum(1 for r in rows if not r.get("ok") and not r.get("egressBlocked")),
+        "inconclusive": sum(1 for r in rows if r.get("egressBlocked")),
+        "egressBlocked": any(r.get("egressBlocked") for r in rows),
+        "note": (
+            "One ledger, two writers: rows with via='probe' come from "
+            "tools/probe_sources.py, rows with via='cycle' from a cycle read. "
+            "egressBlocked=true means NO verdict was reached — the runner could "
+            "not open a TLS session, which says nothing about the source, so "
+            "statusAfter is unchanged and must not be read as 'this is broken'."
+        ),
+        "results": rows,
+    }
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(payload, indent=1) + "\n", encoding="utf-8")
+    return p
