@@ -729,8 +729,9 @@
       main.appendChild(section("probe", "Last recorded probe", hrows.length,
         h("div", {}, [
           h("p", { class: "small", text:
-            "Run " + (health.generatedAt || "—") + " in mode `" + (health.mode || "?") +
-            "`. " + n(health.ok) + " read successfully, " + n(health.failed) +
+            "Recorded " + (health.generatedAt || "—") + " in mode `" + (health.mode || "?") +
+            "` by `" + (health.lastWriter || "probe") + "`. " +
+            n(health.ok) + " read successfully, " + n(health.failed) +
             " failed on the source's side, " + n(health.inconclusive) +
             " reached no verdict. A source's status on this page comes from this " +
             "table and from nothing else." }),

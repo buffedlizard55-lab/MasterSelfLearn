@@ -1,8 +1,10 @@
 """Registry integrity: the promises the Sources page makes about itself."""
 from __future__ import annotations
 
+import pathlib
 import unittest
 
+from msl import sources as msl_sources
 from msl.sources import (BY_ID, INTEREST_CATEGORIES_WITHOUT_A_SOURCE,
                          KEYED_SOURCES_EXCLUDED, REGISTRY, all_dicts, usable, verified)
 from msl.topics import FAMILIES, FAMILY_BY_SLUG, build_interest_profile, keywords_from_text
@@ -49,9 +51,38 @@ class SourceRegistry(unittest.TestCase):
         self.assertIn("community project", s.docs_note)
 
     def test_verified_sources_record_how_they_were_verified(self):
+        """A source may not claim `verified` without a recorded read behind it.
+
+        The basis used to be a hand-written ``docs_note``, because statuses were
+        hand-typed into the registry.  Statuses now come from the probe ledger, so
+        the ledger is the basis and is what gets asserted: a verified source must
+        have a positive read count and a matching recorded row that says the read
+        succeeded.  A ``docs_note`` is still welcome but is commentary, not
+        evidence — asserting it would fail every source verified by the probe.
+        """
+        import json
+
+        health = {}
+        p = pathlib.Path(msl_sources.__file__).resolve().parent.parent \
+            / "data" / "source_health.json"
+        if p.exists():
+            health = {r.get("id"): r
+                      for r in json.loads(p.read_text(encoding="utf-8")).get("results", [])}
+
+        checked = 0
         for s in verified():
-            self.assertTrue(s.docs_note, f"{s.id} is 'verified' with no recorded basis")
-            self.assertGreater(s.live_reads, 0)
+            self.assertGreater(s.live_reads, 0,
+                               f"{s.id} is 'verified' with no recorded read count")
+            row = health.get(s.id)
+            if row is not None:
+                checked += 1
+                self.assertTrue(row.get("ok"),
+                                f"{s.id} is 'verified' but its recorded read was not a 200")
+                self.assertEqual(row.get("statusAfter"), "verified-live-read",
+                                 f"{s.id}'s ledger row disagrees with the registry")
+        self.assertGreater(checked, 0,
+                           "no verified source could be cross-checked against the "
+                           "health ledger; run tools/probe_sources.py")
 
     def test_statuses_are_from_the_legal_set(self):
         legal = {"registered", "verified-live-read", "blocked"}

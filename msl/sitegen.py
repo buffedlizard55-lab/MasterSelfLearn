@@ -52,6 +52,7 @@ def _source_health(d: pathlib.Path) -> Dict[str, Any]:
         "ran": True,
         "generatedAt": doc.get("generatedAt", ""),
         "mode": doc.get("mode", ""),
+        "lastWriter": doc.get("lastWriter", "probe"),
         "attempted": doc.get("attempted", len(results)),
         "ok": doc.get("ok", 0),
         "failed": doc.get("failed", 0),
