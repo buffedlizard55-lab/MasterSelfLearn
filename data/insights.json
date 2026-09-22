@@ -1,13 +1,13 @@
 {
- "cycle": 6,
- "generatedAt": "2026-09-22T01:47:08Z",
+ "cycle": 7,
+ "generatedAt": "2026-09-22T01:51:33Z",
  "items": [
   {
    "claimIds": [
-    "C004121"
+    "C005079"
    ],
-   "cycle": 6,
-   "id": "I0006-001",
+   "cycle": 7,
+   "id": "I0007-001",
    "importance": 0.0004,
    "kind": "velocity",
    "text": "0DukePan/unswallow is 26.1 days old and has 5 stars, a rate of 0.2 stars per day.",
@@ -15,10 +15,10 @@
   },
   {
    "claimIds": [
-    "C004122"
+    "C005080"
    ],
-   "cycle": 6,
-   "id": "I0006-002",
+   "cycle": 7,
+   "id": "I0007-002",
    "importance": 0.0698,
    "kind": "velocity",
    "text": "0xNatoshi/jev-codex-router is 4.9 days old and has 171 stars, a rate of 34.9 stars per day.",
@@ -26,10 +26,10 @@
   },
   {
    "claimIds": [
-    "C004123"
+    "C005081"
    ],
-   "cycle": 6,
-   "id": "I0006-003",
+   "cycle": 7,
+   "id": "I0007-003",
    "importance": 0.0,
    "kind": "velocity",
    "text": "1DanWave2/predictionlab is 3.3 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -37,10 +37,10 @@
   },
   {
    "claimIds": [
-    "C004124"
+    "C005082"
    ],
-   "cycle": 6,
-   "id": "I0006-004",
+   "cycle": 7,
+   "id": "I0007-004",
    "importance": 0.0009,
    "kind": "velocity",
    "text": "808enzo/chappie is 4.3 days old and has 2 stars, a rate of 0.5 stars per day.",
@@ -48,10 +48,10 @@
   },
   {
    "claimIds": [
-    "C004125"
+    "C005083"
    ],
-   "cycle": 6,
-   "id": "I0006-005",
+   "cycle": 7,
+   "id": "I0007-005",
    "importance": 0.0862,
    "kind": "velocity",
    "text": "AetherLabsAI/RSIAgent is 9.0 days old and has 388 stars, a rate of 43.1 stars per day.",
@@ -59,10 +59,10 @@
   },
   {
    "claimIds": [
-    "C004126"
+    "C005084"
    ],
-   "cycle": 6,
-   "id": "I0006-006",
+   "cycle": 7,
+   "id": "I0007-006",
    "importance": 0.0074,
    "kind": "velocity",
    "text": "AkashPriyadarshii/jev-superpowers is 3.5 days old and has 13 stars, a rate of 3.7 stars per day.",
@@ -70,10 +70,10 @@
   },
   {
    "claimIds": [
-    "C004127"
+    "C005085"
    ],
-   "cycle": 6,
-   "id": "I0006-007",
+   "cycle": 7,
+   "id": "I0007-007",
    "importance": 0.0004,
    "kind": "velocity",
    "text": "Alexis-Fredryck-one/polymarket-ai-model-trading-bot-btc-kou-jump-diffusion-prediction-market is 26.3 days old and has 5 stars, a rate of 0.2 stars per day.",
@@ -81,10 +81,10 @@
   },
   {
    "claimIds": [
-    "C004128"
+    "C005086"
    ],
-   "cycle": 6,
-   "id": "I0006-008",
+   "cycle": 7,
+   "id": "I0007-008",
    "importance": 0.0006,
    "kind": "velocity",
    "text": "AllAboutAI-YT/kalshi-btc15-ml-experiment is 36.4 days old and has 11 stars, a rate of 0.3 stars per day.",
@@ -92,10 +92,10 @@
   },
   {
    "claimIds": [
-    "C004129"
+    "C005087"
    ],
-   "cycle": 6,
-   "id": "I0006-009",
+   "cycle": 7,
+   "id": "I0007-009",
    "importance": 0.0001,
    "kind": "velocity",
    "text": "Ansh-699/Onyx is 74.6 days old and has 5 stars, a rate of 0.1 stars per day.",
@@ -103,32 +103,32 @@
   },
   {
    "claimIds": [
-    "C004130"
+    "C005088"
    ],
-   "cycle": 6,
-   "id": "I0006-010",
+   "cycle": 7,
+   "id": "I0007-010",
    "importance": 0.2811,
    "kind": "velocity",
-   "text": "ApodexAI/FrontierAgent is 30.9 days old and has 4,337 stars, a rate of 140.5 stars per day.",
+   "text": "ApodexAI/FrontierAgent is 30.9 days old and has 4,338 stars, a rate of 140.6 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004131"
+    "C005089"
    ],
-   "cycle": 6,
-   "id": "I0006-011",
+   "cycle": 7,
+   "id": "I0007-011",
    "importance": 0.0237,
    "kind": "velocity",
-   "text": "ArtemPavlov1994/polymarket-prediction-bot is 5.1 days old and has 60 stars, a rate of 11.9 stars per day.",
+   "text": "ArtemPavlov1994/polymarket-prediction-bot is 5.1 days old and has 60 stars, a rate of 11.8 stars per day.",
    "topic": "market-lab-ecosystem"
   },
   {
    "claimIds": [
-    "C004132"
+    "C005090"
    ],
-   "cycle": 6,
-   "id": "I0006-012",
+   "cycle": 7,
+   "id": "I0007-012",
    "importance": 0.0,
    "kind": "velocity",
    "text": "AzeelSajjad/kalshi-news is 4.1 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -136,21 +136,21 @@
   },
   {
    "claimIds": [
-    "C004133"
+    "C005091"
    ],
-   "cycle": 6,
-   "id": "I0006-013",
-   "importance": 0.0509,
+   "cycle": 7,
+   "id": "I0007-013",
+   "importance": 0.0508,
    "kind": "velocity",
    "text": "BoardUI/boardui is 20.1 days old and has 511 stars, a rate of 25.4 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004134"
+    "C005092"
    ],
-   "cycle": 6,
-   "id": "I0006-014",
+   "cycle": 7,
+   "id": "I0007-014",
    "importance": 0.0002,
    "kind": "velocity",
    "text": "Break-Through-Tech/Sports-Analytics-1B-assessing-football-stadium-attendance-and-experience is 32.2 days old and has 3 stars, a rate of 0.1 stars per day.",
@@ -158,10 +158,10 @@
   },
   {
    "claimIds": [
-    "C004135"
+    "C005093"
    ],
-   "cycle": 6,
-   "id": "I0006-015",
+   "cycle": 7,
+   "id": "I0007-015",
    "importance": 0.0006,
    "kind": "velocity",
    "text": "Chidubemkingsley/PredictSOMNIA is 25.7 days old and has 8 stars, a rate of 0.3 stars per day.",
@@ -169,10 +169,10 @@
   },
   {
    "claimIds": [
-    "C004136"
+    "C005094"
    ],
-   "cycle": 6,
-   "id": "I0006-016",
+   "cycle": 7,
+   "id": "I0007-016",
    "importance": 0.0108,
    "kind": "velocity",
    "text": "CodeSoul-co/Hypha is 82.8 days old and has 446 stars, a rate of 5.4 stars per day.",
@@ -180,21 +180,21 @@
   },
   {
    "claimIds": [
-    "C004137"
+    "C005095"
    ],
-   "cycle": 6,
-   "id": "I0006-017",
+   "cycle": 7,
+   "id": "I0007-017",
    "importance": 0.2931,
    "kind": "velocity",
-   "text": "CopilotKit/OpenBot is 36.0 days old and has 5,282 stars, a rate of 146.5 stars per day.",
+   "text": "CopilotKit/OpenBot is 36.0 days old and has 5,283 stars, a rate of 146.6 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004138"
+    "C005096"
    ],
-   "cycle": 6,
-   "id": "I0006-018",
+   "cycle": 7,
+   "id": "I0007-018",
    "importance": 0.0,
    "kind": "velocity",
    "text": "David-Guil-Barranco/ml-sports-analytics is 72.3 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -202,10 +202,10 @@
   },
   {
    "claimIds": [
-    "C004139"
+    "C005097"
    ],
-   "cycle": 6,
-   "id": "I0006-019",
+   "cycle": 7,
+   "id": "I0007-019",
    "importance": 0.0,
    "kind": "velocity",
    "text": "Dinil007/Sports-Intelligence-Analytics-Platform is 88.7 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -213,10 +213,10 @@
   },
   {
    "claimIds": [
-    "C004140"
+    "C005098"
    ],
-   "cycle": 6,
-   "id": "I0006-020",
+   "cycle": 7,
+   "id": "I0007-020",
    "importance": 0.0008,
    "kind": "velocity",
    "text": "ENDEVSOLS/LongGuard is 16.8 days old and has 7 stars, a rate of 0.4 stars per day.",
@@ -224,21 +224,21 @@
   },
   {
    "claimIds": [
-    "C004141"
+    "C005099"
    ],
-   "cycle": 6,
-   "id": "I0006-021",
+   "cycle": 7,
+   "id": "I0007-021",
    "importance": 0.3149,
    "kind": "velocity",
-   "text": "FareedKhan-dev/kimi-k3-in-c is 51.7 days old and has 8,137 stars, a rate of 157.5 stars per day.",
+   "text": "FareedKhan-dev/kimi-k3-in-c is 51.7 days old and has 8,137 stars, a rate of 157.4 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004142"
+    "C005100"
    ],
-   "cycle": 6,
-   "id": "I0006-022",
+   "cycle": 7,
+   "id": "I0007-022",
    "importance": 1.0,
    "kind": "velocity",
    "text": "Finderchangchang/jev-chat-JARVIS is 1.0 days old and has 909 stars, a rate of 909.0 stars per day.",
@@ -246,10 +246,10 @@
   },
   {
    "claimIds": [
-    "C004143"
+    "C005101"
    ],
-   "cycle": 6,
-   "id": "I0006-023",
+   "cycle": 7,
+   "id": "I0007-023",
    "importance": 0.0133,
    "kind": "velocity",
    "text": "FrigadeHQ/yap is 60.1 days old and has 401 stars, a rate of 6.7 stars per day.",
@@ -257,10 +257,10 @@
   },
   {
    "claimIds": [
-    "C004144"
+    "C005102"
    ],
-   "cycle": 6,
-   "id": "I0006-024",
+   "cycle": 7,
+   "id": "I0007-024",
    "importance": 0.0036,
    "kind": "velocity",
    "text": "GustavoBaranda/chatflow-agent is 2.2 days old and has 4 stars, a rate of 1.8 stars per day.",
@@ -268,10 +268,10 @@
   },
   {
    "claimIds": [
-    "C004145"
+    "C005103"
    ],
-   "cycle": 6,
-   "id": "I0006-025",
+   "cycle": 7,
+   "id": "I0007-025",
    "importance": 0.0671,
    "kind": "velocity",
    "text": "HanyuanWang/LiveStream-Agent-Studio is 30.5 days old and has 1,022 stars, a rate of 33.5 stars per day.",
@@ -279,10 +279,10 @@
   },
   {
    "claimIds": [
-    "C004146"
+    "C005104"
    ],
-   "cycle": 6,
-   "id": "I0006-026",
+   "cycle": 7,
+   "id": "I0007-026",
    "importance": 0.0008,
    "kind": "velocity",
    "text": "IDinsight/standards is 2.4 days old and has 1 stars, a rate of 0.4 stars per day.",
@@ -290,10 +290,10 @@
   },
   {
    "claimIds": [
-    "C004147"
+    "C005105"
    ],
-   "cycle": 6,
-   "id": "I0006-027",
+   "cycle": 7,
+   "id": "I0007-027",
    "importance": 0.0,
    "kind": "velocity",
    "text": "Jahnavi277/SportsAnalytics is 88.6 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -301,10 +301,10 @@
   },
   {
    "claimIds": [
-    "C004148"
+    "C005106"
    ],
-   "cycle": 6,
-   "id": "I0006-028",
+   "cycle": 7,
+   "id": "I0007-028",
    "importance": 0.0,
    "kind": "velocity",
    "text": "Kage7047/edgefeed is 1.1 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -312,10 +312,10 @@
   },
   {
    "claimIds": [
-    "C004149"
+    "C005107"
    ],
-   "cycle": 6,
-   "id": "I0006-029",
+   "cycle": 7,
+   "id": "I0007-029",
    "importance": 0.0005,
    "kind": "velocity",
    "text": "Kartheek-3/-SENTRA--Multi-Agent-Framework-for-SDLC is 4.4 days old and has 1 stars, a rate of 0.2 stars per day.",
@@ -323,10 +323,10 @@
   },
   {
    "claimIds": [
-    "C004150"
+    "C005108"
    ],
-   "cycle": 6,
-   "id": "I0006-030",
+   "cycle": 7,
+   "id": "I0007-030",
    "importance": 0.0,
    "kind": "velocity",
    "text": "Keranik/KalshiTrader is 2.2 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -334,10 +334,10 @@
   },
   {
    "claimIds": [
-    "C004151"
+    "C005109"
    ],
-   "cycle": 6,
-   "id": "I0006-031",
+   "cycle": 7,
+   "id": "I0007-031",
    "importance": 0.0011,
    "kind": "velocity",
    "text": "Key-wxh/market-fish is 82.7 days old and has 47 stars, a rate of 0.6 stars per day.",
@@ -345,10 +345,10 @@
   },
   {
    "claimIds": [
-    "C004152"
+    "C005110"
    ],
-   "cycle": 6,
-   "id": "I0006-032",
+   "cycle": 7,
+   "id": "I0007-032",
    "importance": 0.0,
    "kind": "velocity",
    "text": "Kshubham0315/AQX-Sports-Analytics-DatA-Bowl is 54.3 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -356,10 +356,10 @@
   },
   {
    "claimIds": [
-    "C004153"
+    "C005111"
    ],
-   "cycle": 6,
-   "id": "I0006-033",
+   "cycle": 7,
+   "id": "I0007-033",
    "importance": 0.0,
    "kind": "velocity",
    "text": "Kushagra9027/SportSphere-AI is 88.7 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -367,10 +367,10 @@
   },
   {
    "claimIds": [
-    "C004154"
+    "C005112"
    ],
-   "cycle": 6,
-   "id": "I0006-034",
+   "cycle": 7,
+   "id": "I0007-034",
    "importance": 0.0009,
    "kind": "velocity",
    "text": "Kzczc/EMNLP2026-BizSage is 4.6 days old and has 2 stars, a rate of 0.4 stars per day.",
@@ -378,10 +378,10 @@
   },
   {
    "claimIds": [
-    "C004155"
+    "C005113"
    ],
-   "cycle": 6,
-   "id": "I0006-035",
+   "cycle": 7,
+   "id": "I0007-035",
    "importance": 0.0006,
    "kind": "velocity",
    "text": "LLMQuant/llmquant-hermes is 61.3 days old and has 18 stars, a rate of 0.3 stars per day.",
@@ -389,10 +389,10 @@
   },
   {
    "claimIds": [
-    "C004156"
+    "C005114"
    ],
-   "cycle": 6,
-   "id": "I0006-036",
+   "cycle": 7,
+   "id": "I0007-036",
    "importance": 0.0035,
    "kind": "velocity",
    "text": "Laprovittera/Awesome-AI-for-Hacking-Cybersecurity is 6.4 days old and has 11 stars, a rate of 1.7 stars per day.",
@@ -400,10 +400,10 @@
   },
   {
    "claimIds": [
-    "C004157"
+    "C005115"
    ],
-   "cycle": 6,
-   "id": "I0006-037",
+   "cycle": 7,
+   "id": "I0007-037",
    "importance": 0.0,
    "kind": "velocity",
    "text": "Lifeisforty2/ai-sports-intelligence-platform is 60.5 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -411,21 +411,21 @@
   },
   {
    "claimIds": [
-    "C004158"
+    "C005116"
    ],
-   "cycle": 6,
-   "id": "I0006-038",
-   "importance": 0.5234,
+   "cycle": 7,
+   "id": "I0007-038",
+   "importance": 0.523,
    "kind": "velocity",
-   "text": "Mak5er/AirCard is 5.1 days old and has 1,346 stars, a rate of 261.7 stars per day.",
+   "text": "Mak5er/AirCard is 5.1 days old and has 1,346 stars, a rate of 261.5 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004159"
+    "C005117"
    ],
-   "cycle": 6,
-   "id": "I0006-039",
+   "cycle": 7,
+   "id": "I0007-039",
    "importance": 0.0014,
    "kind": "velocity",
    "text": "Marcussy34/awesome-prediction-market-tools-2026 is 9.9 days old and has 7 stars, a rate of 0.7 stars per day.",
@@ -433,10 +433,10 @@
   },
   {
    "claimIds": [
-    "C004160"
+    "C005118"
    ],
-   "cycle": 6,
-   "id": "I0006-040",
+   "cycle": 7,
+   "id": "I0007-040",
    "importance": 0.0013,
    "kind": "velocity",
    "text": "MarwanSultan/playwright-agentic-langchain-pipeline is 6.3 days old and has 4 stars, a rate of 0.6 stars per day.",
@@ -444,10 +444,10 @@
   },
   {
    "claimIds": [
-    "C004161"
+    "C005119"
    ],
-   "cycle": 6,
-   "id": "I0006-041",
+   "cycle": 7,
+   "id": "I0007-041",
    "importance": 0.0328,
    "kind": "velocity",
    "text": "MaxHu-xuan/task-state-guard is 29.8 days old and has 489 stars, a rate of 16.4 stars per day.",
@@ -455,10 +455,10 @@
   },
   {
    "claimIds": [
-    "C004162"
+    "C005120"
    ],
-   "cycle": 6,
-   "id": "I0006-042",
+   "cycle": 7,
+   "id": "I0007-042",
    "importance": 0.0001,
    "kind": "velocity",
    "text": "Munira001/TxGuard is 69.3 days old and has 2 stars, a rate of 0.0 stars per day.",
@@ -466,10 +466,10 @@
   },
   {
    "claimIds": [
-    "C004163"
+    "C005121"
    ],
-   "cycle": 6,
-   "id": "I0006-043",
+   "cycle": 7,
+   "id": "I0007-043",
    "importance": 0.0252,
    "kind": "velocity",
    "text": "NVIDIA-NeMo/labs-molt is 91.0 days old and has 1,145 stars, a rate of 12.6 stars per day.",
@@ -477,10 +477,10 @@
   },
   {
    "claimIds": [
-    "C004164"
+    "C005122"
    ],
-   "cycle": 6,
-   "id": "I0006-044",
+   "cycle": 7,
+   "id": "I0007-044",
    "importance": 0.0111,
    "kind": "velocity",
    "text": "NVIDIA/SkillEvaluator is 90.0 days old and has 498 stars, a rate of 5.5 stars per day.",
@@ -488,32 +488,32 @@
   },
   {
    "claimIds": [
-    "C004165"
+    "C005123"
    ],
-   "cycle": 6,
-   "id": "I0006-045",
+   "cycle": 7,
+   "id": "I0007-045",
    "importance": 0.2221,
    "kind": "velocity",
-   "text": "Nanako0129/sepia is 24.8 days old and has 2,757 stars, a rate of 111.1 stars per day.",
+   "text": "Nanako0129/sepia is 24.8 days old and has 2,757 stars, a rate of 111.0 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004166"
+    "C005124"
    ],
-   "cycle": 6,
-   "id": "I0006-046",
+   "cycle": 7,
+   "id": "I0007-046",
    "importance": 1.0,
    "kind": "velocity",
-   "text": "NandhaKishorM/laya is 3.9 days old and has 10,029 stars, a rate of 2,587.9 stars per day.",
+   "text": "NandhaKishorM/laya is 3.9 days old and has 10,029 stars, a rate of 2,585.8 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004167"
+    "C005125"
    ],
-   "cycle": 6,
-   "id": "I0006-047",
+   "cycle": 7,
+   "id": "I0007-047",
    "importance": 0.0002,
    "kind": "velocity",
    "text": "NidhiBajpai123/Olympic_Analytics_Dashboard is 19.5 days old and has 2 stars, a rate of 0.1 stars per day.",
@@ -521,10 +521,10 @@
   },
   {
    "claimIds": [
-    "C004168"
+    "C005126"
    ],
-   "cycle": 6,
-   "id": "I0006-048",
+   "cycle": 7,
+   "id": "I0007-048",
    "importance": 0.06,
    "kind": "velocity",
    "text": "OctopusTakopi/kalshi_wash_trade is 1.0 days old and has 30 stars, a rate of 30.0 stars per day.",
@@ -532,10 +532,10 @@
   },
   {
    "claimIds": [
-    "C004169"
+    "C005127"
    ],
-   "cycle": 6,
-   "id": "I0006-049",
+   "cycle": 7,
+   "id": "I0007-049",
    "importance": 0.0006,
    "kind": "velocity",
    "text": "Ong-pogs/awesome-prediction-market-apis is 10.3 days old and has 3 stars, a rate of 0.3 stars per day.",
@@ -543,10 +543,10 @@
   },
   {
    "claimIds": [
-    "C004170"
+    "C005128"
    ],
-   "cycle": 6,
-   "id": "I0006-050",
+   "cycle": 7,
+   "id": "I0007-050",
    "importance": 0.02,
    "kind": "velocity",
    "text": "OpenDCAI/GameFactory-3A is 77.7 days old and has 778 stars, a rate of 10.0 stars per day.",
@@ -554,10 +554,10 @@
   },
   {
    "claimIds": [
-    "C004171"
+    "C005129"
    ],
-   "cycle": 6,
-   "id": "I0006-051",
+   "cycle": 7,
+   "id": "I0007-051",
    "importance": 0.0373,
    "kind": "velocity",
    "text": "Pan-Chera/Multi-Agent-CAD is 53.4 days old and has 996 stars, a rate of 18.7 stars per day.",
@@ -565,10 +565,10 @@
   },
   {
    "claimIds": [
-    "C004172"
+    "C005130"
    ],
-   "cycle": 6,
-   "id": "I0006-052",
+   "cycle": 7,
+   "id": "I0007-052",
    "importance": 0.0006,
    "kind": "velocity",
    "text": "PauloAMatos777/cellus_framework is 3.2 days old and has 1 stars, a rate of 0.3 stars per day.",
@@ -576,21 +576,21 @@
   },
   {
    "claimIds": [
-    "C004173"
+    "C005131"
    ],
-   "cycle": 6,
-   "id": "I0006-053",
-   "importance": 0.0159,
+   "cycle": 7,
+   "id": "I0007-053",
+   "importance": 0.016,
    "kind": "velocity",
-   "text": "Playa-Cyrene/Cyrene-Agent is 77.2 days old and has 615 stars, a rate of 8.0 stars per day.",
+   "text": "Playa-Cyrene/Cyrene-Agent is 77.2 days old and has 616 stars, a rate of 8.0 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004174"
+    "C005132"
    ],
-   "cycle": 6,
-   "id": "I0006-054",
+   "cycle": 7,
+   "id": "I0007-054",
    "importance": 0.0008,
    "kind": "velocity",
    "text": "Predictbook/awesome-prediction-market-analytics-tools is 48.5 days old and has 20 stars, a rate of 0.4 stars per day.",
@@ -598,10 +598,10 @@
   },
   {
    "claimIds": [
-    "C004175"
+    "C005133"
    ],
-   "cycle": 6,
-   "id": "I0006-055",
+   "cycle": 7,
+   "id": "I0007-055",
    "importance": 0.0002,
    "kind": "velocity",
    "text": "Predictbook/awesome-prediction-market-follows is 48.5 days old and has 4 stars, a rate of 0.1 stars per day.",
@@ -609,10 +609,10 @@
   },
   {
    "claimIds": [
-    "C004176"
+    "C005134"
    ],
-   "cycle": 6,
-   "id": "I0006-056",
+   "cycle": 7,
+   "id": "I0007-056",
    "importance": 0.0001,
    "kind": "velocity",
    "text": "PredictionMarketTrader/openthomas is 81.0 days old and has 5 stars, a rate of 0.1 stars per day.",
@@ -620,10 +620,10 @@
   },
   {
    "claimIds": [
-    "C004177"
+    "C005135"
    ],
-   "cycle": 6,
-   "id": "I0006-057",
+   "cycle": 7,
+   "id": "I0007-057",
    "importance": 0.0,
    "kind": "velocity",
    "text": "Pseudocoder28/Cross-Book is 2.0 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -631,10 +631,10 @@
   },
   {
    "claimIds": [
-    "C004178"
+    "C005136"
    ],
-   "cycle": 6,
-   "id": "I0006-058",
+   "cycle": 7,
+   "id": "I0007-058",
    "importance": 0.0195,
    "kind": "velocity",
    "text": "QiantangCredit/heimdall-agent is 7.7 days old and has 75 stars, a rate of 9.8 stars per day.",
@@ -642,21 +642,21 @@
   },
   {
    "claimIds": [
-    "C004179"
+    "C005137"
    ],
-   "cycle": 6,
-   "id": "I0006-059",
-   "importance": 0.2517,
+   "cycle": 7,
+   "id": "I0007-059",
+   "importance": 0.2516,
    "kind": "velocity",
    "text": "QwenLM/Qwen-Image-2.1 is 7.9 days old and has 994 stars, a rate of 125.8 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004180"
+    "C005138"
    ],
-   "cycle": 6,
-   "id": "I0006-060",
+   "cycle": 7,
+   "id": "I0007-060",
    "importance": 0.0,
    "kind": "velocity",
    "text": "RBA123/kalshi-markets-analysis is 1.8 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -664,21 +664,21 @@
   },
   {
    "claimIds": [
-    "C004181"
+    "C005139"
    ],
-   "cycle": 6,
-   "id": "I0006-061",
-   "importance": 0.0277,
+   "cycle": 7,
+   "id": "I0007-061",
+   "importance": 0.0276,
    "kind": "velocity",
    "text": "RectangleStory/Superpowers_Multi_AI is 7.2 days old and has 100 stars, a rate of 13.8 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004182"
+    "C005140"
    ],
-   "cycle": 6,
-   "id": "I0006-062",
+   "cycle": 7,
+   "id": "I0007-062",
    "importance": 0.0293,
    "kind": "velocity",
    "text": "S1N6H/pentest-harness is 26.9 days old and has 394 stars, a rate of 14.7 stars per day.",
@@ -686,10 +686,10 @@
   },
   {
    "claimIds": [
-    "C004183"
+    "C005141"
    ],
-   "cycle": 6,
-   "id": "I0006-063",
+   "cycle": 7,
+   "id": "I0007-063",
    "importance": 0.0003,
    "kind": "velocity",
    "text": "SPulse-Org/SPulse is 74.2 days old and has 11 stars, a rate of 0.1 stars per day.",
@@ -697,10 +697,10 @@
   },
   {
    "claimIds": [
-    "C004184"
+    "C005142"
    ],
-   "cycle": 6,
-   "id": "I0006-064",
+   "cycle": 7,
+   "id": "I0007-064",
    "importance": 0.0001,
    "kind": "velocity",
    "text": "SakethSripada/KalTraderMCP is 50.3 days old and has 3 stars, a rate of 0.1 stars per day.",
@@ -708,10 +708,10 @@
   },
   {
    "claimIds": [
-    "C004185"
+    "C005143"
    ],
-   "cycle": 6,
-   "id": "I0006-065",
+   "cycle": 7,
+   "id": "I0007-065",
    "importance": 0.0005,
    "kind": "velocity",
    "text": "SayanGanguli/Agentic_Cucumber_Framework is 4.2 days old and has 1 stars, a rate of 0.2 stars per day.",
@@ -719,10 +719,10 @@
   },
   {
    "claimIds": [
-    "C004186"
+    "C005144"
    ],
-   "cycle": 6,
-   "id": "I0006-066",
+   "cycle": 7,
+   "id": "I0007-066",
    "importance": 0.0005,
    "kind": "velocity",
    "text": "ShahilRoy/idea-to-reality is 7.4 days old and has 2 stars, a rate of 0.3 stars per day.",
@@ -730,10 +730,10 @@
   },
   {
    "claimIds": [
-    "C004187"
+    "C005145"
    ],
-   "cycle": 6,
-   "id": "I0006-067",
+   "cycle": 7,
+   "id": "I0007-067",
    "importance": 0.0,
    "kind": "velocity",
    "text": "Shori35/sports-analytics-portfolio is 45.9 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -741,10 +741,10 @@
   },
   {
    "claimIds": [
-    "C004188"
+    "C005146"
    ],
-   "cycle": 6,
-   "id": "I0006-068",
+   "cycle": 7,
+   "id": "I0007-068",
    "importance": 0.0001,
    "kind": "velocity",
    "text": "SonaliDuvesh/allMomentMatters is 74.4 days old and has 4 stars, a rate of 0.1 stars per day.",
@@ -752,10 +752,10 @@
   },
   {
    "claimIds": [
-    "C004189"
+    "C005147"
    ],
-   "cycle": 6,
-   "id": "I0006-069",
+   "cycle": 7,
+   "id": "I0007-069",
    "importance": 0.0638,
    "kind": "velocity",
    "text": "Station-Sciences/bot-crossing is 20.2 days old and has 646 stars, a rate of 31.9 stars per day.",
@@ -763,10 +763,10 @@
   },
   {
    "claimIds": [
-    "C004190"
+    "C005148"
    ],
-   "cycle": 6,
-   "id": "I0006-070",
+   "cycle": 7,
+   "id": "I0007-070",
    "importance": 0.0003,
    "kind": "velocity",
    "text": "SusindharSiva27/prediction-market-arb-scanner is 6.0 days old and has 1 stars, a rate of 0.2 stars per day.",
@@ -774,43 +774,43 @@
   },
   {
    "claimIds": [
-    "C004191"
+    "C005149"
    ],
-   "cycle": 6,
-   "id": "I0006-071",
+   "cycle": 7,
+   "id": "I0007-071",
    "importance": 0.1195,
    "kind": "velocity",
-   "text": "TencentCloud/Octop is 75.5 days old and has 4,512 stars, a rate of 59.7 stars per day.",
+   "text": "TencentCloud/Octop is 75.5 days old and has 4,513 stars, a rate of 59.7 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004192"
+    "C005150"
    ],
-   "cycle": 6,
-   "id": "I0006-072",
+   "cycle": 7,
+   "id": "I0007-072",
    "importance": 1.0,
    "kind": "velocity",
-   "text": "TheoLeeCJ/SemIf is 5.9 days old and has 3,212 stars, a rate of 543.1 stars per day.",
+   "text": "TheoLeeCJ/SemIf is 5.9 days old and has 3,212 stars, a rate of 542.9 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004193"
+    "C005151"
    ],
-   "cycle": 6,
-   "id": "I0006-073",
-   "importance": 0.8178,
+   "cycle": 7,
+   "id": "I0007-073",
+   "importance": 0.8173,
    "kind": "velocity",
-   "text": "TianyuCodings/NanoJev is 4.4 days old and has 1,800 stars, a rate of 408.9 stars per day.",
+   "text": "TianyuCodings/NanoJev is 4.4 days old and has 1,800 stars, a rate of 408.6 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004194"
+    "C005152"
    ],
-   "cycle": 6,
-   "id": "I0006-074",
+   "cycle": 7,
+   "id": "I0007-074",
    "importance": 0.0014,
    "kind": "velocity",
    "text": "TraderAlice/Auto-Prediction is 35.6 days old and has 25 stars, a rate of 0.7 stars per day.",
@@ -818,10 +818,10 @@
   },
   {
    "claimIds": [
-    "C004195"
+    "C005153"
    ],
-   "cycle": 6,
-   "id": "I0006-075",
+   "cycle": 7,
+   "id": "I0007-075",
    "importance": 0.0069,
    "kind": "velocity",
    "text": "TrustifAI/typed_evals is 1.7 days old and has 6 stars, a rate of 3.4 stars per day.",
@@ -829,10 +829,10 @@
   },
   {
    "claimIds": [
-    "C004196"
+    "C005154"
    ],
-   "cycle": 6,
-   "id": "I0006-076",
+   "cycle": 7,
+   "id": "I0007-076",
    "importance": 0.001,
    "kind": "velocity",
    "text": "Vinger-lee/leap-framework is 2.0 days old and has 1 stars, a rate of 0.5 stars per day.",
@@ -840,10 +840,10 @@
   },
   {
    "claimIds": [
-    "C004197"
+    "C005155"
    ],
-   "cycle": 6,
-   "id": "I0006-077",
+   "cycle": 7,
+   "id": "I0007-077",
    "importance": 0.0005,
    "kind": "velocity",
    "text": "WalrusQuant/weather-desk is 15.2 days old and has 4 stars, a rate of 0.3 stars per day.",
@@ -851,10 +851,10 @@
   },
   {
    "claimIds": [
-    "C004198"
+    "C005156"
    ],
-   "cycle": 6,
-   "id": "I0006-078",
+   "cycle": 7,
+   "id": "I0007-078",
    "importance": 0.0005,
    "kind": "velocity",
    "text": "Wang-Xiaodong1899/Aha-Flow-Distillation is 15.5 days old and has 4 stars, a rate of 0.3 stars per day.",
@@ -862,10 +862,10 @@
   },
   {
    "claimIds": [
-    "C004199"
+    "C005157"
    ],
-   "cycle": 6,
-   "id": "I0006-079",
+   "cycle": 7,
+   "id": "I0007-079",
    "importance": 0.0007,
    "kind": "velocity",
    "text": "Wazifati/loka-context-harness is 5.5 days old and has 2 stars, a rate of 0.4 stars per day.",
@@ -873,10 +873,10 @@
   },
   {
    "claimIds": [
-    "C004200"
+    "C005158"
    ],
-   "cycle": 6,
-   "id": "I0006-080",
+   "cycle": 7,
+   "id": "I0007-080",
    "importance": 0.0358,
    "kind": "velocity",
    "text": "Worldbuilder013/HEXIS is 4.8 days old and has 86 stars, a rate of 17.9 stars per day.",
@@ -884,10 +884,10 @@
   },
   {
    "claimIds": [
-    "C004201"
+    "C005159"
    ],
-   "cycle": 6,
-   "id": "I0006-081",
+   "cycle": 7,
+   "id": "I0007-081",
    "importance": 0.0206,
    "kind": "velocity",
    "text": "XHToken/Spark-X2.5 is 28.8 days old and has 297 stars, a rate of 10.3 stars per day.",
@@ -895,10 +895,10 @@
   },
   {
    "claimIds": [
-    "C004202"
+    "C005160"
    ],
-   "cycle": 6,
-   "id": "I0006-082",
+   "cycle": 7,
+   "id": "I0007-082",
    "importance": 0.0367,
    "kind": "velocity",
    "text": "XYZ-AI-Lab/AxisAgentic is 60.9 days old and has 1,118 stars, a rate of 18.4 stars per day.",
@@ -906,10 +906,10 @@
   },
   {
    "claimIds": [
-    "C004203"
+    "C005161"
    ],
-   "cycle": 6,
-   "id": "I0006-083",
+   "cycle": 7,
+   "id": "I0007-083",
    "importance": 0.0323,
    "kind": "velocity",
    "text": "XYZ-AI-Lab/axrl is 60.8 days old and has 981 stars, a rate of 16.1 stars per day.",
@@ -917,10 +917,10 @@
   },
   {
    "claimIds": [
-    "C004204"
+    "C005162"
    ],
-   "cycle": 6,
-   "id": "I0006-084",
+   "cycle": 7,
+   "id": "I0007-084",
    "importance": 0.0485,
    "kind": "velocity",
    "text": "Yean-Sec/StrikeAgent_AtkBrain-Flash is 19.7 days old and has 478 stars, a rate of 24.2 stars per day.",
@@ -928,10 +928,10 @@
   },
   {
    "claimIds": [
-    "C004205"
+    "C005163"
    ],
-   "cycle": 6,
-   "id": "I0006-085",
+   "cycle": 7,
+   "id": "I0007-085",
    "importance": 0.0038,
    "kind": "velocity",
    "text": "YellowPancake/quant-autoresearch is 6.8 days old and has 13 stars, a rate of 1.9 stars per day.",
@@ -939,10 +939,10 @@
   },
   {
    "claimIds": [
-    "C004206"
+    "C005164"
    ],
-   "cycle": 6,
-   "id": "I0006-086",
+   "cycle": 7,
+   "id": "I0007-086",
    "importance": 0.1028,
    "kind": "velocity",
    "text": "ZJU-REAL/Easel is 25.0 days old and has 1,284 stars, a rate of 51.4 stars per day.",
@@ -950,10 +950,10 @@
   },
   {
    "claimIds": [
-    "C004207"
+    "C005165"
    ],
-   "cycle": 6,
-   "id": "I0006-087",
+   "cycle": 7,
+   "id": "I0007-087",
    "importance": 0.0045,
    "kind": "velocity",
    "text": "ZJU-REAL/TTPO is 25.7 days old and has 58 stars, a rate of 2.3 stars per day.",
@@ -961,10 +961,10 @@
   },
   {
    "claimIds": [
-    "C004208"
+    "C005166"
    ],
-   "cycle": 6,
-   "id": "I0006-088",
+   "cycle": 7,
+   "id": "I0007-088",
    "importance": 0.0,
    "kind": "velocity",
    "text": "ZaoZZH/public-prediction-market-trading-research-system is 6.5 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -972,10 +972,10 @@
   },
   {
    "claimIds": [
-    "C004209"
+    "C005167"
    ],
-   "cycle": 6,
-   "id": "I0006-089",
+   "cycle": 7,
+   "id": "I0007-089",
    "importance": 0.0516,
    "kind": "velocity",
    "text": "Zyrexnn/Cybermes is 33.5 days old and has 864 stars, a rate of 25.8 stars per day.",
@@ -983,10 +983,10 @@
   },
   {
    "claimIds": [
-    "C004210"
+    "C005168"
    ],
-   "cycle": 6,
-   "id": "I0006-090",
+   "cycle": 7,
+   "id": "I0007-090",
    "importance": 0.0,
    "kind": "velocity",
    "text": "abhinabgangulyucd-hue/Sports-analytics-group-project is 88.6 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -994,10 +994,10 @@
   },
   {
    "claimIds": [
-    "C004211"
+    "C005169"
    ],
-   "cycle": 6,
-   "id": "I0006-091",
+   "cycle": 7,
+   "id": "I0007-091",
    "importance": 0.0007,
    "kind": "velocity",
    "text": "abidsgx/Machine-Learning-Model-for-Stock-Market is 24.9 days old and has 9 stars, a rate of 0.4 stars per day.",
@@ -1005,10 +1005,10 @@
   },
   {
    "claimIds": [
-    "C004212"
+    "C005170"
    ],
-   "cycle": 6,
-   "id": "I0006-092",
+   "cycle": 7,
+   "id": "I0007-092",
    "importance": 0.0,
    "kind": "velocity",
    "text": "adil-khan7798/market-spread-engine is 6.3 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -1016,21 +1016,21 @@
   },
   {
    "claimIds": [
-    "C004213"
+    "C005171"
    ],
-   "cycle": 6,
-   "id": "I0006-093",
-   "importance": 0.2082,
+   "cycle": 7,
+   "id": "I0007-093",
+   "importance": 0.2081,
    "kind": "velocity",
-   "text": "agentverse-os/AgentVerse-OS is 9.3 days old and has 969 stars, a rate of 104.1 stars per day.",
+   "text": "agentverse-os/AgentVerse-OS is 9.3 days old and has 969 stars, a rate of 104.0 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004214"
+    "C005172"
    ],
-   "cycle": 6,
-   "id": "I0006-094",
+   "cycle": 7,
+   "id": "I0007-094",
    "importance": 0.1208,
    "kind": "velocity",
    "text": "aipoch/open-science is 81.0 days old and has 4,891 stars, a rate of 60.4 stars per day.",
@@ -1038,10 +1038,10 @@
   },
   {
    "claimIds": [
-    "C004215"
+    "C005173"
    ],
-   "cycle": 6,
-   "id": "I0006-095",
+   "cycle": 7,
+   "id": "I0007-095",
    "importance": 0.0001,
    "kind": "velocity",
    "text": "akadigari/tipoff is 72.9 days old and has 3 stars, a rate of 0.0 stars per day.",
@@ -1049,10 +1049,10 @@
   },
   {
    "claimIds": [
-    "C004216"
+    "C005174"
    ],
-   "cycle": 6,
-   "id": "I0006-096",
+   "cycle": 7,
+   "id": "I0007-096",
    "importance": 0.0003,
    "kind": "velocity",
    "text": "alan-d-smith/synthetix-alpha is 24.4 days old and has 4 stars, a rate of 0.2 stars per day.",
@@ -1060,10 +1060,10 @@
   },
   {
    "claimIds": [
-    "C004217"
+    "C005175"
    ],
-   "cycle": 6,
-   "id": "I0006-097",
+   "cycle": 7,
+   "id": "I0007-097",
    "importance": 0.0276,
    "kind": "velocity",
    "text": "alchaincyf/huashu-excel is 29.8 days old and has 412 stars, a rate of 13.8 stars per day.",
@@ -1071,10 +1071,10 @@
   },
   {
    "claimIds": [
-    "C004218"
+    "C005176"
    ],
-   "cycle": 6,
-   "id": "I0006-098",
+   "cycle": 7,
+   "id": "I0007-098",
    "importance": 0.0005,
    "kind": "velocity",
    "text": "alejandrozinz-eng/CloddsBot is 4.2 days old and has 1 stars, a rate of 0.2 stars per day.",
@@ -1082,10 +1082,10 @@
   },
   {
    "claimIds": [
-    "C004219"
+    "C005177"
    ],
-   "cycle": 6,
-   "id": "I0006-099",
+   "cycle": 7,
+   "id": "I0007-099",
    "importance": 0.0008,
    "kind": "velocity",
    "text": "alphaparkinc/genpark-llm-guided-tree-of-thought-monte-carlo-search-skill is 19.7 days old and has 8 stars, a rate of 0.4 stars per day.",
@@ -1093,10 +1093,10 @@
   },
   {
    "claimIds": [
-    "C004220"
+    "C005178"
    ],
-   "cycle": 6,
-   "id": "I0006-100",
+   "cycle": 7,
+   "id": "I0007-100",
    "importance": 0.0004,
    "kind": "velocity",
    "text": "apoapostolov/hermes-agent-awesome-plugins is 22.5 days old and has 5 stars, a rate of 0.2 stars per day.",
@@ -1104,10 +1104,10 @@
   },
   {
    "claimIds": [
-    "C004221"
+    "C005179"
    ],
-   "cycle": 6,
-   "id": "I0006-101",
+   "cycle": 7,
+   "id": "I0007-101",
    "importance": 0.0,
    "kind": "velocity",
    "text": "arnavgupta2004/kalshi-arbitrage-market-maker is 2.8 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -1115,32 +1115,32 @@
   },
   {
    "claimIds": [
-    "C004222"
+    "C005180"
    ],
-   "cycle": 6,
-   "id": "I0006-102",
-   "importance": 0.2806,
+   "cycle": 7,
+   "id": "I0007-102",
+   "importance": 0.2804,
    "kind": "velocity",
-   "text": "awlevin/typesafe-computer-use is 5.3 days old and has 748 stars, a rate of 140.3 stars per day.",
+   "text": "awlevin/typesafe-computer-use is 5.3 days old and has 748 stars, a rate of 140.2 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004223"
+    "C005181"
    ],
-   "cycle": 6,
-   "id": "I0006-103",
-   "importance": 0.7997,
+   "cycle": 7,
+   "id": "I0007-103",
+   "importance": 0.799,
    "kind": "velocity",
-   "text": "bespokelabsai/nimble is 3.7 days old and has 1,477 stars, a rate of 399.8 stars per day.",
+   "text": "bespokelabsai/nimble is 3.7 days old and has 1,477 stars, a rate of 399.5 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004224"
+    "C005182"
    ],
-   "cycle": 6,
-   "id": "I0006-104",
+   "cycle": 7,
+   "id": "I0007-104",
    "importance": 0.0004,
    "kind": "velocity",
    "text": "bijay-odyssey/Intelli-oppo is 21.4 days old and has 4 stars, a rate of 0.2 stars per day.",
@@ -1148,10 +1148,10 @@
   },
   {
    "claimIds": [
-    "C004225"
+    "C005183"
    ],
-   "cycle": 6,
-   "id": "I0006-105",
+   "cycle": 7,
+   "id": "I0007-105",
    "importance": 0.0,
    "kind": "velocity",
    "text": "bitbuyer420/ct-kalshi-prediction-bot is 7.5 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -1159,10 +1159,10 @@
   },
   {
    "claimIds": [
-    "C004226"
+    "C005184"
    ],
-   "cycle": 6,
-   "id": "I0006-106",
+   "cycle": 7,
+   "id": "I0007-106",
    "importance": 0.0003,
    "kind": "velocity",
    "text": "bobashopcashier/kalshi-cli is 52.1 days old and has 9 stars, a rate of 0.2 stars per day.",
@@ -1170,10 +1170,10 @@
   },
   {
    "claimIds": [
-    "C004227"
+    "C005185"
    ],
-   "cycle": 6,
-   "id": "I0006-107",
+   "cycle": 7,
+   "id": "I0007-107",
    "importance": 0.0985,
    "kind": "velocity",
    "text": "brayonpi/hexstellar is 25.2 days old and has 1,241 stars, a rate of 49.2 stars per day.",
@@ -1181,21 +1181,21 @@
   },
   {
    "claimIds": [
-    "C004228"
+    "C005186"
    ],
-   "cycle": 6,
-   "id": "I0006-108",
+   "cycle": 7,
+   "id": "I0007-108",
    "importance": 1.0,
    "kind": "velocity",
-   "text": "browser-use/jev-ultrafast is 5.2 days old and has 15,879 stars, a rate of 3,066.4 stars per day.",
+   "text": "browser-use/jev-ultrafast is 5.2 days old and has 15,890 stars, a rate of 3,066.7 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004229"
+    "C005187"
    ],
-   "cycle": 6,
-   "id": "I0006-109",
+   "cycle": 7,
+   "id": "I0007-109",
    "importance": 0.0896,
    "kind": "velocity",
    "text": "bryllim/workout-guide is 29.0 days old and has 1,298 stars, a rate of 44.8 stars per day.",
@@ -1203,10 +1203,10 @@
   },
   {
    "claimIds": [
-    "C004230"
+    "C005188"
    ],
-   "cycle": 6,
-   "id": "I0006-110",
+   "cycle": 7,
+   "id": "I0007-110",
    "importance": 0.0007,
    "kind": "velocity",
    "text": "build4U/AI-Knowledge-Management-Platform is 27.9 days old and has 10 stars, a rate of 0.4 stars per day.",
@@ -1214,10 +1214,10 @@
   },
   {
    "claimIds": [
-    "C004231"
+    "C005189"
    ],
-   "cycle": 6,
-   "id": "I0006-111",
+   "cycle": 7,
+   "id": "I0007-111",
    "importance": 0.0,
    "kind": "velocity",
    "text": "byronmutimusakwa/Sports-Analytics-Portfolio is 60.1 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -1225,10 +1225,10 @@
   },
   {
    "claimIds": [
-    "C004232"
+    "C005190"
    ],
-   "cycle": 6,
-   "id": "I0006-112",
+   "cycle": 7,
+   "id": "I0007-112",
    "importance": 0.0311,
    "kind": "velocity",
    "text": "calmrocks/ai-engineer-notebooks is 41.1 days old and has 639 stars, a rate of 15.5 stars per day.",
@@ -1236,10 +1236,10 @@
   },
   {
    "claimIds": [
-    "C004233"
+    "C005191"
    ],
-   "cycle": 6,
-   "id": "I0006-113",
+   "cycle": 7,
+   "id": "I0007-113",
    "importance": 0.0,
    "kind": "velocity",
    "text": "canis-lupu2006/nba-analytics-dashboard is 45.3 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -1247,10 +1247,10 @@
   },
   {
    "claimIds": [
-    "C004234"
+    "C005192"
    ],
-   "cycle": 6,
-   "id": "I0006-114",
+   "cycle": 7,
+   "id": "I0007-114",
    "importance": 0.0,
    "kind": "velocity",
    "text": "cbedoya19/mlb-cross-exchange-scanner is 4.9 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -1258,10 +1258,10 @@
   },
   {
    "claimIds": [
-    "C004235"
+    "C005193"
    ],
-   "cycle": 6,
-   "id": "I0006-115",
+   "cycle": 7,
+   "id": "I0007-115",
    "importance": 0.0012,
    "kind": "velocity",
    "text": "celcilin/cellularflow is 15.1 days old and has 9 stars, a rate of 0.6 stars per day.",
@@ -1269,10 +1269,10 @@
   },
   {
    "claimIds": [
-    "C004236"
+    "C005194"
    ],
-   "cycle": 6,
-   "id": "I0006-116",
+   "cycle": 7,
+   "id": "I0007-116",
    "importance": 0.0003,
    "kind": "velocity",
    "text": "chainstacklabs/world-xyz-research is 70.6 days old and has 9 stars, a rate of 0.1 stars per day.",
@@ -1280,10 +1280,10 @@
   },
   {
    "claimIds": [
-    "C004237"
+    "C005195"
    ],
-   "cycle": 6,
-   "id": "I0006-117",
+   "cycle": 7,
+   "id": "I0007-117",
    "importance": 0.0,
    "kind": "velocity",
    "text": "chongliujia/Quanthecy is 6.9 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -1291,10 +1291,10 @@
   },
   {
    "claimIds": [
-    "C004238"
+    "C005196"
    ],
-   "cycle": 6,
-   "id": "I0006-118",
+   "cycle": 7,
+   "id": "I0007-118",
    "importance": 0.0047,
    "kind": "velocity",
    "text": "cozfuttu/ritual-chain-workshop-2 is 38.4 days old and has 91 stars, a rate of 2.4 stars per day.",
@@ -1302,10 +1302,10 @@
   },
   {
    "claimIds": [
-    "C004239"
+    "C005197"
    ],
-   "cycle": 6,
-   "id": "I0006-119",
+   "cycle": 7,
+   "id": "I0007-119",
    "importance": 0.0015,
    "kind": "velocity",
    "text": "cstar0521/TreeThinkerAgent is 10.7 days old and has 8 stars, a rate of 0.7 stars per day.",
@@ -1313,21 +1313,21 @@
   },
   {
    "claimIds": [
-    "C004240"
+    "C005198"
    ],
-   "cycle": 6,
-   "id": "I0006-120",
+   "cycle": 7,
+   "id": "I0007-120",
    "importance": 0.4191,
    "kind": "velocity",
-   "text": "dataelement/dsh-desktop is 39.5 days old and has 8,278 stars, a rate of 209.6 stars per day.",
+   "text": "dataelement/dsh-desktop is 39.5 days old and has 8,279 stars, a rate of 209.6 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004241"
+    "C005199"
    ],
-   "cycle": 6,
-   "id": "I0006-121",
+   "cycle": 7,
+   "id": "I0007-121",
    "importance": 0.0001,
    "kind": "velocity",
    "text": "drydocs/tholos is 78.3 days old and has 5 stars, a rate of 0.1 stars per day.",
@@ -1335,10 +1335,10 @@
   },
   {
    "claimIds": [
-    "C004242"
+    "C005200"
    ],
-   "cycle": 6,
-   "id": "I0006-122",
+   "cycle": 7,
+   "id": "I0007-122",
    "importance": 0.0003,
    "kind": "velocity",
    "text": "dungnotnull/F-B-and-Tourism-Persona-Research-HCMC is 28.8 days old and has 4 stars, a rate of 0.1 stars per day.",
@@ -1346,10 +1346,10 @@
   },
   {
    "claimIds": [
-    "C004243"
+    "C005201"
    ],
-   "cycle": 6,
-   "id": "I0006-123",
+   "cycle": 7,
+   "id": "I0007-123",
    "importance": 0.0002,
    "kind": "velocity",
    "text": "dungnotnull/Football-Strategy-Advisor-agent-skill is 41.7 days old and has 4 stars, a rate of 0.1 stars per day.",
@@ -1357,10 +1357,10 @@
   },
   {
    "claimIds": [
-    "C004244"
+    "C005202"
    ],
-   "cycle": 6,
-   "id": "I0006-124",
+   "cycle": 7,
+   "id": "I0007-124",
    "importance": 0.0001,
    "kind": "velocity",
    "text": "dungnotnull/sports-tactics-formation-analyzer is 81.7 days old and has 4 stars, a rate of 0.0 stars per day.",
@@ -1368,10 +1368,10 @@
   },
   {
    "claimIds": [
-    "C004245"
+    "C005203"
    ],
-   "cycle": 6,
-   "id": "I0006-125",
+   "cycle": 7,
+   "id": "I0007-125",
    "importance": 0.0314,
    "kind": "velocity",
    "text": "egoist/quickgui is 28.8 days old and has 452 stars, a rate of 15.7 stars per day.",
@@ -1379,10 +1379,10 @@
   },
   {
    "claimIds": [
-    "C004246"
+    "C005204"
    ],
-   "cycle": 6,
-   "id": "I0006-126",
+   "cycle": 7,
+   "id": "I0007-126",
    "importance": 0.1525,
    "kind": "velocity",
    "text": "elder-plinius/T3MP3ST is 81.3 days old and has 6,202 stars, a rate of 76.3 stars per day.",
@@ -1390,10 +1390,10 @@
   },
   {
    "claimIds": [
-    "C004247"
+    "C005205"
    ],
-   "cycle": 6,
-   "id": "I0006-127",
+   "cycle": 7,
+   "id": "I0007-127",
    "importance": 0.0014,
    "kind": "velocity",
    "text": "else24/kalshi-market-bot is 51.5 days old and has 37 stars, a rate of 0.7 stars per day.",
@@ -1401,10 +1401,10 @@
   },
   {
    "claimIds": [
-    "C004248"
+    "C005206"
    ],
-   "cycle": 6,
-   "id": "I0006-128",
+   "cycle": 7,
+   "id": "I0007-128",
    "importance": 0.0002,
    "kind": "velocity",
    "text": "epoko77-ai/ai-iq-test is 26.6 days old and has 3 stars, a rate of 0.1 stars per day.",
@@ -1412,10 +1412,10 @@
   },
   {
    "claimIds": [
-    "C004249"
+    "C005207"
    ],
-   "cycle": 6,
-   "id": "I0006-129",
+   "cycle": 7,
+   "id": "I0007-129",
    "importance": 0.0003,
    "kind": "velocity",
    "text": "evand/open-math-problems is 62.5 days old and has 9 stars, a rate of 0.1 stars per day.",
@@ -1423,10 +1423,10 @@
   },
   {
    "claimIds": [
-    "C004250"
+    "C005208"
    ],
-   "cycle": 6,
-   "id": "I0006-130",
+   "cycle": 7,
+   "id": "I0007-130",
    "importance": 0.0,
    "kind": "velocity",
    "text": "gangadhar0502000-cmyk/kalshi-money-making-machine is 2.1 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -1434,10 +1434,10 @@
   },
   {
    "claimIds": [
-    "C004251"
+    "C005209"
    ],
-   "cycle": 6,
-   "id": "I0006-131",
+   "cycle": 7,
+   "id": "I0007-131",
    "importance": 0.0,
    "kind": "velocity",
    "text": "gelimorto2/edgesizer is 6.3 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -1445,10 +1445,10 @@
   },
   {
    "claimIds": [
-    "C004252"
+    "C005210"
    ],
-   "cycle": 6,
-   "id": "I0006-132",
+   "cycle": 7,
+   "id": "I0007-132",
    "importance": 0.2822,
    "kind": "velocity",
    "text": "genspark-ai/genoffice is 52.7 days old and has 7,433 stars, a rate of 141.1 stars per day.",
@@ -1456,21 +1456,21 @@
   },
   {
    "claimIds": [
-    "C004253"
+    "C005211"
    ],
-   "cycle": 6,
-   "id": "I0006-133",
-   "importance": 0.4135,
+   "cycle": 7,
+   "id": "I0007-133",
+   "importance": 0.4132,
    "kind": "velocity",
-   "text": "githubnext/localjev is 3.4 days old and has 696 stars, a rate of 206.8 stars per day.",
+   "text": "githubnext/localjev is 3.4 days old and has 696 stars, a rate of 206.6 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004254"
+    "C005212"
    ],
-   "cycle": 6,
-   "id": "I0006-134",
+   "cycle": 7,
+   "id": "I0007-134",
    "importance": 0.0,
    "kind": "velocity",
    "text": "goel7964/kalshi-mispricing-arbitrage-engine is 1.0 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -1478,10 +1478,10 @@
   },
   {
    "claimIds": [
-    "C004255"
+    "C005213"
    ],
-   "cycle": 6,
-   "id": "I0006-135",
+   "cycle": 7,
+   "id": "I0007-135",
    "importance": 0.0003,
    "kind": "velocity",
    "text": "gregyoung14/openmarket is 82.9 days old and has 13 stars, a rate of 0.2 stars per day.",
@@ -1489,10 +1489,10 @@
   },
   {
    "claimIds": [
-    "C004256"
+    "C005214"
    ],
-   "cycle": 6,
-   "id": "I0006-136",
+   "cycle": 7,
+   "id": "I0007-136",
    "importance": 0.0218,
    "kind": "velocity",
    "text": "halofyai/halofy is 30.8 days old and has 336 stars, a rate of 10.9 stars per day.",
@@ -1500,10 +1500,10 @@
   },
   {
    "claimIds": [
-    "C004257"
+    "C005215"
    ],
-   "cycle": 6,
-   "id": "I0006-137",
+   "cycle": 7,
+   "id": "I0007-137",
    "importance": 0.001,
    "kind": "velocity",
    "text": "helmsman12/LLM_reasoning_diversity is 23.4 days old and has 12 stars, a rate of 0.5 stars per day.",
@@ -1511,10 +1511,10 @@
   },
   {
    "claimIds": [
-    "C004258"
+    "C005216"
    ],
-   "cycle": 6,
-   "id": "I0006-138",
+   "cycle": 7,
+   "id": "I0007-138",
    "importance": 0.0505,
    "kind": "velocity",
    "text": "hkqr/my-free-code is 25.3 days old and has 639 stars, a rate of 25.2 stars per day.",
@@ -1522,21 +1522,21 @@
   },
   {
    "claimIds": [
-    "C004259"
+    "C005217"
    ],
-   "cycle": 6,
-   "id": "I0006-139",
-   "importance": 0.4691,
+   "cycle": 7,
+   "id": "I0007-139",
+   "importance": 0.4693,
    "kind": "velocity",
-   "text": "hypit-ai/hypit is 54.3 days old and has 12,735 stars, a rate of 234.6 stars per day.",
+   "text": "hypit-ai/hypit is 54.3 days old and has 12,740 stars, a rate of 234.7 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004260"
+    "C005218"
    ],
-   "cycle": 6,
-   "id": "I0006-140",
+   "cycle": 7,
+   "id": "I0007-140",
    "importance": 0.07,
    "kind": "velocity",
    "text": "i-am-manware/Manware-s-AI-Learning-Toolkit is 16.4 days old and has 573 stars, a rate of 35.0 stars per day.",
@@ -1544,10 +1544,10 @@
   },
   {
    "claimIds": [
-    "C004261"
+    "C005219"
    ],
-   "cycle": 6,
-   "id": "I0006-141",
+   "cycle": 7,
+   "id": "I0007-141",
    "importance": 0.0001,
    "kind": "velocity",
    "text": "ishandutta2007/Awesome-Sports-Performance-Analytics is 45.0 days old and has 2 stars, a rate of 0.0 stars per day.",
@@ -1555,21 +1555,21 @@
   },
   {
    "claimIds": [
-    "C004262"
+    "C005220"
    ],
-   "cycle": 6,
-   "id": "I0006-142",
+   "cycle": 7,
+   "id": "I0007-142",
    "importance": 0.1839,
    "kind": "velocity",
-   "text": "jackwener/wx-cli-again is 7.8 days old and has 713 stars, a rate of 92.0 stars per day.",
+   "text": "jackwener/wx-cli-again is 7.8 days old and has 713 stars, a rate of 91.9 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004263"
+    "C005221"
    ],
-   "cycle": 6,
-   "id": "I0006-143",
+   "cycle": 7,
+   "id": "I0007-143",
    "importance": 0.1894,
    "kind": "velocity",
    "text": "jakubkrehel/skills is 73.7 days old and has 6,981 stars, a rate of 94.7 stars per day.",
@@ -1577,32 +1577,32 @@
   },
   {
    "claimIds": [
-    "C004264"
+    "C005222"
    ],
-   "cycle": 6,
-   "id": "I0006-144",
+   "cycle": 7,
+   "id": "I0007-144",
    "importance": 1.0,
    "kind": "velocity",
-   "text": "jaredpalmer/kev is 4.2 days old and has 2,405 stars, a rate of 571.7 stars per day.",
+   "text": "jaredpalmer/kev is 4.2 days old and has 2,405 stars, a rate of 571.3 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004265"
+    "C005223"
    ],
-   "cycle": 6,
-   "id": "I0006-145",
-   "importance": 0.7132,
+   "cycle": 7,
+   "id": "I0007-145",
+   "importance": 0.7127,
    "kind": "velocity",
-   "text": "jarrodwatts/jev-trader is 5.2 days old and has 1,845 stars, a rate of 356.6 stars per day.",
+   "text": "jarrodwatts/jev-trader is 5.2 days old and has 1,845 stars, a rate of 356.4 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004266"
+    "C005224"
    ],
-   "cycle": 6,
-   "id": "I0006-146",
+   "cycle": 7,
+   "id": "I0007-146",
    "importance": 0.0,
    "kind": "velocity",
    "text": "jermhey/tauroi-pulse is 5.3 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -1610,21 +1610,21 @@
   },
   {
    "claimIds": [
-    "C004267"
+    "C005225"
    ],
-   "cycle": 6,
-   "id": "I0006-147",
-   "importance": 0.1709,
+   "cycle": 7,
+   "id": "I0007-147",
+   "importance": 0.1708,
    "kind": "velocity",
    "text": "jtydhr88/screenwriting-skills is 15.6 days old and has 1,329 stars, a rate of 85.4 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004268"
+    "C005226"
    ],
-   "cycle": 6,
-   "id": "I0006-148",
+   "cycle": 7,
+   "id": "I0007-148",
    "importance": 0.0012,
    "kind": "velocity",
    "text": "kachence/prediction-almanac is 40.7 days old and has 24 stars, a rate of 0.6 stars per day.",
@@ -1632,10 +1632,10 @@
   },
   {
    "claimIds": [
-    "C004269"
+    "C005227"
    ],
-   "cycle": 6,
-   "id": "I0006-149",
+   "cycle": 7,
+   "id": "I0007-149",
    "importance": 0.0002,
    "kind": "velocity",
    "text": "kapilcdave/hedge-router is 25.3 days old and has 3 stars, a rate of 0.1 stars per day.",
@@ -1643,10 +1643,10 @@
   },
   {
    "claimIds": [
-    "C004270"
+    "C005228"
    ],
-   "cycle": 6,
-   "id": "I0006-150",
+   "cycle": 7,
+   "id": "I0007-150",
    "importance": 0.0041,
    "kind": "velocity",
    "text": "kazelad/prediction-market-trade-sdk is 69.7 days old and has 144 stars, a rate of 2.1 stars per day.",
@@ -1654,10 +1654,10 @@
   },
   {
    "claimIds": [
-    "C004271"
+    "C005229"
    ],
-   "cycle": 6,
-   "id": "I0006-151",
+   "cycle": 7,
+   "id": "I0007-151",
    "importance": 0.0483,
    "kind": "velocity",
    "text": "kgoedecke/doop is 30.4 days old and has 734 stars, a rate of 24.1 stars per day.",
@@ -1665,10 +1665,10 @@
   },
   {
    "claimIds": [
-    "C004272"
+    "C005230"
    ],
-   "cycle": 6,
-   "id": "I0006-152",
+   "cycle": 7,
+   "id": "I0007-152",
    "importance": 0.0,
    "kind": "velocity",
    "text": "klea0605/kalshi_weather_research is 1.0 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -1676,10 +1676,10 @@
   },
   {
    "claimIds": [
-    "C004273"
+    "C005231"
    ],
-   "cycle": 6,
-   "id": "I0006-153",
+   "cycle": 7,
+   "id": "I0007-153",
    "importance": 0.02,
    "kind": "velocity",
    "text": "kling-omni-dev/deepseek-cli is 1.0 days old and has 10 stars, a rate of 10.0 stars per day.",
@@ -1687,21 +1687,21 @@
   },
   {
    "claimIds": [
-    "C004274"
+    "C005232"
    ],
-   "cycle": 6,
-   "id": "I0006-154",
-   "importance": 0.2682,
+   "cycle": 7,
+   "id": "I0007-154",
+   "importance": 0.2681,
    "kind": "velocity",
-   "text": "korcarc/text-humanizer is 5.5 days old and has 740 stars, a rate of 134.1 stars per day.",
+   "text": "korcarc/text-humanizer is 5.5 days old and has 740 stars, a rate of 134.0 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004275"
+    "C005233"
    ],
-   "cycle": 6,
-   "id": "I0006-155",
+   "cycle": 7,
+   "id": "I0007-155",
    "importance": 0.0001,
    "kind": "velocity",
    "text": "kv-creates/ParaPlay-Accessible-Sports-Analytics is 24.5 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -1709,10 +1709,10 @@
   },
   {
    "claimIds": [
-    "C004276"
+    "C005234"
    ],
-   "cycle": 6,
-   "id": "I0006-156",
+   "cycle": 7,
+   "id": "I0007-156",
    "importance": 0.0,
    "kind": "velocity",
    "text": "kv1514/arb-engine is 5.9 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -1720,10 +1720,10 @@
   },
   {
    "claimIds": [
-    "C004277"
+    "C005235"
    ],
-   "cycle": 6,
-   "id": "I0006-157",
+   "cycle": 7,
+   "id": "I0007-157",
    "importance": 0.03,
    "kind": "velocity",
    "text": "kydlikebtc/awesome-grokbot is 21.0 days old and has 315 stars, a rate of 15.0 stars per day.",
@@ -1731,10 +1731,10 @@
   },
   {
    "claimIds": [
-    "C004278"
+    "C005236"
    ],
-   "cycle": 6,
-   "id": "I0006-158",
+   "cycle": 7,
+   "id": "I0007-158",
    "importance": 0.0202,
    "kind": "velocity",
    "text": "lalouannabel0072/kalshi-trading-bot is 5.0 days old and has 51 stars, a rate of 10.1 stars per day.",
@@ -1742,10 +1742,10 @@
   },
   {
    "claimIds": [
-    "C004279"
+    "C005237"
    ],
-   "cycle": 6,
-   "id": "I0006-159",
+   "cycle": 7,
+   "id": "I0007-159",
    "importance": 0.1662,
    "kind": "velocity",
    "text": "larashero3-dotcom/lieflat-charts is 67.6 days old and has 5,619 stars, a rate of 83.1 stars per day.",
@@ -1753,10 +1753,10 @@
   },
   {
    "claimIds": [
-    "C004280"
+    "C005238"
    ],
-   "cycle": 6,
-   "id": "I0006-160",
+   "cycle": 7,
+   "id": "I0007-160",
    "importance": 0.0181,
    "kind": "velocity",
    "text": "livetennisapi/polymarket-tennis is 35.0 days old and has 316 stars, a rate of 9.0 stars per day.",
@@ -1764,10 +1764,10 @@
   },
   {
    "claimIds": [
-    "C004281"
+    "C005239"
    ],
-   "cycle": 6,
-   "id": "I0006-161",
+   "cycle": 7,
+   "id": "I0007-161",
    "importance": 0.0005,
    "kind": "velocity",
    "text": "luozoupi/FABRICA-CUDA2CSL-Optmization-Benchmark-and-Agentic-Framework is 4.1 days old and has 1 stars, a rate of 0.2 stars per day.",
@@ -1775,43 +1775,43 @@
   },
   {
    "claimIds": [
-    "C004282"
+    "C005240"
    ],
-   "cycle": 6,
-   "id": "I0006-162",
-   "importance": 0.7191,
+   "cycle": 7,
+   "id": "I0007-162",
+   "importance": 0.7188,
    "kind": "velocity",
-   "text": "mcncarl/jianying-headless is 6.6 days old and has 2,366 stars, a rate of 359.5 stars per day.",
+   "text": "mcncarl/jianying-headless is 6.6 days old and has 2,366 stars, a rate of 359.4 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004283"
+    "C005241"
    ],
-   "cycle": 6,
-   "id": "I0006-163",
-   "importance": 0.7976,
+   "cycle": 7,
+   "id": "I0007-163",
+   "importance": 0.7965,
    "kind": "velocity",
-   "text": "mizorewww/laya-coreml is 2.1 days old and has 840 stars, a rate of 398.8 stars per day.",
+   "text": "mizorewww/laya-coreml is 2.1 days old and has 840 stars, a rate of 398.2 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004284"
+    "C005242"
    ],
-   "cycle": 6,
-   "id": "I0006-164",
+   "cycle": 7,
+   "id": "I0007-164",
    "importance": 1.0,
    "kind": "velocity",
-   "text": "mizorewww/laya-mlx is 2.5 days old and has 3,744 stars, a rate of 1,499.0 stars per day.",
+   "text": "mizorewww/laya-mlx is 2.5 days old and has 3,744 stars, a rate of 1,497.1 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004285"
+    "C005243"
    ],
-   "cycle": 6,
-   "id": "I0006-165",
+   "cycle": 7,
+   "id": "I0007-165",
    "importance": 0.0006,
    "kind": "velocity",
    "text": "mzafram2001/f1-fantasy is 43.5 days old and has 13 stars, a rate of 0.3 stars per day.",
@@ -1819,10 +1819,10 @@
   },
   {
    "claimIds": [
-    "C004286"
+    "C005244"
    ],
-   "cycle": 6,
-   "id": "I0006-166",
+   "cycle": 7,
+   "id": "I0007-166",
    "importance": 0.0007,
    "kind": "velocity",
    "text": "nanhudev/agent2llm is 5.7 days old and has 2 stars, a rate of 0.3 stars per day.",
@@ -1830,10 +1830,10 @@
   },
   {
    "claimIds": [
-    "C004287"
+    "C005245"
    ],
-   "cycle": 6,
-   "id": "I0006-167",
+   "cycle": 7,
+   "id": "I0007-167",
    "importance": 0.0006,
    "kind": "velocity",
    "text": "narkisiuria/Autonomous-Multi-Agent-AI-Hacking-Framework is 3.4 days old and has 1 stars, a rate of 0.3 stars per day.",
@@ -1841,10 +1841,10 @@
   },
   {
    "claimIds": [
-    "C004288"
+    "C005246"
    ],
-   "cycle": 6,
-   "id": "I0006-168",
+   "cycle": 7,
+   "id": "I0007-168",
    "importance": 0.0004,
    "kind": "velocity",
    "text": "naver-ai/beneath-cot is 21.9 days old and has 4 stars, a rate of 0.2 stars per day.",
@@ -1852,21 +1852,21 @@
   },
   {
    "claimIds": [
-    "C004289"
+    "C005247"
    ],
-   "cycle": 6,
-   "id": "I0006-169",
-   "importance": 0.1973,
+   "cycle": 7,
+   "id": "I0007-169",
+   "importance": 0.1972,
    "kind": "velocity",
    "text": "nilbuild/page-mascot is 7.8 days old and has 768 stars, a rate of 98.6 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004290"
+    "C005248"
    ],
-   "cycle": 6,
-   "id": "I0006-170",
+   "cycle": 7,
+   "id": "I0007-170",
    "importance": 0.0,
    "kind": "velocity",
    "text": "nlevin12/prediction-market-price-discovery is 6.8 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -1874,10 +1874,10 @@
   },
   {
    "claimIds": [
-    "C004291"
+    "C005249"
    ],
-   "cycle": 6,
-   "id": "I0006-171",
+   "cycle": 7,
+   "id": "I0007-171",
    "importance": 0.0,
    "kind": "velocity",
    "text": "nobuki-1/kalshi-arbitrage-detection-engine is 1.5 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -1885,10 +1885,10 @@
   },
   {
    "claimIds": [
-    "C004292"
+    "C005250"
    ],
-   "cycle": 6,
-   "id": "I0006-172",
+   "cycle": 7,
+   "id": "I0007-172",
    "importance": 0.088,
    "kind": "velocity",
    "text": "okf-memory/okf-agent-memory is 16.2 days old and has 712 stars, a rate of 44.0 stars per day.",
@@ -1896,21 +1896,21 @@
   },
   {
    "claimIds": [
-    "C004293"
+    "C005251"
    ],
-   "cycle": 6,
-   "id": "I0006-173",
+   "cycle": 7,
+   "id": "I0007-173",
    "importance": 0.0009,
    "kind": "velocity",
-   "text": "olympynetworkco-spec/olympynetworkco is 4.4 days old and has 2 stars, a rate of 0.5 stars per day.",
+   "text": "olympynetworkco-spec/olympynetworkco is 4.4 days old and has 2 stars, a rate of 0.4 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004294"
+    "C005252"
    ],
-   "cycle": 6,
-   "id": "I0006-174",
+   "cycle": 7,
+   "id": "I0007-174",
    "importance": 0.1384,
    "kind": "velocity",
    "text": "oomol-lab/open-connector is 84.6 days old and has 5,858 stars, a rate of 69.2 stars per day.",
@@ -1918,10 +1918,10 @@
   },
   {
    "claimIds": [
-    "C004295"
+    "C005253"
    ],
-   "cycle": 6,
-   "id": "I0006-175",
+   "cycle": 7,
+   "id": "I0007-175",
    "importance": 0.0004,
    "kind": "velocity",
    "text": "physicalreasoning/causal-jepa is 42.8 days old and has 9 stars, a rate of 0.2 stars per day.",
@@ -1929,10 +1929,10 @@
   },
   {
    "claimIds": [
-    "C004296"
+    "C005254"
    ],
-   "cycle": 6,
-   "id": "I0006-176",
+   "cycle": 7,
+   "id": "I0007-176",
    "importance": 0.0006,
    "kind": "velocity",
    "text": "pku-lemonade/TokenCake is 7.0 days old and has 2 stars, a rate of 0.3 stars per day.",
@@ -1940,10 +1940,10 @@
   },
   {
    "claimIds": [
-    "C004297"
+    "C005255"
    ],
-   "cycle": 6,
-   "id": "I0006-177",
+   "cycle": 7,
+   "id": "I0007-177",
    "importance": 0.0012,
    "kind": "velocity",
    "text": "polystrategist/kalshi-arbitrage-bot is 70.5 days old and has 44 stars, a rate of 0.6 stars per day.",
@@ -1951,10 +1951,10 @@
   },
   {
    "claimIds": [
-    "C004298"
+    "C005256"
    ],
-   "cycle": 6,
-   "id": "I0006-178",
+   "cycle": 7,
+   "id": "I0007-178",
    "importance": 0.0,
    "kind": "velocity",
    "text": "praxantpacific/Aug-07-SEQ-IQ is 45.7 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -1962,10 +1962,10 @@
   },
   {
    "claimIds": [
-    "C004299"
+    "C005257"
    ],
-   "cycle": 6,
-   "id": "I0006-179",
+   "cycle": 7,
+   "id": "I0007-179",
    "importance": 0.0004,
    "kind": "velocity",
    "text": "q648253885/ArkWork is 27.5 days old and has 6 stars, a rate of 0.2 stars per day.",
@@ -1973,10 +1973,10 @@
   },
   {
    "claimIds": [
-    "C004300"
+    "C005258"
    ],
-   "cycle": 6,
-   "id": "I0006-180",
+   "cycle": 7,
+   "id": "I0007-180",
    "importance": 0.0,
    "kind": "velocity",
    "text": "raindragon14/kalshi-diffusion-tracker is 1.0 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -1984,10 +1984,10 @@
   },
   {
    "claimIds": [
-    "C004301"
+    "C005259"
    ],
-   "cycle": 6,
-   "id": "I0006-181",
+   "cycle": 7,
+   "id": "I0007-181",
    "importance": 0.0004,
    "kind": "velocity",
    "text": "rannte85/llm-hardtest-report is 22.6 days old and has 5 stars, a rate of 0.2 stars per day.",
@@ -1995,10 +1995,10 @@
   },
   {
    "claimIds": [
-    "C004302"
+    "C005260"
    ],
-   "cycle": 6,
-   "id": "I0006-182",
+   "cycle": 7,
+   "id": "I0007-182",
    "importance": 0.0029,
    "kind": "velocity",
    "text": "reunios2024/cortex-sentinel-trading-nexus is 85.2 days old and has 123 stars, a rate of 1.4 stars per day.",
@@ -2006,10 +2006,10 @@
   },
   {
    "claimIds": [
-    "C004303"
+    "C005261"
    ],
-   "cycle": 6,
-   "id": "I0006-183",
+   "cycle": 7,
+   "id": "I0007-183",
    "importance": 0.0001,
    "kind": "velocity",
    "text": "ria0304/Sports-performance-analytics-dashboard is 18.7 days old and has 1 stars, a rate of 0.1 stars per day.",
@@ -2017,21 +2017,21 @@
   },
   {
    "claimIds": [
-    "C004304"
+    "C005262"
    ],
-   "cycle": 6,
-   "id": "I0006-184",
+   "cycle": 7,
+   "id": "I0007-184",
    "importance": 1.0,
    "kind": "velocity",
-   "text": "robbietilton/Compositor is 5.2 days old and has 4,371 stars, a rate of 838.0 stars per day.",
+   "text": "robbietilton/Compositor is 5.2 days old and has 4,371 stars, a rate of 837.5 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004305"
+    "C005263"
    ],
-   "cycle": 6,
-   "id": "I0006-185",
+   "cycle": 7,
+   "id": "I0007-185",
    "importance": 0.0,
    "kind": "velocity",
    "text": "roopan-99/Sports-Analytics-Performance-Reporting is 56.5 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -2039,43 +2039,43 @@
   },
   {
    "claimIds": [
-    "C004306"
+    "C005264"
    ],
-   "cycle": 6,
-   "id": "I0006-186",
-   "importance": 0.3134,
+   "cycle": 7,
+   "id": "I0007-186",
+   "importance": 0.3133,
    "kind": "velocity",
    "text": "s1dashu/ip-as-logo-skill is 34.5 days old and has 5,404 stars, a rate of 156.7 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004307"
+    "C005265"
    ],
-   "cycle": 6,
-   "id": "I0006-187",
-   "importance": 0.1872,
+   "cycle": 7,
+   "id": "I0007-187",
+   "importance": 0.1871,
    "kind": "velocity",
    "text": "saragordic/window-sweaters is 7.0 days old and has 655 stars, a rate of 93.6 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004308"
+    "C005266"
    ],
-   "cycle": 6,
-   "id": "I0006-188",
+   "cycle": 7,
+   "id": "I0007-188",
    "importance": 0.2447,
    "kind": "velocity",
-   "text": "shadcn-ui/lint is 19.6 days old and has 2,396 stars, a rate of 122.4 stars per day.",
+   "text": "shadcn-ui/lint is 19.6 days old and has 2,396 stars, a rate of 122.3 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004309"
+    "C005267"
    ],
-   "cycle": 6,
-   "id": "I0006-189",
+   "cycle": 7,
+   "id": "I0007-189",
    "importance": 0.0,
    "kind": "velocity",
    "text": "shantanu768/Olympics-Sports-Analytics is 62.6 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -2083,21 +2083,21 @@
   },
   {
    "claimIds": [
-    "C004310"
+    "C005268"
    ],
-   "cycle": 6,
-   "id": "I0006-190",
+   "cycle": 7,
+   "id": "I0007-190",
    "importance": 0.0545,
    "kind": "velocity",
-   "text": "shepherd-agents/shepherd is 89.3 days old and has 2,436 stars, a rate of 27.3 stars per day.",
+   "text": "shepherd-agents/shepherd is 89.4 days old and has 2,436 stars, a rate of 27.3 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004311"
+    "C005269"
    ],
-   "cycle": 6,
-   "id": "I0006-191",
+   "cycle": 7,
+   "id": "I0007-191",
    "importance": 0.0143,
    "kind": "velocity",
    "text": "spiritov/ds.css is 84.8 days old and has 605 stars, a rate of 7.1 stars per day.",
@@ -2105,10 +2105,10 @@
   },
   {
    "claimIds": [
-    "C004312"
+    "C005270"
    ],
-   "cycle": 6,
-   "id": "I0006-192",
+   "cycle": 7,
+   "id": "I0007-192",
    "importance": 0.0,
    "kind": "velocity",
    "text": "spon7ge/statvista is 50.0 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -2116,10 +2116,10 @@
   },
   {
    "claimIds": [
-    "C004313"
+    "C005271"
    ],
-   "cycle": 6,
-   "id": "I0006-193",
+   "cycle": 7,
+   "id": "I0007-193",
    "importance": 0.0128,
    "kind": "velocity",
    "text": "starling-build/starling is 55.9 days old and has 357 stars, a rate of 6.4 stars per day.",
@@ -2127,10 +2127,10 @@
   },
   {
    "claimIds": [
-    "C004314"
+    "C005272"
    ],
-   "cycle": 6,
-   "id": "I0006-194",
+   "cycle": 7,
+   "id": "I0007-194",
    "importance": 0.002,
    "kind": "velocity",
    "text": "sunnydachs/agent-framework-showdown is 1.0 days old and has 1 stars, a rate of 1.0 stars per day.",
@@ -2138,32 +2138,32 @@
   },
   {
    "claimIds": [
-    "C004315"
+    "C005273"
    ],
-   "cycle": 6,
-   "id": "I0006-195",
+   "cycle": 7,
+   "id": "I0007-195",
    "importance": 1.0,
    "kind": "velocity",
-   "text": "tamaratran/fast-jev-compaction is 4.8 days old and has 5,946 stars, a rate of 1,232.0 stars per day.",
+   "text": "tamaratran/fast-jev-compaction is 4.8 days old and has 5,946 stars, a rate of 1,231.2 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004316"
+    "C005274"
    ],
-   "cycle": 6,
-   "id": "I0006-196",
-   "importance": 0.2263,
+   "cycle": 7,
+   "id": "I0007-196",
+   "importance": 0.2262,
    "kind": "velocity",
-   "text": "theoephraim/awesome-cloudflare-selfhosted is 6.7 days old and has 755 stars, a rate of 113.2 stars per day.",
+   "text": "theoephraim/awesome-cloudflare-selfhosted is 6.7 days old and has 755 stars, a rate of 113.1 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004317"
+    "C005275"
    ],
-   "cycle": 6,
-   "id": "I0006-197",
+   "cycle": 7,
+   "id": "I0007-197",
    "importance": 0.0036,
    "kind": "velocity",
    "text": "theyashwanthsai/jevals is 3.9 days old and has 7 stars, a rate of 1.8 stars per day.",
@@ -2171,10 +2171,10 @@
   },
   {
    "claimIds": [
-    "C004318"
+    "C005276"
    ],
-   "cycle": 6,
-   "id": "I0006-198",
+   "cycle": 7,
+   "id": "I0007-198",
    "importance": 0.0955,
    "kind": "velocity",
    "text": "tigerless-labs/agent-memory is 20.2 days old and has 963 stars, a rate of 47.8 stars per day.",
@@ -2182,10 +2182,10 @@
   },
   {
    "claimIds": [
-    "C004319"
+    "C005277"
    ],
-   "cycle": 6,
-   "id": "I0006-199",
+   "cycle": 7,
+   "id": "I0007-199",
    "importance": 0.0011,
    "kind": "velocity",
    "text": "tigusigalpa/depthfeed-go is 30.7 days old and has 17 stars, a rate of 0.6 stars per day.",
@@ -2193,65 +2193,65 @@
   },
   {
    "claimIds": [
-    "C004320"
+    "C005278"
    ],
-   "cycle": 6,
-   "id": "I0006-200",
+   "cycle": 7,
+   "id": "I0007-200",
    "importance": 0.0017,
    "kind": "velocity",
-   "text": "tkachyn/polybot is 9.4 days old and has 8 stars, a rate of 0.9 stars per day.",
+   "text": "tkachyn/polybot is 9.4 days old and has 8 stars, a rate of 0.8 stars per day.",
    "topic": "market-lab-ecosystem"
   },
   {
    "claimIds": [
-    "C004321"
+    "C005279"
    ],
-   "cycle": 6,
-   "id": "I0006-201",
-   "importance": 0.2223,
+   "cycle": 7,
+   "id": "I0007-201",
+   "importance": 0.2222,
    "kind": "velocity",
    "text": "trailhq/Graft is 80.5 days old and has 8,946 stars, a rate of 111.1 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004322"
+    "C005280"
    ],
-   "cycle": 6,
-   "id": "I0006-202",
+   "cycle": 7,
+   "id": "I0007-202",
    "importance": 0.1938,
    "kind": "velocity",
-   "text": "truefoundry/trueforge is 60.7 days old and has 5,880 stars, a rate of 96.9 stars per day.",
+   "text": "truefoundry/trueforge is 60.7 days old and has 5,882 stars, a rate of 96.9 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004323"
+    "C005281"
    ],
-   "cycle": 6,
-   "id": "I0006-203",
-   "importance": 0.4106,
+   "cycle": 7,
+   "id": "I0007-203",
+   "importance": 0.4105,
    "kind": "velocity",
    "text": "trycompai/crm is 52.2 days old and has 10,710 stars, a rate of 205.3 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004324"
+    "C005282"
    ],
-   "cycle": 6,
-   "id": "I0006-204",
-   "importance": 0.0249,
+   "cycle": 7,
+   "id": "I0007-204",
+   "importance": 0.0248,
    "kind": "velocity",
    "text": "tue09/awesome-reasoning-generalization is 12.0 days old and has 149 stars, a rate of 12.4 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004325"
+    "C005283"
    ],
-   "cycle": 6,
-   "id": "I0006-205",
+   "cycle": 7,
+   "id": "I0007-205",
    "importance": 0.0015,
    "kind": "velocity",
    "text": "undeemed/Jcyber is 2.8 days old and has 2 stars, a rate of 0.7 stars per day.",
@@ -2259,10 +2259,10 @@
   },
   {
    "claimIds": [
-    "C004326"
+    "C005284"
    ],
-   "cycle": 6,
-   "id": "I0006-206",
+   "cycle": 7,
+   "id": "I0007-206",
    "importance": 0.2381,
    "kind": "velocity",
    "text": "unicity-aos/aos-ce is 71.1 days old and has 8,463 stars, a rate of 119.0 stars per day.",
@@ -2270,10 +2270,10 @@
   },
   {
    "claimIds": [
-    "C004327"
+    "C005285"
    ],
-   "cycle": 6,
-   "id": "I0006-207",
+   "cycle": 7,
+   "id": "I0007-207",
    "importance": 0.0279,
    "kind": "velocity",
    "text": "useagenthq/useagent is 23.2 days old and has 323 stars, a rate of 13.9 stars per day.",
@@ -2281,43 +2281,43 @@
   },
   {
    "claimIds": [
-    "C004328"
+    "C005286"
    ],
-   "cycle": 6,
-   "id": "I0006-208",
-   "importance": 0.4139,
+   "cycle": 7,
+   "id": "I0007-208",
+   "importance": 0.4136,
    "kind": "velocity",
-   "text": "vinnylarouge/jevlike is 5.6 days old and has 1,167 stars, a rate of 206.9 stars per day.",
+   "text": "vinnylarouge/jevlike is 5.6 days old and has 1,167 stars, a rate of 206.8 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004329"
+    "C005287"
    ],
-   "cycle": 6,
-   "id": "I0006-209",
-   "importance": 0.026,
+   "cycle": 7,
+   "id": "I0007-209",
+   "importance": 0.0261,
    "kind": "velocity",
-   "text": "whitecircle/halo is 26.5 days old and has 344 stars, a rate of 13.0 stars per day.",
+   "text": "whitecircle/halo is 26.5 days old and has 346 stars, a rate of 13.1 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004330"
+    "C005288"
    ],
-   "cycle": 6,
-   "id": "I0006-210",
+   "cycle": 7,
+   "id": "I0007-210",
    "importance": 0.7795,
    "kind": "velocity",
-   "text": "xai-org/grok-build is 69.2 days old and has 26,986 stars, a rate of 389.8 stars per day.",
+   "text": "xai-org/grok-build is 69.2 days old and has 26,986 stars, a rate of 389.7 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004331"
+    "C005289"
    ],
-   "cycle": 6,
-   "id": "I0006-211",
+   "cycle": 7,
+   "id": "I0007-211",
    "importance": 0.0001,
    "kind": "velocity",
    "text": "xymeow/stackchan-matchday is 73.8 days old and has 3 stars, a rate of 0.0 stars per day.",
@@ -2325,21 +2325,21 @@
   },
   {
    "claimIds": [
-    "C004332"
+    "C005290"
    ],
-   "cycle": 6,
-   "id": "I0006-212",
-   "importance": 0.5603,
+   "cycle": 7,
+   "id": "I0007-212",
+   "importance": 0.5602,
    "kind": "velocity",
    "text": "yc-software/qm is 54.2 days old and has 15,194 stars, a rate of 280.1 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004333"
+    "C005291"
    ],
-   "cycle": 6,
-   "id": "I0006-213",
+   "cycle": 7,
+   "id": "I0007-213",
    "importance": 0.0,
    "kind": "velocity",
    "text": "yeswanthraj007/kalshi-trading-bot is 2.1 days old and has 0 stars, a rate of 0.0 stars per day.",
@@ -2347,32 +2347,32 @@
   },
   {
    "claimIds": [
-    "C004334"
+    "C005292"
    ],
-   "cycle": 6,
-   "id": "I0006-214",
-   "importance": 0.4349,
+   "cycle": 7,
+   "id": "I0007-214",
+   "importance": 0.4346,
    "kind": "velocity",
-   "text": "yibie/awesome-jev is 4.5 days old and has 973 stars, a rate of 217.4 stars per day.",
+   "text": "yibie/awesome-jev is 4.5 days old and has 973 stars, a rate of 217.3 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004335"
+    "C005293"
    ],
-   "cycle": 6,
-   "id": "I0006-215",
-   "importance": 0.1785,
+   "cycle": 7,
+   "id": "I0007-215",
+   "importance": 0.1784,
    "kind": "velocity",
    "text": "youngyangyang04/llm-master is 9.8 days old and has 871 stars, a rate of 89.2 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004336"
+    "C005294"
    ],
-   "cycle": 6,
-   "id": "I0006-216",
+   "cycle": 7,
+   "id": "I0007-216",
    "importance": 0.0005,
    "kind": "velocity",
    "text": "yuanmumu369/requestrx is 21.3 days old and has 5 stars, a rate of 0.2 stars per day.",
@@ -2380,10 +2380,10 @@
   },
   {
    "claimIds": [
-    "C004337"
+    "C005295"
    ],
-   "cycle": 6,
-   "id": "I0006-217",
+   "cycle": 7,
+   "id": "I0007-217",
    "importance": 0.0,
    "kind": "velocity",
    "text": "yuvraj0412s/RCB-sql-sports-analytics is 85.5 days old and has 1 stars, a rate of 0.0 stars per day.",
@@ -2391,32 +2391,32 @@
   },
   {
    "claimIds": [
-    "C004338"
+    "C005296"
    ],
-   "cycle": 6,
-   "id": "I0006-218",
+   "cycle": 7,
+   "id": "I0007-218",
    "importance": 0.0297,
    "kind": "velocity",
-   "text": "yvetteYSY/creator-agent is 27.9 days old and has 414 stars, a rate of 14.9 stars per day.",
+   "text": "yvetteYSY/creator-agent is 27.9 days old and has 414 stars, a rate of 14.8 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004339"
+    "C005297"
    ],
-   "cycle": 6,
-   "id": "I0006-219",
+   "cycle": 7,
+   "id": "I0007-219",
    "importance": 1.0,
    "kind": "velocity",
-   "text": "zai-org/ZCode is 1.6 days old and has 5,681 stars, a rate of 3,610.4 stars per day.",
+   "text": "zai-org/ZCode is 1.6 days old and has 5,688 stars, a rate of 3,607.8 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004340"
+    "C005298"
    ],
-   "cycle": 6,
-   "id": "I0006-220",
+   "cycle": 7,
+   "id": "I0007-220",
    "importance": 0.0011,
    "kind": "velocity",
    "text": "zidniryi/open-source-ai-models is 26.9 days old and has 15 stars, a rate of 0.6 stars per day.",
@@ -2424,10 +2424,10 @@
   },
   {
    "claimIds": [
-    "C004341"
+    "C005299"
    ],
-   "cycle": 6,
-   "id": "I0006-221",
+   "cycle": 7,
+   "id": "I0007-221",
    "importance": 0.0005,
    "kind": "velocity",
    "text": "zyy0212time-del/reasoning-budget-arena is 20.5 days old and has 5 stars, a rate of 0.2 stars per day.",
@@ -2435,21 +2435,21 @@
   },
   {
    "claimIds": [
-    "C004342"
+    "C005300"
    ],
-   "cycle": 6,
-   "id": "I0006-222",
+   "cycle": 7,
+   "id": "I0007-222",
    "importance": 0.0008,
    "kind": "velocity",
-   "text": "zz1358m/Awesome-Gradient-Free-LLMOpt is 20.8 days old and has 8 stars, a rate of 0.4 stars per day.",
+   "text": "zz1358m/Awesome-Gradient-Free-LLMOpt is 20.9 days old and has 8 stars, a rate of 0.4 stars per day.",
    "topic": "open-source-momentum"
   },
   {
    "claimIds": [
-    "C004343"
+    "C005301"
    ],
-   "cycle": 6,
-   "id": "I0006-223",
+   "cycle": 7,
+   "id": "I0007-223",
    "importance": 0.2774,
    "kind": "trend",
    "text": "Wikipedia article “Artificial_intelligence” moved from 17,362 views on 2026-09-09 to 14,954 on 2026-09-20, a change of -13.9% over 11 days.",
@@ -2457,10 +2457,10 @@
   },
   {
    "claimIds": [
-    "C004344"
+    "C005302"
    ],
-   "cycle": 6,
-   "id": "I0006-224",
+   "cycle": 7,
+   "id": "I0007-224",
    "importance": 1.0,
    "kind": "trend",
    "text": "Wikipedia article “artificial_intelligence” moved from 2 views on 2026-09-09 to 1 on 2026-09-14, a change of -50.0% over 4 days.",
@@ -2468,10 +2468,10 @@
   },
   {
    "claimIds": [
-    "C004345"
+    "C005303"
    ],
-   "cycle": 6,
-   "id": "I0006-225",
+   "cycle": 7,
+   "id": "I0007-225",
    "importance": 0.6191,
    "kind": "trend",
    "text": "Wikipedia article “Artificial_intelligence” moved from 21,659 views on 2026-09-14 to 14,954 on 2026-09-20, a change of -31.0% over 6 days.",
@@ -2479,417 +2479,538 @@
   },
   {
    "claimIds": [
-    "C004346"
+    "C005304"
    ],
-   "cycle": 6,
-   "id": "I0006-226",
+   "cycle": 7,
+   "id": "I0007-226",
    "importance": 0.2,
    "kind": "growth",
-   "text": "Between cycles 1 and 6, the owner's public repository count moved 53 → 55 (+2 repositories).",
+   "text": "Between cycles 1 and 7, the owner's public repository count moved 53 → 55 (+2 repositories).",
    "topic": "owner-corpus"
   },
   {
    "claimIds": [
-    "C004347"
+    "C005305"
    ],
-   "cycle": 6,
-   "id": "I0006-227",
+   "cycle": 7,
+   "id": "I0007-227",
    "importance": 0.2,
    "kind": "growth",
-   "text": "Between cycles 1 and 6, the owner's Pages-enabled repository count moved 53 → 55 (+2 repositories).",
+   "text": "Between cycles 1 and 7, the owner's Pages-enabled repository count moved 53 → 55 (+2 repositories).",
    "topic": "owner-corpus"
   },
   {
    "claimIds": [
-    "C004348"
+    "C005306"
    ],
-   "cycle": 6,
-   "id": "I0006-228",
+   "cycle": 7,
+   "id": "I0007-228",
    "importance": 1.0,
    "kind": "growth",
-   "text": "Between cycles 1 and 6, the Hacker News topstories list length moved 30 → 500 (+470 stories).",
+   "text": "Between cycles 1 and 7, the Hacker News topstories list length moved 30 → 500 (+470 stories).",
    "topic": "source-health"
   },
   {
    "claimIds": [
-    "C004349"
+    "C005307"
    ],
-   "cycle": 6,
-   "id": "I0006-229",
+   "cycle": 7,
+   "id": "I0007-229",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “artificial intelligence” moved 1,573 → 1,573 (+0) between cycles 1 and 6.",
+   "text": "Federal Register documents matching “artificial intelligence” moved 1,573 → 1,573 (+0) between cycles 1 and 7.",
    "topic": "regulatory-flow"
   },
   {
    "claimIds": [
-    "C004350"
+    "C005308"
    ],
-   "cycle": 6,
-   "id": "I0006-230",
+   "cycle": 7,
+   "id": "I0007-230",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “reasoning” moved 7,812 → 7,812 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “reasoning” moved 7,812 → 7,812 (+0) between cycles 4 and 7.",
    "topic": "ai-research-frontier"
   },
   {
    "claimIds": [
-    "C004351"
+    "C005309"
    ],
-   "cycle": 6,
-   "id": "I0006-231",
+   "cycle": 7,
+   "id": "I0007-231",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “agent” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “agent” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "ai-research-frontier"
   },
   {
    "claimIds": [
-    "C004352"
+    "C005310"
    ],
-   "cycle": 6,
-   "id": "I0006-232",
+   "cycle": 7,
+   "id": "I0007-232",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “model” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “model” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "ai-research-frontier"
   },
   {
    "claimIds": [
-    "C004353"
+    "C005311"
    ],
-   "cycle": 6,
-   "id": "I0006-233",
+   "cycle": 7,
+   "id": "I0007-233",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “transformer” moved 3,384 → 3,384 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “transformer” moved 3,384 → 3,384 (+0) between cycles 4 and 7.",
    "topic": "ai-research-frontier"
   },
   {
    "claimIds": [
-    "C004354"
+    "C005312"
    ],
-   "cycle": 6,
-   "id": "I0006-234",
+   "cycle": 7,
+   "id": "I0007-234",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “artificial intelligence” moved 1,573 → 1,573 (+0) between cycles 1 and 6.",
+   "text": "Federal Register documents matching “artificial intelligence” moved 1,573 → 1,573 (+0) between cycles 1 and 7.",
    "topic": "regulatory-flow"
   },
   {
    "claimIds": [
-    "C004355"
+    "C005313"
    ],
-   "cycle": 6,
-   "id": "I0006-235",
+   "cycle": 7,
+   "id": "I0007-235",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “health” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “health” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "regulatory-flow"
   },
   {
    "claimIds": [
-    "C004356"
+    "C005314"
    ],
-   "cycle": 6,
-   "id": "I0006-236",
+   "cycle": 7,
+   "id": "I0007-236",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “energy” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “energy” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "regulatory-flow"
   },
   {
    "claimIds": [
-    "C004357"
+    "C005315"
    ],
-   "cycle": 6,
-   "id": "I0006-237",
+   "cycle": 7,
+   "id": "I0007-237",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “security” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “security” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "regulatory-flow"
   },
   {
    "claimIds": [
-    "C004358"
+    "C005316"
    ],
-   "cycle": 6,
-   "id": "I0006-238",
+   "cycle": 7,
+   "id": "I0007-238",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “public health” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “public health” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "public-health-policy"
   },
   {
    "claimIds": [
-    "C004359"
+    "C005317"
    ],
-   "cycle": 6,
-   "id": "I0006-239",
+   "cycle": 7,
+   "id": "I0007-239",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “surveillance” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “surveillance” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "public-health-policy"
   },
   {
    "claimIds": [
-    "C004360"
+    "C005318"
    ],
-   "cycle": 6,
-   "id": "I0006-240",
+   "cycle": 7,
+   "id": "I0007-240",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “data exchange” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “data exchange” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "public-health-policy"
   },
   {
    "claimIds": [
-    "C004361"
+    "C005319"
    ],
-   "cycle": 6,
-   "id": "I0006-241",
+   "cycle": 7,
+   "id": "I0007-241",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “reasoning” moved 7,812 → 7,812 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “reasoning” moved 7,812 → 7,812 (+0) between cycles 4 and 7.",
    "topic": "ai-research-frontier"
   },
   {
    "claimIds": [
-    "C004362"
+    "C005320"
    ],
-   "cycle": 6,
-   "id": "I0006-242",
+   "cycle": 7,
+   "id": "I0007-242",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “agent” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “agent” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "ai-research-frontier"
   },
   {
    "claimIds": [
-    "C004363"
+    "C005321"
    ],
-   "cycle": 6,
-   "id": "I0006-243",
+   "cycle": 7,
+   "id": "I0007-243",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “model” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “model” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "ai-research-frontier"
   },
   {
    "claimIds": [
-    "C004364"
+    "C005322"
    ],
-   "cycle": 6,
-   "id": "I0006-244",
+   "cycle": 7,
+   "id": "I0007-244",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “transformer” moved 3,384 → 3,384 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “transformer” moved 3,384 → 3,384 (+0) between cycles 4 and 7.",
    "topic": "ai-research-frontier"
   },
   {
    "claimIds": [
-    "C004365"
+    "C005323"
    ],
-   "cycle": 6,
-   "id": "I0006-245",
+   "cycle": 7,
+   "id": "I0007-245",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “artificial intelligence” moved 1,573 → 1,573 (+0) between cycles 1 and 6.",
+   "text": "Federal Register documents matching “artificial intelligence” moved 1,573 → 1,573 (+0) between cycles 1 and 7.",
    "topic": "regulatory-flow"
   },
   {
    "claimIds": [
-    "C004366"
+    "C005324"
    ],
-   "cycle": 6,
-   "id": "I0006-246",
+   "cycle": 7,
+   "id": "I0007-246",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “health” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “health” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "regulatory-flow"
   },
   {
    "claimIds": [
-    "C004367"
+    "C005325"
    ],
-   "cycle": 6,
-   "id": "I0006-247",
+   "cycle": 7,
+   "id": "I0007-247",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “energy” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “energy” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "regulatory-flow"
   },
   {
    "claimIds": [
-    "C004368"
+    "C005326"
    ],
-   "cycle": 6,
-   "id": "I0006-248",
+   "cycle": 7,
+   "id": "I0007-248",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “security” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “security” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "regulatory-flow"
   },
   {
    "claimIds": [
-    "C004369"
+    "C005327"
    ],
-   "cycle": 6,
-   "id": "I0006-249",
+   "cycle": 7,
+   "id": "I0007-249",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “public health” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “public health” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "public-health-policy"
   },
   {
    "claimIds": [
-    "C004370"
+    "C005328"
    ],
-   "cycle": 6,
-   "id": "I0006-250",
+   "cycle": 7,
+   "id": "I0007-250",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “surveillance” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “surveillance” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "public-health-policy"
   },
   {
    "claimIds": [
-    "C004371"
+    "C005329"
    ],
-   "cycle": 6,
-   "id": "I0006-251",
+   "cycle": 7,
+   "id": "I0007-251",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “data exchange” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “data exchange” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "public-health-policy"
   },
   {
    "claimIds": [
-    "C004372"
+    "C005330"
    ],
-   "cycle": 6,
-   "id": "I0006-252",
+   "cycle": 7,
+   "id": "I0007-252",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “reasoning” moved 7,812 → 7,812 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “reasoning” moved 7,812 → 7,812 (+0) between cycles 4 and 7.",
    "topic": "ai-research-frontier"
   },
   {
    "claimIds": [
-    "C004373"
+    "C005331"
    ],
-   "cycle": 6,
-   "id": "I0006-253",
+   "cycle": 7,
+   "id": "I0007-253",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “agent” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “agent” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "ai-research-frontier"
   },
   {
    "claimIds": [
-    "C004374"
+    "C005332"
    ],
-   "cycle": 6,
-   "id": "I0006-254",
+   "cycle": 7,
+   "id": "I0007-254",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “model” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “model” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "ai-research-frontier"
   },
   {
    "claimIds": [
-    "C004375"
+    "C005333"
    ],
-   "cycle": 6,
-   "id": "I0006-255",
+   "cycle": 7,
+   "id": "I0007-255",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “transformer” moved 3,384 → 3,384 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “transformer” moved 3,384 → 3,384 (+0) between cycles 4 and 7.",
    "topic": "ai-research-frontier"
   },
   {
    "claimIds": [
-    "C004376"
+    "C005334"
    ],
-   "cycle": 6,
-   "id": "I0006-256",
+   "cycle": 7,
+   "id": "I0007-256",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “artificial intelligence” moved 1,573 → 1,573 (+0) between cycles 1 and 6.",
+   "text": "Federal Register documents matching “artificial intelligence” moved 1,573 → 1,573 (+0) between cycles 1 and 7.",
    "topic": "regulatory-flow"
   },
   {
    "claimIds": [
-    "C004377"
+    "C005335"
    ],
-   "cycle": 6,
-   "id": "I0006-257",
+   "cycle": 7,
+   "id": "I0007-257",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “health” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “health” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "regulatory-flow"
   },
   {
    "claimIds": [
-    "C004378"
+    "C005336"
    ],
-   "cycle": 6,
-   "id": "I0006-258",
+   "cycle": 7,
+   "id": "I0007-258",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “energy” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “energy” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "regulatory-flow"
   },
   {
    "claimIds": [
-    "C004379"
+    "C005337"
    ],
-   "cycle": 6,
-   "id": "I0006-259",
+   "cycle": 7,
+   "id": "I0007-259",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “security” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “security” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "regulatory-flow"
   },
   {
    "claimIds": [
-    "C004380"
+    "C005338"
    ],
-   "cycle": 6,
-   "id": "I0006-260",
+   "cycle": 7,
+   "id": "I0007-260",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “public health” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “public health” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "public-health-policy"
   },
   {
    "claimIds": [
-    "C004381"
+    "C005339"
    ],
-   "cycle": 6,
-   "id": "I0006-261",
+   "cycle": 7,
+   "id": "I0007-261",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “surveillance” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “surveillance” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "public-health-policy"
   },
   {
    "claimIds": [
-    "C004382"
+    "C005340"
    ],
-   "cycle": 6,
-   "id": "I0006-262",
+   "cycle": 7,
+   "id": "I0007-262",
    "importance": 0.0,
    "kind": "growth",
-   "text": "Federal Register documents matching “data exchange” moved 10,000 → 10,000 (+0) between cycles 4 and 6.",
+   "text": "Federal Register documents matching “data exchange” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
    "topic": "public-health-policy"
   },
   {
    "claimIds": [
-    "C004383"
+    "C005341"
    ],
-   "cycle": 6,
-   "id": "I0006-263",
+   "cycle": 7,
+   "id": "I0007-263",
+   "importance": 0.0,
+   "kind": "growth",
+   "text": "Federal Register documents matching “reasoning” moved 7,812 → 7,812 (+0) between cycles 4 and 7.",
+   "topic": "ai-research-frontier"
+  },
+  {
+   "claimIds": [
+    "C005342"
+   ],
+   "cycle": 7,
+   "id": "I0007-264",
+   "importance": 0.0,
+   "kind": "growth",
+   "text": "Federal Register documents matching “agent” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
+   "topic": "ai-research-frontier"
+  },
+  {
+   "claimIds": [
+    "C005343"
+   ],
+   "cycle": 7,
+   "id": "I0007-265",
+   "importance": 0.0,
+   "kind": "growth",
+   "text": "Federal Register documents matching “model” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
+   "topic": "ai-research-frontier"
+  },
+  {
+   "claimIds": [
+    "C005344"
+   ],
+   "cycle": 7,
+   "id": "I0007-266",
+   "importance": 0.0,
+   "kind": "growth",
+   "text": "Federal Register documents matching “transformer” moved 3,384 → 3,384 (+0) between cycles 4 and 7.",
+   "topic": "ai-research-frontier"
+  },
+  {
+   "claimIds": [
+    "C005345"
+   ],
+   "cycle": 7,
+   "id": "I0007-267",
+   "importance": 0.0,
+   "kind": "growth",
+   "text": "Federal Register documents matching “artificial intelligence” moved 1,573 → 1,573 (+0) between cycles 1 and 7.",
+   "topic": "regulatory-flow"
+  },
+  {
+   "claimIds": [
+    "C005346"
+   ],
+   "cycle": 7,
+   "id": "I0007-268",
+   "importance": 0.0,
+   "kind": "growth",
+   "text": "Federal Register documents matching “health” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
+   "topic": "regulatory-flow"
+  },
+  {
+   "claimIds": [
+    "C005347"
+   ],
+   "cycle": 7,
+   "id": "I0007-269",
+   "importance": 0.0,
+   "kind": "growth",
+   "text": "Federal Register documents matching “energy” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
+   "topic": "regulatory-flow"
+  },
+  {
+   "claimIds": [
+    "C005348"
+   ],
+   "cycle": 7,
+   "id": "I0007-270",
+   "importance": 0.0,
+   "kind": "growth",
+   "text": "Federal Register documents matching “security” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
+   "topic": "regulatory-flow"
+  },
+  {
+   "claimIds": [
+    "C005349"
+   ],
+   "cycle": 7,
+   "id": "I0007-271",
+   "importance": 0.0,
+   "kind": "growth",
+   "text": "Federal Register documents matching “public health” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
+   "topic": "public-health-policy"
+  },
+  {
+   "claimIds": [
+    "C005350"
+   ],
+   "cycle": 7,
+   "id": "I0007-272",
+   "importance": 0.0,
+   "kind": "growth",
+   "text": "Federal Register documents matching “surveillance” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
+   "topic": "public-health-policy"
+  },
+  {
+   "claimIds": [
+    "C005351"
+   ],
+   "cycle": 7,
+   "id": "I0007-273",
+   "importance": 0.0,
+   "kind": "growth",
+   "text": "Federal Register documents matching “data exchange” moved 10,000 → 10,000 (+0) between cycles 4 and 7.",
+   "topic": "public-health-policy"
+  },
+  {
+   "claimIds": [
+    "C005352"
+   ],
+   "cycle": 7,
+   "id": "I0007-274",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“ArtemPavlov1994/polymarket-prediction-bot” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -2897,10 +3018,10 @@
   },
   {
    "claimIds": [
-    "C004384"
+    "C005353"
    ],
-   "cycle": 6,
-   "id": "I0006-264",
+   "cycle": 7,
+   "id": "I0007-275",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“Chidubemkingsley/PredictSOMNIA” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -2908,10 +3029,10 @@
   },
   {
    "claimIds": [
-    "C004385"
+    "C005354"
    ],
-   "cycle": 6,
-   "id": "I0006-265",
+   "cycle": 7,
+   "id": "I0007-276",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“Key-wxh/market-fish” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -2919,10 +3040,10 @@
   },
   {
    "claimIds": [
-    "C004386"
+    "C005355"
    ],
-   "cycle": 6,
-   "id": "I0006-266",
+   "cycle": 7,
+   "id": "I0007-277",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“LLMQuant/llmquant-hermes” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -2930,10 +3051,10 @@
   },
   {
    "claimIds": [
-    "C004387"
+    "C005356"
    ],
-   "cycle": 6,
-   "id": "I0006-267",
+   "cycle": 7,
+   "id": "I0007-278",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“Marcussy34/awesome-prediction-market-tools-2026” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -2941,10 +3062,10 @@
   },
   {
    "claimIds": [
-    "C004388"
+    "C005357"
    ],
-   "cycle": 6,
-   "id": "I0006-268",
+   "cycle": 7,
+   "id": "I0007-279",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“Predictbook/awesome-prediction-market-analytics-tools” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -2952,10 +3073,10 @@
   },
   {
    "claimIds": [
-    "C004389"
+    "C005358"
    ],
-   "cycle": 6,
-   "id": "I0006-269",
+   "cycle": 7,
+   "id": "I0007-280",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“Predictbook/awesome-prediction-market-follows” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -2963,10 +3084,10 @@
   },
   {
    "claimIds": [
-    "C004390"
+    "C005359"
    ],
-   "cycle": 6,
-   "id": "I0006-270",
+   "cycle": 7,
+   "id": "I0007-281",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“SPulse-Org/SPulse” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -2974,10 +3095,10 @@
   },
   {
    "claimIds": [
-    "C004391"
+    "C005360"
    ],
-   "cycle": 6,
-   "id": "I0006-271",
+   "cycle": 7,
+   "id": "I0007-282",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“TraderAlice/Auto-Prediction” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -2985,10 +3106,10 @@
   },
   {
    "claimIds": [
-    "C004392"
+    "C005361"
    ],
-   "cycle": 6,
-   "id": "I0006-272",
+   "cycle": 7,
+   "id": "I0007-283",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“abidsgx/Machine-Learning-Model-for-Stock-Market” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -2996,10 +3117,10 @@
   },
   {
    "claimIds": [
-    "C004393"
+    "C005362"
    ],
-   "cycle": 6,
-   "id": "I0006-273",
+   "cycle": 7,
+   "id": "I0007-284",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“browser-use/jev-ultrafast” appears in 2 topic families (open-source-momentum, source-health), so it is not confined to one line of research.",
@@ -3007,10 +3128,10 @@
   },
   {
    "claimIds": [
-    "C004394"
+    "C005363"
    ],
-   "cycle": 6,
-   "id": "I0006-274",
+   "cycle": 7,
+   "id": "I0007-285",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“chainstacklabs/world-xyz-research” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -3018,10 +3139,10 @@
   },
   {
    "claimIds": [
-    "C004395"
+    "C005364"
    ],
-   "cycle": 6,
-   "id": "I0006-275",
+   "cycle": 7,
+   "id": "I0007-286",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“cozfuttu/ritual-chain-workshop-2” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -3029,10 +3150,10 @@
   },
   {
    "claimIds": [
-    "C004396"
+    "C005365"
    ],
-   "cycle": 6,
-   "id": "I0006-276",
+   "cycle": 7,
+   "id": "I0007-287",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“else24/kalshi-market-bot” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -3040,10 +3161,10 @@
   },
   {
    "claimIds": [
-    "C004397"
+    "C005366"
    ],
-   "cycle": 6,
-   "id": "I0006-277",
+   "cycle": 7,
+   "id": "I0007-288",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“evand/open-math-problems” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -3051,10 +3172,10 @@
   },
   {
    "claimIds": [
-    "C004398"
+    "C005367"
    ],
-   "cycle": 6,
-   "id": "I0006-278",
+   "cycle": 7,
+   "id": "I0007-289",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“gregyoung14/openmarket” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -3062,10 +3183,10 @@
   },
   {
    "claimIds": [
-    "C004399"
+    "C005368"
    ],
-   "cycle": 6,
-   "id": "I0006-279",
+   "cycle": 7,
+   "id": "I0007-290",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“kachence/prediction-almanac” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -3073,10 +3194,10 @@
   },
   {
    "claimIds": [
-    "C004400"
+    "C005369"
    ],
-   "cycle": 6,
-   "id": "I0006-280",
+   "cycle": 7,
+   "id": "I0007-291",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“kazelad/prediction-market-trade-sdk” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -3084,10 +3205,10 @@
   },
   {
    "claimIds": [
-    "C004401"
+    "C005370"
    ],
-   "cycle": 6,
-   "id": "I0006-281",
+   "cycle": 7,
+   "id": "I0007-292",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“lalouannabel0072/kalshi-trading-bot” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -3095,10 +3216,10 @@
   },
   {
    "claimIds": [
-    "C004402"
+    "C005371"
    ],
-   "cycle": 6,
-   "id": "I0006-282",
+   "cycle": 7,
+   "id": "I0007-293",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“physicalreasoning/causal-jepa” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -3106,10 +3227,10 @@
   },
   {
    "claimIds": [
-    "C004403"
+    "C005372"
    ],
-   "cycle": 6,
-   "id": "I0006-283",
+   "cycle": 7,
+   "id": "I0007-294",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“polystrategist/kalshi-arbitrage-bot” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -3117,10 +3238,10 @@
   },
   {
    "claimIds": [
-    "C004404"
+    "C005373"
    ],
-   "cycle": 6,
-   "id": "I0006-284",
+   "cycle": 7,
+   "id": "I0007-295",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“tigusigalpa/depthfeed-go” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",
@@ -3128,10 +3249,10 @@
   },
   {
    "claimIds": [
-    "C004405"
+    "C005374"
    ],
-   "cycle": 6,
-   "id": "I0006-285",
+   "cycle": 7,
+   "id": "I0007-296",
    "importance": 0.6667,
    "kind": "corroboration",
    "text": "“tkachyn/polybot” appears in 2 topic families (market-lab-ecosystem, open-source-momentum), so it is not confined to one line of research.",

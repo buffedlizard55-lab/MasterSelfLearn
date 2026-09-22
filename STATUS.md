@@ -1,26 +1,26 @@
-# STATUS — cycle 6
+# STATUS — cycle 7
 
-Generated `2026-09-22T01:47:08Z` by `msl/docs.py`. Every figure here is read from the same
+Generated `2026-09-22T01:51:33Z` by `msl/docs.py`. Every figure here is read from the same
 objects the site is built from.
 
 ## Last cycle
 
 | | |
 |---|---|
-| Cycle | 6 |
+| Cycle | 7 |
 | Mode | `github-actions` |
-| Duration | 62358 ms |
+| Duration | 61577 ms |
 | Reads (ok / failed) | 64 / 6 |
-| Bytes read | 1,790,314 |
-| Facts extracted | 671 |
-| New claims | 671 |
+| Bytes read | 1,785,022 |
+| Facts extracted | 673 |
+| New claims | 673 |
 | Claims rejected by the gate | 0 |
-| Derived / rechecked / drifted | 285 / 40 / 0 |
-| Topics (new) | 49 (6) |
-| Insights published | 285 |
-| Forecasts issued / scored | 723 / 371 |
+| Derived / rechecked / drifted | 296 / 40 / 0 |
+| Topics (new) | 55 (6) |
+| Insights published | 296 |
+| Forecasts issued / scored | 738 / 401 |
 | Ideas (promoted) | 14 (0) |
-| Irregularities open (new) | 30 (3) |
+| Irregularities open (new) | 30 (0) |
 | Pipeline errors | 0 |
 
 No pipeline stage raised.
@@ -48,6 +48,7 @@ No pipeline stage raised.
 | 4 | 2026-09-22T01:39:14Z | 2,502 | 37 | 6 | 463 | 82 | 14 | 29 | ok |
 | 5 | 2026-09-22T01:41:22Z | 3,449 | 43 | 6 | 688 | 148 | 14 | 30 | ok |
 | 6 | 2026-09-22T01:47:08Z | 4,405 | 49 | 6 | 723 | 371 | 14 | 30 | ok |
+| 7 | 2026-09-22T01:51:33Z | 5,374 | 55 | 6 | 738 | 401 | 14 | 30 | ok |
 
 ## What runs next
 

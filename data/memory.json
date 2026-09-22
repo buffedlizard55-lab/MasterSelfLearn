@@ -1,6 +1,6 @@
 {
  "consecutiveCycleFailures": 0,
- "cyclesRun": 6,
+ "cyclesRun": 7,
  "history": [
   {
    "at": "2026-09-22T01:34:57Z",
@@ -91,9 +91,24 @@
    "readsOk": 64,
    "scored": 371,
    "topics": 49
+  },
+  {
+   "at": "2026-09-22T01:51:33Z",
+   "claims": 5374,
+   "cycle": 7,
+   "errors": 0,
+   "forecasts": 738,
+   "ideas": 14,
+   "irregularities": 30,
+   "newTopics": 6,
+   "ok": true,
+   "readsFailed": 6,
+   "readsOk": 64,
+   "scored": 401,
+   "topics": 55
   }
  ],
- "lastCycleAt": "2026-09-22T01:47:08Z",
+ "lastCycleAt": "2026-09-22T01:51:33Z",
  "lessons": [
   {
    "counts": {
@@ -108,28 +123,28 @@
   },
   {
    "counts": {
-    "accepted": 4405,
-    "attempted": 4405,
+    "accepted": 5374,
+    "attempted": 5374,
     "rejected": 0
    },
    "id": "L2",
    "implication": "A zero here would be suspicious, not reassuring: it would mean the gate never sees a claim without evidence, which is unlikely with this many sources.",
-   "statement": "The evidence gate has rejected 0 of 4405 attempted claims (0.00%)."
+   "statement": "The evidence gate has rejected 0 of 5374 attempted claims (0.00%)."
   },
   {
    "counts": {
-    "percent": 24.49,
-    "topicsTracked": 49,
+    "percent": 21.82,
+    "topicsTracked": 55,
     "topicsWithClaims": 12
    },
    "id": "L3",
    "implication": "Anything below 100% is a real coverage gap and is listed as such on the site rather than filled with prose.",
-   "statement": "12 of 49 tracked topics (24.5%) have at least one verified claim."
+   "statement": "12 of 55 tracked topics (21.8%) have at least one verified claim."
   },
   {
    "counts": {
     "regulatory-lead": {
-     "meanRobustness": 0.1773,
+     "meanRobustness": 0.2023,
      "n": 11
     },
     "velocity-outlier": {
@@ -143,348 +158,389 @@
   },
   {
    "counts": {
-    "healthy": 7,
+    "healthy": 23,
     "sources": 28,
-    "unreliable": 0,
-    "unreliableIds": []
+    "unreliable": 4,
+    "unreliableIds": [
+     "clinicaltrials",
+     "mlb_statsapi",
+     "nba_cdn",
+     "sec_edgar"
+    ]
    },
    "id": "L5",
    "implication": "An unreadable source produces no claims and no substitute value. It stays on the site as a known gap.",
-   "statement": "7 of 28 registered sources are reading reliably (EMA \u2265 0.8); 0 are effectively unreadable (EMA < 0.2)."
+   "statement": "23 of 28 registered sources are reading reliably (EMA \u2265 0.8); 4 are effectively unreadable (EMA < 0.2)."
   }
  ],
  "sourceReliability": {
-  "arxiv": 0.789062,
-  "bls": 0.789062,
-  "census_acs": 0.789062,
-  "clinicaltrials": 0.210938,
-  "crossref": 0.789062,
-  "ecb_sdmx": 0.789062,
-  "europepmc": 0.789062,
-  "federal_register": 0.841797,
-  "frankfurter": 0.789062,
-  "github_repos": 0.911011,
-  "github_search": 0.661011,
-  "hn_firebase": 0.841797,
-  "huggingface": 0.789062,
-  "kalshi_public": 0.789062,
-  "mlb_statsapi": 0.210938,
-  "nba_cdn": 0.210938,
-  "nhl_web": 0.789062,
-  "nominatim": 0.789062,
-  "npm_registry": 0.911011,
-  "nws_alerts": 0.789062,
-  "openalex": 0.789062,
-  "pubmed": 0.789062,
-  "pypi_json": 0.911011,
-  "sec_edgar": 0.210938,
-  "stackexchange": 0.789062,
-  "usgs_fdsn": 0.841797,
-  "wikimedia_pageviews": 0.841797,
-  "worldbank": 0.789062
+  "arxiv": 0.841797,
+  "bls": 0.841797,
+  "census_acs": 0.841797,
+  "clinicaltrials": 0.158203,
+  "crossref": 0.841797,
+  "ecb_sdmx": 0.841797,
+  "europepmc": 0.841797,
+  "federal_register": 0.881348,
+  "frankfurter": 0.841797,
+  "github_repos": 0.933258,
+  "github_search": 0.495758,
+  "hn_firebase": 0.881348,
+  "huggingface": 0.841797,
+  "kalshi_public": 0.841797,
+  "mlb_statsapi": 0.158203,
+  "nba_cdn": 0.158203,
+  "nhl_web": 0.841797,
+  "nominatim": 0.841797,
+  "npm_registry": 0.933258,
+  "nws_alerts": 0.841797,
+  "openalex": 0.841797,
+  "pubmed": 0.841797,
+  "pypi_json": 0.933258,
+  "sec_edgar": 0.158203,
+  "stackexchange": 0.841797,
+  "usgs_fdsn": 0.881348,
+  "wikimedia_pageviews": 0.881348,
+  "worldbank": 0.841797
  },
  "strategyWeights": {
-  "S01_MomentumPersist": 0.158203,
-  "S02_MeanRevert": 0.158203,
-  "S03_Acceleration": 0.210938,
-  "S04_ConsensusFade": 0.264347,
-  "S05_EvidenceDensity": 0.158203,
-  "S06_MemoryWeighted": 0.28125
+  "S01_MomentumPersist": 0.118652,
+  "S02_MeanRevert": 0.118652,
+  "S03_Acceleration": 0.158203,
+  "S04_ConsensusFade": 0.19826,
+  "S05_EvidenceDensity": 0.118652,
+  "S06_MemoryWeighted": 0.210938
  },
  "topicInterest": {
   "agency:centers-for-disease-control-and-prevention": {
-   "ema": 8.4158,
-   "lastCycle": 6,
-   "peak": 8.4158,
-   "seen": 6
+   "ema": 12.5618,
+   "lastCycle": 7,
+   "peak": 12.5618,
+   "seen": 7
   },
   "agency:commodity-futures-trading-commission": {
-   "ema": 0.25,
-   "lastCycle": 6,
-   "peak": 0.25,
-   "seen": 1
+   "ema": 0.6875,
+   "lastCycle": 7,
+   "peak": 0.6875,
+   "seen": 2
   },
   "agency:energy-department": {
+   "ema": 2.0625,
+   "lastCycle": 7,
+   "peak": 2.0625,
+   "seen": 2
+  },
+  "agency:executive-office-of-the-president": {
+   "ema": 3.4375,
+   "lastCycle": 7,
+   "peak": 3.4375,
+   "seen": 2
+  },
+  "agency:federal-energy-regulatory-commission": {
    "ema": 0.75,
-   "lastCycle": 6,
+   "lastCycle": 7,
    "peak": 0.75,
    "seen": 1
   },
-  "agency:executive-office-of-the-president": {
-   "ema": 1.25,
-   "lastCycle": 6,
-   "peak": 1.25,
-   "seen": 1
-  },
   "agency:food-and-drug-administration": {
-   "ema": 1.25,
-   "lastCycle": 6,
-   "peak": 1.25,
-   "seen": 1
+   "ema": 3.4375,
+   "lastCycle": 7,
+   "peak": 3.4375,
+   "seen": 2
   },
   "agency:health-and-human-services-department": {
-   "ema": 12.2127,
-   "lastCycle": 6,
-   "peak": 12.2127,
-   "seen": 6
+   "ema": 18.4095,
+   "lastCycle": 7,
+   "peak": 18.4095,
+   "seen": 7
   },
   "agency:securities-and-exchange-commission": {
-   "ema": 9.6814,
-   "lastCycle": 6,
-   "peak": 9.6814,
-   "seen": 6
+   "ema": 14.5111,
+   "lastCycle": 7,
+   "peak": 14.5111,
+   "seen": 7
   },
   "ai-research-frontier": {
-   "ema": 0.822,
-   "lastCycle": 6,
-   "peak": 0.822,
-   "seen": 6
+   "ema": 0.8665,
+   "lastCycle": 7,
+   "peak": 0.8665,
+   "seen": 7
   },
   "clinical-evidence": {
-   "ema": 0.822,
-   "lastCycle": 6,
-   "peak": 0.822,
-   "seen": 6
+   "ema": 0.8665,
+   "lastCycle": 7,
+   "peak": 0.8665,
+   "seen": 7
+  },
+  "frdoc:2026-19134": {
+   "ema": 0.25,
+   "lastCycle": 7,
+   "peak": 0.25,
+   "seen": 1
   },
   "frdoc:2026-19148": {
-   "ema": 3.3533,
-   "lastCycle": 6,
-   "peak": 3.3533,
-   "seen": 6
+   "ema": 4.765,
+   "lastCycle": 7,
+   "peak": 4.765,
+   "seen": 7
+  },
+  "frdoc:2026-19160": {
+   "ema": 0.25,
+   "lastCycle": 7,
+   "peak": 0.25,
+   "seen": 1
   },
   "frdoc:2026-19271": {
-   "ema": 8.4158,
-   "lastCycle": 6,
-   "peak": 8.4158,
-   "seen": 6
+   "ema": 12.5618,
+   "lastCycle": 7,
+   "peak": 12.5618,
+   "seen": 7
   },
   "frdoc:2026-19280": {
+   "ema": 1.375,
+   "lastCycle": 7,
+   "peak": 1.375,
+   "seen": 2
+  },
+  "frdoc:2026-19281": {
+   "ema": 2.75,
+   "lastCycle": 7,
+   "peak": 2.75,
+   "seen": 2
+  },
+  "frdoc:2026-19282": {
+   "ema": 2.5312,
+   "lastCycle": 7,
+   "peak": 2.5312,
+   "seen": 3
+  },
+  "frdoc:2026-19283": {
+   "ema": 2.5312,
+   "lastCycle": 7,
+   "peak": 2.5312,
+   "seen": 3
+  },
+  "frdoc:2026-19284": {
+   "ema": 2.5312,
+   "lastCycle": 7,
+   "peak": 2.5312,
+   "seen": 3
+  },
+  "frdoc:2026-19290": {
+   "ema": 1.2656,
+   "lastCycle": 7,
+   "peak": 1.2656,
+   "seen": 3
+  },
+  "frdoc:2026-19333": {
+   "ema": 1.2656,
+   "lastCycle": 7,
+   "peak": 1.2656,
+   "seen": 3
+  },
+  "frdoc:2026-19334": {
+   "ema": 1.2656,
+   "lastCycle": 7,
+   "peak": 1.2656,
+   "seen": 3
+  },
+  "frdoc:2026-19335": {
+   "ema": 7.7969,
+   "lastCycle": 7,
+   "peak": 7.7969,
+   "seen": 4
+  },
+  "frdoc:2026-19336": {
+   "ema": 3.8984,
+   "lastCycle": 7,
+   "peak": 3.8984,
+   "seen": 4
+  },
+  "geohazards": {
+   "ema": 0.8665,
+   "lastCycle": 7,
+   "peak": 0.8665,
+   "seen": 7
+  },
+  "macro-signals": {
+   "ema": 0.8665,
+   "lastCycle": 7,
+   "peak": 0.8665,
+   "seen": 7
+  },
+  "market-lab-ecosystem": {
+   "ema": 0.8665,
+   "lastCycle": 7,
+   "peak": 0.8665,
+   "seen": 7
+  },
+  "model:convaiinnovations/laya": {
    "ema": 0.5,
-   "lastCycle": 6,
+   "lastCycle": 7,
    "peak": 0.5,
    "seen": 1
   },
-  "frdoc:2026-19281": {
-   "ema": 1.0,
-   "lastCycle": 6,
-   "peak": 1.0,
-   "seen": 1
-  },
-  "frdoc:2026-19282": {
-   "ema": 1.375,
-   "lastCycle": 6,
-   "peak": 1.375,
-   "seen": 2
-  },
-  "frdoc:2026-19283": {
-   "ema": 1.375,
-   "lastCycle": 6,
-   "peak": 1.375,
-   "seen": 2
-  },
-  "frdoc:2026-19284": {
-   "ema": 1.375,
-   "lastCycle": 6,
-   "peak": 1.375,
-   "seen": 2
-  },
-  "frdoc:2026-19290": {
-   "ema": 0.6875,
-   "lastCycle": 6,
-   "peak": 0.6875,
-   "seen": 2
-  },
-  "frdoc:2026-19333": {
-   "ema": 0.6875,
-   "lastCycle": 6,
-   "peak": 0.6875,
-   "seen": 2
-  },
-  "frdoc:2026-19334": {
-   "ema": 0.6875,
-   "lastCycle": 6,
-   "peak": 0.6875,
-   "seen": 2
-  },
-  "frdoc:2026-19335": {
-   "ema": 5.0625,
-   "lastCycle": 6,
-   "peak": 5.0625,
-   "seen": 3
-  },
-  "frdoc:2026-19336": {
-   "ema": 2.5312,
-   "lastCycle": 6,
-   "peak": 2.5312,
-   "seen": 3
-  },
-  "geohazards": {
-   "ema": 0.822,
-   "lastCycle": 6,
-   "peak": 0.822,
-   "seen": 6
-  },
-  "macro-signals": {
-   "ema": 0.822,
-   "lastCycle": 6,
-   "peak": 0.822,
-   "seen": 6
-  },
-  "market-lab-ecosystem": {
-   "ema": 0.822,
-   "lastCycle": 6,
-   "peak": 0.822,
-   "seen": 6
-  },
   "open-source-momentum": {
-   "ema": 0.822,
-   "lastCycle": 6,
-   "peak": 0.822,
-   "seen": 6
+   "ema": 0.8665,
+   "lastCycle": 7,
+   "peak": 0.8665,
+   "seen": 7
   },
   "owner-corpus": {
-   "ema": 0.822,
-   "lastCycle": 6,
-   "peak": 0.822,
-   "seen": 6
+   "ema": 0.8665,
+   "lastCycle": 7,
+   "peak": 0.8665,
+   "seen": 7
+  },
+  "paper:blind-thermodynamic-ontology-discovery-from-anonymous-experiments": {
+   "ema": 0.5,
+   "lastCycle": 7,
+   "peak": 0.5,
+   "seen": 1
   },
   "pkg:next": {
-   "ema": 1.2656,
-   "lastCycle": 6,
-   "peak": 1.2656,
-   "seen": 3
-  },
-  "pkg:requests": {
-   "ema": 1.2656,
-   "lastCycle": 6,
-   "peak": 1.2656,
-   "seen": 3
-  },
-  "public-attention": {
-   "ema": 0.822,
-   "lastCycle": 6,
-   "peak": 0.822,
-   "seen": 6
-  },
-  "public-health-policy": {
-   "ema": 0.822,
-   "lastCycle": 6,
-   "peak": 0.822,
-   "seen": 6
-  },
-  "regulatory-flow": {
-   "ema": 0.822,
-   "lastCycle": 6,
-   "peak": 0.822,
-   "seen": 6
-  },
-  "repo:agentverse-os/agentverse-os": {
    "ema": 1.9492,
-   "lastCycle": 6,
+   "lastCycle": 7,
    "peak": 1.9492,
    "seen": 4
   },
-  "repo:brayonpi/hexstellar": {
+  "pkg:requests": {
+   "ema": 1.9492,
+   "lastCycle": 7,
+   "peak": 1.9492,
+   "seen": 4
+  },
+  "public-attention": {
+   "ema": 0.8665,
+   "lastCycle": 7,
+   "peak": 0.8665,
+   "seen": 7
+  },
+  "public-health-policy": {
+   "ema": 0.8665,
+   "lastCycle": 7,
+   "peak": 0.8665,
+   "seen": 7
+  },
+  "regulatory-flow": {
+   "ema": 0.8665,
+   "lastCycle": 7,
+   "peak": 0.8665,
+   "seen": 7
+  },
+  "repo:agentverse-os/agentverse-os": {
    "ema": 2.7119,
-   "lastCycle": 6,
+   "lastCycle": 7,
    "peak": 2.7119,
    "seen": 5
+  },
+  "repo:brayonpi/hexstellar": {
+   "ema": 3.5339,
+   "lastCycle": 7,
+   "peak": 3.5339,
+   "seen": 6
   },
   "repo:browser-use/jev-ultrafast": {
-   "ema": 3.2188,
-   "lastCycle": 6,
-   "peak": 3.2188,
-   "seen": 3
+   "ema": 5.1641,
+   "lastCycle": 7,
+   "peak": 5.1641,
+   "seen": 4
   },
   "repo:hanyuanwang/livestream-agent-studio": {
-   "ema": 2.4619,
-   "lastCycle": 6,
-   "peak": 2.4619,
-   "seen": 5
+   "ema": 3.0964,
+   "lastCycle": 7,
+   "peak": 3.0964,
+   "seen": 6
   },
   "repo:jtydhr88/screenwriting-skills": {
-   "ema": 2.7119,
-   "lastCycle": 6,
-   "peak": 2.7119,
-   "seen": 5
+   "ema": 3.2839,
+   "lastCycle": 7,
+   "peak": 3.2839,
+   "seen": 6
   },
   "repo:kgoedecke/doop": {
-   "ema": 1.2617,
-   "lastCycle": 6,
-   "peak": 1.2617,
-   "seen": 4
+   "ema": 1.4463,
+   "lastCycle": 7,
+   "peak": 1.4463,
+   "seen": 5
   },
   "repo:nanako0129/sepia": {
-   "ema": 2.7119,
-   "lastCycle": 6,
-   "peak": 2.7119,
-   "seen": 5
+   "ema": 3.5339,
+   "lastCycle": 7,
+   "peak": 3.5339,
+   "seen": 6
   },
   "repo:okf-memory/okf-agent-memory": {
-   "ema": 0.6836,
-   "lastCycle": 6,
-   "peak": 0.6836,
-   "seen": 4
+   "ema": 0.7627,
+   "lastCycle": 7,
+   "peak": 0.7627,
+   "seen": 5
   },
   "repo:shadcn-ui/lint": {
-   "ema": 2.7119,
-   "lastCycle": 6,
-   "peak": 2.7119,
-   "seen": 5
+   "ema": 3.5339,
+   "lastCycle": 7,
+   "peak": 3.5339,
+   "seen": 6
   },
   "repo:tigerless-labs/agent-memory": {
-   "ema": 0.6836,
-   "lastCycle": 6,
-   "peak": 0.6836,
-   "seen": 4
-  },
-  "repo:youngyangyang04/llm-master": {
-   "ema": 0.6836,
-   "lastCycle": 6,
-   "peak": 0.6836,
-   "seen": 4
-  },
-  "repo:zai-org/zcode": {
-   "ema": 7.0678,
-   "lastCycle": 6,
-   "peak": 7.0678,
-   "seen": 6
-  },
-  "repo:zju-real/easel": {
-   "ema": 2.7119,
-   "lastCycle": 6,
-   "peak": 2.7119,
+   "ema": 0.7627,
+   "lastCycle": 7,
+   "peak": 0.7627,
    "seen": 5
   },
-  "sf-local": {
-   "ema": 0.822,
-   "lastCycle": 6,
-   "peak": 0.822,
+  "repo:youngyangyang04/llm-master": {
+   "ema": 0.7627,
+   "lastCycle": 7,
+   "peak": 0.7627,
+   "seen": 5
+  },
+  "repo:zai-org/zcode": {
+   "ema": 8.8009,
+   "lastCycle": 7,
+   "peak": 8.8009,
+   "seen": 7
+  },
+  "repo:zju-real/easel": {
+   "ema": 3.5339,
+   "lastCycle": 7,
+   "peak": 3.5339,
    "seen": 6
+  },
+  "sf-local": {
+   "ema": 0.8665,
+   "lastCycle": 7,
+   "peak": 0.8665,
+   "seen": 7
   },
   "sports-signals": {
-   "ema": 0.822,
-   "lastCycle": 6,
-   "peak": 0.822,
-   "seen": 6
+   "ema": 0.8665,
+   "lastCycle": 7,
+   "peak": 0.8665,
+   "seen": 7
   },
   "tag:agent-skills": {
-   "ema": 6.4297,
-   "lastCycle": 6,
-   "peak": 6.4297,
-   "seen": 4
+   "ema": 9.3223,
+   "lastCycle": 7,
+   "peak": 9.3223,
+   "seen": 5
   },
   "travel-korea": {
-   "ema": 0.822,
-   "lastCycle": 6,
-   "peak": 0.822,
-   "seen": 6
+   "ema": 0.8665,
+   "lastCycle": 7,
+   "peak": 0.8665,
+   "seen": 7
   },
   "wiki:artificial_intelligence": {
-   "ema": 2.5312,
-   "lastCycle": 6,
-   "peak": 2.5312,
-   "seen": 3
+   "ema": 3.8984,
+   "lastCycle": 7,
+   "peak": 3.8984,
+   "seen": 4
+  },
+  "work:hub-genes-in-a-pan-cancer-co-expression-network-show-potential-for-pre": {
+   "ema": 0.5,
+   "lastCycle": 7,
+   "peak": 0.5,
+   "seen": 1
   }
  }
 }
