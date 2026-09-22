@@ -151,18 +151,14 @@ corroboration is promoted.
 ## What the engine has learned about itself
 
 These are counted, not reflected. Each lesson carries the integers behind it.
-`data/memory.json → lessons` is the source of truth and is regenerated every
-cycle; the rows below were recomputed from the cycle 23 ledger and the next
-cycle supersedes them.
 
 | | Lesson |
 |---|---|
-| `L1` | Topics corroborated by two or more independent sources hold 16.8× more accepted claim rows on average (778 vs 46) than single-source topics, but not more discovery signals (12.4 vs 14.0). Entity attribution is row-provable only from schema v2, and 10,234 accepted rows predate it. |
+| `L1` | Topics backed by two or more independent sources have averaged 1.00 signals against 1.00 for single-source topics — a ratio of 1.00×. |
 | `L2` | The evidence gate has rejected 0 of 19851 attempted claims (0.00%). |
-| `L3` | 125 of 151 tracked topics (82.8%) have at least one accepted claim row that names them; 19 more carry only pre-schema-v2 claim credit (disclosed, not counted as verified). |
+| `L3` | 133 of 151 tracked topics (88.1%) have at least one accepted claim credit. |
 | `L4` | Of 4 idea kinds, “convergence” holds the highest mean robustness (0.491 over 8 ideas). |
 | `L5` | 28 of 31 registered sources are reading reliably (EMA ≥ 0.8); 3 are effectively unreadable (EMA < 0.2). |
-
 
 ## Site
 
