@@ -1,0 +1,15 @@
+{
+ "captureMode": "agent-fetch-page-transcribed",
+ "capturedAt": "2026-09-21T22:56:00Z",
+ "httpStatus": 200,
+ "payloadSha256": "1c518a97113f6d77564f2288ea6b71300e4926ac84134286ad21cae28e9322de",
+ "projection": {
+  "count": 40,
+  "maxAllowed": 20000
+ },
+ "projectionNote": "Body was read through an interactive agent fetch on 2026-09-21 and recorded verbatim, not captured by this process. payloadSha256 therefore covers the recorded body, NOT the bytes on the wire (wireHashVerifiable=false). The first automated probe re-reads the endpoint and reports whether the VALUES still match; that is the check that matters, and it is recorded in the irregularity register if it does not.",
+ "rawBytes": 34,
+ "source": "seed",
+ "url": "https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=2026-09-14&minmagnitude=5.0",
+ "wireHashVerifiable": false
+}

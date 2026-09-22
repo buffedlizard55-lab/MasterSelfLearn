@@ -1,0 +1,54 @@
+{
+ "captureMode": "agent-fetch-page-transcribed",
+ "capturedAt": "2026-09-21T22:58:00Z",
+ "httpStatus": 200,
+ "payloadSha256": "75c6f85d3c59152b12fe2dfc60388ae2480097dd463642bd9a4e1e360debc93b",
+ "projection": {
+  "count": 1573,
+  "description": "Documents matching 'artificial intelligence'",
+  "results": [
+   {
+    "agencies": [
+     {
+      "id": 221,
+      "name": "Health and Human Services Department",
+      "parent_id": null,
+      "url": "https://www.federalregister.gov/agencies/health-and-human-services-department"
+     },
+     {
+      "id": 44,
+      "name": "Centers for Disease Control and Prevention",
+      "parent_id": 221,
+      "url": "https://www.federalregister.gov/agencies/centers-for-disease-control-and-prevention"
+     }
+    ],
+    "document_number": "2026-19271",
+    "html_url": "https://www.federalregister.gov/documents/2026-09-21/2026-19271/data-intermediaries-and-approaches-to-strengthen-public-health-data-exchange",
+    "publication_date": "2026-09-21",
+    "title": "Data Intermediaries and Approaches To Strengthen Public Health Data Exchange",
+    "type": "Notice"
+   },
+   {
+    "agencies": [
+     {
+      "id": 466,
+      "name": "Securities and Exchange Commission",
+      "parent_id": null,
+      "url": "https://www.federalregister.gov/agencies/securities-and-exchange-commission"
+     }
+    ],
+    "document_number": "2026-19148",
+    "html_url": "https://www.federalregister.gov/documents/2026-09-18/2026-19148/public-company-accounting-oversight-board-notice-of-filing-of-proposed-rules-on-amendments-to-qc",
+    "publication_date": "2026-09-18",
+    "title": "Public Company Accounting Oversight Board; Notice of Filing of Proposed Rules on Amendments to QC 1000, A Firm's System of Quality Control, and Related Rule and Forms",
+    "type": "Notice"
+   }
+  ],
+  "total_pages": 50
+ },
+ "projectionNote": "Body was read through an interactive agent fetch on 2026-09-21 and recorded verbatim, not captured by this process. payloadSha256 therefore covers the recorded body, NOT the bytes on the wire (wireHashVerifiable=false). The first automated probe re-reads the endpoint and reports whether the VALUES still match; that is the check that matters, and it is recorded in the irregularity register if it does not.",
+ "rawBytes": 1422,
+ "source": "seed",
+ "url": "https://www.federalregister.gov/api/v1/documents.json?per_page=2&order=newest&conditions%5Bterm%5D=artificial+intelligence",
+ "wireHashVerifiable": false
+}

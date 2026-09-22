@@ -1,0 +1,131 @@
+"""Registry integrity: the promises the Sources page makes about itself."""
+from __future__ import annotations
+
+import unittest
+
+from msl.sources import (BY_ID, INTEREST_CATEGORIES_WITHOUT_A_SOURCE,
+                         KEYED_SOURCES_EXCLUDED, REGISTRY, all_dicts, usable, verified)
+from msl.topics import FAMILIES, FAMILY_BY_SLUG, build_interest_profile, keywords_from_text
+
+
+class SourceRegistry(unittest.TestCase):
+    def test_every_source_has_an_operator_and_a_documentation_url(self):
+        for s in REGISTRY:
+            self.assertTrue(s.operator, f"{s.id} has no operator")
+            self.assertTrue(s.docs_url.startswith("http"), f"{s.id} has no docs url")
+            self.assertTrue(s.probe_url.startswith("http"), f"{s.id} has no probe url")
+
+    def test_ids_are_unique(self):
+        ids = [s.id for s in REGISTRY]
+        self.assertEqual(len(ids), len(set(ids)))
+
+    def test_no_registered_source_requires_an_api_key(self):
+        """Obtaining a key would be manual input, which the project refuses."""
+        keyed = {k["id"] for k in KEYED_SOURCES_EXCLUDED}
+        self.assertEqual(keyed & set(BY_ID), set(),
+                         "a keyed source must never appear in the registry")
+
+    def test_every_excluded_source_states_why(self):
+        for k in KEYED_SOURCES_EXCLUDED:
+            self.assertTrue(k["reason"], f"{k['id']} excluded with no reason")
+            self.assertTrue(k["docsUrl"].startswith("http"), f"{k['id']} has no docs url")
+
+    def test_unserved_interest_categories_are_declared(self):
+        self.assertTrue(INTEREST_CATEGORIES_WITHOUT_A_SOURCE)
+        for g in INTEREST_CATEGORIES_WITHOUT_A_SOURCE:
+            self.assertTrue(g["gap"], f"{g['category']} gap with no explanation")
+
+    def test_undocumented_endpoints_carry_the_marker(self):
+        """No official contract page was located for the league feeds; the registry
+        must say so rather than implying one exists."""
+        for s in REGISTRY:
+            if s.id in ("mlb_statsapi", "nhl_web", "nba_cdn"):
+                self.assertIn("UNDOCUMENTED", s.docs_note, f"{s.id} lost its marker")
+
+    def test_the_third_party_fx_mirror_is_labelled_as_such(self):
+        s = BY_ID["frankfurter"]
+        self.assertIn("NOT an official ECB endpoint", s.notes)
+        self.assertIn("third-party", s.notes)
+        self.assertIn("community project", s.docs_note)
+
+    def test_verified_sources_record_how_they_were_verified(self):
+        for s in verified():
+            self.assertTrue(s.docs_note, f"{s.id} is 'verified' with no recorded basis")
+            self.assertGreater(s.live_reads, 0)
+
+    def test_statuses_are_from_the_legal_set(self):
+        legal = {"registered", "verified-live-read", "blocked"}
+        for s in REGISTRY:
+            self.assertIn(s.status, legal)
+
+    def test_usable_excludes_blocked_sources(self):
+        s = BY_ID["arxiv"]
+        original = s.status
+        try:
+            s.status = "blocked"
+            self.assertNotIn(s, usable())
+        finally:
+            s.status = original
+
+    def test_serialisation_round_trips(self):
+        for d in all_dicts():
+            self.assertEqual(d["status"], BY_ID[d["id"]].status)
+            self.assertIn("docsUrl", d)
+
+
+class TopicFamilies(unittest.TestCase):
+    def test_slugs_are_unique(self):
+        slugs = [f.slug for f in FAMILIES]
+        self.assertEqual(len(slugs), len(set(slugs)))
+
+    def test_every_family_question_is_a_question(self):
+        for f in FAMILIES:
+            self.assertTrue(f.question.endswith("?"), f"{f.slug} question does not end in '?'")
+
+    def test_every_family_names_a_source_or_says_it_cannot(self):
+        for f in FAMILIES:
+            self.assertTrue(f.sources or f.blocked_reason,
+                            f"{f.slug} has neither a source nor a stated reason")
+
+    def test_a_blocked_family_states_its_reason(self):
+        blocked = [f for f in FAMILIES if f.blocked_reason]
+        self.assertTrue(blocked, "expected at least one honest coverage gap")
+        for f in blocked:
+            self.assertGreater(len(f.blocked_reason), 40)
+
+    def test_sources_named_by_families_are_registered(self):
+        for f in FAMILIES:
+            for sid in f.sources:
+                self.assertIn(sid, BY_ID, f"{f.slug} names unregistered source {sid}")
+
+    def test_family_lookup_matches_the_list(self):
+        self.assertEqual(set(FAMILY_BY_SLUG), {f.slug for f in FAMILIES})
+
+
+class InterestProfile(unittest.TestCase):
+    def test_a_missing_capture_is_reported_not_invented(self):
+        prof = build_interest_profile(pathlib.Path("/nonexistent-seed-dir"))
+        self.assertFalse(prof["available"])
+        self.assertTrue(prof["reason"])
+        self.assertEqual(prof["categories"], {})
+
+    def test_the_real_capture_scores_every_family(self):
+        from tests.helpers import SEED
+        prof = build_interest_profile(SEED)
+        if not prof["available"]:
+            self.skipTest("owner-corpus capture not present")
+        self.assertGreater(prof["repoCount"], 0)
+        self.assertEqual(set(prof["categories"]), {f.slug for f in FAMILIES})
+        self.assertTrue(prof["payloadSha256"])
+
+    def test_keyword_extraction_drops_stopwords(self):
+        kws = keywords_from_text("the quick brown fox and the lazy dog")
+        self.assertNotIn("the", kws)
+        self.assertNotIn("and", kws)
+        self.assertIn("quick", kws)
+
+
+import pathlib  # noqa: E402  (used by test_a_missing_capture_is_reported_not_invented)
+
+if __name__ == "__main__":
+    unittest.main()

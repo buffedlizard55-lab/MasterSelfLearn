@@ -1,0 +1,15 @@
+{
+ "captureMode": "sandbox-scripted-urllib",
+ "capturedAt": "2026-09-21T23:18:27Z",
+ "httpStatus": 200,
+ "payloadSha256": "4e3c0145dba179e36b8bc4c2deb333ad388fb46a8c02904605183e4cfbeb5cf2",
+ "projection": {
+  "name": "vite",
+  "version": "8.3.0"
+ },
+ "projectionNote": "Projection retains exactly the fields the registered adapter reads, so len()/field access in msl/adapters.py resolves against real values. payloadSha256 covers the full wire response, not the projection.",
+ "rawBytes": 5200,
+ "source": "seed",
+ "url": "https://registry.npmjs.org/vite/latest",
+ "wireHashVerifiable": true
+}

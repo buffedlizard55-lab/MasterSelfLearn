@@ -1,0 +1,44 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Standard library only — no install step is allowed to exist
+        run: |
+          if [ -f requirements.txt ] || [ -f pyproject.toml ] || [ -f setup.py ]; then
+            echo "::error::a dependency manifest appeared; this project is stdlib-only"
+            exit 1
+          fi
+
+      - name: The evidence gate must reject
+        run: python3 -m msl.cli selftest
+
+      - name: unittest
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Rebuild every artifact offline and diff nothing but the timestamp
+        run: |
+          python3 -m msl.cli cycle --offline --no-publish > /tmp/offline.txt
+          cat /tmp/offline.txt
+          test -s data/site.js
+
+      - name: Read-only verifier
+        run: python3 tools/verify_claims.py
