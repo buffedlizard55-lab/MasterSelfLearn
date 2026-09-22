@@ -16,28 +16,28 @@ It requires **no manual input**. Every cycle is triggered by
 <!-- AUTO:COUNTS:BEGIN — regenerated every cycle, do not edit -->
 | Metric | Value |
 |---|---|
-| Cycle | **15** |
-| Verified claims in the ledger | **12,365** |
-| — captured from live payloads | 8,365 |
-| — derived by recorded arithmetic | 4,000 |
+| Cycle | **16** |
+| Verified claims in the ledger | **13,388** |
+| — captured from live payloads | 9,031 |
+| — derived by recorded arithmetic | 4,357 |
 | Claims rejected by the evidence gate | **0** |
 | Derived claims rechecked this cycle | 40 |
 | Derived claims that no longer recompute | **0** |
-| Topics in the library | **103** (new this cycle: 6) |
-| Published insights | 342 |
-| Forecasts issued this cycle | 974 |
-| Forecasts scored against outcomes | 496 |
+| Topics in the library | **109** (new this cycle: 6) |
+| Published insights | 357 |
+| Forecasts issued this cycle | 1,036 |
+| Forecasts scored against outcomes | 620 |
 | Ideas in the competition | **14** (promoted: 0) |
-| Open irregularities | **29** (new: 0) |
+| Open irregularities | **30** (new: 1) |
 | Sources registered | 28 |
 | — verified by a recorded live read | 23 |
-| — currently blocked | 4 |
-| — never read (not broken, just unprobed) | 1 |
-| Reads this cycle (ok / failed) | 66 / 4 |
-| Bytes read this cycle | 1,862,500 |
+| — currently blocked | 5 |
+| — never read (not broken, just unprobed) | 0 |
+| Reads this cycle (ok / failed) | 63 / 7 |
+| Bytes read this cycle | 1,804,907 |
 | Manual inputs required | **0** |
 
-Generated `2026-09-22T07:16:15Z` by `msl/pipeline.py`. Quoting any figure outside this block
+Generated `2026-09-22T12:45:18Z` by `msl/pipeline.py`. Quoting any figure outside this block
 means quoting something the next cycle has already superseded.
 <!-- AUTO:COUNTS:END -->
 
@@ -106,13 +106,13 @@ nothing, and the table says so.
 
 | # | Persona | Name | Scored | Accuracy | Skill vs null |
 |---|---|---|---|---|---|
-| 1 | `S10_Persistence` | Persistence (null model) | 1466 | 90.7% | +0.0 pts |
-| 2 | `S05_EvidenceDensity` | Evidence density | 77 | 54.5% | -36.2 pts |
-| 3 | `S01_MomentumPersist` | Momentum persistence | 77 | 54.5% | -36.2 pts |
-| 4 | `S04_ConsensusFade` | Consensus fade | 167 | 33.5% | -57.2 pts |
-| 5 | `S06_MemoryWeighted` | Skill-weighted memory | 323 | 17.6% | -73.1 pts |
-| 6 | `S03_Acceleration` | Acceleration | 167 | 6.6% | -84.1 pts |
-| 7 | `S02_MeanRevert` | Mean reversion | 265 | 1.1% | -89.6 pts |
+| 1 | `S10_Persistence` | Persistence (null model) | 1450 | 87.8% | +0.0 pts |
+| 2 | `S05_EvidenceDensity` | Evidence density | 101 | 68.3% | -19.5 pts |
+| 3 | `S01_MomentumPersist` | Momentum persistence | 101 | 68.3% | -19.5 pts |
+| 4 | `S03_Acceleration` | Acceleration | 164 | 30.5% | -57.3 pts |
+| 5 | `S04_ConsensusFade` | Consensus fade | 164 | 28.0% | -59.7 pts |
+| 6 | `S06_MemoryWeighted` | Skill-weighted memory | 274 | 26.3% | -61.5 pts |
+| 7 | `S02_MeanRevert` | Mean reversion | 268 | 1.1% | -86.7 pts |
 
 ### Unranked
 
@@ -133,11 +133,11 @@ corroboration is promoted.
 
 | # | Idea | Robustness | Kind | Verified claims behind it |
 |---|---|---|---|---|
-| 1 | Replicate what made NandhaKishorM/laya grow | 0.500 | velocity-outlier | 10 |
-| 2 | Replicate what made zai-org/ZCode grow | 0.400 | velocity-outlier | 30 |
-| 3 | Replicate what made browser-use/jev-ultrafast grow | 0.400 | velocity-outlier | 30 |
-| 4 | Watch for research lagging rulemaking on “artificial intelligence” | 0.375 | regulatory-lead | 11 |
-| 5 | Watch for research lagging rulemaking on “reasoning” | 0.300 | regulatory-lead | 8 |
+| 1 | Watch for research lagging rulemaking on “artificial intelligence” | 0.400 | regulatory-lead | 12 |
+| 2 | Replicate what made NandhaKishorM/laya grow | 0.400 | velocity-outlier | 10 |
+| 3 | Watch for research lagging rulemaking on “reasoning” | 0.325 | regulatory-lead | 9 |
+| 4 | Watch for research lagging rulemaking on “agent” | 0.325 | regulatory-lead | 9 |
+| 5 | Watch for research lagging rulemaking on “model” | 0.325 | regulatory-lead | 9 |
 
 ## What the engine has learned about itself
 
@@ -146,10 +146,10 @@ These are counted, not reflected. Each lesson carries the integers behind it.
 | | Lesson |
 |---|---|
 | `L1` | Topics backed by two or more independent sources have averaged 1.00 signals against 1.00 for single-source topics — a ratio of 1.00×. |
-| `L2` | The evidence gate has rejected 0 of 12365 attempted claims (0.00%). |
-| `L3` | 12 of 103 tracked topics (11.7%) have at least one verified claim. |
-| `L4` | Of 2 idea kinds, “velocity-outlier” holds the highest mean robustness (0.433 over 3 ideas). |
-| `L5` | 7 of 28 registered sources are reading reliably (EMA ≥ 0.8); 3 are effectively unreadable (EMA < 0.2). |
+| `L2` | The evidence gate has rejected 0 of 13388 attempted claims (0.00%). |
+| `L3` | 12 of 109 tracked topics (11.0%) have at least one verified claim. |
+| `L4` | Of 2 idea kinds, “velocity-outlier” holds the highest mean robustness (0.333 over 3 ideas). |
+| `L5` | 23 of 28 registered sources are reading reliably (EMA ≥ 0.8); 4 are effectively unreadable (EMA < 0.2). |
 
 ## Site
 
@@ -199,9 +199,9 @@ Python 3.9+, standard library only. No `pip install`, no build step, no keys.
 
 ## Current irregularities
 
-104 registered — 4 critical,
-59 warn, 41 info;
-29 open, 75 resolved,
+105 registered — 6 critical,
+58 warn, 41 info;
+30 open, 75 resolved,
 15 standing (structural limits that do not auto-resolve).
 
 Full register: [`IRREGULARITIES.md`](IRREGULARITIES.md) or
@@ -210,7 +210,7 @@ Full register: [`IRREGULARITIES.md`](IRREGULARITIES.md) or
 ## Sources
 
 28 registered, 23 verified by a recorded
-live read, 4 blocked, 1 never read.
+live read, 5 blocked, 0 never read.
 **"Never read" is not "broken"**: it means no recorded probe has reached the
 endpoint yet, which is a fact about this project, not a claim about the service.
 A source is promoted to `verified-live-read` only by `msl/probe.py`, which writes
