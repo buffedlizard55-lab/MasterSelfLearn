@@ -1,120 +1,7 @@
 {
  "items": [
   {
-   "appearances": 14,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.0,
-    "evidence": 0.8333,
-    "freshness": 0.9988,
-    "reproducibility": 1.0
-   },
-   "cycle": 14,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "d845768af18a5e81",
-   "firstSeenCycle": 1,
-   "history": [
-    {
-     "cycle": 1,
-     "lineageSize": 2,
-     "robustness": 0.2999186714616402
-    },
-    {
-     "cycle": 2,
-     "lineageSize": 4,
-     "robustness": 0.34992724867724867
-    },
-    {
-     "cycle": 3,
-     "lineageSize": 6,
-     "robustness": 0.3999272486772487
-    },
-    {
-     "cycle": 4,
-     "lineageSize": 6,
-     "robustness": 0.39992459284060844
-    },
-    {
-     "cycle": 5,
-     "lineageSize": 6,
-     "robustness": 0.39992327008928574
-    },
-    {
-     "cycle": 6,
-     "lineageSize": 6,
-     "robustness": 0.3999196945271164
-    },
-    {
-     "cycle": 7,
-     "lineageSize": 6,
-     "robustness": 0.3999169560185185
-    },
-    {
-     "cycle": 8,
-     "lineageSize": 6,
-     "robustness": 0.3999133081183862
-    },
-    {
-     "cycle": 9,
-     "lineageSize": 8,
-     "robustness": 0.4498435949900793
-    },
-    {
-     "cycle": 10,
-     "lineageSize": 8,
-     "robustness": 0.44984328497023807
-    },
-    {
-     "cycle": 11,
-     "lineageSize": 8,
-     "robustness": 0.4498379836309524
-    },
-    {
-     "cycle": 12,
-     "lineageSize": 10,
-     "robustness": 0.4998294890873016
-    },
-    {
-     "cycle": 13,
-     "lineageSize": 10,
-     "robustness": 0.49982783564814814
-    },
-    {
-     "cycle": 14,
-     "lineageSize": 10,
-     "robustness": 0.4998182043650794
-    }
-   ],
-   "id": "ID0001-003",
-   "kind": "velocity-outlier",
-   "lastSeenCycle": 14,
-   "lineage": [
-    "C000162",
-    "C000164",
-    "C000702",
-    "C000704",
-    "C001216",
-    "C001218",
-    "C006514",
-    "C006516",
-    "C008780",
-    "C008782"
-   ],
-   "robustness": 0.4998,
-   "sources": [
-    "github_search"
-   ],
-   "statement": "NandhaKishorM/laya reached 9,988 stars in 3.9 days (2,582.9/day), against a median of 0.7/day across the 124 tracked repositories.  Testable claim: its growth is explained by something in its first-week release, not by its topic.",
-   "status": "carried",
-   "title": "Replicate what made NandhaKishorM/laya grow",
-   "urls": [
-    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25"
-   ]
-  },
-  {
-   "appearances": 14,
+   "appearances": 16,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -122,272 +9,7 @@
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 14,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "c8045aa29586ab63",
-   "firstSeenCycle": 1,
-   "history": [
-    {
-     "cycle": 1,
-     "lineageSize": 2,
-     "robustness": 0.2999186714616402
-    },
-    {
-     "cycle": 2,
-     "lineageSize": 4,
-     "robustness": 0.34992724867724867
-    },
-    {
-     "cycle": 3,
-     "lineageSize": 6,
-     "robustness": 0.3999272486772487
-    },
-    {
-     "cycle": 4,
-     "lineageSize": 8,
-     "robustness": 0.3
-    },
-    {
-     "cycle": 5,
-     "lineageSize": 10,
-     "robustness": 0.35
-    },
-    {
-     "cycle": 6,
-     "lineageSize": 12,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 7,
-     "lineageSize": 14,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 8,
-     "lineageSize": 16,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 9,
-     "lineageSize": 18,
-     "robustness": 0.5499302868716931
-    },
-    {
-     "cycle": 10,
-     "lineageSize": 20,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 11,
-     "lineageSize": 22,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 12,
-     "lineageSize": 24,
-     "robustness": 0.5499915054563492
-    },
-    {
-     "cycle": 13,
-     "lineageSize": 26,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 14,
-     "lineageSize": 28,
-     "robustness": 0.4
-    }
-   ],
-   "id": "ID0001-001",
-   "kind": "velocity-outlier",
-   "lastSeenCycle": 14,
-   "lineage": [
-    "C000168",
-    "C000170",
-    "C000708",
-    "C000710",
-    "C001222",
-    "C001224",
-    "C002216",
-    "C002218",
-    "C003141",
-    "C003143",
-    "C004090",
-    "C004092",
-    "C005048",
-    "C005050",
-    "C006016",
-    "C006018",
-    "C006520",
-    "C006522",
-    "C007507",
-    "C007509",
-    "C008278",
-    "C008280",
-    "C008786",
-    "C008788",
-    "C009985",
-    "C009987",
-    "C010976",
-    "C010978"
-   ],
-   "robustness": 0.4,
-   "sources": [
-    "github_search"
-   ],
-   "statement": "zai-org/ZCode reached 5,548 stars in 1.6 days (3,544.9/day), against a median of 0.7/day across the 124 tracked repositories.  Testable claim: its growth is explained by something in its first-week release, not by its topic.",
-   "status": "carried",
-   "title": "Replicate what made zai-org/ZCode grow",
-   "urls": [
-    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/search/repositories?q=repo%3Azai-org/ZCode&sort=stars&order=desc&per_page=1"
-   ]
-  },
-  {
-   "appearances": 14,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.0,
-    "evidence": 1.0,
-    "freshness": 0.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 14,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "cf9234e38f4aed9a",
-   "firstSeenCycle": 1,
-   "history": [
-    {
-     "cycle": 1,
-     "lineageSize": 2,
-     "robustness": 0.2999186714616402
-    },
-    {
-     "cycle": 2,
-     "lineageSize": 4,
-     "robustness": 0.34992724867724867
-    },
-    {
-     "cycle": 3,
-     "lineageSize": 6,
-     "robustness": 0.3999272486772487
-    },
-    {
-     "cycle": 4,
-     "lineageSize": 8,
-     "robustness": 0.3
-    },
-    {
-     "cycle": 5,
-     "lineageSize": 10,
-     "robustness": 0.35
-    },
-    {
-     "cycle": 6,
-     "lineageSize": 12,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 7,
-     "lineageSize": 14,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 8,
-     "lineageSize": 16,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 9,
-     "lineageSize": 18,
-     "robustness": 0.5499302868716931
-    },
-    {
-     "cycle": 10,
-     "lineageSize": 20,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 11,
-     "lineageSize": 22,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 12,
-     "lineageSize": 24,
-     "robustness": 0.5499915054563492
-    },
-    {
-     "cycle": 13,
-     "lineageSize": 26,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 14,
-     "lineageSize": 28,
-     "robustness": 0.4
-    }
-   ],
-   "id": "ID0001-002",
-   "kind": "velocity-outlier",
-   "lastSeenCycle": 14,
-   "lineage": [
-    "C000159",
-    "C000161",
-    "C000699",
-    "C000701",
-    "C001213",
-    "C001215",
-    "C001723",
-    "C001725",
-    "C003173",
-    "C003175",
-    "C004094",
-    "C004096",
-    "C005052",
-    "C005054",
-    "C006020",
-    "C006022",
-    "C006511",
-    "C006513",
-    "C007511",
-    "C007513",
-    "C008282",
-    "C008284",
-    "C008777",
-    "C008779",
-    "C009989",
-    "C009991",
-    "C010980",
-    "C010982"
-   ],
-   "robustness": 0.4,
-   "sources": [
-    "github_search"
-   ],
-   "statement": "browser-use/jev-ultrafast reached 15,573 stars in 5.2 days (3,012.2/day), against a median of 0.7/day across the 124 tracked repositories.  Testable claim: its growth is explained by something in its first-week release, not by its topic.",
-   "status": "carried",
-   "title": "Replicate what made browser-use/jev-ultrafast grow",
-   "urls": [
-    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/search/repositories?q=agent%20created%3A%3E%3D2026-06-23&sort=stars&order=desc&per_page=20",
-    "https://api.github.com/search/repositories?q=repo%3Abrowser-use/jev-ultrafast&sort=stars&order=desc&per_page=1"
-   ]
-  },
-  {
-   "appearances": 14,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.0,
-    "evidence": 0.8333,
-    "freshness": 0.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 14,
+   "cycle": 16,
    "families": [
     "regulatory-flow"
    ],
@@ -463,11 +85,21 @@
      "cycle": 14,
      "lineageSize": 10,
      "robustness": 0.35
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 11,
+     "robustness": 0.375
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 12,
+     "robustness": 0.4
     }
    ],
    "id": "ID0001-004",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 14,
+   "lastSeenCycle": 16,
    "lineage": [
     "C000001",
     "C001923",
@@ -478,9 +110,11 @@
     "C006353",
     "C008619",
     "C009692",
-    "C010683"
+    "C010683",
+    "C011692",
+    "C012712"
    ],
-   "robustness": 0.35,
+   "robustness": 0.4,
    "sources": [
     "federal_register"
    ],
@@ -492,15 +126,138 @@
    ]
   },
   {
-   "appearances": 11,
+   "appearances": 16,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5833,
+    "evidence": 0.8333,
+    "freshness": 0.9967,
+    "reproducibility": 0.0
+   },
+   "cycle": 16,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "d845768af18a5e81",
+   "firstSeenCycle": 1,
+   "history": [
+    {
+     "cycle": 1,
+     "lineageSize": 2,
+     "robustness": 0.2999186714616402
+    },
+    {
+     "cycle": 2,
+     "lineageSize": 4,
+     "robustness": 0.34992724867724867
+    },
+    {
+     "cycle": 3,
+     "lineageSize": 6,
+     "robustness": 0.3999272486772487
+    },
+    {
+     "cycle": 4,
+     "lineageSize": 6,
+     "robustness": 0.39992459284060844
+    },
+    {
+     "cycle": 5,
+     "lineageSize": 6,
+     "robustness": 0.39992327008928574
+    },
+    {
+     "cycle": 6,
+     "lineageSize": 6,
+     "robustness": 0.3999196945271164
+    },
+    {
+     "cycle": 7,
+     "lineageSize": 6,
+     "robustness": 0.3999169560185185
+    },
+    {
+     "cycle": 8,
+     "lineageSize": 6,
+     "robustness": 0.3999133081183862
+    },
+    {
+     "cycle": 9,
+     "lineageSize": 8,
+     "robustness": 0.4498435949900793
+    },
+    {
+     "cycle": 10,
+     "lineageSize": 8,
+     "robustness": 0.44984328497023807
+    },
+    {
+     "cycle": 11,
+     "lineageSize": 8,
+     "robustness": 0.4498379836309524
+    },
+    {
+     "cycle": 12,
+     "lineageSize": 10,
+     "robustness": 0.4998294890873016
+    },
+    {
+     "cycle": 13,
+     "lineageSize": 10,
+     "robustness": 0.49982783564814814
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 10,
+     "robustness": 0.4998182043650794
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 10,
+     "robustness": 0.4997156291335979
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 10,
+     "robustness": 0.3995116050760582
+    }
+   ],
+   "id": "ID0001-003",
+   "kind": "velocity-outlier",
+   "lastSeenCycle": 16,
+   "lineage": [
+    "C000162",
+    "C000164",
+    "C000702",
+    "C000704",
+    "C001216",
+    "C001218",
+    "C006514",
+    "C006516",
+    "C008780",
+    "C008782"
+   ],
+   "robustness": 0.3995,
+   "sources": [
+    "github_search"
+   ],
+   "statement": "NandhaKishorM/laya reached 9,988 stars in 3.9 days (2,582.9/day), against a median of 0.7/day across the 124 tracked repositories.  Testable claim: its growth is explained by something in its first-week release, not by its topic.",
+   "status": "carried",
+   "title": "Replicate what made NandhaKishorM/laya grow",
+   "urls": [
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25"
+   ]
+  },
+  {
+   "appearances": 13,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.75,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 14,
+   "cycle": 16,
    "families": [
     "ai-research-frontier"
    ],
@@ -561,11 +318,21 @@
      "cycle": 14,
      "lineageSize": 7,
      "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
     }
    ],
    "id": "ID0004-005",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 14,
+   "lastSeenCycle": 16,
    "lineage": [
     "C001647",
     "C002575",
@@ -573,9 +340,11 @@
     "C004479",
     "C005448",
     "C009416",
-    "C010407"
+    "C010407",
+    "C011417",
+    "C012436"
    ],
-   "robustness": 0.275,
+   "robustness": 0.325,
    "sources": [
     "federal_register"
    ],
@@ -587,15 +356,15 @@
    ]
   },
   {
-   "appearances": 11,
+   "appearances": 13,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5833,
+    "evidence": 0.75,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 14,
+   "cycle": 16,
    "families": [
     "ai-research-frontier"
    ],
@@ -656,11 +425,21 @@
      "cycle": 14,
      "lineageSize": 7,
      "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
     }
    ],
    "id": "ID0004-006",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 14,
+   "lastSeenCycle": 16,
    "lineage": [
     "C001658",
     "C002586",
@@ -668,9 +447,11 @@
     "C004490",
     "C005459",
     "C009427",
-    "C010418"
+    "C010418",
+    "C011428",
+    "C012447"
    ],
-   "robustness": 0.275,
+   "robustness": 0.325,
    "sources": [
     "federal_register"
    ],
@@ -682,15 +463,15 @@
    ]
   },
   {
-   "appearances": 11,
+   "appearances": 13,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5833,
+    "evidence": 0.75,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 14,
+   "cycle": 16,
    "families": [
     "ai-research-frontier"
    ],
@@ -751,11 +532,21 @@
      "cycle": 14,
      "lineageSize": 7,
      "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
     }
    ],
    "id": "ID0004-007",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 14,
+   "lastSeenCycle": 16,
    "lineage": [
     "C001669",
     "C002597",
@@ -763,9 +554,11 @@
     "C004501",
     "C005470",
     "C009438",
-    "C010429"
+    "C010429",
+    "C011439",
+    "C012458"
    ],
-   "robustness": 0.275,
+   "robustness": 0.325,
    "sources": [
     "federal_register"
    ],
@@ -777,15 +570,15 @@
    ]
   },
   {
-   "appearances": 11,
+   "appearances": 13,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5833,
+    "evidence": 0.75,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 14,
+   "cycle": 16,
    "families": [
     "ai-research-frontier"
    ],
@@ -846,11 +639,21 @@
      "cycle": 14,
      "lineageSize": 7,
      "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
     }
    ],
    "id": "ID0004-008",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 14,
+   "lastSeenCycle": 16,
    "lineage": [
     "C001680",
     "C002608",
@@ -858,9 +661,11 @@
     "C004512",
     "C005481",
     "C009449",
-    "C010440"
+    "C010440",
+    "C011450",
+    "C012469"
    ],
-   "robustness": 0.275,
+   "robustness": 0.325,
    "sources": [
     "federal_register"
    ],
@@ -872,15 +677,15 @@
    ]
   },
   {
-   "appearances": 11,
+   "appearances": 13,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5833,
+    "evidence": 0.75,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 14,
+   "cycle": 16,
    "families": [
     "regulatory-flow"
    ],
@@ -941,11 +746,21 @@
      "cycle": 14,
      "lineageSize": 7,
      "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
     }
    ],
    "id": "ID0004-009",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 14,
+   "lastSeenCycle": 16,
    "lineage": [
     "C001934",
     "C002861",
@@ -953,9 +768,11 @@
     "C004766",
     "C005734",
     "C009703",
-    "C010694"
+    "C010694",
+    "C011703",
+    "C012723"
    ],
-   "robustness": 0.275,
+   "robustness": 0.325,
    "sources": [
     "federal_register"
    ],
@@ -967,15 +784,15 @@
    ]
   },
   {
-   "appearances": 11,
+   "appearances": 13,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5833,
+    "evidence": 0.75,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 14,
+   "cycle": 16,
    "families": [
     "regulatory-flow"
    ],
@@ -1036,11 +853,21 @@
      "cycle": 14,
      "lineageSize": 7,
      "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
     }
    ],
    "id": "ID0004-010",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 14,
+   "lastSeenCycle": 16,
    "lineage": [
     "C001945",
     "C002872",
@@ -1048,9 +875,11 @@
     "C004777",
     "C005745",
     "C009714",
-    "C010705"
+    "C010705",
+    "C011714",
+    "C012734"
    ],
-   "robustness": 0.275,
+   "robustness": 0.325,
    "sources": [
     "federal_register"
    ],
@@ -1062,15 +891,15 @@
    ]
   },
   {
-   "appearances": 11,
+   "appearances": 13,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5833,
+    "evidence": 0.75,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 14,
+   "cycle": 16,
    "families": [
     "regulatory-flow"
    ],
@@ -1131,11 +960,21 @@
      "cycle": 14,
      "lineageSize": 7,
      "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
     }
    ],
    "id": "ID0004-011",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 14,
+   "lastSeenCycle": 16,
    "lineage": [
     "C001956",
     "C002883",
@@ -1143,9 +982,11 @@
     "C004788",
     "C005756",
     "C009725",
-    "C010716"
+    "C010716",
+    "C011725",
+    "C012745"
    ],
-   "robustness": 0.275,
+   "robustness": 0.325,
    "sources": [
     "federal_register"
    ],
@@ -1157,15 +998,15 @@
    ]
   },
   {
-   "appearances": 11,
+   "appearances": 13,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5833,
+    "evidence": 0.75,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 14,
+   "cycle": 16,
    "families": [
     "public-health-policy"
    ],
@@ -1226,11 +1067,21 @@
      "cycle": 14,
      "lineageSize": 7,
      "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
     }
    ],
    "id": "ID0004-012",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 14,
+   "lastSeenCycle": 16,
    "lineage": [
     "C001972",
     "C002899",
@@ -1238,9 +1089,11 @@
     "C004804",
     "C005772",
     "C009741",
-    "C010732"
+    "C010732",
+    "C011741",
+    "C012761"
    ],
-   "robustness": 0.275,
+   "robustness": 0.325,
    "sources": [
     "federal_register"
    ],
@@ -1252,15 +1105,15 @@
    ]
   },
   {
-   "appearances": 11,
+   "appearances": 13,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5833,
+    "evidence": 0.75,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 14,
+   "cycle": 16,
    "families": [
     "public-health-policy"
    ],
@@ -1321,11 +1174,21 @@
      "cycle": 14,
      "lineageSize": 7,
      "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
     }
    ],
    "id": "ID0004-013",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 14,
+   "lastSeenCycle": 16,
    "lineage": [
     "C001983",
     "C002910",
@@ -1333,9 +1196,11 @@
     "C004815",
     "C005783",
     "C009752",
-    "C010743"
+    "C010743",
+    "C011752",
+    "C012772"
    ],
-   "robustness": 0.275,
+   "robustness": 0.325,
    "sources": [
     "federal_register"
    ],
@@ -1347,15 +1212,15 @@
    ]
   },
   {
-   "appearances": 11,
+   "appearances": 13,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.5833,
+    "evidence": 0.75,
     "freshness": 0.0,
     "reproducibility": 1.0
    },
-   "cycle": 14,
+   "cycle": 16,
    "families": [
     "public-health-policy"
    ],
@@ -1416,11 +1281,21 @@
      "cycle": 14,
      "lineageSize": 7,
      "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
     }
    ],
    "id": "ID0004-014",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 14,
+   "lastSeenCycle": 16,
    "lineage": [
     "C001994",
     "C002921",
@@ -1428,9 +1303,11 @@
     "C004826",
     "C005794",
     "C009763",
-    "C010754"
+    "C010754",
+    "C011763",
+    "C012783"
    ],
-   "robustness": 0.275,
+   "robustness": 0.325,
    "sources": [
     "federal_register"
    ],
@@ -1439,6 +1316,299 @@
    "title": "Watch for research lagging rulemaking on “data exchange”",
    "urls": [
     "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=data%20exchange"
+   ]
+  },
+  {
+   "appearances": 16,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 1.0,
+    "freshness": 0.0,
+    "reproducibility": 0.0
+   },
+   "cycle": 16,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "cf9234e38f4aed9a",
+   "firstSeenCycle": 1,
+   "history": [
+    {
+     "cycle": 1,
+     "lineageSize": 2,
+     "robustness": 0.2999186714616402
+    },
+    {
+     "cycle": 2,
+     "lineageSize": 4,
+     "robustness": 0.34992724867724867
+    },
+    {
+     "cycle": 3,
+     "lineageSize": 6,
+     "robustness": 0.3999272486772487
+    },
+    {
+     "cycle": 4,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 5,
+     "lineageSize": 10,
+     "robustness": 0.35
+    },
+    {
+     "cycle": 6,
+     "lineageSize": 12,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 7,
+     "lineageSize": 14,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 8,
+     "lineageSize": 16,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 9,
+     "lineageSize": 18,
+     "robustness": 0.5499302868716931
+    },
+    {
+     "cycle": 10,
+     "lineageSize": 20,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 11,
+     "lineageSize": 22,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 12,
+     "lineageSize": 24,
+     "robustness": 0.5499915054563492
+    },
+    {
+     "cycle": 13,
+     "lineageSize": 26,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 28,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 30,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 32,
+     "robustness": 0.3
+    }
+   ],
+   "id": "ID0001-002",
+   "kind": "velocity-outlier",
+   "lastSeenCycle": 16,
+   "lineage": [
+    "C000159",
+    "C000161",
+    "C000699",
+    "C000701",
+    "C001213",
+    "C001215",
+    "C001723",
+    "C001725",
+    "C003173",
+    "C003175",
+    "C004094",
+    "C004096",
+    "C005052",
+    "C005054",
+    "C006020",
+    "C006022",
+    "C006511",
+    "C006513",
+    "C007511",
+    "C007513",
+    "C008282",
+    "C008284",
+    "C008777",
+    "C008779",
+    "C009989",
+    "C009991",
+    "C010980",
+    "C010982",
+    "C011985",
+    "C011987",
+    "C013005",
+    "C013007"
+   ],
+   "robustness": 0.3,
+   "sources": [
+    "github_search"
+   ],
+   "statement": "browser-use/jev-ultrafast reached 15,573 stars in 5.2 days (3,012.2/day), against a median of 0.7/day across the 124 tracked repositories.  Testable claim: its growth is explained by something in its first-week release, not by its topic.",
+   "status": "carried",
+   "title": "Replicate what made browser-use/jev-ultrafast grow",
+   "urls": [
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/search/repositories?q=agent%20created%3A%3E%3D2026-06-23&sort=stars&order=desc&per_page=20",
+    "https://api.github.com/search/repositories?q=repo%3Abrowser-use/jev-ultrafast&sort=stars&order=desc&per_page=1"
+   ]
+  },
+  {
+   "appearances": 16,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 1.0,
+    "freshness": 0.0,
+    "reproducibility": 0.0
+   },
+   "cycle": 16,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "c8045aa29586ab63",
+   "firstSeenCycle": 1,
+   "history": [
+    {
+     "cycle": 1,
+     "lineageSize": 2,
+     "robustness": 0.2999186714616402
+    },
+    {
+     "cycle": 2,
+     "lineageSize": 4,
+     "robustness": 0.34992724867724867
+    },
+    {
+     "cycle": 3,
+     "lineageSize": 6,
+     "robustness": 0.3999272486772487
+    },
+    {
+     "cycle": 4,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 5,
+     "lineageSize": 10,
+     "robustness": 0.35
+    },
+    {
+     "cycle": 6,
+     "lineageSize": 12,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 7,
+     "lineageSize": 14,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 8,
+     "lineageSize": 16,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 9,
+     "lineageSize": 18,
+     "robustness": 0.5499302868716931
+    },
+    {
+     "cycle": 10,
+     "lineageSize": 20,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 11,
+     "lineageSize": 22,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 12,
+     "lineageSize": 24,
+     "robustness": 0.5499915054563492
+    },
+    {
+     "cycle": 13,
+     "lineageSize": 26,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 28,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 30,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 32,
+     "robustness": 0.3
+    }
+   ],
+   "id": "ID0001-001",
+   "kind": "velocity-outlier",
+   "lastSeenCycle": 16,
+   "lineage": [
+    "C000168",
+    "C000170",
+    "C000708",
+    "C000710",
+    "C001222",
+    "C001224",
+    "C002216",
+    "C002218",
+    "C003141",
+    "C003143",
+    "C004090",
+    "C004092",
+    "C005048",
+    "C005050",
+    "C006016",
+    "C006018",
+    "C006520",
+    "C006522",
+    "C007507",
+    "C007509",
+    "C008278",
+    "C008280",
+    "C008786",
+    "C008788",
+    "C009985",
+    "C009987",
+    "C010976",
+    "C010978",
+    "C011989",
+    "C011991",
+    "C013009",
+    "C013011"
+   ],
+   "robustness": 0.3,
+   "sources": [
+    "github_search"
+   ],
+   "statement": "zai-org/ZCode reached 5,548 stars in 1.6 days (3,544.9/day), against a median of 0.7/day across the 124 tracked repositories.  Testable claim: its growth is explained by something in its first-week release, not by its topic.",
+   "status": "carried",
+   "title": "Replicate what made zai-org/ZCode grow",
+   "urls": [
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/search/repositories?q=repo%3Azai-org/ZCode&sort=stars&order=desc&per_page=1"
    ]
   }
  ]
