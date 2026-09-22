@@ -5,6 +5,7 @@ import argparse
 import json
 import pathlib
 import sys
+import tempfile
 import time
 from typing import Any, Dict, List
 
@@ -28,7 +29,8 @@ def cmd_cycle(args: argparse.Namespace) -> int:
     print(f"  reads      ok={ac['fetchOk']} failed={ac['fetchFailed']} "
           f"bytes={ac['bytesIn']:,}")
     print(f"  claims     total={ac['claims']:,} new={ac['claimsNewThisCycle']:,} "
-          f"rejected={ac['claimsRejectedByGate']:,} derived={ac['derivedClaims']:,}")
+          f"rejected={ac['claimsRejectedThisCycle']:,} this cycle / "
+          f"{ac['claimsRejectedByGate']:,} lifetime  derived={ac['derivedClaims']:,}")
     print(f"  recheck    {ac['derivedRechecks']} checked, {ac['derivedDrifts']} drifted, "
           f"{ac['derivedNotRecheckable']} not recheckable")
     print(f"  topics     {ac['topics']} (new {ac['newTopics']})")
@@ -87,7 +89,7 @@ def cmd_gate_report(args: argparse.Namespace) -> int:
     for k, v in sorted(counts.items()):
         print(f"  {k:<12} {v:,}")
     print(f"  {'TOTAL':<12} {len(ledger.claims):,}")
-    print(f"rejected this run: {len(ledger.rejections)}")
+    print(f"rejected (append-only lifetime ledger): {len(ledger.rejections)}")
     for r in ledger.rejections[-40:]:
         print(f"  - [{r.get('kind','?')}/{r.get('sourceId','?')}] {r['reason']}")
     return 0
@@ -125,16 +127,19 @@ def cmd_sources(args: argparse.Namespace) -> int:
 
 
 def cmd_selftest(args: argparse.Namespace) -> int:
-    """The gate must actually reject.  If this prints PASS the gate is wired."""
-    ledger = Ledger("/tmp/msl-selftest-nonexistent")
-    bad = ledger.try_accept("t", "captured", "a claim with no evidence", "s",
-                            "2026-01-01T00:00:00Z", 1)
-    bad2 = ledger.try_accept("t", "derived", "a derivation with no lineage", "derived",
-                             "2026-01-01T00:00:00Z", 1, formula="x")
-    ok = bad is None and bad2 is None and len(ledger.rejections) == 2
-    print("gate rejects unsupported captured claim :", bad is None)
-    print("gate rejects lineage-less derived claim :", bad2 is None)
-    print("both rejections recorded                :", len(ledger.rejections) == 2)
+    """Prove the gate rejects, without contaminating the production ledger."""
+    with tempfile.TemporaryDirectory(prefix="msl-gate-selftest-") as tmp:
+        ledger = Ledger(tmp)
+        bad = ledger.try_accept(
+            "t", "captured", "a claim with no evidence", "s",
+            "2026-01-01T00:00:00Z", 1)
+        bad2 = ledger.try_accept(
+            "t", "derived", "a derivation with no lineage", "derived",
+            "2026-01-01T00:00:00Z", 1, formula="x")
+        ok = bad is None and bad2 is None and len(ledger.rejections) == 2
+        print("gate rejects unsupported captured claim :", bad is None)
+        print("gate rejects lineage-less derived claim :", bad2 is None)
+        print("both isolated rejections recorded       :", len(ledger.rejections) == 2)
     print("PASS" if ok else "FAIL — THE GATE IS NOT WIRED")
     return 0 if ok else 1
 

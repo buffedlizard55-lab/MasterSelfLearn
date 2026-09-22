@@ -55,8 +55,11 @@ def load(data_dir: Optional[pathlib.Path] = None) -> Dict[str, Any]:
 def save(memory: Dict[str, Any], data_dir: Optional[pathlib.Path] = None) -> None:
     d = pathlib.Path(data_dir or config.DATA)
     d.mkdir(parents=True, exist_ok=True)
-    (d / "memory.json").write_text(json.dumps(memory, indent=1, sort_keys=True) + "\n",
-                                   encoding="utf-8")
+    path = d / "memory.json"
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(json.dumps(memory, indent=1, sort_keys=True,
+                              allow_nan=False) + "\n", encoding="utf-8")
+    tmp.replace(path)
 
 
 def update_source_reliability(memory: Dict[str, Any], outcomes: Dict[str, bool]) -> Dict[str, Any]:
@@ -139,16 +142,19 @@ def derive_lessons(memory: Dict[str, Any], ledger, library, ideas) -> List[Dict[
                             "with this many sources."),
         })
 
-    # L3 — what fraction of the library is actually supported by evidence?
-    supported = {c.topic for c in claims}
+    # L3 — use the library's persisted claim credits.  ``c.topic`` is the broad
+    # family for most facts; discovered entities are represented in ``subjects``
+    # only on schema-v2 rows, so counting raw claim topics either includes the
+    # non-library ``source-health`` topic or erases legacy entity support.
+    supported = sum(1 for t in library.topics.values() if t.claims > 0)
     tracked = len(library.topics)
     if tracked:
-        pct = len(supported) / tracked * 100
+        pct = supported / tracked * 100
         out.append({
             "id": "L3",
-            "statement": (f"{len(supported)} of {tracked} tracked topics "
-                          f"({pct:.1f}%) have at least one verified claim."),
-            "counts": {"topicsWithClaims": len(supported), "topicsTracked": tracked,
+            "statement": (f"{supported} of {tracked} tracked topics "
+                          f"({pct:.1f}%) have at least one accepted claim credit."),
+            "counts": {"topicsWithClaims": supported, "topicsTracked": tracked,
                        "percent": round(pct, 2)},
             "implication": ("Anything below 100% is a real coverage gap and is listed as such "
                             "on the site rather than filled with prose."),
@@ -184,8 +190,9 @@ def derive_lessons(memory: Dict[str, Any], ledger, library, ideas) -> List[Dict[
                           f"(EMA < 0.2)."),
             "counts": {"sources": len(rel), "healthy": len(healthy), "unreliable": len(sick),
                        "unreliableIds": sorted(sick)},
-            "implication": ("An unreadable source produces no claims and no substitute value. "
-                            "It stays on the site as a known gap."),
+            "implication": ("A failed response produces no fresh claim. An exact-URL seed, "
+                            "if reused, remains explicitly stale; the availability gap stays "
+                            "visible on the site."),
         })
 
     return out

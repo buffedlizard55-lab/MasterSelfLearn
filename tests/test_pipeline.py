@@ -11,6 +11,7 @@ import re
 import pathlib
 import tempfile
 import unittest
+from unittest import mock
 
 from msl import config
 from msl.topics import Library
@@ -260,6 +261,26 @@ class FailurePaths(TmpDirCase):
         self.assertTrue(any("interest profile could not be built" in i["title"]
                             for i in reg["items"]))
 
+    def test_live_cycle_defers_work_when_collection_budget_expires(self):
+        from msl.http import FetchResult
+        from msl.tasks import Task
+
+        tasks = [Task("synthetic", f"https://example.test/{i}",
+                      "github_search", "open-source-momentum", "survey",
+                      {"query": "agent"}) for i in range(2)]
+        result = FetchResult(url=tasks[0].url, status=200,
+                             body=b'{"total_count":0,"items":[]}', attempts=1)
+        with mock.patch("msl.pipeline.taskmod.build_plan", return_value=tasks), \
+             mock.patch("msl.pipeline.fetch", return_value=result) as fetch, \
+             mock.patch.object(config, "CYCLE_COLLECTION_BUDGET_SECONDS", -1):
+            rep = run_cycle(offline=False, data_dir=self.dir, now_override=NOW1,
+                            docs_dir=self.dir)
+        self.assertEqual(fetch.call_count, 1)
+        self.assertEqual(rep.fetches, 1)
+        self.assertGreaterEqual(rep.tasks_dropped, 1)
+        reg = json.loads((self.dir / "irregularities.json").read_text())
+        self.assertTrue(any(i["title"] == "Cycle collection budget exhausted"
+                            for i in reg["items"]))
 
     def test_a_test_cycle_does_not_rewrite_the_repositorys_own_docs(self):
         before = {n: (config.ROOT / n).read_text(encoding="utf-8")
@@ -271,6 +292,20 @@ class FailurePaths(TmpDirCase):
         self.assertTrue((self.dir / "README.md").exists(),
                         "the cycle should have written its docs into the temp dir")
 
+class RegisterUpdates(TmpDirCase):
+    def test_pinned_fingerprint_allows_a_stale_title_to_be_corrected(self):
+        from msl.irregularities import Register, WARN
+        register = Register(self.dir)
+        register.add(WARN, "old title", "old detail", 1, NOW1,
+                     fingerprint="fixed", standing=True)
+        item = register.add(WARN, "corrected title", "corrected detail", 2, NOW2,
+                            repro="check", fingerprint="fixed", standing=True)
+        self.assertEqual(item.id, "IRR-001")
+        self.assertEqual(item.title, "corrected title")
+        self.assertEqual(item.detail, "corrected detail")
+        self.assertEqual(item.repro, "check")
+
+
 class SeedIntegrity(unittest.TestCase):
     def test_seed_captures_exist_and_are_hashed(self):
         seeds = load_seeds()
@@ -279,7 +314,8 @@ class SeedIntegrity(unittest.TestCase):
             self.assertEqual(len(rec["payloadSha256"]), 64, f"{url} has no sha256")
             self.assertTrue(rec["capturedAt"], f"{url} has no capture time")
             self.assertIn(rec["captureMode"],
-                          ("sandbox-scripted-urllib", "agent-fetch-page-transcribed"))
+                          ("sandbox-scripted-urllib", "agent-fetch-page-transcribed",
+                           "gh-api-projection"))
 
     def test_transcribed_captures_are_marked_not_wire_verifiable(self):
         """A body recorded by an interactive read cannot prove its own bytes."""
@@ -395,8 +431,8 @@ class PlanWindows(unittest.TestCase):
         urls, _ = self._tasks("2026-10-22T12:00:00Z", "20261009", "20261015")
         usgs = [u for u in urls if "earthquake.usgs.gov" in u]
         self.assertEqual(len(usgs), 1)
-        self.assertIn("starttime=2026-10-09", usgs[0])
-        self.assertIn("endtime=2026-10-15", usgs[0])
+        self.assertIn("starttime=2026-10-15", usgs[0])
+        self.assertIn("endtime=2026-10-22", usgs[0])
         self.assertNotIn("2026-09-14", " ".join(urls),
                          "a September date survived into an October plan")
 
@@ -412,9 +448,9 @@ class PlanWindows(unittest.TestCase):
         urls, _ = self._tasks("2026-10-22T12:00:00Z", "20261009", "20261015")
         mlb = [u for u in urls if "statsapi.mlb.com" in u]
         self.assertEqual(len(mlb), 1)
-        self.assertIn("date=2026-10-15", mlb[0],
-                      "every recorded MLB read used an ISO date; keep the proven form")
-        self.assertNotIn("date=20261015", mlb[0])
+        self.assertIn("date=2026-10-22", mlb[0],
+                      "MLB is a current schedule, not a lagged pageview aggregate")
+        self.assertNotIn("date=20261022", mlb[0])
 
     def test_the_pageview_window_is_compact_because_that_api_wants_it(self):
         urls, _ = self._tasks("2026-10-22T12:00:00Z", "20261009", "20261015")
@@ -432,7 +468,7 @@ class PlanWindows(unittest.TestCase):
     def test_no_survey_url_carries_a_date_that_is_not_in_this_plan(self):
         """A blunt sweep: every date in a survey URL must be one the plan computed."""
         urls, _ = self._tasks("2026-10-22T12:00:00Z", "20261009", "20261015")
-        allowed = {"2026-10-09", "2026-10-15", "2026-07-24"}
+        allowed = {"2026-10-09", "2026-10-15", "2026-10-22", "2026-07-24"}
         for u in urls:
             for d in re.findall(r"20\d{2}-\d{2}-\d{2}", u):
                 self.assertIn(d, allowed, f"unexplained date {d} in {u}")
@@ -626,6 +662,30 @@ class CallerFaultIsNotASourceOutage(TmpDirCase):
         self.assertEqual(src.consecutive_failures, before[1] + 1)
         self.assertEqual(src.status, "blocked")
 
+    def test_a_local_response_cap_does_not_claim_the_source_is_down(self):
+        from unittest import mock
+        from msl.http import FetchResult
+        from msl.sources import BY_ID
+        from msl import tasks as taskmod
+        task = taskmod.Task("mlb_statsapi", "https://statsapi.mlb.com/large",
+                            "mlb_statsapi", "sports-signals", "survey",
+                            {"topic": "sports-signals"})
+        result = FetchResult(url=task.url, status=200, body=b"partial",
+                             error="response exceeded cap",
+                             error_kind="ResponseTooLarge", truncated=True,
+                             attempts=1)
+        source = BY_ID["mlb_statsapi"]
+        before = (source.status, source.consecutive_failures)
+        with mock.patch.object(taskmod, "build_plan", return_value=[task]), \
+             mock.patch("msl.pipeline.fetch", return_value=result):
+            run_cycle(data_dir=self.dir, docs_dir=self.dir,
+                      now_override=NOW1, offline=False)
+        self.assertEqual((source.status, source.consecutive_failures), before)
+        health = json.loads((self.dir / "source_health.json").read_text())
+        row = next(r for r in health["results"] if r["id"] == "mlb_statsapi")
+        self.assertFalse(row["verdict"])
+        self.assertEqual(row["inconclusiveReason"], "local-response-cap")
+
     def test_the_recorded_mlb_failure_is_reproducible_by_hand(self):
         """The evidence behind the rule, kept where the rule lives."""
         health = json.loads((ROOT_DATA / "source_health.json").read_text())
@@ -634,3 +694,58 @@ class CallerFaultIsNotASourceOutage(TmpDirCase):
         if row["httpStatus"] in (400, 404, 405, 422):
             self.assertIn("20260915", row["url"],
                           "rule out the compact date before blaming the endpoint")
+
+
+class SourceAppropriatePlanning(unittest.TestCase):
+    def _plan(self, now, source_ids):
+        from unittest import mock
+        from msl.sources import BY_ID
+        from msl.tasks import build_plan
+        lib = Library(pathlib.Path(tempfile.mkdtemp()))
+        patches = [mock.patch.object(source, "status",
+                                     "verified-live-read" if sid in source_ids else "blocked")
+                   for sid, source in BY_ID.items()]
+        for patch in patches:
+            patch.start()
+        try:
+            return build_plan(lib, now, "20260914", "20260920",
+                              "2026-09-14 to 2026-09-20")
+        finally:
+            for patch in patches:
+                patch.stop()
+
+    def test_clinicaltrials_explicitly_requests_total_count(self):
+        plan = self._plan("2026-09-22T12:00:00Z", ["clinicaltrials"])
+        urls = [t.url for t in plan
+                if t.source_id == "clinicaltrials" and t.kind == "survey"]
+        self.assertEqual(len(urls), 1)
+        self.assertIn("countTotal=true", urls[0])
+        self.assertIn("query.term=artificial%20intelligence", urls[0])
+
+    def test_bls_surveys_stay_within_the_keyless_daily_quota(self):
+        at_slot = self._plan("2026-09-22T12:00:00Z", ["bls"])
+        second_half = self._plan("2026-09-22T12:30:00Z", ["bls"])
+        off_slot = self._plan("2026-09-22T13:00:00Z", ["bls"])
+        surveys = lambda plan: [t for t in plan if t.source_id == "bls"]
+        self.assertEqual(len(surveys(at_slot)), 1)
+        self.assertEqual(surveys(second_half), [])
+        self.assertEqual(surveys(off_slot), [])
+
+    def test_mlb_uses_the_owner_local_day_near_utc_midnight(self):
+        plan = self._plan("2026-09-22T01:00:00Z", ["mlb_statsapi"])
+        mlb = [t.url for t in plan
+               if t.source_id == "mlb_statsapi" and t.kind == "survey"
+               and "date=" in t.url]
+        self.assertEqual(len(mlb), 1)
+        self.assertIn("date=2026-09-21", mlb[0])
+
+    def test_wikimedia_keeps_its_lagged_window_while_current_sources_do_not(self):
+        plan = self._plan("2026-09-22T12:00:00Z",
+                          ["wikimedia_pageviews", "usgs_fdsn", "mlb_statsapi"])
+        urls = [t.url for t in plan]
+        wiki = next(u for u in urls if "pageviews" in u)
+        usgs = next(u for u in urls if "earthquake.usgs.gov" in u and "endtime=" in u)
+        mlb = next(u for u in urls if "statsapi.mlb.com" in u and "date=2026-09-22" in u)
+        self.assertIn("/20260914/20260920", wiki)
+        self.assertIn("endtime=2026-09-22", usgs)
+        self.assertIn("date=2026-09-22", mlb)

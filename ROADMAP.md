@@ -1,159 +1,185 @@
-# ROADMAP — what is left, and what is blocking it
+# ROADMAP — completed scope, remaining work, and blockers
 
-Everything here is either verified against something that was actually read, or
-labelled as an assumption. Nothing on this page is a plan presented as a result.
+This is a limitations ledger, not a wish list presented as a result. Current
+cycle counts live in [`STATUS.md`](STATUS.md); claim and source details live in
+[`VERIFICATION.md`](VERIFICATION.md). Both are regenerated from state so this
+file does not duplicate figures that will be stale after the next scheduled run.
 
 ---
 
-## Done and verified
+## Delivered and mechanically checked
 
-| | |
-|---|---|
-| Autonomous cycle on a timer | `.github/workflows/think.yml`, cron `*/30 * * * *`, commits its own output, no manual input |
-| Evidence gate with a single door | `msl/evidence.py → Ledger.accept`; rejections counted and published |
-| Derived-claim recheck | `msl/reason.py → recheck_derived`; drift becomes an irregularity |
-| Source registry with health states | 28 sources, statuses written only by the probe |
-| Persona competition scored on skill | 7 personas, null model, qualification rule, forecast log |
-| Idea competition with persistence | 6 generator rules, robustness scoring, carry-forward and retirement |
-| Memory that changes behaviour | skill weights, source reliability, counted lessons |
-| Site | 9 pages, zero dependencies, works from `file://` |
-| Test suite | standard library only, runs offline and deterministically |
-
-## Fixed in the 2026-09-22 session
-
-Each of these was found by running the project's own documented checks and
-reading what came back, not by inspection. Each has a test that fails when the
-defect is reintroduced.
-
-| Defect | How it hid | Fix |
+| Requirement | Implemented result | Where to verify |
 |---|---|---|
-| **The probe had never run.** Both copies called `fetch(..., accepts=...)` against a signature taking `accept=`, so both raised `TypeError` on the first source | `probe.yml` ran `... \| tee data/probe.log` with no `pipefail`; a pipeline's status is its last command's, so `tee` succeeded and the step went **green** while the probe read nothing | One shared loop in `msl/probe.py`; both entry points delegate. `set -o pipefail` in `probe.yml` and `think.yml`. 26 tests in `tests/test_probe.py` |
-| **Eight sources were advertised as `verified-live-read` from values typed into `msl/sources.py`**, contradicting that module's own "promoted only by the probe, never by hand" | The site rendered them as verified; nothing cross-checked the claim against a recorded read | The registry now hard-codes no probe state. `load_probe_results()` replays `data/source_health.json`, written only by the probe |
-| **An egress wall published 22 healthy sources as `blocked`** and minted 38 near-identical irregularities, including 3 CRITICAL escalations against `federal_register` | `EgressBlocked` was folded into the same branch as a real HTTP failure, and `consecutive_failures` (which drives CRITICAL) counted our own outage | Egress is now a *runner* fact: no status change, no escalation, one aggregated finding naming all affected hosts. 7 tests in `tests/test_egress.py` |
-| **The README's captured/derived breakdown was wrong**: it reported 8,312 / 306 when the ledger held 5,914 / 2,704 | `derivedClaims` was fed `rep.derived` — this cycle's derivation *delta* — while the template uses it as the ledger *total*, so ~2,400 arithmetic claims were labelled "captured from live payloads" | `derived_total` added and used for the breakdown; the delta is published separately as `derivedThisCycle` |
-| **A fourth interest category was missing entirely** | The owner's master directory publishes 10 categories; 9 were represented here, so "Gaming & Guides" was neither served nor reported as a gap — an omission that is not written down is invisible | Added to `INTEREST_CATEGORIES_WITHOUT_A_SOURCE`. All three count-bearing irregularity titles are now computed from their lists, not typed |
-| **Two records of source status that visibly contradicted each other** | The probe wrote `source_health.json` and a cycle wrote `sources.json`, so the Sources page showed a probe table saying "4 ok / 24 inconclusive" directly above a registry table saying "23 verified" | One ledger, two writers: `msl/probe.record_reads` folds cycle reads in with `apply=False` (the cycle already applied them, and re-applying would double-count `live_reads` and `consecutive_failures`). Each row names its `via` |
+| Run without manual input | A serialized GitHub Actions writer runs every 30 minutes; a daily probe shares the same lock | `.github/workflows/think.yml`, `.github/workflows/probe.yml` |
+| Research new and trending subjects | Date-relative official/public searches, scholarly feeds, registries, government data, sports feeds, and public-attention signals | `msl/tasks.py`, `msl/sources.py`, `cycles.html` |
+| Build an expanding expert library | Payload entities become candidate topics, repeated signals promote them, accepted claims credit them, and later plans deepen them | `msl/topics.py`, `library.html` |
+| Learn from previous cycles and ideas | Source reliability, persona skill, topic interest, lessons, forecasts, and idea lineage persist and affect later cycles | `msl/learn.py`, `msl/ideas.py`, `data/memory.json` |
+| Run competing strategies | Eight deterministic personas, including a persistence null, issue falsifiable forecasts; ranking uses paired same-target skill | `msl/strategies.py`, `leaderboard.html` |
+| Evaluate idea robustness | Evidence, independent corroboration, breadth, seven-day freshness, and reproducibility are rescored each cycle from terminal evidence | `msl/ideas.py`, `ideas.html` |
+| Verify before publishing | Schema-v2 captured claims require a complete successful evidence row, matching source and URL, integrity hash, stable field, exact declared source path, and strict JSON value | `msl/evidence.py`, `tests/test_gate.py` |
+| Preserve line-level review links | The site publishes a recent claim window with URL, path, time, lineage, and integrity class; the complete append-only record remains in JSONL | `evidence.html`, `data/claims.jsonl`, `data/evidence.jsonl` |
+| Flag irregularities | Failures, malformed payloads, coverage gaps, drift, stale fallbacks, and structural limitations receive persistent IDs and reproduction steps | `irregularities.html`, `IRREGULARITIES.md` |
+| Reflect the owner's interests | The readable MasterSite catalog is decoded through the evidence gate, Git blob SHA checked, and shown as 52 linked projects across its categories | `projects.html`, `data/seed/master_site_catalog.json` |
+| Provide a daily one-stop site | Ten dependency-free, accessible static pages render from one generated payload and work without runtime API calls | root HTML files, `app.js`, `tools/render_check.js` |
+| Bound unattended execution | Reads are paced by host, response size and task growth are capped, HTTP 4xx is not hammered, and a cycle defers work after its network budget rather than dying mid-write | `msl/http.py`, `msl/config.py`, `msl/pipeline.py` |
 
-`python3 -m msl.cli publish` was added so a template change can be seen without
-burning a cycle. Its first version replayed the recorded cycle row reflectively
-over camelCase keys against snake_case fields, matched almost nothing, and
-published "0 verified claims" with a clean exit code — caught and fixed before
-commit, and now guarded by a test that fails on it.
+## The three cumulative review passes
 
-## Next session, in priority order
+### Pass 1 — implementation and baseline verification
 
-### 1. Probe every source from a runner with unrestricted egress — *still open*
+The engine, evidence gate, library, reasoning, competition, generated site, source
+registry, and unattended workflows were exercised end to end. An isolated offline
+cycle proved that every fixture could pass through plan → collect → gate → reason
+→ compete → publish with no network or manual input.
 
-The probe now runs (it did not before: see "Fixed this session" below), but this
-repository's own probe was executed from a sandbox whose egress allowlist reached
-only 4 of 28 hosts. The recorded ledger says so explicitly: `egressBlocked: true`,
-24 rows with `verdict: false`. **Those 24 sources are unproven, not broken.**
+### Pass 2 — adversarial bug and edge-case review
 
-The first `probe.yml` run on a GitHub runner does this automatically. Expect
-failures; the likely ones are unchanged from the previous revision of this file:
+The review corrected, among other findings:
 
-- `ecb_sdmx` — the `jsondata` structure format nests observations differently
-  from the flat shape `adapters.ecb_sdmx` expects. Budget time for this one.
-- `arxiv` — Atom namespace handling; `opensearch:totalResults` is easy to miss.
-- `sec_edgar` — requires a User-Agent declaring a contact; the engine sends one,
-  but SEC returns 403 to generic agents.
-- `bls` — keyless use is capped at 25 queries/day per IP; a shared Actions runner
-  IP may already be exhausted.
-- `kalshi_public`, `mlb_statsapi`, `nhl_web`, `nba_cdn` — undocumented endpoints
-  with no contract, so a shape change is silent until it is not.
+- historical projection hashes that had been labelled as wire-verifiable;
+- duplicate derived conclusions and derivations duplicated across cycles;
+- malformed-success responses that could be mistaken for usable collections;
+- caller-generated 4xx, local response caps, and runner egress being misreported
+  as evidence that somebody else's service was down;
+- competing personas compared with a differently mixed null-model sample;
+- idea freshness inflated by derived rows rather than terminal observations;
+- stale or hard-coded dates, a non-owner-local MLB date, and quota-bypassing BLS
+  probes;
+- wrong ECB and NHL payload assumptions;
+- generated-file races between the half-hour cycle and daily probe;
+- accepted/strict/legacy counts that described different populations as one; and
+- a project catalog that had previously been imported by the browser rather than
+  accepted as evidence.
 
-Do not mark a source `verified-live-read` by hand, and do not "fix" the 24
-`registered` rows by editing `msl/sources.py` — the registry now hard-codes no
-status at all, and `load_probe_results()` replays `data/source_health.json` at
-import. The only way to move a status is to run the probe.
+Each corrected behavior has a regression test or a read-only verifier check.
 
-**Adapters for the 24 unprobed sources have still never met a real payload.**
-They are unit-tested against hand-built payloads only. This is the single most
-important open item and it cannot be closed from a sandbox.
+### Pass 3 — original-request and publication audit
 
-### 2. Give the competition something that actually moves
+The final audit checked all ten rendered pages and the complete written request.
+It additionally corrected negative library accounting, stale source-health
+wording, partial-interest coverage presented as wholly unserved, pinned
+irregularity titles that could never update, HTTP 4xx retry hammering, generic 403
+responses falsely called rate limits, and unbounded collection time. Documentation
+now distinguishes a fresh live read, an explicitly stale seed fallback, exact wire
+integrity, projection-only integrity, strict schema-v2 claims, and legacy claims.
 
-On the static seed corpus every metric is unchanged, so the null model scores
-100% and every other persona scores ≤ 0. That is honest but it is not a
-competition. Live cycles with moving series are needed before any skill number
-means anything; the first ones have now run (cycles 15-16 recorded 1,036 forecasts
-against 620 scored) and the series that actually moved are `crossref.totalResults`,
-`nws.alerts`, `pubmed.hits[...]` and `usgs.events[7d]`.
+---
 
-Partly addressed: the observation set was curated and the scoring series was
-deduplicated per cycle, and the new GitHub release surface gives the competition a
-subject whose change is observable one cycle later — see item 6.
+## Remaining work and blockers, in priority order
 
-### 3. Backfill the attention signal
+### 1. Historical evidence cannot be upgraded retroactively
 
-Only one Wikipedia article is tracked (`Artificial_intelligence`), because that
-is the only pageview capture in the seed set. `msl/tasks.py` already expands to
-every tracked `wiki:` topic, so this grows on its own — but the discovery stage
-does not currently *propose* new Wikipedia articles. Add a rule that maps a
-high-signal GitHub repository or Federal Register agency to a Wikipedia article
-title, then verify the article exists before adding it. An article that 404s must
-produce a `negative` claim, not a silent drop.
+Cycles before the strict capture contract usually retained a canonical projection
+hash but not the exact response bytes. Those rows remain accepted legacy evidence
+and are labelled `projection`; they are **not** relabelled as wire-verifiable. A
+future read can establish integrity for a new observation, but it cannot prove the
+bytes received in an old cycle. The verifier reports strict and legacy populations
+separately.
 
-### 4. Close or formally drop the three unserved interest categories
+**Recommendation:** let strict schema-v2 observations grow naturally and never
+rewrite old rows. If long-term storage becomes available, retain compressed raw
+bodies for new reads under an explicit size/retention policy.
 
-Travel & Korea Trip, Social & Creator Data and Elections & Civic Data appear in
-the owner's verified corpus and have no source that can serve them. Each needs a
-decision:
+### 2. The shared ChatGPT transcript is not machine-readable here
 
-- **Travel** — no official keyless pricing API exists. Realistic options: publish
-  only what `nominatim` can verify (that a place exists and where it is) and
-  retire the pricing question, or accept a keyed source as manual input.
-- **Social/creator** — every official API is keyed. There is no honest path
-  without a key. Recommend retiring the category rather than scraping.
-- **Elections** — `federal_register` covers federal rulemaking. State results are
-  per-jurisdiction; the FEC API needs a key for most routes. Partial coverage is
-  achievable and should be labelled partial.
+The supplied share URL exposes only an HTML shell and the title “Design Autonomous
+Research System”; its transcript could not be retrieved. No unseen requirement is
+claimed as reviewed. The written request and the readable MasterSite corpus are the
+only owner requirements used.
 
-### 5. Retire topics that never earn evidence
+**Blocker:** only the share service or the owner can make that transcript available
+as readable text. Importing it would be manual input, so the autonomous engine does
+not wait for it.
 
-`CYCLES_BEFORE_RETIREMENT` is 96 cycles (~2 days). The discovery stage proposes up
-to 6 candidate topics a cycle, so without retirement the library fills with
-candidates that never produce a claim. Verify the retirement path actually fires
-after a few days of live running — it has never been exercised on real data.
+### 3. Live availability is point-in-time, not a service SLA
 
-### 6. Add a real forecast target with a knowable outcome
+The source ledger reports what a particular runner conclusively read. Some prior
+reads returned 403 from ClinicalTrials.gov, the NBA CDN, or SEC EDGAR while an
+independent read of at least some of those endpoints later succeeded. A 403 is
+therefore reported as that request's result, not a universal claim that the service
+is down. Runner egress, malformed caller requests, and local response caps produce
+an explicit **no verdict** instead.
 
-The current target is "does this metric move up or down next cycle", which is
-weak: on most series the honest answer is "no". Stronger targets, in rough order
-of value:
+**Recommendation:** inspect the first post-merge daily probe and subsequent live
+cycles. Do not hand-edit a source to “verified”; only a complete recorded read may
+move it there.
 
-- **Federal Register publication dates.** A document's `publication_date` is
-  known in advance from `public_inspection_pdf_url`. Predicting it is falsifiable
-  against a fixed official record.
-- **PyPI/npm next release within N days.** Verifiable from the registry.
-- **USGS event counts in a forward window.** Verifiable from the same endpoint.
+### 4. Four interest areas still have missing or partial official/keyless coverage
 
-**Done for the GitHub case.** `github_releases` reads
-`/repos/{owner}/{repo}/releases?per_page=1`, so "will the newest tag differ one cycle
-from now?" is answered by the same endpoint that asked it, and `S07_ChangeHazard`
-forecasts it from the subject's own recorded change history. An empty array is a
-`negative` claim on the same field name a real tag uses, so a repository's first
-release reads as a change rather than as a series appearing from nowhere.
+- **Travel & Korea Trip:** place geocoding is available; airfare and lodging prices
+  are not available from a confirmed official keyless API.
+- **Social & Creator Data:** Wikimedia and Hacker News cover public attention;
+  official creator-platform metrics require approved/keyed APIs.
+- **Elections & Civic Data:** federal rulemaking is covered; election results are
+  jurisdiction-specific and major federal interfaces are keyed.
+- **Gaming & Guides:** no sufficiently documented, confirmed source has been
+  registered.
 
-Still open: the Federal Register date target, a forward-window USGS target, and the
-PyPI/npm release-window target. Each needs its own adapter change and scoring rule.
+The site shows those as coverage gaps rather than filling them with scraped or
+invented values.
 
-## Limitations that are not fixable without manual input
+**Recommendation:** prefer honest partial coverage. Add a source only after a live
+read and documentation review; otherwise leave the gap open.
 
-| Limitation | Why |
-|---|---|
-| No language model in the reasoning loop | A model needs an API key; a key is manual input |
-| Six useful sources excluded | FRED, NFL Game API, Google Trends, X, YouTube Data, TikTok/Instagram — all keyed |
-| No creator/social signal at all | Every official creator API requires an approved developer application |
-| The owner's ChatGPT transcript is not machine-readable | Client-side rendered; only the `<title>` is served. Any requirement in it that is missing here is missing |
-| Live execution proof is thin outside the workflows | The unattended workflow has now run live cycles (cycle 16: 63 reads ok, 7 failed, recorded in `data/source_health.json`), and the sandbox that wrote the seeds reached only GitHub, PyPI and npm. Sources with no recorded success are named as such on the Sources page rather than assumed |
+### 5. GitHub's scheduler is best effort
+
+The workflow requests a run every 30 minutes, but GitHub documents that scheduled
+runs may be delayed or dropped under load. Repository code cannot provide a hard
+real-time or “never stops” SLA on a hosted scheduler. The cycle timeline makes gaps
+visible, and the state-writer lock prevents overlapping writes.
+
+**Recommendation:** if a hard SLA becomes necessary, mirror the same keyless CLI on
+a supervised external runner. That is infrastructure work, not a claim this
+repository can satisfy by itself.
+
+### 6. Some public feeds have weaker contracts
+
+MLB, NHL, and NBA public feeds are operator-hosted but lack a located stable public
+contract; Frankfurter is a third-party ECB mirror; GitHub has no official trending
+API. Every affected source is assigned an explicit provenance/trust tier and the
+substitution is disclosed.
+
+**Recommendation:** keep adapter shape tests and the daily probe. Retire a feed if
+its operator contract or provenance can no longer be stated honestly.
+
+### 7. The forecast problem can become more substantive
+
+Direction-of-next-observation is falsifiable but often rewards “flat.” Paired skill
+prevents that baseline from looking impressive, yet stronger targets would improve
+research value.
+
+Suggested additions, only after an official outcome route is confirmed:
+
+1. package release within a fixed forward window;
+2. Federal Register publication-date outcomes;
+3. USGS counts in a predeclared future window; and
+4. sports outcomes tied to a documented league record.
+
+Each new target must define its outcome before issuance, score only against a later
+cycle, and include a same-target null forecast.
+
+---
 
 ## Deliberate non-goals
 
-- **No scraping.** If there is no official endpoint, the topic has no signal. A
-  scraped number cannot be traced to a contract, which defeats the whole design.
-- **No backfilled history.** The ledger starts at the first cycle. Inventing a
-  plausible past would be the exact failure mode this project exists to avoid.
-- **No manual data entry.** `tools/overlay.json`-style hand-authored narrative, as
-  used by the sibling `MasterSite`, is deliberately absent here. Every sentence
-  the site prints is generated from the ledger.
+- **No unsupported scraping.** An attractive number without stable provenance is
+  worse than a visible gap.
+- **No invented history.** The ledger starts where observations start.
+- **No secret-dependent model.** The current “reasoning” is deterministic,
+  testable rule execution. A language model would require a key, add nondeterminism,
+  and need a separate evidence-constrained design; it is not silently simulated.
+- **No manual source-status edits.** Availability comes from recorded reads.
+- **No absolute hallucination claim.** The verifier can prove schema, lineage,
+  integrity metadata, and deterministic arithmetic within the retained record. It
+  cannot reconstruct response bytes that old cycles did not save or prove that an
+  external source itself was correct. Those limits remain visible.
+
+## Next-session checklist
+
+1. Review Actions and Pages after several scheduled live cycles.
+2. Investigate any new open critical irregularity before adding sources or ideas.
+3. Watch strict-v2 and wire-integrity proportions grow; never “upgrade” legacy rows.
+4. Add a stronger forecast target only with an official, later-cycle outcome.
+5. Re-run the full suite, render check, strict JSON/JSONL parse, claim verifier,
+   and an isolated offline cycle before the next merge.

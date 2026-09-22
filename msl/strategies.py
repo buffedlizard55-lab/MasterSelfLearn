@@ -7,10 +7,10 @@ that was not forecast in advance, and nothing is ranked that has not been scored
 enough times to mean anything (``MIN_SCORED_FORECASTS_TO_RANK``): a persona that
 never traded is reported ``UNRANKED`` with the reason, never as "0%".
 
-The headline metric is **skill**, not accuracy: ``accuracy - accuracy of
-S10_Persistence``.  S10 always predicts "no change", so it is the null hypothesis,
-and a persona with positive accuracy but non-positive skill has demonstrated
-nothing.
+The headline metric is **paired skill**, not raw accuracy: on only those
+metric/cycle targets forecast by both a persona and ``S10_Persistence``, subtract
+the null's accuracy from the persona's. S10 always predicts “no change”; comparing
+global accuracies across different target mixes would not be a valid experiment.
 """
 from __future__ import annotations
 
@@ -87,6 +87,12 @@ class StrategyScore:
     scored: int = 0
     correct: int = 0
     brier_sum: float = 0.0
+    # Skill is evaluated only on metric/cycle targets for which this persona and
+    # persistence both issued a forecast. Global-null accuracy is not a fair
+    # comparator when personas cover different target mixes.
+    paired_scored: int = 0
+    paired_correct: int = 0
+    paired_null_correct: int = 0
     skill: Optional[float] = None
     status: str = "unranked"
     unranked_reason: str = ""
@@ -99,10 +105,23 @@ class StrategyScore:
     def mean_brier(self) -> Optional[float]:
         return self.brier_sum / self.scored if self.scored else None
 
+    @property
+    def paired_accuracy(self) -> Optional[float]:
+        return (self.paired_correct / self.paired_scored
+                if self.paired_scored else None)
+
+    @property
+    def paired_null_accuracy(self) -> Optional[float]:
+        return (self.paired_null_correct / self.paired_scored
+                if self.paired_scored else None)
+
     def as_dict(self) -> Dict[str, Any]:
         return {"strategyId": self.strategy_id, "name": self.name, "thesis": self.thesis,
                 "issued": self.issued, "scored": self.scored, "correct": self.correct,
                 "accuracy": self.accuracy, "meanBrier": self.mean_brier,
+                "pairedScored": self.paired_scored,
+                "pairedAccuracy": self.paired_accuracy,
+                "pairedNullAccuracy": self.paired_null_accuracy,
                 "skill": self.skill, "status": self.status,
                 "unrankedReason": self.unranked_reason}
 
@@ -158,7 +177,7 @@ _NUMERIC_SERIES = (
     re.compile(r"^worldbank\[[^\]]+\]\.latest$"),
     re.compile(r"^usgs\.events\[[^\]]+\]$"),
     re.compile(r"^nws\.alerts\[[^\]]+\]$"),
-    re.compile(r"^clinicaltrials\.totalCount$"),
+    re.compile(r"^clinicaltrials\.totalCount\[[^\]]+\]$"),
     re.compile(r"^pubmed\.hits\[[^\]]+\]$"),
     re.compile(r"^crossref\.totalResults$"),
     re.compile(r"^openalex\.count$"),
@@ -561,18 +580,47 @@ def leaderboard(forecasts: List[Forecast]) -> Dict[str, Any]:
 
     null = scores.get("S10_Persistence")
     null_acc = null.accuracy if null and null.scored else None
+
+    def target_key(f: Forecast) -> Tuple[int, str, str]:
+        return (f.cycle, f.metric, f.metric_kind or METRIC_NUMERIC)
+
+    null_by_target = {
+        target_key(f): f for f in forecasts
+        if f.strategy_id == "S10_Persistence" and f.scored and f.outcome
+    }
+    for f in forecasts:
+        if not f.scored or not f.outcome:
+            continue
+        sc = scores.get(f.strategy_id)
+        if sc is None:
+            continue
+        if f.strategy_id == "S10_Persistence":
+            paired_null = f
+        else:
+            paired_null = null_by_target.get(target_key(f))
+        if paired_null is None or paired_null.outcome != f.outcome:
+            # A mismatched outcome on the same target means the score ledger is
+            # internally inconsistent; withholding the pair is safer than ranking it.
+            continue
+        sc.paired_scored += 1
+        sc.paired_correct += int(f.direction == f.outcome)
+        sc.paired_null_correct += int(paired_null.direction == paired_null.outcome)
+
     for sc in scores.values():
-        if sc.scored < config.MIN_SCORED_FORECASTS_TO_RANK:
+        if sc.paired_scored < config.MIN_SCORED_FORECASTS_TO_RANK:
             sc.status = "unranked"
-            sc.unranked_reason = (
-                f"{sc.scored} scored forecast(s); {config.MIN_SCORED_FORECASTS_TO_RANK} "
-                f"required before a rank means anything.")
+            if sc.strategy_id != "S10_Persistence" and sc.scored and not sc.paired_scored:
+                sc.unranked_reason = (
+                    "No scored null model forecast matches this persona's metric/cycle "
+                    "targets, so paired skill cannot be computed.")
+            else:
+                sc.unranked_reason = (
+                    f"{sc.paired_scored} paired scored forecast(s); "
+                    f"{config.MIN_SCORED_FORECASTS_TO_RANK} required before a rank "
+                    "means anything.")
             continue
-        if null_acc is None:
-            sc.status = "unranked"
-            sc.unranked_reason = "The null model has no scored forecasts to compare against yet."
-            continue
-        sc.skill = round(sc.accuracy - null_acc, 4)
+        sc.skill = round((sc.paired_accuracy or 0.0)
+                         - (sc.paired_null_accuracy or 0.0), 4)
         sc.status = "ranked"
     ranked = sorted([s for s in scores.values() if s.status == "ranked"],
                     key=lambda s: (-(s.skill or 0), s.mean_brier or 1, s.strategy_id))
@@ -587,9 +635,10 @@ def leaderboard(forecasts: List[Forecast]) -> Dict[str, Any]:
         "qualification": {
             "minScoredForecasts": config.MIN_SCORED_FORECASTS_TO_RANK,
             "rule": ("A persona is ranked only when it has at least "
-                     f"{config.MIN_SCORED_FORECASTS_TO_RANK} scored forecasts AND the null "
-                     "model does too.  Skill = accuracy − null accuracy, so a persona must "
-                     "beat 'nothing changes' to appear in the ranked table at all."),
+                     f"{config.MIN_SCORED_FORECASTS_TO_RANK} forecasts scored on targets "
+                     "where the null (persistence) model also forecast the same metric "
+                     "and cycle. Skill = paired persona accuracy − paired persistence accuracy; "
+                     "unpaired target mixes are never compared."),
         },
     }
 

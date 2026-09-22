@@ -42,4 +42,4 @@ def fresh_ledger(tmp: pathlib.Path) -> Ledger:
 
 def ev(ledger: Ledger, source_id: str = "github_search", url: str = "https://example.test/x"):
     return ledger.add_evidence(source_id=source_id, url=url, captured_at=NOW1,
-                               status=200, body=b'{"ok":true}')
+                               status=200, body=b'{"ok":true}', capture_mode="test-fixture")

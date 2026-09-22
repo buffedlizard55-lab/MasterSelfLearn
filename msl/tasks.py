@@ -24,9 +24,10 @@ computed, so the query and the sentence cannot drift apart.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 from urllib.parse import quote
+from zoneinfo import ZoneInfo
 
 from . import config
 from .sources import REGISTRY, BY_ID
@@ -109,6 +110,16 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
     seen: set = set()
     since_90d = iso_day(compact_day(now, 90))
     since_7d = iso_day(compact_day(now, 7))
+    # Wikimedia is intentionally handed a lagged window by the pipeline because
+    # daily pageview aggregates are not immediate. Other APIs describe current
+    # conditions and must derive their windows from the cycle clock instead.
+    current_day = now[:10]
+    current_7d_start = iso_day(compact_day(now, 7))
+    clock = datetime.strptime(now[:16], "%Y-%m-%dT%H:%M")
+    # MLB schedules are keyed to a North American calendar day. Near 00:00 UTC,
+    # using the UTC date asks for tomorrow from the owner's San Francisco locale.
+    utc_clock = clock.replace(tzinfo=timezone.utc)
+    mlb_day = utc_clock.astimezone(ZoneInfo(config.OWNER_TIMEZONE)).date().isoformat()
 
     def push(t: Task) -> bool:
         if t.key in seen:
@@ -123,8 +134,13 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
         tasks.append(t)
         return True
 
-    # 1. probes — cheap, and they are what keeps `status` honest
+    # 1. probes — cheap, and they are what keeps `status` honest. BLS is the
+    # exception: its keyless quota is 25 queries/day, so probing it every
+    # half-hour would exhaust the quota before the survey stage began.
+    bls_slot = clock.hour % 6 == 0 and clock.minute < 30
     for s in REGISTRY:
+        if s.id == "bls" and not bls_slot:
+            continue
         if s.status == "blocked" and s.consecutive_failures >= config.SOURCE_FAILS_BEFORE_CRITICAL:
             # still probe it: a blocked source that recovers must be allowed back
             pass
@@ -179,8 +195,10 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
 
         if "clinicaltrials" in usable:
             push(Task("clinicaltrials",
-                      "https://clinicaltrials.gov/api/v2/studies?pageSize=5",
-                      "clinicaltrials", fam_slug, "survey", {"topic": fam_slug}))
+                      "https://clinicaltrials.gov/api/v2/studies?pageSize=5&countTotal=true"
+                      "&query.term=artificial%20intelligence",
+                      "clinicaltrials", fam_slug, "survey",
+                      {"topic": fam_slug, "query": "artificial intelligence"}))
 
         if "openalex" in usable:
             push(Task("openalex",
@@ -219,18 +237,17 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
             # for one and the same California query.  The URL says CA; that is what
             # both tasks now record.
             push(Task("nws_alerts", "https://api.weather.gov/alerts/active?area=CA",
-                      "nws_alerts", fam_slug, "survey", {"topic": fam_slug}))
+                      "nws_alerts", fam_slug, "survey",
+                      {"topic": fam_slug, "area": "CA"}))
 
         if "usgs_fdsn" in usable:
             push(Task("usgs_fdsn",
                       "https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson"
-                      f"&starttime={iso_day(start_day)}&endtime={iso_day(end_day)}"
+                      f"&starttime={current_7d_start}&endtime={current_day}"
                       "&minmagnitude=5.0",
                       "usgs_fdsn", fam_slug, "survey",
                       {"topic": fam_slug, "window": "7d",
-                       # Only consulted if the URL loses its dates; the query's own
-                       # window wins, because that is what was read.
-                       "window_label": window_label}))
+                       "window_label": f"{current_7d_start} to {current_day}"}))
 
         if "census_acs" in usable:
             push(Task("census_acs",
@@ -256,9 +273,13 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
             push(Task("frankfurter", "https://api.frankfurter.app/latest?from=USD&to=EUR,KRW,JPY",
                       "frankfurter", fam_slug, "survey", {"topic": fam_slug}))
 
-        if "bls" in usable:
+        if "bls" in usable and bls_slot:
+            # Keyless BLS use is capped at 25 queries/day. Four scheduled survey
+            # reads plus the daily health probe leave ample retry headroom; the
+            # old half-hour plan attempted 48 surveys/day before retries.
             push(Task("bls", "https://api.bls.gov/publicAPI/v2/timeseries/data/CUUR0000SA0",
-                      "bls", fam_slug, "survey", {"topic": fam_slug, "series": "CUUR0000SA0"}))
+                      "bls", fam_slug, "survey",
+                      {"topic": fam_slug, "series": "CUUR0000SA0"}))
 
         if "sec_edgar" in usable:
             push(Task("sec_edgar", "https://data.sec.gov/submissions/CIK0000320193.json",
@@ -273,15 +294,12 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
                       "kalshi_public", fam_slug, "survey", {"topic": fam_slug}))
 
         if "mlb_statsapi" in usable:
-            # StatsAPI wants ISO dates, and this engine has proof: every recorded
-            # MLB claim in data/claims.jsonl was read with `date=2026-09-20` and
-            # returned a coherent schedule (15 games).  The pageview and USGS APIs
-            # want the compact form, so `end_day` is compact here and has to be
-            # converted — passing it straight through would send `date=20260920`,
-            # a format this project has never seen answered.
+            # StatsAPI wants an ISO date. Unlike Wikimedia's lagged aggregates,
+            # this is a current-day schedule; reusing the pageview end date made
+            # every unattended cycle describe a game slate from a week earlier.
             push(Task("mlb_statsapi",
                       "https://statsapi.mlb.com/api/v1/schedule?sportId=1"
-                      f"&date={iso_day(end_day)}",
+                      f"&date={mlb_day}",
                       "mlb_statsapi", fam_slug, "survey", {"topic": fam_slug}))
 
         if "nhl_web" in usable:

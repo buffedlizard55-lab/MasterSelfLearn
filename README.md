@@ -16,32 +16,34 @@ It requires **no manual input**. Every cycle is triggered by
 <!-- AUTO:COUNTS:BEGIN — regenerated every cycle, do not edit -->
 | Metric | Value |
 |---|---|
-| Cycle | **18** |
-| Verified claims in the ledger | **15,107** |
-| — captured from live payloads | 9,986 |
-| — derived by recorded arithmetic | 5,115 |
-| — negative (proof of absence) | 6 |
+| Cycle | **20** |
+| Accepted claims in the ledger | **16,532** |
+| — schema-v2 strict trace contract | 1,425 |
+| — legacy trace contract (reported, not upgraded) | 15,107 |
+| — captured from accepted source reads | 10,952 |
+| — derived by recorded arithmetic | 5,572 |
+| — negative (proof of absence) | 8 |
 | Claims rejected by the evidence gate | **0** |
-| Derived claims rechecked this cycle | 44 |
+| Derived claims rechecked this cycle | 1,446 |
 | Derived claims that no longer recompute | **0** |
-| Topics in the library | **121** (new this cycle: 6) |
-| Published insights | 386 |
-| Forecasts issued this cycle | 1,153 |
-| Forecasts scored against outcomes | 1,215 |
-| Ideas in the competition | **24** (promoted: 0) |
-| Open irregularities | **32** (new: 2) |
-| Sources registered | 30 |
+| Topics in the library | **133** (new this cycle: 6) |
+| Published insights | 271 |
+| Forecasts issued this cycle | 1,091 |
+| Forecasts scored against outcomes | 496 |
+| Ideas in the competition | **25** (promoted: 0) |
+| Open irregularities | **24** (new: 0) |
+| Sources registered | 31 |
 | — verified by a recorded live read | 27 |
 | — currently blocked | 3 |
-| — never read (not broken, just unprobed) | 0 |
-| Reads this cycle (ok / failed) | 66 / 3 |
-| Reads planned / refused by the cap | 69 / 0 |
-| Forecasts waiting for an observation | 3,059 |
+| — never read (not broken, just unprobed) | 1 |
+| Reads this cycle (ok / failed) | 22 / 0 |
+| Reads planned / refused by the cap | 22 / 0 |
+| Forecasts waiting for an observation | 2,531 |
 | Forecasts that can never be scored | 5 |
-| Bytes read this cycle | 1,823,642 |
+| Bytes read this cycle | 0 |
 | Manual inputs required | **0** |
 
-Generated `2026-09-22T17:31:33Z` by `msl/pipeline.py`. Quoting any figure outside this block
+Generated `2026-09-22T19:23:59Z` by `msl/pipeline.py`. Quoting any figure outside this block
 means quoting something the next cycle has already superseded.
 <!-- AUTO:COUNTS:END -->
 
@@ -59,7 +61,7 @@ register and the cycle still publishes.
 | 2. Collect | `msl/http.py` | Reads each URL. Returns bytes or a recorded failure — never a silent empty |
 | 3. Verify | `msl/evidence.py` | The gate. A claim without an evidence row, or a derived claim without a lineage, is rejected and the rejection is logged |
 | 4. Discover | `msl/topics.py` | Entities found in the payloads become candidate topics; two signals promote a candidate |
-| 5. Reason | `msl/reason.py` | Deterministic arithmetic over verified claims, plus a recheck of every previously published derivation |
+| 5. Reason | `msl/reason.py` | Deterministic arithmetic over accepted claims, plus a recheck of every previously published derivation |
 | 6. Compete | `msl/strategies.py`, `msl/ideas.py` | Personas forecast the next observation; ideas are scored for robustness and carried forward |
 | 7. Learn & publish | `msl/learn.py`, `msl/sitegen.py` | Skill and reliability folded into memory; site and docs regenerated |
 
@@ -69,16 +71,18 @@ register and the cycle still publishes.
    `documented` or `negative` claim cites an evidence row, and unless a `derived`
    claim cites the claim ids and formula it came from. Rejections are counted and
    published, not swallowed.
-2. **Unreadable is not unknown.** A source that fails produces a recorded failure
-   with its HTTP status and a reproduction command. It never produces a
-   substitute value, and it is marked `blocked` so no claim can be built from it.
+2. **Unreadable is not unknown.** A conclusive source failure is recorded with
+   its HTTP status and reproduction command; no value is attributed to that
+   failed response. When an exact-URL hashed seed exists, the engine may publish
+   the older projection only as `seed-fallback`, with its original capture time
+   and an irregularity — never as a fresh observation.
 3. **Yesterday's arithmetic is re-checked today.** Every derived claim is
    recomputed from its recorded inputs each cycle; a mismatch is a drift
    irregularity and both numbers are shown.
 4. **Nothing is inferred from a model's memory.** There is no language model in
    the loop and no API key anywhere. Every sentence on the site is a template
    whose slots come from claim values. See `METHODOLOGY.md` §3.
-5. **Gaps are printed.** Topics with no verified claims, families with no source
+5. **Gaps are printed.** Topics with no accepted claims, families with no source
    that can answer their question, and sources excluded for needing a key are all
    listed on the site with the reason.
 
@@ -110,19 +114,20 @@ nothing, and the table says so.
 
 | # | Persona | Name | Scored | Accuracy | Skill vs null |
 |---|---|---|---|---|---|
-| 1 | `S10_Persistence` | Persistence (null model) | 1683 | 85.2% | +0.0 pts |
-| 2 | `S05_EvidenceDensity` | Evidence density | 188 | 66.0% | -19.2 pts |
-| 3 | `S01_MomentumPersist` | Momentum persistence | 188 | 66.0% | -19.2 pts |
-| 4 | `S03_Acceleration` | Acceleration | 228 | 47.8% | -37.4 pts |
-| 5 | `S06_MemoryWeighted` | Skill-weighted memory | 355 | 35.8% | -49.4 pts |
-| 6 | `S04_ConsensusFade` | Consensus fade | 228 | 20.2% | -65.0 pts |
-| 7 | `S02_MeanRevert` | Mean reversion | 355 | 1.1% | -84.1 pts |
+| 1 | `S05_EvidenceDensity` | Evidence density | 227 | 50.7% | +17.2 pts |
+| 2 | `S01_MomentumPersist` | Momentum persistence | 226 | 50.4% | +16.8 pts |
+| 3 | `S07_ChangeHazard` | Change hazard | 28 | 96.4% | +0.0 pts |
+| 4 | `S10_Persistence` | Persistence (null model) | 2271 | 88.2% | +0.0 pts |
+| 5 | `S03_Acceleration` | Acceleration | 373 | 32.2% | -18.8 pts |
+| 6 | `S06_MemoryWeighted` | Skill-weighted memory | 499 | 27.1% | -25.2 pts |
+| 7 | `S04_ConsensusFade` | Consensus fade | 373 | 16.9% | -34.1 pts |
+| 8 | `S02_MeanRevert` | Mean reversion | 499 | 11.0% | -41.3 pts |
 
 ### Unranked
 
 | Persona | Name | Why it is not ranked |
 |---|---|---|
-| `S07_ChangeHazard` | Change hazard | 2 scored forecast(s); 3 required before a rank means anything. |
+| — | — | — |
 
 A persona is ranked only with ≥3 scored
 forecasts *and* a scored null model. Below that it is reported `UNRANKED` with the
@@ -130,18 +135,18 @@ reason — never shown as 0%, which would present an untested design as a losing
 
 ## The idea competition
 
-Ideas are generated by a fixed rule set over verified claims, scored for
+Ideas are generated by a fixed rule set over accepted claims, scored for
 robustness (evidence, corroboration, breadth, freshness, reproducibility), and
 carried forward. An idea whose support disappears sinks; one that keeps gaining
 corroboration is promoted.
 
-| # | Idea | Robustness | Kind | Verified claims behind it |
+| # | Idea | Robustness | Kind | Accepted claims behind it |
 |---|---|---|---|---|
-| 1 | Replicate what made browser-use/jev-ultrafast grow | 0.550 | velocity-outlier | 36 |
-| 2 | Track “browser-use/jev-ultrafast” as a multi-source subject | 0.500 | convergence | 6 |
-| 3 | Replicate what made zai-org/ZCode grow | 0.500 | velocity-outlier | 35 |
-| 4 | Replicate what made NandhaKishorM/laya grow | 0.499 | velocity-outlier | 10 |
-| 5 | Track “zai-org/ZCode” as a multi-source subject | 0.450 | convergence | 6 |
+| 1 | Track “brayonpi/hexstellar” as a multi-source subject | 0.523 | convergence | 3 |
+| 2 | Track “browser-use/jev-ultrafast” as a multi-source subject | 0.523 | convergence | 3 |
+| 3 | Track “zai-org/ZCode” as a multi-source subject | 0.523 | convergence | 3 |
+| 4 | Track “repo:browser-use/jev-ultrafast” as a multi-source subject | 0.514 | convergence | 3 |
+| 5 | Track “buffedlizard55-lab/MasterSelfLearn” as a multi-source subject | 0.398 | convergence | 2 |
 
 ## What the engine has learned about itself
 
@@ -150,10 +155,10 @@ These are counted, not reflected. Each lesson carries the integers behind it.
 | | Lesson |
 |---|---|
 | `L1` | Topics backed by two or more independent sources have averaged 1.00 signals against 1.00 for single-source topics — a ratio of 1.00×. |
-| `L2` | The evidence gate has rejected 0 of 15107 attempted claims (0.00%). |
-| `L3` | 12 of 121 tracked topics (9.9%) have at least one verified claim. |
-| `L4` | Of 4 idea kinds, “velocity-outlier” holds the highest mean robustness (0.516 over 3 ideas). |
-| `L5` | 23 of 30 registered sources are reading reliably (EMA ≥ 0.8); 3 are effectively unreadable (EMA < 0.2). |
+| `L2` | The evidence gate has rejected 0 of 16532 attempted claims (0.00%). |
+| `L3` | 116 of 133 tracked topics (87.2%) have at least one accepted claim credit. |
+| `L4` | Of 4 idea kinds, “convergence” holds the highest mean robustness (0.496 over 5 ideas). |
+| `L5` | 26 of 31 registered sources are reading reliably (EMA ≥ 0.8); 3 are effectively unreadable (EMA < 0.2). |
 
 ## Site
 
@@ -161,9 +166,10 @@ These are counted, not reflected. Each lesson carries the integers behind it.
 |---|---|
 | [`index.html`](index.html) | Today's briefing — the daily page |
 | [`library.html`](library.html) | The expanding topic library, family by family |
+| [`projects.html`](projects.html) | The evidence-backed MasterSite project catalog and interest map |
 | [`leaderboard.html`](leaderboard.html) | Persona competition, forecasts and outcomes |
 | [`ideas.html`](ideas.html) | The idea competition, ranked by robustness |
-| [`evidence.html`](evidence.html) | Every claim with its source URL, hash and capture time |
+| [`evidence.html`](evidence.html) | Recent claim window with source URL, path, hash and capture time; full history stays in `data/claims.jsonl` |
 | [`sources.html`](sources.html) | The source registry, health, and what is excluded and why |
 | [`irregularities.html`](irregularities.html) | The flagged-irregularity register |
 | [`cycles.html`](cycles.html) | Cycle history and network accounting |
@@ -178,8 +184,8 @@ python3 -m msl.cli probe              # live-read every registered source, repor
 python3 -m msl.cli publish            # re-render site + docs from committed state
 python3 -m msl.cli verify-claims      # read-only: recheck derived claims, report drift
 python3 -m msl.cli gate-report        # read-only: show what the evidence gate rejected
-python3 -m unittest discover -s tests # 293 tests in 12 modules, standard library only
-node tools/render_check.js            # render all 9 pages headlessly
+python3 -m unittest discover -s tests # 333 tests in 13 modules, standard library only
+node tools/render_check.js            # render all 10 pages headlessly
 ```
 
 Python 3.9+, standard library only. No `pip install`, no build step, no keys.
@@ -203,27 +209,27 @@ Python 3.9+, standard library only. No `pip install`, no build step, no keys.
 
 ## Current irregularities
 
-116 registered — 6 critical,
-68 warn, 42 info;
-32 open, 84 resolved,
-19 standing (structural limits that do not auto-resolve).
+119 registered — 6 critical,
+69 warn, 44 info;
+24 open, 95 resolved,
+21 standing (structural limits that do not auto-resolve).
 
 Full register: [`IRREGULARITIES.md`](IRREGULARITIES.md) or
 [`irregularities.html`](irregularities.html).
 
 ## Sources
 
-30 registered, 27 verified by a recorded
-live read, 3 blocked, 0 never read.
+31 registered, 27 verified by a recorded
+live read, 3 blocked, 1 never read.
 **"Never read" is not "broken"**: it means no recorded probe has reached the
 endpoint yet, which is a fact about this project, not a claim about the service.
-A source is promoted to `verified-live-read` only by `msl/probe.py`, which writes
-`data/source_health.json` and nothing else — the registry itself hard-codes no
-status.
+A source is promoted to `verified-live-read` only by a conclusive complete read
+from the cycle or daily probe. Both fold observations into
+`data/source_health.json`; the registry itself hard-codes no status.
 
 6 excluded for requiring an API key, each with the
 reason recorded in `msl/sources.py`. 4
-interest categories have no registered source that can serve them, and no claim
-is made about them.
+interest categories have documented missing or partial coverage; no claim is made
+beyond the registered source surface.
 
 Full registry and the last recorded probe: [`sources.html`](sources.html).

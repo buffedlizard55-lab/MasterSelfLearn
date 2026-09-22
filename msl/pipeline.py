@@ -24,7 +24,8 @@ from typing import Any, Dict, List, Optional, Tuple
 from . import config, tasks as taskmod
 from .adapters import ExtractResult, adapter_for
 from .evidence import Ledger, RejectedClaim
-from .http import FetchResult, FetchStats, fetch
+from .http import (CALLER_FAULT_STATUSES, FetchResult, FetchStats, fetch,
+                   health_inconclusive_reason)
 from .ideas import Idea, synthesize
 from .irregularities import CRITICAL, INFO, WARN, Register
 from .learn import (derive_lessons, empty_memory, load as load_memory, record_cycle,
@@ -37,15 +38,6 @@ from .strategies import (Context, Forecast, issue, leaderboard, score, tracked_c
                          tracked_metrics, update_weights)
 from .topics import (FAMILIES, FAMILY_BY_SLUG, STATUS_ACTIVE, STATUS_BLOCKED,
                      STATUS_CANDIDATE, STATUS_RETIRED, Library, build_interest_profile)
-
-
-#: HTTP statuses that mean "this request was wrong", not "this service is down".
-#: 400 malformed, 404 the addressed thing does not exist, 405 method, 422
-#: unprocessable.  A cycle synthesizes its URLs (dates, windows, queries, ids), so a
-#: 4xx here is evidence about the URL, and blocking the source for it publishes a
-#: false claim about somebody else's API — the source's own probe is the health
-#: signal, and it is unaffected by a cycle's request.
-CALLER_FAULT_STATUSES = frozenset({400, 404, 405, 422})
 
 
 @dataclass
@@ -62,7 +54,11 @@ class CycleReport:
     facts: Optional[int] = None
     claims_new: int = 0
     claims_total: int = 0
+    claims_strict_total: int = 0
+    claims_legacy_total: int = 0
+    #: Gate rejections produced by this cycle, and the append-only lifetime total.
     claims_rejected: int = 0
+    claims_rejected_total: int = 0
     #: derivations produced *this cycle* (a delta; goes in STATUS.md's
     #: "Derived / rechecked / drifted" row)
     derived: int = 0
@@ -112,7 +108,11 @@ class CycleReport:
             "cycle": self.cycle, "at": self.at, "ok": self.ok, "mode": self.mode,
             "facts": self.facts,
             "claimsTotal": self.claims_total, "claimsNew": self.claims_new,
-            "claimsRejected": self.claims_rejected, "derived": self.derived,
+            "claimsStrictTotal": self.claims_strict_total,
+            "claimsLegacyTotal": self.claims_legacy_total,
+            "claimsRejected": self.claims_rejected,
+            "claimsRejectedTotal": self.claims_rejected_total,
+            "derived": self.derived,
             "derivedTotal": self.derived_total, "negativeClaims": self.negative_total,
             "rechecks": self.rechecks, "notRecheckable": self.not_recheckable,
             "drift": self.drift,
@@ -139,8 +139,11 @@ class CycleReport:
             "generatedAt": self.at,
             "cycle": self.cycle,
             "claims": self.claims_total,
+            "strictTraceClaims": self.claims_strict_total,
+            "legacyTraceClaims": self.claims_legacy_total,
             "claimsNewThisCycle": self.claims_new,
-            "claimsRejectedByGate": self.claims_rejected,
+            "claimsRejectedByGate": self.claims_rejected_total,
+            "claimsRejectedThisCycle": self.claims_rejected,
             # A breakdown of `claims` into captured vs derived must use ledger
             # TOTALS.  This used to be `self.derived` — the count produced this
             # cycle — so the README published the cycle delta as if it were the
@@ -273,6 +276,8 @@ def _source_for_url(url: str) -> Optional[str]:
     # /releases has to be decided before the bare /repos/ rule, or every release read
     # would be attributed to the single-repository endpoint.
     if "api.github.com/repos/" in url:
+        if "/MasterSite/contents/data/sites.js" in url:
+            return "master_site_catalog"
         return "github_releases" if "/releases" in url else "github_repo"
     for needle, sid in _URL_RULES:
         if needle in url:
@@ -289,7 +294,8 @@ def _source_for_url(url: str) -> Optional[str]:
 #: Mapped name → context key; a task may still set the key itself, and then its value
 #: wins because the plan knows the label a human wants to read.
 _URL_CONTEXT_PARAMS: Dict[str, str] = {
-    "q": "query", "query": "query", "area": "area", "starttime": "starttime",
+    "q": "query", "query": "query", "query.term": "query",
+    "area": "area", "starttime": "starttime",
     "endtime": "endtime", "minmagnitude": "minmagnitude",
     "indicator": "indicator", "series": "series",
 }
@@ -339,6 +345,7 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
     d = pathlib.Path(data_dir or config.DATA)
     d.mkdir(parents=True, exist_ok=True)
     ledger = Ledger(d)
+    rejections_before = len(ledger.rejections)
     library = Library(d)
     register = Register(d)
     memory = load_memory(d)
@@ -346,12 +353,16 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
     rep.cycle = cycle
     stats = FetchStats()
 
-    # dates for windowed queries
-    end_dt = datetime.strptime(now[:10], "%Y-%m-%d")
-    start_dt = end_dt - timedelta(days=7)
-    end_day = start_dt.strftime("%Y%m%d")      # pageviews lag ~2 days; stay inside the window
-    start_day = (start_dt - timedelta(days=6)).strftime("%Y%m%d")
-    window_label = f"{(start_dt - timedelta(days=6)).strftime('%Y-%m-%d')} to {start_dt.strftime('%Y-%m-%d')}"
+    # Wikimedia daily aggregates can lag. Read the latest complete seven-day
+    # window ending two days ago; current-day sources derive dates from ``now``
+    # inside task planning and never inherit this availability lag.
+    today = datetime.strptime(now[:10], "%Y-%m-%d")
+    wiki_end = today - timedelta(days=2)
+    wiki_start = wiki_end - timedelta(days=6)
+    end_day = wiki_end.strftime("%Y%m%d")
+    start_day = wiki_start.strftime("%Y%m%d")
+    window_label = (f"{wiki_start.strftime('%Y-%m-%d')} to "
+                    f"{wiki_end.strftime('%Y-%m-%d')}")
 
     # ---------------------------------------------------------------- seed the library
     _seed_library(library, cycle, now, d, register)
@@ -391,9 +402,26 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
     # Every read this cycle, for the shared health ledger.  Collecting them here
     # and writing once at the end keeps the ledger a single record of "last
     # recorded read per source" instead of two files that disagree.
-    cycle_reads: List[Tuple[Any, Any, str, bool]] = []
+    # (source, result, timestamp, egress-blocked, inconclusive reason)
+    cycle_reads: List[Tuple[Any, Any, str, bool, str]] = []
+    collection_started = time.monotonic()
 
-    for task in plan:
+    for task_index, task in enumerate(plan):
+        if (not offline and task_index > 0 and
+                time.monotonic() - collection_started >=
+                config.CYCLE_COLLECTION_BUDGET_SECONDS):
+            deferred = len(plan) - task_index
+            rep.tasks_dropped += deferred
+            register.add(
+                WARN, "Cycle collection budget exhausted",
+                f"The {config.CYCLE_COLLECTION_BUDGET_SECONDS}-second network budget "
+                f"expired after {task_index} of {len(plan)} planned tasks; {deferred} "
+                "task(s) were deferred to a later scheduled cycle rather than letting "
+                "the workflow be killed during a state write. No read or claim was "
+                "fabricated for a deferred task.",
+                cycle, now, repro="MSL_COLLECTION_BUDGET_SECONDS=900 python3 -m msl.cli cycle",
+                topic="source-health")
+            break
         # An unattended loop cannot afford to die.  Anything unexpected on one
         # task is recorded as an irregularity and the cycle carries on; the
         # failure is visible on the site instead of being a dead cron job.
@@ -430,9 +458,20 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
                 result = fetch(task.url, accept=task.accepts)
                 stats.record(result)
                 if src is not None:
-                    cycle_reads.append((src, result, now,
-                                        (not result.ok)
-                                        and result.error_kind == "EgressBlocked"))
+                    inconclusive_reason = health_inconclusive_reason(result)
+                    is_egress = inconclusive_reason == "runner-egress"
+                    cycle_reads.append((src, result, now, is_egress,
+                                        inconclusive_reason))
+                    if result.ok:
+                        # Health means the endpoint produced a complete 2xx body.
+                        # Shape validation remains separate and may still withhold
+                        # every claim from that body.
+                        src.consecutive_failures = 0
+                        src.status = "verified-live-read"
+                        src.live_reads += 1
+                        src.last_read_at = now
+                        src.last_status = result.status
+                        src.last_error = ""
                 if result.ok:
                     try:
                         if src and src.payload_kind == "atom":
@@ -474,35 +513,43 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
                             egress_failures.append(task.source_id)
                         continue
                     caller_fault = result.status in CALLER_FAULT_STATUSES
-                    # A 400/404/422 says "the request was malformed or points at
-                    # nothing", which is a statement about the URL this cycle
-                    # synthesized — not about somebody else's service.  Recorded
-                    # evidence: cycle 16 sent MLB StatsAPI `date=20260915`, got HTTP
-                    # 400, and the registry marked the league's feed `blocked (1
-                    # failure)` while every recorded MLB read in the ledger uses the
-                    # ISO form and returns 200.  That blocked a healthy source on
-                    # this engine's own mistake, and blocked sources are not read.
-                    register.add(CRITICAL if (src and not caller_fault and
-                                              src.consecutive_failures >=
-                                              config.SOURCE_FAILS_BEFORE_CRITICAL) else WARN,
-                                 (f"{task.source_id} refused a malformed request" if caller_fault
-                                  else f"{task.source_id} could not be read"),
-                                 f"{result.describe_error()} on GET {task.url} after "
-                                 f"{result.attempts} attempt(s). No claim was produced and no "
-                                 f"substitute value was invented."
-                                 + (f"  HTTP {result.status} means the source rejected the "
-                                    f"request itself, so this is a defect in the URL this cycle "
-                                    f"built rather than evidence that the endpoint is down: the "
-                                    f"source's health is left unchanged and it stays readable."
-                                    if caller_fault else ""),
-                                 cycle, now,
-                                 repro=f"curl -sS -o /dev/null -w '%{{http_code}}\\n' '{task.url}'",
-                                 source_id=task.source_id, topic=task.topic)
+                    engine_limit = result.error_kind == "ResponseTooLarge"
+                    no_source_verdict = caller_fault or engine_limit
+                    # Caller-generated 4xx requests and our own response-size cap
+                    # say nothing about whether somebody else's service is down.
+                    if caller_fault:
+                        title = f"{task.source_id} refused a malformed request"
+                        qualifier = (
+                            f" HTTP {result.status} means the source rejected the "
+                            "request itself, so this is a defect in the URL this cycle "
+                            "built rather than evidence that the endpoint is down; "
+                            "source health is left unchanged.")
+                    elif engine_limit:
+                        title = f"{task.source_id} exceeded the local response safety cap"
+                        qualifier = (
+                            " The endpoint responded, but this engine intentionally "
+                            "discarded the truncated body. This is a local collection "
+                            "limit, not evidence that the source is down; source health "
+                            "is left unchanged.")
+                    else:
+                        title = f"{task.source_id} could not be read"
+                        qualifier = ""
+                    register.add(
+                        CRITICAL if (src and not no_source_verdict
+                                     and src.consecutive_failures >=
+                                     config.SOURCE_FAILS_BEFORE_CRITICAL) else WARN,
+                        title,
+                        f"{result.describe_error()} on GET {task.url} after "
+                        f"{result.attempts} attempt(s). No claim was produced and no "
+                        f"substitute value was invented.{qualifier}",
+                        cycle, now,
+                        repro=f"curl -sS -o /dev/null -w '%{{http_code}}\\n' '{task.url}'",
+                        source_id=task.source_id, topic=task.topic)
                     if src is not None:
                         src.last_error = result.describe_error()
                         src.last_read_at = now
                         src.last_status = result.status
-                        if not caller_fault:
+                        if not no_source_verdict:
                             src.consecutive_failures += 1
                             src.status = "blocked"
                     if result.rate_limited:
@@ -515,27 +562,26 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
                 continue
 
             # record the read
+            # Preserve the exact bytes handed to the adapter.  Cycles 1–18 passed
+            # b"" for every parsed JSON response, leaving 777 rows marked
+            # wire-verifiable with no wire hash and rawBytes=0.  A projection hash
+            # is useful, but it is not a hash of what arrived over HTTP.
+            wire_body = (b"" if used_seed or result is None else result.body)
             ev = ledger.add_evidence(
                 source_id=task.source_id, url=task.url,
                 captured_at=(rec.get("capturedAt", now) if used_seed else now),
                 status=(rec.get("httpStatus") if used_seed else (result.status if result else 200)),
-                body=(b"" if used_seed or payload is None or not isinstance(payload, bytes)
-                      else payload),
+                body=wire_body,
                 error=None, error_kind=None,
                 elapsed_ms=(result.elapsed_ms if result else 0),
                 attempts=(result.attempts if result else 1),
                 rate_limited=bool(result.rate_limited if result else False),
                 capture_mode=capture_mode, wire_hash_verifiable=wire_verifiable,
                 projection=(None if isinstance(payload, bytes) else payload),
-                note=(f"seed capture {rec.get('_file')}" if used_seed else ""))
-
-            if src is not None and result is not None and result.ok:
-                src.consecutive_failures = 0
-                src.status = "verified-live-read"
-                src.live_reads += 1
-                src.last_read_at = now
-                src.last_status = result.status
-                src.last_error = ""
+                note=(f"seed capture {rec.get('_file')}" if used_seed else ""),
+                final_url=(result.final_url if result else task.url),
+                content_type=(result.content_type if result else "application/json"),
+                truncated=bool(result.truncated if result else False))
 
             # extract
             try:
@@ -561,10 +607,11 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
 
             rep.facts = (rep.facts or 0) + len(xr.facts)
             for f in xr.facts:
-                c = ledger.try_accept(f.topic, f.kind, f.statement, task.source_id,
-                                      ev.captured_at, cycle, value=f.value, unit=f.unit,
-                                      field=f.field, evidence=[ev.id], url=task.url,
-                                      tags=f.tags)
+                c = ledger.try_accept(
+                    f.topic, f.kind, f.statement, task.source_id,
+                    ev.captured_at, cycle, value=f.value, unit=f.unit,
+                    field=f.field, source_path=f.path, subjects=f.entities,
+                    evidence=[ev.id], url=task.url, tags=f.tags)
                 if c is not None:
                     rep.claims_new += 1
                     library.touch(f.topic, now, cycle, claims_delta=1)
@@ -586,6 +633,7 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
 
         except Exception as e:  # noqa: BLE001
             rep.errors.append(f"{task.source_id}: {type(e).__name__}: {e}")
+            rep.ok = False
             register.add(CRITICAL, f"{task.source_id} raised an unhandled error",
                          f"{type(e).__name__}: {e} while processing {task.url}. The "
                          f"task was abandoned and the rest of the cycle continued. "
@@ -594,13 +642,12 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
                                f"irregularity register",
                          source_id=task.source_id, topic=task.topic)
             continue
-    rep.fetches = len(fetch_log)
-    # count what actually produced an evidence row, not what was attempted
+    # Collection success means a complete payload became an evidence row. The
+    # separate ``net`` block retains transport success/failure, so a 200 response
+    # with malformed JSON cannot make usable collections exceed attempts.
+    rep.fetches = len(plan) if offline else stats.requests
     rep.fetch_ok = len(fetch_log)
-    rep.fetch_failed = len(plan) - len(fetch_log)
-    if not offline:
-        rep.fetch_ok = stats.ok
-        rep.fetch_failed = stats.failed
+    rep.fetch_failed = max(rep.fetches - rep.fetch_ok, 0)
     rep.net = stats.as_dict()
 
     # One aggregated finding for a wall of egress failures, never N per-source ones.
@@ -742,7 +789,10 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
     rep.topics_total = len(library.topics)
     rep.new_topics = sum(1 for t in library.topics.values() if t.created_cycle == cycle)
     rep.claims_total = len(ledger.claims)
-    rep.claims_rejected = len(ledger.rejections)
+    rep.claims_strict_total = sum(1 for c in ledger.claims if c.schema_version >= 2)
+    rep.claims_legacy_total = rep.claims_total - rep.claims_strict_total
+    rep.claims_rejected = len(ledger.rejections) - rejections_before
+    rep.claims_rejected_total = len(ledger.rejections)
     rep.derived_total = sum(1 for c in ledger.claims if c.kind == "derived")
     rep.negative_total = sum(1 for c in ledger.claims if c.kind == "negative")
 
@@ -757,6 +807,18 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
     rep.irregularities_open = counts.get("open", 0)
     rep.irregularities_new = sum(1 for i in register.items.values()
                                  if i.first_seen_cycle == cycle)
+
+    # Fold live cycle reads into the one source-health ledger before persisting the
+    # cycle summary. This is a required audit write: if it fails the cycle still
+    # publishes diagnostics, but exits nonzero and records ok=false.
+    if cycle_reads and not offline:
+        try:
+            from .probe import record_reads
+            record_reads(cycle_reads, path=d / "source_health.json",
+                         mode=f"cycle-{cycle}", apply=False)
+        except Exception as e:  # noqa: BLE001
+            rep.errors.append(f"health ledger: {type(e).__name__}: {e}")
+            rep.ok = False
 
     # Measured HERE, before the cycle row is written, so the recorded row, the site
     # and the docs all quote one number.  The assignment used to sit after the row
@@ -784,23 +846,6 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
                                      "categoriesWithoutSource": _categories_without_source()})
     _write_json(d / "profile.json", profile)
 
-    # One health ledger, two writers.  The cycle folds its reads in here so the
-    # Sources page cannot show a probe table that contradicts the registry table
-    # above it.  apply=False: the cycle already folded these results into the
-    # registry inline, and re-applying would double-count live_reads and
-    # consecutive_failures.  Offline runs read fixtures, not endpoints, so they
-    # record nothing — a fixture is not evidence that a service is reachable.
-    if cycle_reads and not offline:
-        try:
-            from .probe import record_reads
-            # Pass the cycle's own data dir: the default is config.DATA, which
-            # would make every test and dry run write the repository's real
-            # ledger instead of its own.
-            record_reads(cycle_reads, path=d / "source_health.json",
-                         mode=f"cycle-{cycle}", apply=False)
-        except Exception as e:  # noqa: BLE001 - bookkeeping must not fail a cycle
-            rep.errors.append(f"health ledger: {type(e).__name__}: {e}")
-
     if publish:
         try:
             from . import docs as docsgen
@@ -811,6 +856,21 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
         except Exception as e:  # noqa: BLE001
             rep.errors.append(f"publish: {type(e).__name__}: {e}")
             rep.ok = False
+            register.add(
+                CRITICAL, "The publication stage raised",
+                f"{type(e).__name__}: {e}. Generated output may be stale; the cycle "
+                "exits nonzero rather than presenting this run as healthy.",
+                cycle, now, repro="python3 -m msl.cli publish")
+            register.save(now, cycle)
+            # The row was appended before rendering so the renderer could include
+            # the current cycle. Correct that last row atomically when rendering
+            # fails; otherwise history would confidently retain ok=true.
+            _replace_last_jsonl(
+                d / "cycles.jsonl",
+                {**rep.summary(), "autoCounts": rep.auto_counts()})
+            memory["consecutiveCycleFailures"] = max(
+                int(memory.get("consecutiveCycleFailures", 0)), 1)
+            save_memory(memory, d)
             traceback.print_exc()
     return rep
 
@@ -823,7 +883,8 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
 #: derived 330 claims.  ``tests/test_pipeline.py`` asserts the union covers every
 #: key ``summary()`` writes, so a new field cannot be added without deciding.
 _REPLAYED: Dict[str, str] = {
-    "claims_new": "claimsNew", "rechecks": "rechecks",
+    "claims_new": "claimsNew", "claims_rejected": "claimsRejected",
+    "rechecks": "rechecks",
     "not_recheckable": "notRecheckable", "drift": "drift",
     "new_topics": "newTopics", "forecasts_issued": "forecastsIssued",
     "forecasts_scored": "forecastsScored", "irregularities_new": "irregularitiesNew",
@@ -842,7 +903,8 @@ REPLAYED_CYCLE_KEYS = frozenset(list(_REPLAYED.values()) + ["ok", "errors"])
 #: Cumulative state: recomputed from the ledger, the library and the register, so a
 #: stale number cannot survive a corrected ledger.
 RECOMPUTED_CYCLE_KEYS = frozenset({
-    "at", "cycle", "mode", "net", "claimsTotal", "claimsRejected", "derivedTotal",
+    "at", "cycle", "mode", "net", "claimsTotal", "claimsStrictTotal",
+    "claimsLegacyTotal", "claimsRejectedTotal", "derivedTotal",
     "negativeClaims", "topicsTotal", "insights", "ideas", "irregularitiesOpen",
     "sourcesRegistered", "sourcesVerified", "sourcesBlocked", "sourcesNeverRead",
 })
@@ -913,7 +975,10 @@ def republish(data_dir: Optional[pathlib.Path] = None,
 
     # --- recomputed cumulative state: read from the objects on disk ------------
     rep.claims_total = len(ledger.claims)
-    rep.claims_rejected = len(ledger.rejections)
+    rep.claims_strict_total = sum(1 for c in ledger.claims if c.schema_version >= 2)
+    rep.claims_legacy_total = rep.claims_total - rep.claims_strict_total
+    rep.claims_rejected_total = len(ledger.rejections)
+    # The last cycle delta is replayed above; the lifetime total is recomputed.
     rep.topics_total = len(library.topics)
     rep.retired_topics = sum(1 for t in library.topics.values()
                              if t.status == STATUS_RETIRED)
@@ -1289,16 +1354,35 @@ def _save_ideas(d: pathlib.Path, ideas: List[Idea]) -> None:
                 {"items": [i.as_dict() for i in ideas[:600]]})
 
 
-def _write_json(p: pathlib.Path, obj: Any) -> None:
+def _atomic_text(p: pathlib.Path, text: str) -> None:
+    """Replace a generated file atomically so interruption cannot truncate it."""
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(obj, indent=1, sort_keys=True, ensure_ascii=False) + "\n",
-                 encoding="utf-8")
+    tmp = p.with_name(p.name + ".tmp")
+    tmp.write_text(text, encoding="utf-8")
+    tmp.replace(p)
+
+
+def _write_json(p: pathlib.Path, obj: Any) -> None:
+    _atomic_text(
+        p, json.dumps(obj, indent=1, sort_keys=True, ensure_ascii=False,
+                      allow_nan=False) + "\n")
+
+
+def _replace_last_jsonl(p: pathlib.Path, obj: Any) -> None:
+    lines = p.read_text(encoding="utf-8").splitlines() if p.exists() else []
+    row = json.dumps(obj, sort_keys=True, ensure_ascii=False, allow_nan=False)
+    if lines:
+        lines[-1] = row
+    else:
+        lines.append(row)
+    _atomic_text(p, "\n".join(lines) + "\n")
 
 
 def _append_jsonl(p: pathlib.Path, obj: Any) -> None:
     p.parent.mkdir(parents=True, exist_ok=True)
     with p.open("a", encoding="utf-8") as fh:
-        fh.write(json.dumps(obj, sort_keys=True, ensure_ascii=False) + "\n")
+        fh.write(json.dumps(obj, sort_keys=True, ensure_ascii=False,
+                            allow_nan=False) + "\n")
 
 
 def _keyed_excluded() -> List[Dict[str, str]]:

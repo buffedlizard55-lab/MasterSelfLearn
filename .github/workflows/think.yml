@@ -20,8 +20,10 @@ on:
 permissions:
   contents: write
 
+# Every workflow that can write generated state shares this lock. Separate locks
+# let probe and think start from the same commit and race non-fast-forward pushes.
 concurrency:
-  group: think-cycle
+  group: msl-state-writer-main
   cancel-in-progress: false
 
 jobs:
@@ -57,10 +59,9 @@ jobs:
           python3 -m msl.cli cycle 2>&1 | tee data/cycle.log
 
       - name: Re-check every derived claim
-        # `|| true` used to swallow this entirely.  Drift in a previously
-        # published derivation is exactly the finding somebody needs to see, so
-        # it is allowed to fail the step (a visible warning) without blocking the
-        # commit that publishes the corrected row.
+        id: verify
+        # Publish the finding first, then fail the job explicitly after committing.
+        # That preserves the audit artifact without turning a red verifier green.
         continue-on-error: true
         run: python3 tools/verify_claims.py
 
@@ -88,3 +89,9 @@ jobs:
             Counts come from data/site.js AUTO:COUNTS; see VERIFICATION.md."
             git push
           fi
+
+      - name: Fail visibly if research or verification failed
+        if: ${{ always() && (steps.cycle.outcome != 'success' || steps.verify.outcome != 'success') }}
+        run: |
+          echo "::error::Cycle or derived-claim verification failed; generated diagnostics were committed above."
+          exit 1

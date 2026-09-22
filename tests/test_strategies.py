@@ -120,11 +120,14 @@ class ForecastingAndScoring(TmpDirCase):
 
 class LeaderboardQualification(unittest.TestCase):
     def _fc(self, sid, n, correct):
+        """Build comparable targets with fixed outcomes and chosen correctness."""
         out = []
         for i in range(n):
-            f = Forecast(sid, 1, "t", "m", "up", 0.6, [], "x")
+            outcome = "up" if i % 2 else "down"
+            direction = outcome if i < correct else ("down" if outcome == "up" else "up")
+            f = Forecast(sid, i + 1, "t", f"m{i}", direction, 0.6, [], "x")
             f.scored = True
-            f.outcome = "up" if i < correct else "down"
+            f.outcome = outcome
             f.brier = 0.16
             out.append(f)
         return out
@@ -135,7 +138,7 @@ class LeaderboardQualification(unittest.TestCase):
         self.assertEqual([r["strategyId"] for r in lb["ranked"]], ["S10_Persistence"])
         unranked = {u["strategyId"]: u for u in lb["unranked"]}
         self.assertIn("S01_MomentumPersist", unranked)
-        self.assertIn("1 scored forecast", unranked["S01_MomentumPersist"]["unrankedReason"])
+        self.assertIn("1 paired scored forecast", unranked["S01_MomentumPersist"]["unrankedReason"])
 
     def test_no_persona_is_ranked_when_the_null_model_is_unscored(self):
         fcs = self._fc("S01_MomentumPersist", 10, 9)

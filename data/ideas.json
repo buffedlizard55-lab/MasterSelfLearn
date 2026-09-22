@@ -1,18 +1,532 @@
 {
  "items": [
   {
-   "appearances": 18,
+   "appearances": 4,
    "components": {
-    "breadth": 0.3333,
-    "corroboration": 0.3333,
-    "evidence": 1.0,
-    "freshness": 0.0,
+    "breadth": 0.0,
+    "corroboration": 0.6667,
+    "evidence": 0.25,
+    "freshness": 0.9888,
     "reproducibility": 1.0
    },
-   "cycle": 18,
+   "cycle": 20,
    "families": [
-    "open-source-momentum",
+    "open-source-momentum"
+   ],
+   "fingerprint": "02616ee15adb17ea",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 3,
+     "robustness": 0.375
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 5,
+     "robustness": 0.425
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 3,
+     "robustness": 0.5235503472222222
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 3,
+     "robustness": 0.5233268849206348
+    }
+   ],
+   "id": "ID0017-001",
+   "kind": "convergence",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C013015",
+    "C014719",
+    "C014721"
+   ],
+   "robustness": 0.5233,
+   "sources": [
+    "github_releases",
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "“brayonpi/hexstellar” is independently reported by 3 sources (github_releases, github_repo, github_search).  A monitor built on all of them can be cross-checked; one built on any single one cannot.",
+   "status": "carried",
+   "title": "Track “brayonpi/hexstellar” as a multi-source subject",
+   "urls": [
+    "https://api.github.com/search/repositories?q=repo%3Abrayonpi/hexstellar&sort=stars&order=desc&per_page=1",
+    "https://api.github.com/repos/brayonpi/hexstellar",
+    "https://api.github.com/repos/brayonpi/hexstellar/releases?per_page=1"
+   ]
+  },
+  {
+   "appearances": 4,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.6667,
+    "evidence": 0.25,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "e426ba9a87333907",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 3,
+     "robustness": 0.425
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 6,
+     "robustness": 0.5
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 3,
+     "robustness": 0.5235503472222222
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 3,
+     "robustness": 0.5233268849206348
+    }
+   ],
+   "id": "ID0017-002",
+   "kind": "convergence",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C014201",
+    "C014701",
+    "C014702"
+   ],
+   "robustness": 0.5233,
+   "sources": [
+    "github_releases",
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "“browser-use/jev-ultrafast” is independently reported by 3 sources (github_releases, github_repo, github_search).  A monitor built on all of them can be cross-checked; one built on any single one cannot.",
+   "status": "carried",
+   "title": "Track “browser-use/jev-ultrafast” as a multi-source subject",
+   "urls": [
+    "https://api.github.com/search/repositories?q=agent%20created%3A%3E%3D2026-06-24&sort=stars&order=desc&per_page=20",
+    "https://api.github.com/repos/browser-use/jev-ultrafast",
+    "https://api.github.com/repos/browser-use/jev-ultrafast/releases?per_page=1"
+   ]
+  },
+  {
+   "appearances": 4,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.6667,
+    "evidence": 0.25,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "5773d2545528bc6a",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 3,
+     "robustness": 0.375
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 6,
+     "robustness": 0.44999999999999996
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 3,
+     "robustness": 0.5235503472222222
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 3,
+     "robustness": 0.5233268849206348
+    }
+   ],
+   "id": "ID0017-004",
+   "kind": "convergence",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C014228",
+    "C014710",
+    "C014711"
+   ],
+   "robustness": 0.5233,
+   "sources": [
+    "github_releases",
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "“zai-org/ZCode” is independently reported by 3 sources (github_releases, github_repo, github_search).  A monitor built on all of them can be cross-checked; one built on any single one cannot.",
+   "status": "carried",
+   "title": "Track “zai-org/ZCode” as a multi-source subject",
+   "urls": [
+    "https://api.github.com/search/repositories?q=agent%20created%3A%3E%3D2026-06-24&sort=stars&order=desc&per_page=20",
+    "https://api.github.com/repos/zai-org/ZCode",
+    "https://api.github.com/repos/zai-org/ZCode/releases?per_page=1"
+   ]
+  },
+  {
+   "appearances": 2,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.6667,
+    "evidence": 0.25,
+    "freshness": 0.9265,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "2d6a70cabd9b411c",
+   "firstSeenCycle": 19,
+   "history": [
+    {
+     "cycle": 19,
+     "lineageSize": 3,
+     "robustness": 0.5141974206349206
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 3,
+     "robustness": 0.5139739583333333
+    }
+   ],
+   "id": "ID0019-004",
+   "kind": "convergence",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C015981",
+    "C016130",
+    "C016140"
+   ],
+   "robustness": 0.514,
+   "sources": [
+    "github_releases",
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "“repo:browser-use/jev-ultrafast” is independently reported by 3 sources (github_releases, github_repo, github_search).  A monitor built on all of them can be cross-checked; one built on any single one cannot.",
+   "status": "carried",
+   "title": "Track “repo:browser-use/jev-ultrafast” as a multi-source subject",
+   "urls": [
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/repos/browser-use/jev-ultrafast/releases?per_page=1",
+    "https://api.github.com/repos/browser-use/jev-ultrafast"
+   ]
+  },
+  {
+   "appearances": 4,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.3333,
+    "evidence": 0.1667,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
     "source-health"
+   ],
+   "fingerprint": "9eb946c054928da4",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 2,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 4,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.39855034722222216
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.39832688492063495
+    }
+   ],
+   "id": "ID0017-003",
+   "kind": "convergence",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C014057",
+    "C014058"
+   ],
+   "robustness": 0.3983,
+   "sources": [
+    "github_releases",
+    "github_repo"
+   ],
+   "statement": "“buffedlizard55-lab/MasterSelfLearn” is independently reported by 2 sources (github_releases, github_repo).  A monitor built on all of them can be cross-checked; one built on any single one cannot.",
+   "status": "carried",
+   "title": "Track “buffedlizard55-lab/MasterSelfLearn” as a multi-source subject",
+   "urls": [
+    "https://api.github.com/repos/buffedlizard55-lab/MasterSelfLearn",
+    "https://api.github.com/repos/buffedlizard55-lab/MasterSelfLearn/releases?per_page=1"
+   ]
+  },
+  {
+   "appearances": 4,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.3333,
+    "evidence": 0.1667,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "fbd7178760a71dc1",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 2,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 2,
+     "robustness": 0.39999560805224865
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.39855034722222216
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.39832688492063495
+    }
+   ],
+   "id": "ID0017-019",
+   "kind": "contradiction",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C015843",
+    "C014713"
+   ],
+   "robustness": 0.3983,
+   "sources": [
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "2 sources report different values for github.repo[brayonpi/hexstellar].forks (github_repo=98, github_search=97). Until that is explained, neither number should be quoted alone.",
+   "status": "carried",
+   "title": "Reconcile the disagreement on github.repo[brayonpi/hexstellar].forks",
+   "urls": [
+    "https://api.github.com/search/repositories?q=AI%20agents%20created%3A%3E%3D2026-08-22&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/repos/brayonpi/hexstellar"
+   ]
+  },
+  {
+   "appearances": 4,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.3333,
+    "evidence": 0.1667,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "fcc4805db4e592b9",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 2,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 2,
+     "robustness": 0.39999560805224865
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.39855034722222216
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.39832688492063495
+    }
+   ],
+   "id": "ID0017-020",
+   "kind": "contradiction",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C015842",
+    "C014712"
+   ],
+   "robustness": 0.3983,
+   "sources": [
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "2 sources report different values for github.repo[brayonpi/hexstellar].stars (github_repo=1257, github_search=1240). Until that is explained, neither number should be quoted alone.",
+   "status": "carried",
+   "title": "Reconcile the disagreement on github.repo[brayonpi/hexstellar].stars",
+   "urls": [
+    "https://api.github.com/search/repositories?q=AI%20agents%20created%3A%3E%3D2026-08-22&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/repos/brayonpi/hexstellar"
+   ]
+  },
+  {
+   "appearances": 4,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.3333,
+    "evidence": 0.1667,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "69fca8d9d4a7d949",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 2,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 2,
+     "robustness": 0.39999560805224865
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.39855034722222216
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.39832688492063495
+    }
+   ],
+   "id": "ID0017-023",
+   "kind": "contradiction",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C015989",
+    "C014704"
+   ],
+   "robustness": 0.3983,
+   "sources": [
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "2 sources report different values for github.repo[zai-org/zcode].forks (github_repo=1808, github_search=1579). Until that is explained, neither number should be quoted alone.",
+   "status": "carried",
+   "title": "Reconcile the disagreement on github.repo[zai-org/zcode].forks",
+   "urls": [
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/repos/zai-org/ZCode"
+   ]
+  },
+  {
+   "appearances": 4,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.3333,
+    "evidence": 0.1667,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "58097c89b8a7356a",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 2,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 2,
+     "robustness": 0.39999560805224865
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.39855034722222216
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.39832688492063495
+    }
+   ],
+   "id": "ID0017-024",
+   "kind": "contradiction",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C015988",
+    "C014703"
+   ],
+   "robustness": 0.3983,
+   "sources": [
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "2 sources report different values for github.repo[zai-org/zcode].stars (github_repo=6235, github_search=5548). Until that is explained, neither number should be quoted alone.",
+   "status": "carried",
+   "title": "Reconcile the disagreement on github.repo[zai-org/zcode].stars",
+   "urls": [
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/repos/zai-org/ZCode"
+   ]
+  },
+  {
+   "appearances": 20,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.3333,
+    "evidence": 0.1667,
+    "freshness": 0.9265,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "open-source-momentum"
    ],
    "fingerprint": "cf9234e38f4aed9a",
    "firstSeenCycle": 1,
@@ -106,50 +620,26 @@
      "cycle": 18,
      "lineageSize": 36,
      "robustness": 0.5499999999999999
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.3891974206349206
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.38897395833333326
     }
    ],
    "id": "ID0001-002",
    "kind": "velocity-outlier",
-   "lastSeenCycle": 18,
+   "lastSeenCycle": 20,
    "lineage": [
-    "C000159",
-    "C000161",
-    "C000699",
-    "C000701",
-    "C001213",
-    "C001215",
-    "C001723",
-    "C001725",
-    "C003173",
-    "C003175",
-    "C004094",
-    "C004096",
-    "C005052",
-    "C005054",
-    "C006020",
-    "C006022",
-    "C006511",
-    "C006513",
-    "C007511",
-    "C007513",
-    "C008282",
-    "C008284",
-    "C008777",
-    "C008779",
-    "C009989",
-    "C009991",
-    "C010980",
-    "C010982",
-    "C011985",
-    "C011987",
-    "C013005",
-    "C013007",
-    "C013643",
-    "C013392",
-    "C014694",
-    "C014201"
+    "C016133",
+    "C015981"
    ],
-   "robustness": 0.55,
+   "robustness": 0.389,
    "sources": [
     "github_repo",
     "github_search"
@@ -158,77 +648,133 @@
    "status": "carried",
    "title": "Replicate what made browser-use/jev-ultrafast grow",
    "urls": [
-    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/search/repositories?q=agent%20created%3A%3E%3D2026-06-23&sort=stars&order=desc&per_page=20",
-    "https://api.github.com/search/repositories?q=repo%3Abrowser-use/jev-ultrafast&sort=stars&order=desc&per_page=1",
     "https://api.github.com/repos/browser-use/jev-ultrafast"
    ]
   },
   {
-   "appearances": 2,
+   "appearances": 4,
    "components": {
-    "breadth": 0.3333,
-    "corroboration": 0.6667,
-    "evidence": 0.5,
-    "freshness": 0.0,
+    "breadth": 0.0,
+    "corroboration": 0.3333,
+    "evidence": 0.1667,
+    "freshness": 0.9265,
     "reproducibility": 1.0
    },
-   "cycle": 18,
+   "cycle": 20,
    "families": [
-    "open-source-momentum",
-    "source-health"
+    "open-source-momentum"
    ],
-   "fingerprint": "e426ba9a87333907",
+   "fingerprint": "c269b6ede6946689",
    "firstSeenCycle": 17,
    "history": [
     {
      "cycle": 17,
-     "lineageSize": 3,
-     "robustness": 0.425
+     "lineageSize": 2,
+     "robustness": 0.25
     },
     {
      "cycle": 18,
-     "lineageSize": 6,
-     "robustness": 0.5
+     "lineageSize": 2,
+     "robustness": 0.39999560805224865
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.3891974206349206
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.38897395833333326
     }
    ],
-   "id": "ID0017-002",
-   "kind": "convergence",
-   "lastSeenCycle": 18,
+   "id": "ID0017-021",
+   "kind": "contradiction",
+   "lastSeenCycle": 20,
    "lineage": [
-    "C013392",
-    "C013650",
-    "C013651",
-    "C014201",
-    "C014701",
-    "C014702"
+    "C015980",
+    "C016134"
    ],
-   "robustness": 0.5,
+   "robustness": 0.389,
    "sources": [
-    "github_releases",
     "github_repo",
     "github_search"
    ],
-   "statement": "“browser-use/jev-ultrafast” is independently reported by 3 sources (github_releases, github_repo, github_search).  A monitor built on all of them can be cross-checked; one built on any single one cannot.",
+   "statement": "2 sources report different values for github.repo[browser-use/jev-ultrafast].forks (github_repo=1140, github_search=970). Until that is explained, neither number should be quoted alone.",
    "status": "carried",
-   "title": "Track “browser-use/jev-ultrafast” as a multi-source subject",
+   "title": "Reconcile the disagreement on github.repo[browser-use/jev-ultrafast].forks",
    "urls": [
-    "https://api.github.com/search/repositories?q=created:%3E=2026-09-14&sort=stars&order=desc&per_page=1",
-    "https://api.github.com/repos/browser-use/jev-ultrafast",
-    "https://api.github.com/repos/browser-use/jev-ultrafast/releases?per_page=1",
-    "https://api.github.com/search/repositories?q=agent%20created%3A%3E%3D2026-06-24&sort=stars&order=desc&per_page=20"
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/repos/browser-use/jev-ultrafast"
    ]
   },
   {
-   "appearances": 18,
+   "appearances": 4,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.3333,
-    "evidence": 1.0,
-    "freshness": 0.0,
+    "evidence": 0.1667,
+    "freshness": 0.9265,
     "reproducibility": 1.0
    },
-   "cycle": 18,
+   "cycle": 20,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "77d8bd6e4707c330",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 2,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 2,
+     "robustness": 0.39999560805224865
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.3891974206349206
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.38897395833333326
+    }
+   ],
+   "id": "ID0017-022",
+   "kind": "contradiction",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C015979",
+    "C016133"
+   ],
+   "robustness": 0.389,
+   "sources": [
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "2 sources report different values for github.repo[browser-use/jev-ultrafast].stars (github_repo=17799, github_search=15573). Until that is explained, neither number should be quoted alone.",
+   "status": "carried",
+   "title": "Reconcile the disagreement on github.repo[browser-use/jev-ultrafast].stars",
+   "urls": [
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/repos/browser-use/jev-ultrafast"
+   ]
+  },
+  {
+   "appearances": 20,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.1667,
+    "freshness": 0.8809,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
    "families": [
     "open-source-momentum"
    ],
@@ -324,72 +870,46 @@
      "cycle": 18,
      "lineageSize": 35,
      "robustness": 0.5
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.2823633432539682
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.28213988095238096
     }
    ],
    "id": "ID0001-001",
    "kind": "velocity-outlier",
-   "lastSeenCycle": 18,
+   "lastSeenCycle": 20,
    "lineage": [
-    "C000168",
-    "C000170",
-    "C000708",
-    "C000710",
-    "C001222",
-    "C001224",
-    "C002216",
-    "C002218",
-    "C003141",
-    "C003143",
-    "C004090",
-    "C004092",
-    "C005048",
-    "C005050",
-    "C006016",
-    "C006018",
-    "C006520",
-    "C006522",
-    "C007507",
-    "C007509",
-    "C008278",
-    "C008280",
-    "C008786",
-    "C008788",
-    "C009985",
-    "C009987",
-    "C010976",
-    "C010978",
-    "C011989",
-    "C011991",
-    "C013009",
-    "C013011",
-    "C013652",
-    "C014703",
-    "C014228"
+    "C015988",
+    "C015990"
    ],
-   "robustness": 0.5,
+   "robustness": 0.2821,
    "sources": [
-    "github_repo",
     "github_search"
    ],
    "statement": "zai-org/ZCode reached 5,548 stars in 1.6 days (3,544.9/day), against a median of 0.7/day across the 124 tracked repositories.  Testable claim: its growth is explained by something in its first-week release, not by its topic.",
    "status": "carried",
    "title": "Replicate what made zai-org/ZCode grow",
    "urls": [
-    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/search/repositories?q=repo%3Azai-org/ZCode&sort=stars&order=desc&per_page=1",
-    "https://api.github.com/repos/zai-org/ZCode"
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25"
    ]
   },
   {
-   "appearances": 18,
+   "appearances": 20,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 0.8333,
-    "freshness": 0.9956,
+    "evidence": 0.1667,
+    "freshness": 0.8809,
     "reproducibility": 1.0
    },
-   "cycle": 18,
+   "cycle": 20,
    "families": [
     "open-source-momentum"
    ],
@@ -485,24 +1005,26 @@
      "cycle": 18,
      "lineageSize": 10,
      "robustness": 0.49933411871693123
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.2823633432539682
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.28213988095238096
     }
    ],
    "id": "ID0001-003",
    "kind": "velocity-outlier",
-   "lastSeenCycle": 18,
+   "lastSeenCycle": 20,
    "lineage": [
-    "C000162",
-    "C000164",
-    "C000702",
-    "C000704",
-    "C001216",
-    "C001218",
-    "C006514",
-    "C006516",
-    "C008780",
-    "C008782"
+    "C015982",
+    "C015984"
    ],
-   "robustness": 0.4993,
+   "robustness": 0.2821,
    "sources": [
     "github_search"
    ],
@@ -514,121 +1036,1205 @@
    ]
   },
   {
-   "appearances": 2,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.6667,
-    "evidence": 0.5,
-    "freshness": 0.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "5773d2545528bc6a",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 3,
-     "robustness": 0.375
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 6,
-     "robustness": 0.44999999999999996
-    }
-   ],
-   "id": "ID0017-004",
-   "kind": "convergence",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C013011",
-    "C013659",
-    "C013660",
-    "C014228",
-    "C014710",
-    "C014711"
-   ],
-   "robustness": 0.45,
-   "sources": [
-    "github_releases",
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "“zai-org/ZCode” is independently reported by 3 sources (github_releases, github_repo, github_search).  A monitor built on all of them can be cross-checked; one built on any single one cannot.",
-   "status": "carried",
-   "title": "Track “zai-org/ZCode” as a multi-source subject",
-   "urls": [
-    "https://api.github.com/search/repositories?q=repo%3Azai-org/ZCode&sort=stars&order=desc&per_page=1",
-    "https://api.github.com/repos/zai-org/ZCode",
-    "https://api.github.com/repos/zai-org/ZCode/releases?per_page=1",
-    "https://api.github.com/search/repositories?q=agent%20created%3A%3E%3D2026-06-24&sort=stars&order=desc&per_page=20"
-   ]
-  },
-  {
-   "appearances": 2,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.6667,
-    "evidence": 0.4167,
-    "freshness": 0.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "02616ee15adb17ea",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 3,
-     "robustness": 0.375
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 5,
-     "robustness": 0.425
-    }
-   ],
-   "id": "ID0017-001",
-   "kind": "convergence",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C013015",
-    "C013668",
-    "C013670",
-    "C014719",
-    "C014721"
-   ],
-   "robustness": 0.425,
-   "sources": [
-    "github_releases",
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "“brayonpi/hexstellar” is independently reported by 3 sources (github_releases, github_repo, github_search).  A monitor built on all of them can be cross-checked; one built on any single one cannot.",
-   "status": "carried",
-   "title": "Track “brayonpi/hexstellar” as a multi-source subject",
-   "urls": [
-    "https://api.github.com/search/repositories?q=repo%3Abrayonpi/hexstellar&sort=stars&order=desc&per_page=1",
-    "https://api.github.com/repos/brayonpi/hexstellar",
-    "https://api.github.com/repos/brayonpi/hexstellar/releases?per_page=1"
-   ]
-  },
-  {
-   "appearances": 18,
+   "appearances": 17,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
-    "evidence": 1.0,
-    "freshness": 0.0,
+    "evidence": 0.0833,
+    "freshness": 0.9888,
     "reproducibility": 1.0
    },
-   "cycle": 18,
+   "cycle": 20,
+   "families": [
+    "ai-research-frontier"
+   ],
+   "fingerprint": "1c2666cda7f5a8dc",
+   "firstSeenCycle": 4,
+   "history": [
+    {
+     "cycle": 4,
+     "lineageSize": 1,
+     "robustness": 0.125
+    },
+    {
+     "cycle": 5,
+     "lineageSize": 2,
+     "robustness": 0.15
+    },
+    {
+     "cycle": 6,
+     "lineageSize": 3,
+     "robustness": 0.175
+    },
+    {
+     "cycle": 7,
+     "lineageSize": 4,
+     "robustness": 0.2
+    },
+    {
+     "cycle": 8,
+     "lineageSize": 5,
+     "robustness": 0.225
+    },
+    {
+     "cycle": 9,
+     "lineageSize": 5,
+     "robustness": 0.37493028687169316
+    },
+    {
+     "cycle": 10,
+     "lineageSize": 5,
+     "robustness": 0.27492997685185183
+    },
+    {
+     "cycle": 11,
+     "lineageSize": 5,
+     "robustness": 0.37492467551256614
+    },
+    {
+     "cycle": 12,
+     "lineageSize": 5,
+     "robustness": 0.3749161809689153
+    },
+    {
+     "cycle": 13,
+     "lineageSize": 6,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
+    },
+    {
+     "cycle": 17,
+     "lineageSize": 10,
+     "robustness": 0.35
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 11,
+     "robustness": 0.375
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 1,
+     "robustness": 0.2735503472222222
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 1,
+     "robustness": 0.27332688492063495
+    }
+   ],
+   "id": "ID0004-006",
+   "kind": "regulatory-lead",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C014134"
+   ],
+   "robustness": 0.2733,
+   "sources": [
+    "federal_register"
+   ],
+   "statement": "The Federal Register holds 10,000 documents matching “agent”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
+   "status": "carried",
+   "title": "Watch for research lagging rulemaking on “agent”",
+   "urls": [
+    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=agent"
+   ]
+  },
+  {
+   "appearances": 17,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.0833,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "public-health-policy"
+   ],
+   "fingerprint": "34ce546734a5d9e2",
+   "firstSeenCycle": 4,
+   "history": [
+    {
+     "cycle": 4,
+     "lineageSize": 1,
+     "robustness": 0.125
+    },
+    {
+     "cycle": 5,
+     "lineageSize": 2,
+     "robustness": 0.15
+    },
+    {
+     "cycle": 6,
+     "lineageSize": 3,
+     "robustness": 0.175
+    },
+    {
+     "cycle": 7,
+     "lineageSize": 4,
+     "robustness": 0.2
+    },
+    {
+     "cycle": 8,
+     "lineageSize": 5,
+     "robustness": 0.225
+    },
+    {
+     "cycle": 9,
+     "lineageSize": 5,
+     "robustness": 0.37493028687169316
+    },
+    {
+     "cycle": 10,
+     "lineageSize": 5,
+     "robustness": 0.27492997685185183
+    },
+    {
+     "cycle": 11,
+     "lineageSize": 5,
+     "robustness": 0.37492467551256614
+    },
+    {
+     "cycle": 12,
+     "lineageSize": 5,
+     "robustness": 0.3749161809689153
+    },
+    {
+     "cycle": 13,
+     "lineageSize": 6,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
+    },
+    {
+     "cycle": 17,
+     "lineageSize": 10,
+     "robustness": 0.35
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 11,
+     "robustness": 0.375
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 1,
+     "robustness": 0.2735503472222222
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 1,
+     "robustness": 0.27332688492063495
+    }
+   ],
+   "id": "ID0004-014",
+   "kind": "regulatory-lead",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C014472"
+   ],
+   "robustness": 0.2733,
+   "sources": [
+    "federal_register"
+   ],
+   "statement": "The Federal Register holds 10,000 documents matching “data exchange”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
+   "status": "carried",
+   "title": "Watch for research lagging rulemaking on “data exchange”",
+   "urls": [
+    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=data%20exchange"
+   ]
+  },
+  {
+   "appearances": 17,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.0833,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "regulatory-flow"
+   ],
+   "fingerprint": "bb645f839f1f641d",
+   "firstSeenCycle": 4,
+   "history": [
+    {
+     "cycle": 4,
+     "lineageSize": 1,
+     "robustness": 0.125
+    },
+    {
+     "cycle": 5,
+     "lineageSize": 2,
+     "robustness": 0.15
+    },
+    {
+     "cycle": 6,
+     "lineageSize": 3,
+     "robustness": 0.175
+    },
+    {
+     "cycle": 7,
+     "lineageSize": 4,
+     "robustness": 0.2
+    },
+    {
+     "cycle": 8,
+     "lineageSize": 5,
+     "robustness": 0.225
+    },
+    {
+     "cycle": 9,
+     "lineageSize": 5,
+     "robustness": 0.37493028687169316
+    },
+    {
+     "cycle": 10,
+     "lineageSize": 5,
+     "robustness": 0.27492997685185183
+    },
+    {
+     "cycle": 11,
+     "lineageSize": 5,
+     "robustness": 0.37492467551256614
+    },
+    {
+     "cycle": 12,
+     "lineageSize": 5,
+     "robustness": 0.3749161809689153
+    },
+    {
+     "cycle": 13,
+     "lineageSize": 6,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
+    },
+    {
+     "cycle": 17,
+     "lineageSize": 10,
+     "robustness": 0.35
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 11,
+     "robustness": 0.375
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 1,
+     "robustness": 0.2735503472222222
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 1,
+     "robustness": 0.27332688492063495
+    }
+   ],
+   "id": "ID0004-010",
+   "kind": "regulatory-lead",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C014421"
+   ],
+   "robustness": 0.2733,
+   "sources": [
+    "federal_register"
+   ],
+   "statement": "The Federal Register holds 10,000 documents matching “energy”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
+   "status": "carried",
+   "title": "Watch for research lagging rulemaking on “energy”",
+   "urls": [
+    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=energy"
+   ]
+  },
+  {
+   "appearances": 17,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.0833,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "regulatory-flow"
+   ],
+   "fingerprint": "affaac6be73c1f41",
+   "firstSeenCycle": 4,
+   "history": [
+    {
+     "cycle": 4,
+     "lineageSize": 1,
+     "robustness": 0.125
+    },
+    {
+     "cycle": 5,
+     "lineageSize": 2,
+     "robustness": 0.15
+    },
+    {
+     "cycle": 6,
+     "lineageSize": 3,
+     "robustness": 0.175
+    },
+    {
+     "cycle": 7,
+     "lineageSize": 4,
+     "robustness": 0.2
+    },
+    {
+     "cycle": 8,
+     "lineageSize": 5,
+     "robustness": 0.225
+    },
+    {
+     "cycle": 9,
+     "lineageSize": 5,
+     "robustness": 0.37493028687169316
+    },
+    {
+     "cycle": 10,
+     "lineageSize": 5,
+     "robustness": 0.27492997685185183
+    },
+    {
+     "cycle": 11,
+     "lineageSize": 5,
+     "robustness": 0.37492467551256614
+    },
+    {
+     "cycle": 12,
+     "lineageSize": 5,
+     "robustness": 0.3749161809689153
+    },
+    {
+     "cycle": 13,
+     "lineageSize": 6,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
+    },
+    {
+     "cycle": 17,
+     "lineageSize": 10,
+     "robustness": 0.35
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 11,
+     "robustness": 0.375
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 1,
+     "robustness": 0.2735503472222222
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 1,
+     "robustness": 0.27332688492063495
+    }
+   ],
+   "id": "ID0004-009",
+   "kind": "regulatory-lead",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C014410"
+   ],
+   "robustness": 0.2733,
+   "sources": [
+    "federal_register"
+   ],
+   "statement": "The Federal Register holds 10,000 documents matching “health”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
+   "status": "carried",
+   "title": "Watch for research lagging rulemaking on “health”",
+   "urls": [
+    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=health"
+   ]
+  },
+  {
+   "appearances": 17,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.0833,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "ai-research-frontier"
+   ],
+   "fingerprint": "ed3caa53cae47518",
+   "firstSeenCycle": 4,
+   "history": [
+    {
+     "cycle": 4,
+     "lineageSize": 1,
+     "robustness": 0.125
+    },
+    {
+     "cycle": 5,
+     "lineageSize": 2,
+     "robustness": 0.15
+    },
+    {
+     "cycle": 6,
+     "lineageSize": 3,
+     "robustness": 0.175
+    },
+    {
+     "cycle": 7,
+     "lineageSize": 4,
+     "robustness": 0.2
+    },
+    {
+     "cycle": 8,
+     "lineageSize": 5,
+     "robustness": 0.225
+    },
+    {
+     "cycle": 9,
+     "lineageSize": 5,
+     "robustness": 0.37493028687169316
+    },
+    {
+     "cycle": 10,
+     "lineageSize": 5,
+     "robustness": 0.27492997685185183
+    },
+    {
+     "cycle": 11,
+     "lineageSize": 5,
+     "robustness": 0.37492467551256614
+    },
+    {
+     "cycle": 12,
+     "lineageSize": 5,
+     "robustness": 0.3749161809689153
+    },
+    {
+     "cycle": 13,
+     "lineageSize": 6,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
+    },
+    {
+     "cycle": 17,
+     "lineageSize": 10,
+     "robustness": 0.35
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 11,
+     "robustness": 0.375
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 1,
+     "robustness": 0.2735503472222222
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 1,
+     "robustness": 0.27332688492063495
+    }
+   ],
+   "id": "ID0004-007",
+   "kind": "regulatory-lead",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C014145"
+   ],
+   "robustness": 0.2733,
+   "sources": [
+    "federal_register"
+   ],
+   "statement": "The Federal Register holds 10,000 documents matching “model”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
+   "status": "carried",
+   "title": "Watch for research lagging rulemaking on “model”",
+   "urls": [
+    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=model"
+   ]
+  },
+  {
+   "appearances": 17,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.0833,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "public-health-policy"
+   ],
+   "fingerprint": "98dd9929f1a7794f",
+   "firstSeenCycle": 4,
+   "history": [
+    {
+     "cycle": 4,
+     "lineageSize": 1,
+     "robustness": 0.125
+    },
+    {
+     "cycle": 5,
+     "lineageSize": 2,
+     "robustness": 0.15
+    },
+    {
+     "cycle": 6,
+     "lineageSize": 3,
+     "robustness": 0.175
+    },
+    {
+     "cycle": 7,
+     "lineageSize": 4,
+     "robustness": 0.2
+    },
+    {
+     "cycle": 8,
+     "lineageSize": 5,
+     "robustness": 0.225
+    },
+    {
+     "cycle": 9,
+     "lineageSize": 5,
+     "robustness": 0.37493028687169316
+    },
+    {
+     "cycle": 10,
+     "lineageSize": 5,
+     "robustness": 0.27492997685185183
+    },
+    {
+     "cycle": 11,
+     "lineageSize": 5,
+     "robustness": 0.37492467551256614
+    },
+    {
+     "cycle": 12,
+     "lineageSize": 5,
+     "robustness": 0.3749161809689153
+    },
+    {
+     "cycle": 13,
+     "lineageSize": 6,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
+    },
+    {
+     "cycle": 17,
+     "lineageSize": 10,
+     "robustness": 0.35
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 11,
+     "robustness": 0.375
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 1,
+     "robustness": 0.2735503472222222
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 1,
+     "robustness": 0.27332688492063495
+    }
+   ],
+   "id": "ID0004-012",
+   "kind": "regulatory-lead",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C014450"
+   ],
+   "robustness": 0.2733,
+   "sources": [
+    "federal_register"
+   ],
+   "statement": "The Federal Register holds 10,000 documents matching “public health”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
+   "status": "carried",
+   "title": "Watch for research lagging rulemaking on “public health”",
+   "urls": [
+    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=public%20health"
+   ]
+  },
+  {
+   "appearances": 17,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.0833,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "ai-research-frontier"
+   ],
+   "fingerprint": "35673127671f2a5f",
+   "firstSeenCycle": 4,
+   "history": [
+    {
+     "cycle": 4,
+     "lineageSize": 1,
+     "robustness": 0.125
+    },
+    {
+     "cycle": 5,
+     "lineageSize": 2,
+     "robustness": 0.15
+    },
+    {
+     "cycle": 6,
+     "lineageSize": 3,
+     "robustness": 0.175
+    },
+    {
+     "cycle": 7,
+     "lineageSize": 4,
+     "robustness": 0.2
+    },
+    {
+     "cycle": 8,
+     "lineageSize": 5,
+     "robustness": 0.225
+    },
+    {
+     "cycle": 9,
+     "lineageSize": 5,
+     "robustness": 0.37493028687169316
+    },
+    {
+     "cycle": 10,
+     "lineageSize": 5,
+     "robustness": 0.27492997685185183
+    },
+    {
+     "cycle": 11,
+     "lineageSize": 5,
+     "robustness": 0.37492467551256614
+    },
+    {
+     "cycle": 12,
+     "lineageSize": 5,
+     "robustness": 0.3749161809689153
+    },
+    {
+     "cycle": 13,
+     "lineageSize": 6,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
+    },
+    {
+     "cycle": 17,
+     "lineageSize": 10,
+     "robustness": 0.35
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 11,
+     "robustness": 0.375
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 1,
+     "robustness": 0.2735503472222222
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 1,
+     "robustness": 0.27332688492063495
+    }
+   ],
+   "id": "ID0004-005",
+   "kind": "regulatory-lead",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C014123"
+   ],
+   "robustness": 0.2733,
+   "sources": [
+    "federal_register"
+   ],
+   "statement": "The Federal Register holds 7,812 documents matching “reasoning”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
+   "status": "carried",
+   "title": "Watch for research lagging rulemaking on “reasoning”",
+   "urls": [
+    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=reasoning"
+   ]
+  },
+  {
+   "appearances": 17,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.0833,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "regulatory-flow"
+   ],
+   "fingerprint": "396ccb19b99d098c",
+   "firstSeenCycle": 4,
+   "history": [
+    {
+     "cycle": 4,
+     "lineageSize": 1,
+     "robustness": 0.125
+    },
+    {
+     "cycle": 5,
+     "lineageSize": 2,
+     "robustness": 0.15
+    },
+    {
+     "cycle": 6,
+     "lineageSize": 3,
+     "robustness": 0.175
+    },
+    {
+     "cycle": 7,
+     "lineageSize": 4,
+     "robustness": 0.2
+    },
+    {
+     "cycle": 8,
+     "lineageSize": 5,
+     "robustness": 0.225
+    },
+    {
+     "cycle": 9,
+     "lineageSize": 5,
+     "robustness": 0.37493028687169316
+    },
+    {
+     "cycle": 10,
+     "lineageSize": 5,
+     "robustness": 0.27492997685185183
+    },
+    {
+     "cycle": 11,
+     "lineageSize": 5,
+     "robustness": 0.37492467551256614
+    },
+    {
+     "cycle": 12,
+     "lineageSize": 5,
+     "robustness": 0.3749161809689153
+    },
+    {
+     "cycle": 13,
+     "lineageSize": 6,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
+    },
+    {
+     "cycle": 17,
+     "lineageSize": 10,
+     "robustness": 0.35
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 11,
+     "robustness": 0.375
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 1,
+     "robustness": 0.2735503472222222
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 1,
+     "robustness": 0.27332688492063495
+    }
+   ],
+   "id": "ID0004-011",
+   "kind": "regulatory-lead",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C014432"
+   ],
+   "robustness": 0.2733,
+   "sources": [
+    "federal_register"
+   ],
+   "statement": "The Federal Register holds 10,000 documents matching “security”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
+   "status": "carried",
+   "title": "Watch for research lagging rulemaking on “security”",
+   "urls": [
+    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=security"
+   ]
+  },
+  {
+   "appearances": 17,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.0833,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "public-health-policy"
+   ],
+   "fingerprint": "561d9d83c6dd2ca5",
+   "firstSeenCycle": 4,
+   "history": [
+    {
+     "cycle": 4,
+     "lineageSize": 1,
+     "robustness": 0.125
+    },
+    {
+     "cycle": 5,
+     "lineageSize": 2,
+     "robustness": 0.15
+    },
+    {
+     "cycle": 6,
+     "lineageSize": 3,
+     "robustness": 0.175
+    },
+    {
+     "cycle": 7,
+     "lineageSize": 4,
+     "robustness": 0.2
+    },
+    {
+     "cycle": 8,
+     "lineageSize": 5,
+     "robustness": 0.225
+    },
+    {
+     "cycle": 9,
+     "lineageSize": 5,
+     "robustness": 0.37493028687169316
+    },
+    {
+     "cycle": 10,
+     "lineageSize": 5,
+     "robustness": 0.27492997685185183
+    },
+    {
+     "cycle": 11,
+     "lineageSize": 5,
+     "robustness": 0.37492467551256614
+    },
+    {
+     "cycle": 12,
+     "lineageSize": 5,
+     "robustness": 0.3749161809689153
+    },
+    {
+     "cycle": 13,
+     "lineageSize": 6,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
+    },
+    {
+     "cycle": 17,
+     "lineageSize": 10,
+     "robustness": 0.35
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 11,
+     "robustness": 0.375
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 1,
+     "robustness": 0.2735503472222222
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 1,
+     "robustness": 0.27332688492063495
+    }
+   ],
+   "id": "ID0004-013",
+   "kind": "regulatory-lead",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C014461"
+   ],
+   "robustness": 0.2733,
+   "sources": [
+    "federal_register"
+   ],
+   "statement": "The Federal Register holds 10,000 documents matching “surveillance”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
+   "status": "carried",
+   "title": "Watch for research lagging rulemaking on “surveillance”",
+   "urls": [
+    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=surveillance"
+   ]
+  },
+  {
+   "appearances": 17,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.0833,
+    "freshness": 0.9888,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "ai-research-frontier"
+   ],
+   "fingerprint": "f80144b1216b2961",
+   "firstSeenCycle": 4,
+   "history": [
+    {
+     "cycle": 4,
+     "lineageSize": 1,
+     "robustness": 0.125
+    },
+    {
+     "cycle": 5,
+     "lineageSize": 2,
+     "robustness": 0.15
+    },
+    {
+     "cycle": 6,
+     "lineageSize": 3,
+     "robustness": 0.175
+    },
+    {
+     "cycle": 7,
+     "lineageSize": 4,
+     "robustness": 0.2
+    },
+    {
+     "cycle": 8,
+     "lineageSize": 5,
+     "robustness": 0.225
+    },
+    {
+     "cycle": 9,
+     "lineageSize": 5,
+     "robustness": 0.37493028687169316
+    },
+    {
+     "cycle": 10,
+     "lineageSize": 5,
+     "robustness": 0.27492997685185183
+    },
+    {
+     "cycle": 11,
+     "lineageSize": 5,
+     "robustness": 0.37492467551256614
+    },
+    {
+     "cycle": 12,
+     "lineageSize": 5,
+     "robustness": 0.3749161809689153
+    },
+    {
+     "cycle": 13,
+     "lineageSize": 6,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 7,
+     "robustness": 0.275
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 9,
+     "robustness": 0.32499999999999996
+    },
+    {
+     "cycle": 17,
+     "lineageSize": 10,
+     "robustness": 0.35
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 11,
+     "robustness": 0.375
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 1,
+     "robustness": 0.2735503472222222
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 1,
+     "robustness": 0.27332688492063495
+    }
+   ],
+   "id": "ID0004-008",
+   "kind": "regulatory-lead",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C014156"
+   ],
+   "robustness": 0.2733,
+   "sources": [
+    "federal_register"
+   ],
+   "statement": "The Federal Register holds 3,384 documents matching “transformer”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
+   "status": "carried",
+   "title": "Watch for research lagging rulemaking on “transformer”",
+   "urls": [
+    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=transformer"
+   ]
+  },
+  {
+   "appearances": 20,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.0833,
+    "freshness": 0.8784,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
    "families": [
     "regulatory-flow"
    ],
@@ -724,28 +2330,25 @@
      "cycle": 18,
      "lineageSize": 14,
      "robustness": 0.4
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 1,
+     "robustness": 0.25697966269841266
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 1,
+     "robustness": 0.2567562003968254
     }
    ],
    "id": "ID0001-004",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 18,
+   "lastSeenCycle": 20,
    "lineage": [
-    "C000001",
-    "C001923",
-    "C002850",
-    "C003799",
-    "C004755",
-    "C005723",
-    "C006353",
-    "C008619",
-    "C009692",
-    "C010683",
-    "C011692",
-    "C012712",
-    "C013547",
-    "C014399"
+    "C015821"
    ],
-   "robustness": 0.4,
+   "robustness": 0.2568,
    "sources": [
     "federal_register"
    ],
@@ -754,1527 +2357,6 @@
    "title": "Watch for research lagging rulemaking on “artificial intelligence”",
    "urls": [
     "https://www.federalregister.gov/api/v1/documents.json?per_page=2&order=newest&conditions%5Bterm%5D=artificial+intelligence"
-   ]
-  },
-  {
-   "appearances": 2,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.3333,
-    "evidence": 0.1667,
-    "freshness": 1.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "fbd7178760a71dc1",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 2,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 2,
-     "robustness": 0.39999560805224865
-    }
-   ],
-   "id": "ID0017-019",
-   "kind": "contradiction",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C000023",
-    "C013662"
-   ],
-   "robustness": 0.4,
-   "sources": [
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "2 sources report different values for github.repo[brayonpi/hexstellar].forks (github_repo=98, github_search=97). Until that is explained, neither number should be quoted alone.",
-   "status": "carried",
-   "title": "Reconcile the disagreement on github.repo[brayonpi/hexstellar].forks",
-   "urls": [
-    "https://api.github.com/search/repositories?q=AI%20agents%20created%3A%3E%3D2026-08-22&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/repos/brayonpi/hexstellar"
-   ]
-  },
-  {
-   "appearances": 2,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.3333,
-    "evidence": 0.1667,
-    "freshness": 1.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "fcc4805db4e592b9",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 2,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 2,
-     "robustness": 0.39999560805224865
-    }
-   ],
-   "id": "ID0017-020",
-   "kind": "contradiction",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C000022",
-    "C013661"
-   ],
-   "robustness": 0.4,
-   "sources": [
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "2 sources report different values for github.repo[brayonpi/hexstellar].stars (github_repo=1257, github_search=1240). Until that is explained, neither number should be quoted alone.",
-   "status": "carried",
-   "title": "Reconcile the disagreement on github.repo[brayonpi/hexstellar].stars",
-   "urls": [
-    "https://api.github.com/search/repositories?q=AI%20agents%20created%3A%3E%3D2026-08-22&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/repos/brayonpi/hexstellar"
-   ]
-  },
-  {
-   "appearances": 2,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.3333,
-    "evidence": 0.1667,
-    "freshness": 1.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "c269b6ede6946689",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 2,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 2,
-     "robustness": 0.39999560805224865
-    }
-   ],
-   "id": "ID0017-021",
-   "kind": "contradiction",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C000160",
-    "C013644"
-   ],
-   "robustness": 0.4,
-   "sources": [
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "2 sources report different values for github.repo[browser-use/jev-ultrafast].forks (github_repo=1140, github_search=970). Until that is explained, neither number should be quoted alone.",
-   "status": "carried",
-   "title": "Reconcile the disagreement on github.repo[browser-use/jev-ultrafast].forks",
-   "urls": [
-    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/repos/browser-use/jev-ultrafast"
-   ]
-  },
-  {
-   "appearances": 2,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.3333,
-    "evidence": 0.1667,
-    "freshness": 1.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "77d8bd6e4707c330",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 2,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 2,
-     "robustness": 0.39999560805224865
-    }
-   ],
-   "id": "ID0017-022",
-   "kind": "contradiction",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C000159",
-    "C013643"
-   ],
-   "robustness": 0.4,
-   "sources": [
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "2 sources report different values for github.repo[browser-use/jev-ultrafast].stars (github_repo=17799, github_search=15573). Until that is explained, neither number should be quoted alone.",
-   "status": "carried",
-   "title": "Reconcile the disagreement on github.repo[browser-use/jev-ultrafast].stars",
-   "urls": [
-    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/repos/browser-use/jev-ultrafast"
-   ]
-  },
-  {
-   "appearances": 2,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.3333,
-    "evidence": 0.1667,
-    "freshness": 1.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "69fca8d9d4a7d949",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 2,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 2,
-     "robustness": 0.39999560805224865
-    }
-   ],
-   "id": "ID0017-023",
-   "kind": "contradiction",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C000008",
-    "C013653"
-   ],
-   "robustness": 0.4,
-   "sources": [
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "2 sources report different values for github.repo[zai-org/zcode].forks (github_repo=1808, github_search=1579). Until that is explained, neither number should be quoted alone.",
-   "status": "carried",
-   "title": "Reconcile the disagreement on github.repo[zai-org/zcode].forks",
-   "urls": [
-    "https://api.github.com/search/repositories?q=AI%20agents%20created%3A%3E%3D2026-08-22&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/repos/zai-org/ZCode"
-   ]
-  },
-  {
-   "appearances": 2,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.3333,
-    "evidence": 0.1667,
-    "freshness": 1.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "58097c89b8a7356a",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 2,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 2,
-     "robustness": 0.39999560805224865
-    }
-   ],
-   "id": "ID0017-024",
-   "kind": "contradiction",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C000007",
-    "C013652"
-   ],
-   "robustness": 0.4,
-   "sources": [
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "2 sources report different values for github.repo[zai-org/zcode].stars (github_repo=6235, github_search=5548). Until that is explained, neither number should be quoted alone.",
-   "status": "carried",
-   "title": "Reconcile the disagreement on github.repo[zai-org/zcode].stars",
-   "urls": [
-    "https://api.github.com/search/repositories?q=AI%20agents%20created%3A%3E%3D2026-08-22&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/repos/zai-org/ZCode"
-   ]
-  },
-  {
-   "appearances": 15,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.0,
-    "evidence": 0.9167,
-    "freshness": 0.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "ai-research-frontier"
-   ],
-   "fingerprint": "35673127671f2a5f",
-   "firstSeenCycle": 4,
-   "history": [
-    {
-     "cycle": 4,
-     "lineageSize": 1,
-     "robustness": 0.125
-    },
-    {
-     "cycle": 5,
-     "lineageSize": 2,
-     "robustness": 0.15
-    },
-    {
-     "cycle": 6,
-     "lineageSize": 3,
-     "robustness": 0.175
-    },
-    {
-     "cycle": 7,
-     "lineageSize": 4,
-     "robustness": 0.2
-    },
-    {
-     "cycle": 8,
-     "lineageSize": 5,
-     "robustness": 0.225
-    },
-    {
-     "cycle": 9,
-     "lineageSize": 5,
-     "robustness": 0.37493028687169316
-    },
-    {
-     "cycle": 10,
-     "lineageSize": 5,
-     "robustness": 0.27492997685185183
-    },
-    {
-     "cycle": 11,
-     "lineageSize": 5,
-     "robustness": 0.37492467551256614
-    },
-    {
-     "cycle": 12,
-     "lineageSize": 5,
-     "robustness": 0.3749161809689153
-    },
-    {
-     "cycle": 13,
-     "lineageSize": 6,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 14,
-     "lineageSize": 7,
-     "robustness": 0.275
-    },
-    {
-     "cycle": 15,
-     "lineageSize": 8,
-     "robustness": 0.3
-    },
-    {
-     "cycle": 16,
-     "lineageSize": 9,
-     "robustness": 0.32499999999999996
-    },
-    {
-     "cycle": 17,
-     "lineageSize": 10,
-     "robustness": 0.35
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 11,
-     "robustness": 0.375
-    }
-   ],
-   "id": "ID0004-005",
-   "kind": "regulatory-lead",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C001647",
-    "C002575",
-    "C003523",
-    "C004479",
-    "C005448",
-    "C009416",
-    "C010407",
-    "C011417",
-    "C012436",
-    "C013469",
-    "C014123"
-   ],
-   "robustness": 0.375,
-   "sources": [
-    "federal_register"
-   ],
-   "statement": "The Federal Register holds 7,812 documents matching “reasoning”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
-   "status": "carried",
-   "title": "Watch for research lagging rulemaking on “reasoning”",
-   "urls": [
-    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=reasoning"
-   ]
-  },
-  {
-   "appearances": 15,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.0,
-    "evidence": 0.9167,
-    "freshness": 0.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "ai-research-frontier"
-   ],
-   "fingerprint": "1c2666cda7f5a8dc",
-   "firstSeenCycle": 4,
-   "history": [
-    {
-     "cycle": 4,
-     "lineageSize": 1,
-     "robustness": 0.125
-    },
-    {
-     "cycle": 5,
-     "lineageSize": 2,
-     "robustness": 0.15
-    },
-    {
-     "cycle": 6,
-     "lineageSize": 3,
-     "robustness": 0.175
-    },
-    {
-     "cycle": 7,
-     "lineageSize": 4,
-     "robustness": 0.2
-    },
-    {
-     "cycle": 8,
-     "lineageSize": 5,
-     "robustness": 0.225
-    },
-    {
-     "cycle": 9,
-     "lineageSize": 5,
-     "robustness": 0.37493028687169316
-    },
-    {
-     "cycle": 10,
-     "lineageSize": 5,
-     "robustness": 0.27492997685185183
-    },
-    {
-     "cycle": 11,
-     "lineageSize": 5,
-     "robustness": 0.37492467551256614
-    },
-    {
-     "cycle": 12,
-     "lineageSize": 5,
-     "robustness": 0.3749161809689153
-    },
-    {
-     "cycle": 13,
-     "lineageSize": 6,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 14,
-     "lineageSize": 7,
-     "robustness": 0.275
-    },
-    {
-     "cycle": 15,
-     "lineageSize": 8,
-     "robustness": 0.3
-    },
-    {
-     "cycle": 16,
-     "lineageSize": 9,
-     "robustness": 0.32499999999999996
-    },
-    {
-     "cycle": 17,
-     "lineageSize": 10,
-     "robustness": 0.35
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 11,
-     "robustness": 0.375
-    }
-   ],
-   "id": "ID0004-006",
-   "kind": "regulatory-lead",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C001658",
-    "C002586",
-    "C003534",
-    "C004490",
-    "C005459",
-    "C009427",
-    "C010418",
-    "C011428",
-    "C012447",
-    "C013480",
-    "C014134"
-   ],
-   "robustness": 0.375,
-   "sources": [
-    "federal_register"
-   ],
-   "statement": "The Federal Register holds 10,000 documents matching “agent”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
-   "status": "carried",
-   "title": "Watch for research lagging rulemaking on “agent”",
-   "urls": [
-    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=agent"
-   ]
-  },
-  {
-   "appearances": 15,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.0,
-    "evidence": 0.9167,
-    "freshness": 0.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "ai-research-frontier"
-   ],
-   "fingerprint": "ed3caa53cae47518",
-   "firstSeenCycle": 4,
-   "history": [
-    {
-     "cycle": 4,
-     "lineageSize": 1,
-     "robustness": 0.125
-    },
-    {
-     "cycle": 5,
-     "lineageSize": 2,
-     "robustness": 0.15
-    },
-    {
-     "cycle": 6,
-     "lineageSize": 3,
-     "robustness": 0.175
-    },
-    {
-     "cycle": 7,
-     "lineageSize": 4,
-     "robustness": 0.2
-    },
-    {
-     "cycle": 8,
-     "lineageSize": 5,
-     "robustness": 0.225
-    },
-    {
-     "cycle": 9,
-     "lineageSize": 5,
-     "robustness": 0.37493028687169316
-    },
-    {
-     "cycle": 10,
-     "lineageSize": 5,
-     "robustness": 0.27492997685185183
-    },
-    {
-     "cycle": 11,
-     "lineageSize": 5,
-     "robustness": 0.37492467551256614
-    },
-    {
-     "cycle": 12,
-     "lineageSize": 5,
-     "robustness": 0.3749161809689153
-    },
-    {
-     "cycle": 13,
-     "lineageSize": 6,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 14,
-     "lineageSize": 7,
-     "robustness": 0.275
-    },
-    {
-     "cycle": 15,
-     "lineageSize": 8,
-     "robustness": 0.3
-    },
-    {
-     "cycle": 16,
-     "lineageSize": 9,
-     "robustness": 0.32499999999999996
-    },
-    {
-     "cycle": 17,
-     "lineageSize": 10,
-     "robustness": 0.35
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 11,
-     "robustness": 0.375
-    }
-   ],
-   "id": "ID0004-007",
-   "kind": "regulatory-lead",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C001669",
-    "C002597",
-    "C003545",
-    "C004501",
-    "C005470",
-    "C009438",
-    "C010429",
-    "C011439",
-    "C012458",
-    "C013491",
-    "C014145"
-   ],
-   "robustness": 0.375,
-   "sources": [
-    "federal_register"
-   ],
-   "statement": "The Federal Register holds 10,000 documents matching “model”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
-   "status": "carried",
-   "title": "Watch for research lagging rulemaking on “model”",
-   "urls": [
-    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=model"
-   ]
-  },
-  {
-   "appearances": 15,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.0,
-    "evidence": 0.9167,
-    "freshness": 0.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "ai-research-frontier"
-   ],
-   "fingerprint": "f80144b1216b2961",
-   "firstSeenCycle": 4,
-   "history": [
-    {
-     "cycle": 4,
-     "lineageSize": 1,
-     "robustness": 0.125
-    },
-    {
-     "cycle": 5,
-     "lineageSize": 2,
-     "robustness": 0.15
-    },
-    {
-     "cycle": 6,
-     "lineageSize": 3,
-     "robustness": 0.175
-    },
-    {
-     "cycle": 7,
-     "lineageSize": 4,
-     "robustness": 0.2
-    },
-    {
-     "cycle": 8,
-     "lineageSize": 5,
-     "robustness": 0.225
-    },
-    {
-     "cycle": 9,
-     "lineageSize": 5,
-     "robustness": 0.37493028687169316
-    },
-    {
-     "cycle": 10,
-     "lineageSize": 5,
-     "robustness": 0.27492997685185183
-    },
-    {
-     "cycle": 11,
-     "lineageSize": 5,
-     "robustness": 0.37492467551256614
-    },
-    {
-     "cycle": 12,
-     "lineageSize": 5,
-     "robustness": 0.3749161809689153
-    },
-    {
-     "cycle": 13,
-     "lineageSize": 6,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 14,
-     "lineageSize": 7,
-     "robustness": 0.275
-    },
-    {
-     "cycle": 15,
-     "lineageSize": 8,
-     "robustness": 0.3
-    },
-    {
-     "cycle": 16,
-     "lineageSize": 9,
-     "robustness": 0.32499999999999996
-    },
-    {
-     "cycle": 17,
-     "lineageSize": 10,
-     "robustness": 0.35
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 11,
-     "robustness": 0.375
-    }
-   ],
-   "id": "ID0004-008",
-   "kind": "regulatory-lead",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C001680",
-    "C002608",
-    "C003556",
-    "C004512",
-    "C005481",
-    "C009449",
-    "C010440",
-    "C011450",
-    "C012469",
-    "C013502",
-    "C014156"
-   ],
-   "robustness": 0.375,
-   "sources": [
-    "federal_register"
-   ],
-   "statement": "The Federal Register holds 3,384 documents matching “transformer”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
-   "status": "carried",
-   "title": "Watch for research lagging rulemaking on “transformer”",
-   "urls": [
-    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=transformer"
-   ]
-  },
-  {
-   "appearances": 15,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.0,
-    "evidence": 0.9167,
-    "freshness": 0.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "regulatory-flow"
-   ],
-   "fingerprint": "affaac6be73c1f41",
-   "firstSeenCycle": 4,
-   "history": [
-    {
-     "cycle": 4,
-     "lineageSize": 1,
-     "robustness": 0.125
-    },
-    {
-     "cycle": 5,
-     "lineageSize": 2,
-     "robustness": 0.15
-    },
-    {
-     "cycle": 6,
-     "lineageSize": 3,
-     "robustness": 0.175
-    },
-    {
-     "cycle": 7,
-     "lineageSize": 4,
-     "robustness": 0.2
-    },
-    {
-     "cycle": 8,
-     "lineageSize": 5,
-     "robustness": 0.225
-    },
-    {
-     "cycle": 9,
-     "lineageSize": 5,
-     "robustness": 0.37493028687169316
-    },
-    {
-     "cycle": 10,
-     "lineageSize": 5,
-     "robustness": 0.27492997685185183
-    },
-    {
-     "cycle": 11,
-     "lineageSize": 5,
-     "robustness": 0.37492467551256614
-    },
-    {
-     "cycle": 12,
-     "lineageSize": 5,
-     "robustness": 0.3749161809689153
-    },
-    {
-     "cycle": 13,
-     "lineageSize": 6,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 14,
-     "lineageSize": 7,
-     "robustness": 0.275
-    },
-    {
-     "cycle": 15,
-     "lineageSize": 8,
-     "robustness": 0.3
-    },
-    {
-     "cycle": 16,
-     "lineageSize": 9,
-     "robustness": 0.32499999999999996
-    },
-    {
-     "cycle": 17,
-     "lineageSize": 10,
-     "robustness": 0.35
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 11,
-     "robustness": 0.375
-    }
-   ],
-   "id": "ID0004-009",
-   "kind": "regulatory-lead",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C001934",
-    "C002861",
-    "C003810",
-    "C004766",
-    "C005734",
-    "C009703",
-    "C010694",
-    "C011703",
-    "C012723",
-    "C013558",
-    "C014410"
-   ],
-   "robustness": 0.375,
-   "sources": [
-    "federal_register"
-   ],
-   "statement": "The Federal Register holds 10,000 documents matching “health”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
-   "status": "carried",
-   "title": "Watch for research lagging rulemaking on “health”",
-   "urls": [
-    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=health"
-   ]
-  },
-  {
-   "appearances": 15,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.0,
-    "evidence": 0.9167,
-    "freshness": 0.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "regulatory-flow"
-   ],
-   "fingerprint": "bb645f839f1f641d",
-   "firstSeenCycle": 4,
-   "history": [
-    {
-     "cycle": 4,
-     "lineageSize": 1,
-     "robustness": 0.125
-    },
-    {
-     "cycle": 5,
-     "lineageSize": 2,
-     "robustness": 0.15
-    },
-    {
-     "cycle": 6,
-     "lineageSize": 3,
-     "robustness": 0.175
-    },
-    {
-     "cycle": 7,
-     "lineageSize": 4,
-     "robustness": 0.2
-    },
-    {
-     "cycle": 8,
-     "lineageSize": 5,
-     "robustness": 0.225
-    },
-    {
-     "cycle": 9,
-     "lineageSize": 5,
-     "robustness": 0.37493028687169316
-    },
-    {
-     "cycle": 10,
-     "lineageSize": 5,
-     "robustness": 0.27492997685185183
-    },
-    {
-     "cycle": 11,
-     "lineageSize": 5,
-     "robustness": 0.37492467551256614
-    },
-    {
-     "cycle": 12,
-     "lineageSize": 5,
-     "robustness": 0.3749161809689153
-    },
-    {
-     "cycle": 13,
-     "lineageSize": 6,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 14,
-     "lineageSize": 7,
-     "robustness": 0.275
-    },
-    {
-     "cycle": 15,
-     "lineageSize": 8,
-     "robustness": 0.3
-    },
-    {
-     "cycle": 16,
-     "lineageSize": 9,
-     "robustness": 0.32499999999999996
-    },
-    {
-     "cycle": 17,
-     "lineageSize": 10,
-     "robustness": 0.35
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 11,
-     "robustness": 0.375
-    }
-   ],
-   "id": "ID0004-010",
-   "kind": "regulatory-lead",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C001945",
-    "C002872",
-    "C003821",
-    "C004777",
-    "C005745",
-    "C009714",
-    "C010705",
-    "C011714",
-    "C012734",
-    "C013569",
-    "C014421"
-   ],
-   "robustness": 0.375,
-   "sources": [
-    "federal_register"
-   ],
-   "statement": "The Federal Register holds 10,000 documents matching “energy”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
-   "status": "carried",
-   "title": "Watch for research lagging rulemaking on “energy”",
-   "urls": [
-    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=energy"
-   ]
-  },
-  {
-   "appearances": 15,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.0,
-    "evidence": 0.9167,
-    "freshness": 0.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "regulatory-flow"
-   ],
-   "fingerprint": "396ccb19b99d098c",
-   "firstSeenCycle": 4,
-   "history": [
-    {
-     "cycle": 4,
-     "lineageSize": 1,
-     "robustness": 0.125
-    },
-    {
-     "cycle": 5,
-     "lineageSize": 2,
-     "robustness": 0.15
-    },
-    {
-     "cycle": 6,
-     "lineageSize": 3,
-     "robustness": 0.175
-    },
-    {
-     "cycle": 7,
-     "lineageSize": 4,
-     "robustness": 0.2
-    },
-    {
-     "cycle": 8,
-     "lineageSize": 5,
-     "robustness": 0.225
-    },
-    {
-     "cycle": 9,
-     "lineageSize": 5,
-     "robustness": 0.37493028687169316
-    },
-    {
-     "cycle": 10,
-     "lineageSize": 5,
-     "robustness": 0.27492997685185183
-    },
-    {
-     "cycle": 11,
-     "lineageSize": 5,
-     "robustness": 0.37492467551256614
-    },
-    {
-     "cycle": 12,
-     "lineageSize": 5,
-     "robustness": 0.3749161809689153
-    },
-    {
-     "cycle": 13,
-     "lineageSize": 6,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 14,
-     "lineageSize": 7,
-     "robustness": 0.275
-    },
-    {
-     "cycle": 15,
-     "lineageSize": 8,
-     "robustness": 0.3
-    },
-    {
-     "cycle": 16,
-     "lineageSize": 9,
-     "robustness": 0.32499999999999996
-    },
-    {
-     "cycle": 17,
-     "lineageSize": 10,
-     "robustness": 0.35
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 11,
-     "robustness": 0.375
-    }
-   ],
-   "id": "ID0004-011",
-   "kind": "regulatory-lead",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C001956",
-    "C002883",
-    "C003832",
-    "C004788",
-    "C005756",
-    "C009725",
-    "C010716",
-    "C011725",
-    "C012745",
-    "C013580",
-    "C014432"
-   ],
-   "robustness": 0.375,
-   "sources": [
-    "federal_register"
-   ],
-   "statement": "The Federal Register holds 10,000 documents matching “security”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
-   "status": "carried",
-   "title": "Watch for research lagging rulemaking on “security”",
-   "urls": [
-    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=security"
-   ]
-  },
-  {
-   "appearances": 15,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.0,
-    "evidence": 0.9167,
-    "freshness": 0.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "public-health-policy"
-   ],
-   "fingerprint": "98dd9929f1a7794f",
-   "firstSeenCycle": 4,
-   "history": [
-    {
-     "cycle": 4,
-     "lineageSize": 1,
-     "robustness": 0.125
-    },
-    {
-     "cycle": 5,
-     "lineageSize": 2,
-     "robustness": 0.15
-    },
-    {
-     "cycle": 6,
-     "lineageSize": 3,
-     "robustness": 0.175
-    },
-    {
-     "cycle": 7,
-     "lineageSize": 4,
-     "robustness": 0.2
-    },
-    {
-     "cycle": 8,
-     "lineageSize": 5,
-     "robustness": 0.225
-    },
-    {
-     "cycle": 9,
-     "lineageSize": 5,
-     "robustness": 0.37493028687169316
-    },
-    {
-     "cycle": 10,
-     "lineageSize": 5,
-     "robustness": 0.27492997685185183
-    },
-    {
-     "cycle": 11,
-     "lineageSize": 5,
-     "robustness": 0.37492467551256614
-    },
-    {
-     "cycle": 12,
-     "lineageSize": 5,
-     "robustness": 0.3749161809689153
-    },
-    {
-     "cycle": 13,
-     "lineageSize": 6,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 14,
-     "lineageSize": 7,
-     "robustness": 0.275
-    },
-    {
-     "cycle": 15,
-     "lineageSize": 8,
-     "robustness": 0.3
-    },
-    {
-     "cycle": 16,
-     "lineageSize": 9,
-     "robustness": 0.32499999999999996
-    },
-    {
-     "cycle": 17,
-     "lineageSize": 10,
-     "robustness": 0.35
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 11,
-     "robustness": 0.375
-    }
-   ],
-   "id": "ID0004-012",
-   "kind": "regulatory-lead",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C001972",
-    "C002899",
-    "C003848",
-    "C004804",
-    "C005772",
-    "C009741",
-    "C010732",
-    "C011741",
-    "C012761",
-    "C013598",
-    "C014450"
-   ],
-   "robustness": 0.375,
-   "sources": [
-    "federal_register"
-   ],
-   "statement": "The Federal Register holds 10,000 documents matching “public health”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
-   "status": "carried",
-   "title": "Watch for research lagging rulemaking on “public health”",
-   "urls": [
-    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=public%20health"
-   ]
-  },
-  {
-   "appearances": 15,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.0,
-    "evidence": 0.9167,
-    "freshness": 0.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "public-health-policy"
-   ],
-   "fingerprint": "561d9d83c6dd2ca5",
-   "firstSeenCycle": 4,
-   "history": [
-    {
-     "cycle": 4,
-     "lineageSize": 1,
-     "robustness": 0.125
-    },
-    {
-     "cycle": 5,
-     "lineageSize": 2,
-     "robustness": 0.15
-    },
-    {
-     "cycle": 6,
-     "lineageSize": 3,
-     "robustness": 0.175
-    },
-    {
-     "cycle": 7,
-     "lineageSize": 4,
-     "robustness": 0.2
-    },
-    {
-     "cycle": 8,
-     "lineageSize": 5,
-     "robustness": 0.225
-    },
-    {
-     "cycle": 9,
-     "lineageSize": 5,
-     "robustness": 0.37493028687169316
-    },
-    {
-     "cycle": 10,
-     "lineageSize": 5,
-     "robustness": 0.27492997685185183
-    },
-    {
-     "cycle": 11,
-     "lineageSize": 5,
-     "robustness": 0.37492467551256614
-    },
-    {
-     "cycle": 12,
-     "lineageSize": 5,
-     "robustness": 0.3749161809689153
-    },
-    {
-     "cycle": 13,
-     "lineageSize": 6,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 14,
-     "lineageSize": 7,
-     "robustness": 0.275
-    },
-    {
-     "cycle": 15,
-     "lineageSize": 8,
-     "robustness": 0.3
-    },
-    {
-     "cycle": 16,
-     "lineageSize": 9,
-     "robustness": 0.32499999999999996
-    },
-    {
-     "cycle": 17,
-     "lineageSize": 10,
-     "robustness": 0.35
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 11,
-     "robustness": 0.375
-    }
-   ],
-   "id": "ID0004-013",
-   "kind": "regulatory-lead",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C001983",
-    "C002910",
-    "C003859",
-    "C004815",
-    "C005783",
-    "C009752",
-    "C010743",
-    "C011752",
-    "C012772",
-    "C013609",
-    "C014461"
-   ],
-   "robustness": 0.375,
-   "sources": [
-    "federal_register"
-   ],
-   "statement": "The Federal Register holds 10,000 documents matching “surveillance”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
-   "status": "carried",
-   "title": "Watch for research lagging rulemaking on “surveillance”",
-   "urls": [
-    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=surveillance"
-   ]
-  },
-  {
-   "appearances": 15,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.0,
-    "evidence": 0.9167,
-    "freshness": 0.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "public-health-policy"
-   ],
-   "fingerprint": "34ce546734a5d9e2",
-   "firstSeenCycle": 4,
-   "history": [
-    {
-     "cycle": 4,
-     "lineageSize": 1,
-     "robustness": 0.125
-    },
-    {
-     "cycle": 5,
-     "lineageSize": 2,
-     "robustness": 0.15
-    },
-    {
-     "cycle": 6,
-     "lineageSize": 3,
-     "robustness": 0.175
-    },
-    {
-     "cycle": 7,
-     "lineageSize": 4,
-     "robustness": 0.2
-    },
-    {
-     "cycle": 8,
-     "lineageSize": 5,
-     "robustness": 0.225
-    },
-    {
-     "cycle": 9,
-     "lineageSize": 5,
-     "robustness": 0.37493028687169316
-    },
-    {
-     "cycle": 10,
-     "lineageSize": 5,
-     "robustness": 0.27492997685185183
-    },
-    {
-     "cycle": 11,
-     "lineageSize": 5,
-     "robustness": 0.37492467551256614
-    },
-    {
-     "cycle": 12,
-     "lineageSize": 5,
-     "robustness": 0.3749161809689153
-    },
-    {
-     "cycle": 13,
-     "lineageSize": 6,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 14,
-     "lineageSize": 7,
-     "robustness": 0.275
-    },
-    {
-     "cycle": 15,
-     "lineageSize": 8,
-     "robustness": 0.3
-    },
-    {
-     "cycle": 16,
-     "lineageSize": 9,
-     "robustness": 0.32499999999999996
-    },
-    {
-     "cycle": 17,
-     "lineageSize": 10,
-     "robustness": 0.35
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 11,
-     "robustness": 0.375
-    }
-   ],
-   "id": "ID0004-014",
-   "kind": "regulatory-lead",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C001994",
-    "C002921",
-    "C003870",
-    "C004826",
-    "C005794",
-    "C009763",
-    "C010754",
-    "C011763",
-    "C012783",
-    "C013620",
-    "C014472"
-   ],
-   "robustness": 0.375,
-   "sources": [
-    "federal_register"
-   ],
-   "statement": "The Federal Register holds 10,000 documents matching “data exchange”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
-   "status": "carried",
-   "title": "Watch for research lagging rulemaking on “data exchange”",
-   "urls": [
-    "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=data%20exchange"
-   ]
-  },
-  {
-   "appearances": 2,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.3333,
-    "evidence": 0.3333,
-    "freshness": 0.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 18,
-   "families": [
-    "source-health"
-   ],
-   "fingerprint": "9eb946c054928da4",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 2,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 4,
-     "robustness": 0.3
-    }
-   ],
-   "id": "ID0017-003",
-   "kind": "convergence",
-   "lastSeenCycle": 18,
-   "lineage": [
-    "C013403",
-    "C013404",
-    "C014057",
-    "C014058"
-   ],
-   "robustness": 0.3,
-   "sources": [
-    "github_releases",
-    "github_repo"
-   ],
-   "statement": "“buffedlizard55-lab/MasterSelfLearn” is independently reported by 2 sources (github_releases, github_repo).  A monitor built on all of them can be cross-checked; one built on any single one cannot.",
-   "status": "carried",
-   "title": "Track “buffedlizard55-lab/MasterSelfLearn” as a multi-source subject",
-   "urls": [
-    "https://api.github.com/repos/buffedlizard55-lab/MasterSelfLearn",
-    "https://api.github.com/repos/buffedlizard55-lab/MasterSelfLearn/releases?per_page=1"
    ]
   }
  ]

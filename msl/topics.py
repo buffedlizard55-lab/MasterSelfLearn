@@ -173,8 +173,10 @@ class Library:
             "topics": sorted((t.as_dict() for t in self.topics.values()),
                              key=lambda x: (-x["signals"], x["slug"])),
         }
-        self.path.write_text(json.dumps(payload, indent=1, ensure_ascii=False) + "\n",
-                             encoding="utf-8")
+        tmp = self.path.with_name(self.path.name + ".tmp")
+        tmp.write_text(json.dumps(payload, indent=1, ensure_ascii=False,
+                                  allow_nan=False) + "\n", encoding="utf-8")
+        tmp.replace(self.path)
 
     def get(self, slug: str) -> Optional[Topic]:
         return self.topics.get(slug)

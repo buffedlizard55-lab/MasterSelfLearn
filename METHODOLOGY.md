@@ -39,12 +39,18 @@ here first.
 Five rules, each enforced in code with a test:
 
 1. **No evidence, no claim.** `Ledger.accept` rejects a `captured`, `documented`
-   or `negative` claim without an evidence row, and a `derived` claim without a
-   lineage and a formula. Rejections are counted and published.
+   or `negative` claim unless it cites a complete successful read with an integrity
+   hash, matching source and URL, stable field identity, and exact adapter source
+   path. A `derived` claim needs existing lineage, a formula, and `sourceId=derived`.
+   Rejections are persisted in append-only `data/rejections.jsonl` and published.
    → `tests/test_gate.py`
 2. **Unreadable is not unknown.** A failed read produces a recorded failure with
-   its HTTP status and a reproduction command, and marks the source `blocked`.
-   No substitute value is invented.
+   its HTTP status and a reproduction command. A definitive source-side failure
+   marks the source `blocked`; malformed requests, local response caps, and runner
+   egress failures do not manufacture a claim that somebody else's service is
+   down. An exact-URL hashed seed may be reused only as an explicitly stale
+   `seed-fallback` with its original capture time; it is never represented as the
+   failed response or as a fresh observation.
    → `tests/test_pipeline.py::FailurePaths`
 3. **Yesterday's arithmetic is re-checked today.** Every derived claim is
    recomputed from its recorded inputs each cycle. A mismatch is a drift
@@ -63,9 +69,9 @@ Five rules, each enforced in code with a test:
 
 | Stage | Module | Contract |
 |---|---|---|
-| Plan | `msl/tasks.py` | Reading list is derived from the *current* library, so last cycle's topics get deeper reads now. Capped at 70 tasks |
-| Collect | `msl/http.py` | Returns bytes or a recorded failure. Never a silent empty |
-| Verify | `msl/evidence.py` | The gate. One door in |
+| Plan | `msl/tasks.py` | Reading list is derived from the *current* library, so last cycle's topics get deeper reads now. Capped at 84 tasks; operator quotas and host pacing are enforced |
+| Collect | `msl/http.py` | Returns complete bytes or a recorded failure. Truncated responses are unusable; redirects and content types are retained |
+| Verify | `msl/evidence.py` | One gate validates evidence, integrity, source, URL, field, and source path |
 | Discover | `msl/topics.py` | Entities become candidate topics; 2 signals promote; capped at 6 new topics per cycle |
 | Reason | `msl/reason.py` | Arithmetic + recheck of every previous derivation |
 | Compete | `msl/strategies.py`, `msl/ideas.py` | Personas forecast; ideas scored for robustness and carried forward |
@@ -76,22 +82,23 @@ A stage that raises becomes an irregularity; the cycle still publishes.
 
 ## 4. Why the competition is scored the way it is
 
-The headline number is **skill**, not accuracy:
+The headline number is **paired skill**, not raw accuracy:
 
 ```
-skill = accuracy − accuracy(S10_Persistence)
+paired skill = persona accuracy − persistence accuracy
+               on the exact same metric/cycle targets
 ```
 
 `S10_Persistence` always predicts "no change". Most daily series are dominated by
-no-change, so a persona can post respectable accuracy while demonstrating nothing
-at all. Skill removes that flattering baseline. On the offline seed corpus — a
-static snapshot, where nothing moves — the null model scores 100% and every other
-persona scores at or below zero. That is the correct reading, and it is exactly
-the situation the metric exists to expose.
+no-change, so a persona can post respectable accuracy while demonstrating nothing.
+The older leaderboard subtracted the null's *global* accuracy even when a persona
+forecast a different target mix; that was not a controlled comparison. The current
+score joins each forecast to persistence by metric, issue cycle, and metric kind,
+and excludes an unmatched pair.
 
-**Qualification.** A persona is ranked only with ≥3 scored forecasts *and* a
-scored null model. Below that it is reported `UNRANKED` with the reason. It is
-never shown at 0%, which would present an untested design as a losing one.
+**Qualification.** A persona is ranked only with ≥3 paired scored forecasts.
+Below that it is reported `UNRANKED` with the reason. It is never shown at 0%,
+which would present an untested design as a losing one.
 
 **Scoring discipline.** A forecast may only be scored against an observation from
 a *later* cycle. `tests/test_strategies.py` fails if a forecast is scored against
@@ -103,7 +110,9 @@ An idea is produced by one of six rules over verified claims, and carries the id
 of the claims behind it. An idea with no lineage is not produced — coverage gaps
 are reported separately, never dressed as ideas.
 
-Robustness is a weighted sum, recomputed every cycle from the *current* ledger:
+Robustness is a weighted sum, recomputed every cycle from the current terminal
+captured evidence. Derived lineage is recursively expanded, so rerunning arithmetic
+cannot make an old source observation look fresh or independently corroborated:
 
 | Component | Weight | Meaning |
 |---|---|---|
@@ -113,8 +122,10 @@ Robustness is a weighted sum, recomputed every cycle from the *current* ledger:
 | `freshness` | 0.15 | how recent the newest supporting claim is |
 | `reproducibility` | 0.10 | whether a reader can re-fetch the source now |
 
-Ideas persist. One that keeps gaining corroboration climbs and is promoted; one
-whose support disappears sinks to zero and is retired. That carry-forward is the
+Ideas persist, but a recurring idea replaces its active lineage with the current
+cycle's support instead of accumulating evidence forever. Freshness decays over seven
+days. One that keeps gaining corroboration climbs and is promoted; one whose support
+disappears sinks to zero and is retired. That carry-forward is the
 "learning from previous ideas" part, and it is arithmetic over the ledger rather
 than memory.
 
@@ -138,12 +149,14 @@ supporting count is not written. Current lessons:
 2. **No keyed sources.** FRED, the NFL Game API, Google Trends, the X API,
    YouTube Data and TikTok/Instagram are all excluded; each is listed in
    `msl/sources.py → KEYED_SOURCES_EXCLUDED` with the reason.
-3. **Four interest categories are unserved.** Travel & Korea Trip, Social &
-   Creator Data, Elections & Civic Data and Gaming & Guides have no registered
-   source that can answer their question. No claim is made about any of them.
-   The authoritative list is `msl/sources.py →
-   INTEREST_CATEGORIES_WITHOUT_A_SOURCE`; the count in this sentence was correct
-   when written and is the kind of figure that goes stale, so the list wins.
+3. **Four interest categories have missing or partial coverage.** Travel & Korea
+   Trip has geocoding but not prices; Social & Creator Data has public-attention
+   signals but no creator-platform metrics; Elections & Civic Data has federal
+   rulemaking but not election results; Gaming & Guides has no confirmed source.
+   No claim is made beyond those surfaces. The authoritative list is
+   `msl/sources.py → INTEREST_CATEGORIES_WITHOUT_A_SOURCE`; the count in this
+   sentence was correct when written and is the kind of figure that goes stale,
+   so the list wins.
    (Gaming & Guides was missing from this document entirely until 2026-09-22 —
    an omission that is not written down is invisible, which is worse than a gap
    that is.)
@@ -159,18 +172,28 @@ supporting count is not written. Current lessons:
    produces.
 7. **Some derived claims cannot be re-checked.** A repository's stars-per-day has
    *now* in its denominator. Those are counted as NOT RECHECKED, never as passing.
-8. **Seed captures taken by an interactive read are not wire-verifiable.** Those
-   rows carry `wireHashVerifiable: false`; the first automated probe re-reads the
-   endpoint and reports whether the values still match.
+8. **Historical integrity is not retroactively upgraded.** Most cycle 1–18
+   evidence rows retained a canonical projection hash but not the response bytes,
+   despite some carrying the old `wireHashVerifiable: true` flag. The loader now
+   classifies those rows as `projection`, the site labels them, and the verifier
+   reports the count. New live reads retain a hash of the exact decompressed bytes
+   handed to the adapter. Interactive/CLI seed captures remain projection-only.
 9. **The owner's shared document could not be read by a machine.** The brief
    points at a ChatGPT share URL whose body is rendered client-side; the only
    server-supplied content is its `<title>`, "Design Autonomous Research System".
    No requirement in this repository is sourced from that transcript.
 10. **"Never read" is not "broken".** A source in the `registered` state has
-    simply not been reached by a recorded probe. As of the 2026-09-22 session,
-    24 of 28 were in that state because the probe ran from a sandbox whose egress
-    allowlist reached only 4 hosts. That is a property of the runner; it is not
-    evidence about any of those services, and nothing here claims otherwise.
+    simply not been reached by a conclusive recorded read. Runner egress failure is
+    a property of the runner, not evidence about a service.
+11. **GitHub schedules are best effort, not a nonstop-process guarantee.** The
+    workflow is requested every 30 minutes and serialized with the daily writer,
+    but GitHub documents that scheduled jobs can be delayed or dropped under load.
+    The generated timestamp and cycle history make a gap visible; this repository
+    cannot make GitHub's hosted scheduler provide a hard real-time SLA.
+12. **The MasterSite catalog has mixed provenance by design.** Repository, commit,
+    and Pages fields come from its recorded GitHub API audit; descriptions come from
+    MasterSite's first-party audited overlay and retain `verifiedBasis`. The Projects
+    page does not relabel those descriptions as GitHub-authored facts.
 
 ## 8. Reproduce any number on the site
 

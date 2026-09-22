@@ -67,6 +67,7 @@ def _source_health(d: pathlib.Path) -> Dict[str, Any]:
             "statusAfter": r.get("statusAfter", ""),
             "egressBlocked": bool(r.get("egressBlocked", False)),
             "verdict": bool(r.get("verdict", True)),
+            "inconclusiveReason": r.get("inconclusiveReason", ""),
             "probeUrl": r.get("probeUrl", ""),
         } for r in results],
     }
@@ -77,7 +78,6 @@ def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
     lb = _read_json(d / "leaderboard.json")
     ideas_doc = _read_json(d / "ideas.json")
     insights_doc = _read_json(d / "insights.json")
-    sources_doc = _read_json(d / "sources.json")
     profile = _read_json(d / "profile.json")
 
     cycles: List[Dict[str, Any]] = []
@@ -94,6 +94,14 @@ def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
 
     topics = []
     claim_counts = ledger.topics_with_claims()
+    # Entity subjects were introduced with schema v2.  Persisted library claim
+    # credits preserve accepted support from older rows that only stored broad
+    # family topics; use whichever auditable count is larger rather than erasing
+    # that legacy support from the Library page.
+    topic_claim_counts = {
+        slug: max(topic.claims, claim_counts.get(slug, 0))
+        for slug, topic in library.topics.items()
+    }
     for t in sorted(library.topics.values(),
                     key=lambda x: (-x.interest_score, -x.signals, x.slug)):
         fam = FAMILY_BY_SLUG.get(t.family)
@@ -102,7 +110,7 @@ def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
             "familyTitle": fam.title if fam else t.family,
             "category": fam.category if fam else "",
             "question": fam.question if fam else "",
-            "verifiedClaims": claim_counts.get(t.slug, 0),
+            "verifiedClaims": topic_claim_counts.get(t.slug, 0),
             "interest": (memory.get("topicInterest") or {}).get(t.slug, {}),
         })
 
@@ -116,9 +124,13 @@ def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
     evidence_rows = {
         e.id: {
             "id": e.id, "url": e.url, "status": e.status,
-            "capturedAt": e.captured_at, "sha256": e.payload_sha256 or e.projection_sha256,
+            "capturedAt": e.captured_at,
+            "sha256": e.payload_sha256 or e.projection_sha256,
             "rawBytes": e.raw_bytes, "captureMode": e.capture_mode,
             "wireHashVerifiable": e.wire_hash_verifiable,
+            "integrity": e.integrity_level, "finalUrl": e.final_url,
+            "contentType": e.content_type, "truncated": e.truncated,
+            "successful": e.successful,
         }
         for e in ledger.evidence
     }
@@ -141,6 +153,29 @@ def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
     forecasts_doc = _read_json(d / "forecasts.json")
     fc = forecasts_doc.get("items", [])
 
+    # One latest, evidence-gated MasterSite record per repository. The raw
+    # catalog is never imported directly by the browser: each row first passes
+    # through the same source/evidence/path checks as every other claim.
+    projects_by_repo: Dict[str, Dict[str, Any]] = {}
+    for claim in ledger.claims:
+        if (claim.kind not in ("captured", "documented")
+                or not claim.field.startswith("mastersite.project[")
+                or not claim.field.endswith("].record")
+                or not isinstance(claim.value, dict)):
+            continue
+        repo = claim.field[len("mastersite.project["):-len("].record")]
+        projects_by_repo[repo] = {
+            **claim.value,
+            "claimId": claim.id,
+            "sourceUrl": claim.url,
+            "retrievedAt": claim.retrieved_at,
+            "sourcePath": claim.source_path,
+            "evidenceIds": claim.evidence,
+        }
+    projects = sorted(projects_by_repo.values(),
+                      key=lambda p: (str(p.get("category", "")),
+                                     str(p.get("title", ""))))
+
     data = {
         "meta": {
             "generatedAt": now,
@@ -162,7 +197,8 @@ def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
             "question": f.question, "sources": f.sources,
             "blockedReason": f.blocked_reason,
             "topics": sum(1 for t in library.topics.values() if t.family == f.slug),
-            "verifiedClaims": sum(claim_counts.get(t.slug, 0) for t in library.topics.values()
+            "verifiedClaims": sum(topic_claim_counts.get(t.slug, 0)
+                                  for t in library.topics.values()
                                   if t.family == f.slug),
         } for f in FAMILIES],
         "topics": topics,
@@ -171,7 +207,10 @@ def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
         "ideas": ideas_doc.get("items", []),
         "leaderboard": lb,
         "forecasts": fc[-600:],
-        "sources": sources_doc.get("sources", [s.as_dict() for s in REGISTRY]),
+        # Registry definitions (including provenance tier) come from code; live
+        # status is replayed from source_health.json at import. A stale sources.json
+        # must not hide a newly classified source during a republish.
+        "sources": [s.as_dict() for s in REGISTRY],
         # The recorded probe.  Without this the Sources page can say a source was
         # never read but not WHY, so a reader cannot tell an unreachable endpoint
         # from a runner that was not allowed to leave the building.  The
@@ -187,6 +226,8 @@ def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
         "claimTotal": len(ledger.claims),
         "claimWindow": len(claim_rows),
         "gateRejections": ledger.rejections[-200:],
+        "gateRejectionsTotal": len(ledger.rejections),
+        "gateRejectionWindow": min(len(ledger.rejections), 200),
         "cycles": cycles[-120:],
         "cyclesTotal": len(cycles),
         "memory": {
@@ -197,6 +238,12 @@ def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
             "consecutiveCycleFailures": memory.get("consecutiveCycleFailures", 0),
         },
         "profile": profile,
+        "projects": projects,
+        "projectCatalog": {
+            "count": len(projects),
+            "source": "MasterSite audited catalog via GitHub Contents API",
+            "masterSiteUrl": config.MASTER_SITE_URL,
+        },
         "seedCaptures": [{"file": r.get("_file", ""), "url": r.get("url", ""),
                           "capturedAt": r.get("capturedAt", ""),
                           "payloadSha256": r.get("payloadSha256", ""),
@@ -208,10 +255,14 @@ def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
     }
 
     out = d / "site.js"
-    body = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
-    out.write_text("// GENERATED by msl/sitegen.py — do not edit by hand.\n"
-                   f"// cycle {rep.cycle} @ {now}\n"
-                   "window.MSLDATA = " + body + ";\n", encoding="utf-8")
+    body = json.dumps(data, ensure_ascii=False, separators=(",", ":"),
+                      allow_nan=False)
+    text = ("// GENERATED by msl/sitegen.py — do not edit by hand.\n"
+            f"// cycle {rep.cycle} @ {now}\n"
+            "window.MSLDATA = " + body + ";\n")
+    tmp = out.with_name(out.name + ".tmp")
+    tmp.write_text(text, encoding="utf-8")
+    tmp.replace(out)
     return out
 
 
