@@ -157,12 +157,12 @@ class GeneratedDocs(TmpDirCase):
             self.assertIn(f"`{s.id}`", v, f"{s.id} is missing from the audit ledger")
 
     def test_irregularities_doc_groups_by_severity(self):
-        i = (config.ROOT / "IRREGULARITIES.md").read_text()
+        i = (self.dir / "IRREGULARITIES.md").read_text()
         self.assertIn("## WARN", i)
         self.assertIn("## INFO", i)
 
     def test_status_doc_reports_the_cycle(self):
-        s = (config.ROOT / "STATUS.md").read_text()
+        s = (self.dir / "STATUS.md").read_text()
         self.assertIn("# STATUS — cycle 1", s)
 
 
