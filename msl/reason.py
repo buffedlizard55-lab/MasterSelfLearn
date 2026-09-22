@@ -23,6 +23,8 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
+from .retractions import is_retracted
+
 from . import config
 from .evidence import KIND_DERIVED, Claim, Ledger
 
@@ -139,7 +141,10 @@ def derive(ledger: Ledger, cycle: int, now: str,
             insight(topic, kind, statement, [c.id], importance)
         return c
 
-    claims = ledger.claims
+    # Retracted claims stay in the append-only ledger but are not inputs.  Without
+    # this the reasoning stage recomputes the same wrong conclusion every cycle
+    # from claims that are genuine reads of the wrong subject.
+    claims = [c for c in ledger.claims if not is_retracted(c.field)]
 
     # ---- R1/R5/R6  repository age and star velocity -----------------------
     for name, g in sorted(_repo_groups(claims).items()):
