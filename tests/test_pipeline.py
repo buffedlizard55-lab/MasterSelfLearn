@@ -187,7 +187,8 @@ class CycleProgression(TmpDirCase):
 
 class FailurePaths(TmpDirCase):
     def test_a_cycle_with_no_seed_data_still_publishes_and_says_so(self):
-        rep = run_cycle(offline=True, data_dir=self.dir, now_override=NOW1)
+        rep = run_cycle(offline=True, data_dir=self.dir, now_override=NOW1,
+                          docs_dir=self.dir)
         self.assertEqual(rep.fetch_ok, 0)
         self.assertTrue((self.dir / "site.js").exists())
         reg = json.loads((self.dir / "irregularities.json").read_text())
@@ -198,7 +199,8 @@ class FailurePaths(TmpDirCase):
                         "reading nothing is critical, not informational")
 
     def test_missing_interest_profile_is_reported_not_invented(self):
-        rep = run_cycle(offline=True, data_dir=self.dir, now_override=NOW1)
+        rep = run_cycle(offline=True, data_dir=self.dir, now_override=NOW1,
+                          docs_dir=self.dir)
         prof = json.loads((self.dir / "profile.json").read_text())
         self.assertFalse(prof["available"])
         self.assertTrue(prof["reason"])
