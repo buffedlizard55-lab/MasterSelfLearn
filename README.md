@@ -151,10 +151,13 @@ corroboration is promoted.
 ## What the engine has learned about itself
 
 These are counted, not reflected. Each lesson carries the integers behind it.
+`data/memory.json → lessons` is the source of truth and is regenerated every
+cycle; the rows below were true as of cycle 22 and the next cycle supersedes
+them.
 
 | | Lesson |
 |---|---|
-| `L1` | Topics backed by two or more independent sources have averaged 1.00 signals against 1.00 for single-source topics — a ratio of 1.00×. |
+| `L1` | Topics corroborated by two or more independent sources hold ~17× more accepted claim rows on average (738 vs 43) than single-source topics, but not more discovery signals (11.6 vs 13.4). Entity attribution is row-provable only from schema v2, and 10,170 accepted rows predate it. |
 | `L2` | The evidence gate has rejected 0 of 18737 attempted claims (0.00%). |
 | `L3` | 127 of 145 tracked topics (87.6%) have at least one accepted claim credit. |
 | `L4` | Of 4 idea kinds, “convergence” holds the highest mean robustness (0.492 over 8 ideas). |
@@ -184,7 +187,7 @@ python3 -m msl.cli probe              # live-read every registered source, repor
 python3 -m msl.cli publish            # re-render site + docs from committed state
 python3 -m msl.cli verify-claims      # read-only: recheck derived claims, report drift
 python3 -m msl.cli gate-report        # read-only: show what the evidence gate rejected
-python3 -m unittest discover -s tests # 334 tests in 13 modules, standard library only
+python3 -m unittest discover -s tests # 350 tests in 14 modules, standard library only
 node tools/render_check.js            # render all 10 pages headlessly
 ```
 

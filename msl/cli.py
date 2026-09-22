@@ -95,6 +95,34 @@ def cmd_gate_report(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_unsupported_topics(args: argparse.Namespace) -> int:
+    """Read-only: the exact populations behind the "unsupported topics" finding.
+
+    Prints the two classes the irregularity register distinguishes — topics with
+    no verified claims at all, and topics whose only support is pre-schema-v2
+    credit the claim rows can no longer prove — so a reader can reproduce the
+    register's population with one command instead of a one-liner that almost,
+    but not quite, computes the same thing.
+    """
+    from .pipeline import unsupported_topic_report
+    ledger = Ledger()
+    library = Library()
+    cycle = max((t.last_signal_cycle for t in library.topics.values()), default=0)
+    rep = unsupported_topic_report(ledger, library, cycle)
+    print(f"cycle context: {rep['cycle']}")
+    print(f"\nunsupported (no claim row, no credit): {len(rep['unsupported'])}")
+    for row in rep["unsupported"]:
+        print(f"  {row['slug']}  (created cycle {row['createdCycle']}, "
+              f"{row['signals']} signal(s), {row['status']})")
+    print(f"\ncredit-only (pre-schema-v2 credit, not row-provable): {len(rep['creditOnly'])}")
+    for row in rep["creditOnly"]:
+        print(f"  {row['slug']}  (created cycle {row['createdCycle']}, "
+              f"{row['creditedClaims']} credited claim(s))")
+    if not rep["unsupported"] and not rep["creditOnly"]:
+        print("  none — every tracked topic has row-provable or credited support")
+    return 0
+
+
 def cmd_topic(args: argparse.Namespace) -> int:
     """Read-only: dump one topic and its verified claims."""
     library = Library()
@@ -178,6 +206,10 @@ def build_parser() -> argparse.ArgumentParser:
     t = sub.add_parser("topic", help="dump one topic and its verified claims")
     t.add_argument("slug")
     t.set_defaults(fn=cmd_topic)
+
+    u = sub.add_parser("unsupported-topics",
+                       help="read-only: the exact unsupported/credit-only populations")
+    u.set_defaults(fn=cmd_unsupported_topics)
 
     s = sub.add_parser("sources", help="list the source registry")
     s.set_defaults(fn=cmd_sources)

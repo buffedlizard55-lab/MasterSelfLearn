@@ -21,6 +21,7 @@ from .evidence import Ledger
 from .irregularities import ORDER, Register
 from .pipeline import CycleReport
 from .sources import (INTEREST_CATEGORIES_WITHOUT_A_SOURCE, KEYED_SOURCES_EXCLUDED,
+                      render_probe_url,
                       REGISTRY)
 from .topics import FAMILIES, Library
 
@@ -409,7 +410,7 @@ def _write_verification(out: pathlib.Path, now: str, rep: CycleReport, ac: Dict[
         rows.append(
             f"| {i} | `{s.id}` | {s.name} | {s.operator} | `{s.status}` | {s.live_reads} | "
             f"{s.last_read_at or '—'} | {s.last_status if s.last_status is not None else '—'} | "
-            f"[docs]({s.docs_url}) · [probe]({s.probe_url}) |")
+            f"[docs]({s.docs_url}) · [probe]({render_probe_url(s.probe_url, now)}) |")
     table = "\n".join(rows)
 
     ev = ledger.evidence[-60:]
@@ -420,8 +421,14 @@ def _write_verification(out: pathlib.Path, now: str, rep: CycleReport, ac: Dict[
         f"[open]({e.url}) |" for e in ev) or "| — | — | — | — | — | — | — | — | — |"
 
     kinds = ledger.counts()
-    supported_topics = sum(1 for topic in library.topics.values()
-                           if topic.claims > 0)
+    # Two support populations, never blended: rows that name the topic (the
+    # number that recomputes from the ledger) and pre-schema-v2 credit (real
+    # history the rows can no longer prove).  See msl/sitegen.py.
+    row_counts = ledger.topics_with_claims()
+    row_provable_topics = sum(1 for slug in library.topics
+                              if row_counts.get(slug, 0) > 0)
+    credit_only_topics = sum(1 for slug, topic in library.topics.items()
+                             if row_counts.get(slug, 0) == 0 and topic.claims > 0)
     doc = f"""# VERIFICATION — line-by-line audit ledger
 
 Generated `{now}` at cycle {rep.cycle}. Read-only verifiers:
@@ -464,8 +471,9 @@ rows remain usable legacy evidence but are never relabelled as wire-verifiable.
 | | |
 |---|---|
 | Topics tracked | {len(library.topics):,} |
-| Topics with ≥1 accepted claim credit | {supported_topics:,} |
-| Topics with 0 accepted claim credits | {len(library.topics) - supported_topics:,} |
+| Topics with ≥1 claim row naming them (row-provable) | {row_provable_topics:,} |
+| Topics with only pre-schema-v2 credit (not row-provable) | {credit_only_topics:,} |
+| Topics with neither | {len(library.topics) - row_provable_topics - credit_only_topics:,} |
 | Candidate / active / retired / blocked | {library.counts().get('candidate', 0)} / {library.counts().get('active', 0)} / {library.counts().get('retired', 0)} / {library.counts().get('blocked-no-source', 0)} |
 | Families | {len(library.counts()) and sum(1 for f in {t.family for t in library.topics.values()})} |
 

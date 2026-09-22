@@ -16,13 +16,75 @@ from __future__ import annotations
 import json
 import os
 import pathlib
+import re
 from dataclasses import dataclass, field
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+from zoneinfo import ZoneInfo
 
 #: Where ``msl.probe`` records what it actually read.  ``load_probe_results``
 #: replays it at import so a source's status is traceable to a recorded read.
 _HEALTH_LEDGER = pathlib.Path(__file__).resolve().parent.parent / "data" / "source_health.json"
+
+
+# --------------------------------------------------------------------------- #
+# probe-URL date templates
+# --------------------------------------------------------------------------- #
+# Three probe URLs carry a date window (a GitHub ``created:>=`` cut, a USGS
+# ``starttime``, an MLB ``date``).  They used to be frozen literals —
+# ``created:>=2026-09-14``, ``starttime=2026-09-14``, ``date=2026-09-20`` —
+# which is the same staleness class the task planner already fixed for survey
+# URLs: the probe kept re-reading a window that no longer matched any sentence
+# about "recent", and the MLB probe re-read one fixed day's schedule forever.
+# The registry now stores a template and every reader (pipeline probes, the
+# daily probe, the site's "probe this URL" link) renders it against the
+# caller's clock, so the window and the read can no longer drift apart.
+#
+# Supported placeholders:
+#   {today}          the caller's UTC calendar day, ``YYYY-MM-DD``
+#   {owner_today}    the calendar day in the owner's timezone (MLB schedules
+#                    are keyed to a North American day; see msl/tasks.py)
+#   {days_ago:N}     the day N days before {today}, ``YYYY-MM-DD``
+def render_probe_url(url: str, now: str) -> str:
+    """Substitute the date placeholders in a registry probe URL template.
+
+    ``now`` is the same ISO timestamp the cycle or probe was started with, so
+    the rendered URL is a function of the read that used it, never of the date
+    this file was edited.  A URL without placeholders is returned unchanged.
+    """
+    from . import config
+
+    try:
+        base = datetime.strptime(now[:10], "%Y-%m-%d")
+    except (ValueError, TypeError):
+        return url
+    owner_today = now[:10]
+    try:
+        # A schedule keyed to a North American calendar day is still on the
+        # previous day there during the hours after UTC midnight, so the
+        # owner's timezone is the clock that decides.  The UTC fallback above
+        # stays if the clock string is unusable rather than breaking a read.
+        owner_today = (
+            datetime.strptime(now[:16], "%Y-%m-%dT%H:%M")
+            .replace(tzinfo=timezone.utc)
+            .astimezone(ZoneInfo(config.OWNER_TIMEZONE)).date().isoformat()
+        )
+    except Exception:  # noqa: BLE001 - a bad clock string must not break a read
+        pass
+
+    def _day(match: "re.Match[str]") -> str:
+        key = match.group(1)
+        if key == "today":
+            return now[:10]
+        if key == "owner_today":
+            return owner_today
+        m = re.fullmatch(r"days_ago:(\d+)", key)
+        if m:
+            return (base - timedelta(days=int(m.group(1)))).strftime("%Y-%m-%d")
+        return match.group(0)          # an unknown placeholder stays visible
+
+    return re.sub(r"\{(today|owner_today|days_ago:\d+)\}", _day, url)
 
 
 @dataclass
@@ -50,11 +112,17 @@ class Source:
     consecutive_failures: int = 0
     docs_note: str = ""
 
-    def as_dict(self) -> Dict[str, Any]:
+    def as_dict(self, now: str = "") -> Dict[str, Any]:
+        # ``probeUrl`` is the registry *template*.  When the caller supplies the
+        # timestamp of the render (site generation, cycle snapshot), the date
+        # placeholders are substituted so the published link is a URL a human
+        # can actually open; without ``now`` the template itself is published,
+        # which is still an honest description of what the probe reads.
         return {
             "id": self.id, "name": self.name, "operator": self.operator,
             "trustTier": self.trust_tier,
-            "docsUrl": self.docs_url, "probeUrl": self.probe_url,
+            "docsUrl": self.docs_url,
+            "probeUrl": render_probe_url(self.probe_url, now) if now else self.probe_url,
             "accepts": self.accepts, "payloadKind": self.payload_kind,
             "topics": self.topics, "notes": self.notes, "status": self.status,
             "liveReads": self.live_reads, "lastReadAt": self.last_read_at,
@@ -123,7 +191,7 @@ def _registry() -> List[Source]:
     add(id="github_search", name="GitHub Search API — repositories",
         operator="GitHub, Inc.",
         docs_url="https://docs.github.com/en/rest/search/search",
-        probe_url="https://api.github.com/search/repositories?q=created:%3E=2026-09-14&sort=stars&order=desc&per_page=1",
+        probe_url="https://api.github.com/search/repositories?q=created:%3E={days_ago:7}&sort=stars&order=desc&per_page=1",
         topics=["open-source-momentum", "ai-research-frontier", "market-lab-ecosystem"],
         notes=("Used as the trending-repository signal.  GitHub publishes no trending "
                "*API*; /trending is HTML only, so the official Search API sorted by "
@@ -229,7 +297,7 @@ def _registry() -> List[Source]:
     add(id="usgs_fdsn", name="USGS Earthquake Hazards — FDSN event service",
         operator="U.S. Geological Survey",
         docs_url="https://earthquake.usgs.gov/fdsnws/event/1/",
-        probe_url="https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=2026-09-14&minmagnitude=5.0",
+        probe_url="https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime={days_ago:7}&endtime={today}&minmagnitude=5.0",
         topics=["geohazards"],
         notes="Count endpoint returns {count, maxAllowed}.  No key.",
         docs_note=("Seed capture 2026-09-21: count=40, maxAllowed=20000 (M>=5.0, 7-day "
@@ -370,7 +438,7 @@ def _registry() -> List[Source]:
     add(id="mlb_statsapi", name="MLB StatsAPI — schedule",
         operator="Major League Baseball Advanced Media",
         docs_url="https://statsapi.mlb.com/",
-        probe_url="https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=2026-09-20",
+        probe_url="https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={owner_today}",
         topics=["sports-signals"],
         docs_note=("No official public documentation page has been located for this "
                    "endpoint.  Registered as UNDOCUMENTED so the irregularity register "

@@ -68,11 +68,12 @@ class StaticAssets(unittest.TestCase):
                              cwd=config.ROOT, text=True, capture_output=True)
         self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
         tracked = int(re.search(r"topics tracked\s+: (\d+)", run.stdout).group(1))
-        supported = int(re.search(
-            r"with >=1 accepted claim credit: (\d+)", run.stdout).group(1))
-        unsupported = int(re.search(
-            r"with 0 accepted claim credits\s+: (\d+)", run.stdout).group(1))
-        self.assertEqual(tracked, supported + unsupported)
+        provable = int(re.search(
+            r"with >=1 claim row naming them\s+: (\d+)", run.stdout).group(1))
+        credit_only = int(re.search(
+            r"with only pre-v2 credit \(unproven\)\s+: (\d+)", run.stdout).group(1))
+        neither = int(re.search(r"with neither\s+: (\d+)", run.stdout).group(1))
+        self.assertEqual(tracked, provable + credit_only + neither)
 
 
 class GeneratedSiteData(TmpDirCase):
@@ -92,6 +93,35 @@ class GeneratedSiteData(TmpDirCase):
         for t in self.data["topics"]:
             self.assertIn("verifiedClaims", t)
             self.assertIsInstance(t["verifiedClaims"], int)
+
+    def test_verified_claims_recompute_from_the_ledger_rows(self):
+        """``verifiedClaims`` must be the row-provable count a reader can
+        recompute from claims.jsonl (topic or subjects), never a blend with the
+        pre-schema-v2 credit accumulator.  The old site published
+        ``max(credit, rows)`` per topic, which matched no auditable total."""
+        counts = {}
+        for line in (self.dir / "claims.jsonl").read_text().splitlines():
+            if not line.strip():
+                continue
+            c = json.loads(line)
+            for slug in dict.fromkeys([c.get("topic")] + list(c.get("subjects") or [])):
+                if slug:
+                    counts[slug] = counts.get(slug, 0) + 1
+        for t in self.data["topics"]:
+            self.assertEqual(t["verifiedClaims"], counts.get(t["slug"], 0),
+                             f"{t['slug']}: verifiedClaims is not row-provable")
+            self.assertIn("creditedClaims", t)
+            self.assertIsInstance(t["creditedClaims"], int)
+
+    def test_family_totals_are_the_sum_of_member_rows(self):
+        """The family table's claim column must be the same population as the
+        topic rows it aggregates — the row-provable count, summed."""
+        by_family = {}
+        for t in self.data["topics"]:
+            by_family[t["family"]] = by_family.get(t["family"], 0) + t["verifiedClaims"]
+        for f in self.data["families"]:
+            self.assertEqual(f["verifiedClaims"], by_family.get(f["slug"], 0),
+                             f"{f['slug']} family total is not its topics' rows")
 
     def test_topics_with_no_claims_are_not_hidden(self):
         zero = [t for t in self.data["topics"] if t["verifiedClaims"] == 0]
@@ -199,9 +229,21 @@ class GeneratedDocs(TmpDirCase):
     def test_verification_library_accounting_cannot_go_negative(self):
         v = (self.dir / "VERIFICATION.md").read_text()
         tracked = int(re.search(r"Topics tracked \| ([\d,]+)", v).group(1).replace(",", ""))
-        supported = int(re.search(r"Topics with ≥1 accepted claim credit \| ([\d,]+)", v).group(1).replace(",", ""))
-        unsupported = int(re.search(r"Topics with 0 accepted claim credits \| ([\d,]+)", v).group(1).replace(",", ""))
-        self.assertEqual(tracked, supported + unsupported)
+        provable = int(re.search(
+            r"Topics with ≥1 claim row naming them \(row-provable\) \| ([\d,]+)",
+            v).group(1).replace(",", ""))
+        credit_only = int(re.search(
+            r"Topics with only pre-schema-v2 credit \(not row-provable\) \| ([\d,]+)",
+            v).group(1).replace(",", ""))
+        neither = int(re.search(
+            r"Topics with neither \| ([\d,]+)", v).group(1).replace(",", ""))
+        # The three classes are a partition of the library, and none of them
+        # can be negative or exceed the total.
+        self.assertEqual(tracked, provable + credit_only + neither)
+        for name, n in (("row-provable", provable), ("credit-only", credit_only),
+                        ("neither", neither)):
+            self.assertGreaterEqual(n, 0, f"{name} went negative")
+            self.assertLessEqual(n, tracked, f"{name} exceeds the library")
 
     def test_irregularities_doc_groups_by_severity(self):
         i = (self.dir / "IRREGULARITIES.md").read_text()

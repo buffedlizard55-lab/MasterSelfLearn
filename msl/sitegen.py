@@ -94,13 +94,21 @@ def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
 
     topics = []
     claim_counts = ledger.topics_with_claims()
-    # Entity subjects were introduced with schema v2.  Persisted library claim
-    # credits preserve accepted support from older rows that only stored broad
-    # family topics; use whichever auditable count is larger rather than erasing
-    # that legacy support from the Library page.
+    # Two claim-count populations exist and must never be blended:
+    #
+    # * ``claim_counts`` is row-provable: a claim row names the topic in its
+    #   ``topic`` or ``subjects``, so the number recomputes from the ledger at
+    #   any time.  This is the number published as ``verifiedClaims``.
+    # * ``topic.claims`` is a persisted accumulator that predates schema-v2
+    #   subjects: it kept credit for entity topics whose claim rows never
+    #   recorded the entity.  It is published separately as ``creditedClaims``
+    #   and labelled as unprovable-by-row where the two disagree.
+    #
+    # The previous behaviour — publishing ``max(credit, row-provable)`` per
+    # topic — was neither population: it inflated every disagreement in both
+    # directions and its total matched no auditable quantity.
     topic_claim_counts = {
-        slug: max(topic.claims, claim_counts.get(slug, 0))
-        for slug, topic in library.topics.items()
+        slug: claim_counts.get(slug, 0) for slug in library.topics
     }
     for t in sorted(library.topics.values(),
                     key=lambda x: (-x.interest_score, -x.signals, x.slug)):
@@ -111,6 +119,7 @@ def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
             "category": fam.category if fam else "",
             "question": fam.question if fam else "",
             "verifiedClaims": topic_claim_counts.get(t.slug, 0),
+            "creditedClaims": t.claims,
             "interest": (memory.get("topicInterest") or {}).get(t.slug, {}),
         })
 
@@ -210,7 +219,7 @@ def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
         # Registry definitions (including provenance tier) come from code; live
         # status is replayed from source_health.json at import. A stale sources.json
         # must not hide a newly classified source during a republish.
-        "sources": [s.as_dict() for s in REGISTRY],
+        "sources": [s.as_dict(now=now) for s in REGISTRY],
         # The recorded probe.  Without this the Sources page can say a source was
         # never read but not WHY, so a reader cannot tell an unreachable endpoint
         # from a runner that was not allowed to leave the building.  The

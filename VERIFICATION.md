@@ -33,12 +33,12 @@ recorded in the shared health ledger, never from a hand-written registry value.
 | 10 | `github_releases` | GitHub Releases API — newest release | GitHub, Inc. | `verified-live-read` | 16 | 2026-09-22T20:52:29Z | 200 | [docs](https://docs.github.com/en/rest/releases/releases#list-releases) · [probe](https://api.github.com/repos/buffedlizard55-lab/MasterSelfLearn/releases?per_page=1) |
 | 11 | `github_repo` | GitHub Repos API — one repository | GitHub, Inc. | `verified-live-read` | 16 | 2026-09-22T20:52:29Z | 200 | [docs](https://docs.github.com/en/rest/repos/repos#get-a-repository) · [probe](https://api.github.com/repos/buffedlizard55-lab/MasterSelfLearn) |
 | 12 | `github_repos` | GitHub Repos API — owner corpus | GitHub, Inc. | `verified-live-read` | 19 | 2026-09-22T20:52:29Z | 200 | [docs](https://docs.github.com/en/rest/repos/repos) · [probe](https://api.github.com/users/buffedlizard55-lab/repos?per_page=1) |
-| 13 | `github_search` | GitHub Search API — repositories | GitHub, Inc. | `verified-live-read` | 88 | 2026-09-22T20:52:29Z | 200 | [docs](https://docs.github.com/en/rest/search/search) · [probe](https://api.github.com/search/repositories?q=created:%3E=2026-09-14&sort=stars&order=desc&per_page=1) |
+| 13 | `github_search` | GitHub Search API — repositories | GitHub, Inc. | `verified-live-read` | 88 | 2026-09-22T20:52:29Z | 200 | [docs](https://docs.github.com/en/rest/search/search) · [probe](https://api.github.com/search/repositories?q=created:%3E=2026-09-15&sort=stars&order=desc&per_page=1) |
 | 14 | `hn_firebase` | Hacker News official Firebase API | Hacker News / Y Combinator | `verified-live-read` | 9 | 2026-09-22T20:52:29Z | 200 | [docs](https://github.com/HackerNews/API) · [probe](https://hacker-news.firebaseio.com/v0/topstories.json) |
 | 15 | `huggingface` | Hugging Face Hub API | Hugging Face, Inc. | `verified-live-read` | 17 | 2026-09-22T20:52:29Z | 200 | [docs](https://huggingface.co/docs/hub/api) · [probe](https://huggingface.co/api/models?sort=trendingScore&limit=1) |
 | 16 | `kalshi_public` | Kalshi public market data | KalshiEX LLC | `verified-live-read` | 17 | 2026-09-22T20:52:29Z | 200 | [docs](https://trading-api.readme.io/reference/getmarkets) · [probe](https://api.elections.kalshi.com/trade-api/v2/markets?limit=1) |
 | 17 | `master_site_catalog` | MasterSite verified project catalog | buffedlizard55-lab, served by GitHub Contents API | `verified-live-read` | 2 | 2026-09-22T20:52:29Z | 200 | [docs](https://docs.github.com/en/rest/repos/contents#get-repository-content) · [probe](https://api.github.com/repos/buffedlizard55-lab/MasterSite/contents/data/sites.js) |
-| 18 | `mlb_statsapi` | MLB StatsAPI — schedule | Major League Baseball Advanced Media | `verified-live-read` | 12 | 2026-09-22T20:52:29Z | 200 | [docs](https://statsapi.mlb.com/) · [probe](https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=2026-09-20) |
+| 18 | `mlb_statsapi` | MLB StatsAPI — schedule | Major League Baseball Advanced Media | `verified-live-read` | 12 | 2026-09-22T20:52:29Z | 200 | [docs](https://statsapi.mlb.com/) · [probe](https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=2026-09-22) |
 | 19 | `nba_cdn` | NBA CDN — today's scoreboard | National Basketball Association | `blocked` | 0 | 2026-09-22T20:52:29Z | 403 | [docs](https://cdn.nba.com/) · [probe](https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json) |
 | 20 | `nhl_web` | NHL public web API — scoreboard | National Hockey League | `verified-live-read` | 9 | 2026-09-22T20:52:29Z | 200 | [docs](https://api-web.nhle.com/) · [probe](https://api-web.nhle.com/v1/scoreboard/now) |
 | 21 | `nominatim` | OpenStreetMap Nominatim | OpenStreetMap Foundation | `verified-live-read` | 9 | 2026-09-22T20:52:29Z | 200 | [docs](https://nominatim.org/release-docs/latest/api/Search/) · [probe](https://nominatim.openstreetmap.org/search?q=Seoul&format=json&limit=1) |
@@ -49,7 +49,7 @@ recorded in the shared health ledger, never from a hand-written registry value.
 | 26 | `pypi_json` | PyPI JSON API | Python Software Foundation | `verified-live-read` | 11 | 2026-09-22T20:52:29Z | 200 | [docs](https://docs.pypi.org/api/json/) · [probe](https://pypi.org/pypi/requests/json) |
 | 27 | `sec_edgar` | SEC EDGAR — company submissions | U.S. Securities and Exchange Commission | `blocked` | 0 | 2026-09-22T20:52:29Z | 403 | [docs](https://www.sec.gov/edgar/sec-api-documentation) · [probe](https://data.sec.gov/submissions/CIK0000320193.json) |
 | 28 | `stackexchange` | Stack Exchange API 2.3 | Stack Exchange, Inc. | `verified-live-read` | 17 | 2026-09-22T20:52:29Z | 200 | [docs](https://api.stackexchange.com/docs) · [probe](https://api.stackexchange.com/2.3/questions?order=desc&sort=votes&site=stackoverflow&pagesize=1) |
-| 29 | `usgs_fdsn` | USGS Earthquake Hazards — FDSN event service | U.S. Geological Survey | `verified-live-read` | 13 | 2026-09-22T20:52:29Z | 200 | [docs](https://earthquake.usgs.gov/fdsnws/event/1/) · [probe](https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=2026-09-14&minmagnitude=5.0) |
+| 29 | `usgs_fdsn` | USGS Earthquake Hazards — FDSN event service | U.S. Geological Survey | `verified-live-read` | 13 | 2026-09-22T20:52:29Z | 200 | [docs](https://earthquake.usgs.gov/fdsnws/event/1/) · [probe](https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=2026-09-15&endtime=2026-09-22&minmagnitude=5.0) |
 | 30 | `wikimedia_pageviews` | Wikimedia Pageviews REST API | Wikimedia Foundation | `verified-live-read` | 15 | 2026-09-22T20:52:29Z | 200 | [docs](https://wikimedia.org/api/rest_v1/) · [probe](https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Artificial_intelligence/daily/20260914/20260920) |
 | 31 | `worldbank` | World Bank Open Data API | The World Bank | `verified-live-read` | 17 | 2026-09-22T20:52:29Z | 200 | [docs](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392) · [probe](https://api.worldbank.org/v2/country/USA/indicator/NY.GDP.MKTP.CD?format=json&per_page=1) |
 
@@ -129,8 +129,9 @@ rows remain usable legacy evidence but are never relabelled as wire-verifiable.
 | | |
 |---|---|
 | Topics tracked | 145 |
-| Topics with ≥1 accepted claim credit | 127 |
-| Topics with 0 accepted claim credits | 18 |
+| Topics with ≥1 claim row naming them (row-provable) | 119 |
+| Topics with only pre-schema-v2 credit (not row-provable) | 19 |
+| Topics with neither | 7 |
 | Candidate / active / retired / blocked | 11 / 133 / 0 / 1 |
 | Families | 13 |
 

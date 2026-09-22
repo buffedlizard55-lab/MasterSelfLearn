@@ -257,8 +257,8 @@
 
     // attention movers
     var topics = D.topics.filter(function (t) { return t.verifiedClaims > 0; }).slice(0, 10);
-    main.appendChild(section("trending", "Topics with the most accepted support", topics.length,
-      topics.length ? table(["Topic", "Family", "Signals", "Claims", "Interest", "Status"],
+    main.appendChild(section("trending", "Topics with the most verified claim rows", topics.length,
+      topics.length ? table(["Topic", "Family", "Signals", "Verified claims", "Interest", "Status"],
         topics.map(function (t) {
           return tr([
             td(h("a", { href: "library.html#" + encodeURIComponent(t.slug), text: t.title })),
@@ -349,7 +349,7 @@
     var fams = D.families;
 
     main.appendChild(section("families", "Families", fams.length,
-      table(["Family", "Category", "The question", "Topics", "Accepted claims", "Sources"],
+      table(["Family", "Category", "The question", "Topics", "Verified claims", "Sources"],
         fams.map(function (f) {
           return tr([
             td(h("a", { href: "#" + f.slug, text: f.title })),
@@ -395,12 +395,23 @@
       if (!rows.length) { listHost.appendChild(empty("No topic matches.")); return; }
 
       rows.forEach(function (t) {
-        var claims = D.evidence.filter(function (c) { return c.topic === t.slug; });
+        // A claim supports a topic when the topic is its family bucket OR one
+        // of its entity subjects.  Filtering on c.topic alone showed 127 of 132
+        // entity topics as "no accepted claim" in the detail panel while their
+        // badges carried 60+ claims — the same card contradicting itself.
+        var claims = D.evidence.filter(function (c) {
+          return c.topic === t.slug || (c.subjects || []).indexOf(t.slug) >= 0;
+        });
+        var legacy = Math.max(0, (t.creditedClaims || 0) - t.verifiedClaims);
         var body = h("div", { class: "body" }, [
           h("dl", { class: "kv" }, [
             h("dt", { text: "Status" }), h("dd", {}, [badge(t.status, t.status === "active" ? "ok" : (t.status === "retired" ? "mute" : "info"))]),
             h("dt", { text: "Family" }), h("dd", { text: t.familyTitle + " — " + t.question }),
-            h("dt", { text: "Accepted claims" }), h("dd", { text: String(claims.length) }),
+            h("dt", { text: "Claim rows (recent window)" }), h("dd", { text: String(claims.length) }),
+            h("dt", { text: "Verified claims" }), h("dd", { text: String(t.verifiedClaims) }),
+            legacy > 0 ? h("dt", { text: "Credited (pre-v2)" }) : null,
+            legacy > 0 ? h("dd", {}, [badge("+" + legacy + " credit", "info"),
+              document.createTextNode(" — persisted before claim rows recorded subjects; kept as history, not counted as verified")]) : null,
             h("dt", { text: "Signals" }), h("dd", { text: String(t.signals) }),
             h("dt", { text: "Created" }), h("dd", { text: "cycle " + t.createdCycle + " · " + (t.firstSeenAt || "—") }),
             h("dt", { text: "Last signal" }), h("dd", { text: "cycle " + t.lastSignalCycle + " · " + ago(t.lastSeenAt) }),
@@ -410,7 +421,7 @@
             t.notes ? h("dt", { text: "Note" }) : null,
             t.notes ? h("dd", { text: t.notes }) : null,
           ]),
-          h("h3", { text: "Accepted claims (" + claims.length + ")" }),
+          h("h3", { text: "Claim rows naming this topic (" + claims.length + " of the recent window)" }),
           claims.length ? table(["Claim", "Kind", "Source", "Evidence"],
             claims.slice(0, 60).map(function (c) {
               var ev = (D.evidenceRows || {})[(c.evidenceIds || [])[0]] || {};

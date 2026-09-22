@@ -133,15 +133,21 @@ def main() -> int:
               f"published={drift.get('old')!r} recomputed={drift.get('new')!r} "
               f"reason={drift.get('reason')}")
 
-    # Broad family claim topics and non-library subjects must not be compared
-    # directly with the number of tracked library nodes. Persisted claim credits
-    # retain legacy entity support from before schema-v2 subjects existed.
+    # Two support populations, reported separately and never blended: the
+    # row-provable count (a claim row names the topic) and the pre-schema-v2
+    # credit accumulator (history the rows can no longer prove).  This used to
+    # print only the credit number, which overstated what the ledger can
+    # re-prove for entity topics.
+    row_counts = ledger.topics_with_claims()
     tracked = len(library.topics)
-    supported = sum(1 for topic in library.topics.values() if topic.claims > 0)
+    row_provable = sum(1 for slug in library.topics if row_counts.get(slug, 0) > 0)
+    credit_only = sum(1 for slug, topic in library.topics.items()
+                      if row_counts.get(slug, 0) == 0 and topic.claims > 0)
     print("\nlibrary")
-    print(f"  topics tracked                : {tracked}")
-    print(f"  with >=1 accepted claim credit: {supported}")
-    print(f"  with 0 accepted claim credits : {tracked - supported}")
+    print(f"  topics tracked                     : {tracked}")
+    print(f"  with >=1 claim row naming them     : {row_provable}")
+    print(f"  with only pre-v2 credit (unproven) : {credit_only}")
+    print(f"  with neither                       : {tracked - row_provable - credit_only}")
 
     print("\nsources")
     for source in REGISTRY:

@@ -54,6 +54,52 @@ The review corrected, among other findings:
 
 Each corrected behavior has a regression test or a read-only verifier check.
 
+### Pass 2b — the 2026-09-22 continuity audit
+
+A second adversarial review of the *published artefacts* (not just the code)
+found and fixed five defects, each verified against the committed ledger before
+the fix was written:
+
+1. **Probe/survey URL collision.** Probes were planned before surveys and the
+   dedup keyed on `source_id|url`, so for nominatim, nws_alerts, census_acs and
+   nhl_web — whose availability probe and only family survey are the same GET —
+   the probe won and every fact was filed under the maintenance topic
+   `source-health`. The `travel-korea` and `sf-local` families spent all 22
+   cycles at zero claims while being read every cycle, and the register kept
+   flagging them as unsupported. Surveys now win the collision and the probe
+   stands down for that URL (`msl/tasks.py`); source health is folded from
+   every read of a registered source, so no availability signal was lost.
+2. **Blended claim counts.** The Library published
+   `max(persisted credit, row-provable count)` per topic — a number that is
+   neither population and whose total (23,049) matched no auditable quantity.
+   It now publishes `verifiedClaims` (recomputes from `claims.jsonl`) and
+   `creditedClaims` (pre-schema-v2 history) separately, with the difference
+   disclosed on the page and in one aggregated irregularity.
+3. **Self-contradicting register.** IRR-042 computed "unsupported" from
+   row-provable counts while its own repro command counted persisted credit —
+   two different populations, so it named topics with up to 62 claim credits as
+   having "zero verified claims". Both now call
+   `pipeline.unsupported_topic_report`, exposed as
+   `python3 -m msl.cli unsupported-topics`; the truly-unsupported list fell
+   from 25 to 6 and the 19 credit-only topics are disclosed as their own class.
+4. **Vacuous lesson.** L1 bucketed corroboration by `c.topic` alone; only
+   family slugs matched, every family has one signal, and the README published
+   "1.00 signals against 1.00 signals — a ratio of 1.00×" as a learned rule.
+   L1 now buckets by topic+subjects (derived excluded) and reports what the
+   counts actually show: corroborated topics hold ~17× more claim rows but not
+   more signals.
+5. **Frozen dates in registry probe URLs** (`created:>=2026-09-14`,
+   `starttime=2026-09-14`, `date=2026-09-20`). The MLB probe re-read one
+   fixed day's schedule every cycle. Probe URLs are now date templates
+   rendered against the read's own clock, owner-timezone-aware for MLB, and a
+   test sweeps every planned URL for dates the plan did not compute.
+
+Additionally the Library detail panel now matches claims by topic **or**
+subject (127 of 132 entity topics previously showed "no accepted claim" under a
+badge carrying 60+ claims), and Travel & Korea is honestly *active with
+disclosed partial coverage* instead of `blocked-no-source` while nominatim
+reads it every cycle. Sixteen new regression tests cover all of the above.
+
 ### Pass 3 — original-request and publication audit
 
 The final audit checked all ten rendered pages and the complete written request.
@@ -177,9 +223,15 @@ cycle, and include a same-target null forecast.
 
 ## Next-session checklist
 
-1. Review Actions and Pages after several scheduled live cycles.
+1. Review Actions and Pages after several scheduled live cycles. In particular,
+   confirm the first live cycle after the 2026-09-22 fixes credits
+   `travel-korea` and `sf-local` with claim rows (the survey now wins the
+   probe/survey URL collision) and that IRR-042's unsupported list shrinks to
+   the honest remainder.
 2. Investigate any new open critical irregularity before adding sources or ideas.
-3. Watch strict-v2 and wire-integrity proportions grow; never “upgrade” legacy rows.
+3. Watch strict-v2 and wire-integrity proportions grow; never “upgrade” legacy
+   rows, and never blend `verifiedClaims` with `creditedClaims` (see AGENTS.md
+   trap table).
 4. Add a stronger forecast target only with an official, later-cycle outcome.
 5. Re-run the full suite, render check, strict JSON/JSONL parse, claim verifier,
    and an isolated offline cycle before the next merge.

@@ -30,7 +30,7 @@ from urllib.parse import quote
 from zoneinfo import ZoneInfo
 
 from . import config
-from .sources import REGISTRY, BY_ID
+from .sources import REGISTRY, BY_ID, render_probe_url
 from .topics import FAMILY_BY_SLUG, STATUS_RETIRED, Library
 
 #: Hard ceiling on reads in one cycle.  It exists to bound this engine's appetite,
@@ -108,6 +108,7 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
     """
     tasks: List[Task] = []
     seen: set = set()
+    by_key: Dict[str, Task] = {}
     since_90d = iso_day(compact_day(now, 90))
     since_7d = iso_day(compact_day(now, 7))
     # Wikimedia is intentionally handed a lagged window by the pipeline because
@@ -120,6 +121,9 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
     # using the UTC date asks for tomorrow from the owner's San Francisco locale.
     utc_clock = clock.replace(tzinfo=timezone.utc)
     mlb_day = utc_clock.astimezone(ZoneInfo(config.OWNER_TIMEZONE)).date().isoformat()
+    # BLS is read only in its quota slot: the keyless ceiling is 25 queries/day,
+    # so a read every half hour would spend it by breakfast.
+    bls_slot = clock.hour % 6 == 0 and clock.minute < 30
 
     def push(t: Task) -> bool:
         if t.key in seen:
@@ -131,24 +135,24 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
                 stats["dropped"] = stats.get("dropped", 0) + 1
             return False
         seen.add(t.key)
+        by_key[t.key] = t
         tasks.append(t)
         return True
 
-    # 1. probes — cheap, and they are what keeps `status` honest. BLS is the
-    # exception: its keyless quota is 25 queries/day, so probing it every
-    # half-hour would exhaust the quota before the survey stage began.
-    bls_slot = clock.hour % 6 == 0 and clock.minute < 30
-    for s in REGISTRY:
-        if s.id == "bls" and not bls_slot:
-            continue
-        if s.status == "blocked" and s.consecutive_failures >= config.SOURCE_FAILS_BEFORE_CRITICAL:
-            # still probe it: a blocked source that recovers must be allowed back
-            pass
-        push(Task(s.id, s.probe_url, s.id, "source-health", "probe",
-                  {"topic": "source-health", "source": s.id},
-                  accepts=s.accepts))
-
-    # 2. surveys — the standing question of each family that has a usable source
+    # 1. surveys — the standing question of each family that has a usable source.
+    #
+    #    Surveys are planned BEFORE probes on purpose.  Several survey URLs are
+    #    identical to their source's probe URL (nominatim, nws_alerts,
+    #    census_acs, nhl_web — an availability read and the family's one real
+    #    content read are the same GET).  Probes used to be pushed first, so the
+    #    dedup silently kept the probe and dropped the survey, and every fact
+    #    from that read was filed under the maintenance topic ``source-health``
+    #    instead of its family.  The travel-korea and sf-local families spent
+    #    their whole history at zero claims that way while being read every
+    #    cycle, and the register kept flagging them as unsupported.  Now the
+    #    survey wins the collision and the probe stage simply skips a URL that
+    #    is already planned; source health is folded from every read of a
+    #    registered source, so nothing is lost by the probe standing down.
     for fam_slug, fam in FAMILY_BY_SLUG.items():
         usable = [sid for sid in fam.sources
                   if sid in BY_ID and BY_ID[sid].status != "blocked"]
@@ -317,7 +321,7 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
                       "github_repos", fam_slug, "survey",
                       {"topic": fam_slug, "owner": config.REPO_OWNER}))
 
-    # 3. attention survey — the tracked Wikipedia articles, always the same shape
+    # 2. attention survey — the tracked Wikipedia articles, always the same shape
     # Wikipedia titles are case-sensitive past the first character, so the
     # article must come from the topic's recorded title and never be rebuilt
     # from its slug.  Slugs are lowercased for use as anchors; asking the API
@@ -349,7 +353,7 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
                   "wikimedia_pageviews", "public-attention", "survey",
                   {"topic": "public-attention"}))
 
-    # 4. deepen — follow up on the most-signalled tracked entities
+    # 3. deepen — follow up on the most-signalled tracked entities
     #
     # This used to be a `repo:owner/name` *search* per tracked repository, which is
     # the wrong bucket to spend: GitHub's unauthenticated search limit is 10
@@ -373,6 +377,28 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
         push(Task("github_releases", f"https://api.github.com/repos/{full}/releases?per_page=1",
                   "github_releases", family, "deepen",
                   {"topic": family, "repo": full}))
+
+    # 4. probes — cheap, and they are what keeps `status` honest.
+    #    A probe whose URL a survey already planned is skipped, and the survey
+    #    task inherits the source's Accept header so the wire request is exactly
+    #    the one the probe would have sent.
+    for s in REGISTRY:
+        if s.id == "bls" and not bls_slot:
+            continue
+        if s.status == "blocked" and s.consecutive_failures >= config.SOURCE_FAILS_BEFORE_CRITICAL:
+            # still probe it: a blocked source that recovers must be allowed back
+            pass
+        url = render_probe_url(s.probe_url, now)
+        key = f"{s.id}|{url}"
+        if key in seen:
+            winner = by_key.get(key)
+            if winner is not None and winner.accepts is None:
+                winner.accepts = s.accepts
+            continue
+        push(Task(s.id, url, s.id, "source-health", "probe",
+                  {"topic": "source-health", "source": s.id},
+                  accepts=s.accepts))
+
     if stats is not None:
         stats["planned"] = len(tasks)
         stats["cap"] = MAX_TASKS_PER_CYCLE

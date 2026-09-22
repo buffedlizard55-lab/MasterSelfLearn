@@ -14,6 +14,7 @@ import unittest
 from unittest import mock
 
 from msl import config
+from msl.evidence import Ledger
 from msl.topics import Library
 from msl.pipeline import load_seeds, run_cycle, seed_plan
 from msl.strategies import Forecast
@@ -78,11 +79,23 @@ class OfflineCycle(TmpDirCase):
         for fam in ("open-source-momentum", "public-attention", "regulatory-flow"):
             self.assertIn(fam, slugs)
 
-    def test_the_travel_family_is_marked_blocked_rather_than_described(self):
+    def test_the_travel_family_is_partial_coverage_not_blocked(self):
+        """Travel & Korea has a registered, reading source (nominatim) that
+        answers the geocoding half of its question.  Marking the family
+        ``blocked-no-source`` was a false statement — the honest state is active
+        with the pricing gap disclosed in the note and a standing irregularity
+        whose title says "partially covered", pinned to IRR-001's identity.
+        """
         lib = json.loads((self.dir / "library.json").read_text())
         t = next(t for t in lib["topics"] if t["slug"] == "travel-korea")
-        self.assertEqual(t["status"], "blocked-no-source")
-        self.assertTrue(t["notes"])
+        self.assertEqual(t["status"], "active",
+                         "a family with a usable registered source is not blocked")
+        self.assertIn("Partial coverage", t["notes"])
+        irr = json.loads((self.dir / "irregularities.json").read_text())
+        row = next(i for i in irr["items"] if i["id"] == "IRR-001")
+        self.assertIn("partially covered", row["title"])
+        self.assertTrue(row["standing"])
+        self.assertEqual(row["fingerprint"], "94cf565596bf")
 
     def test_discovered_topics_accumulate_verified_claims(self):
         lib = json.loads((self.dir / "library.json").read_text())
@@ -458,18 +471,38 @@ class PlanWindows(unittest.TestCase):
         self.assertTrue(wiki)
         self.assertIn("/20261009/20261015", wiki[0])
 
-    def test_probes_are_stable_because_they_are_health_checks(self):
-        a, probes_a = self._tasks("2026-09-22T12:00:00Z", "20260909", "20260915")
+    def test_probes_are_a_deterministic_function_of_the_clock(self):
+        """Probes used to be byte-stable across months because three of them
+        carried frozen date literals (``created:>=2026-09-14``,
+        ``starttime=2026-09-14``, ``date=2026-09-20``).  That stability was the
+        bug: the MLB probe re-read one fixed day's schedule forever.  The honest
+        contract is (a) the same clock produces the same probes, (b) a probe
+        without a date window is byte-stable across time, and (c) a probe with
+        a date window moves with the clock and never carries a foreign date.
+        """
+        a1, probes_a1 = self._tasks("2026-09-22T12:00:00Z", "20260909", "20260915")
+        a2, probes_a2 = self._tasks("2026-09-22T12:00:00Z", "20260909", "20260915")
         b, probes_b = self._tasks("2026-10-22T12:00:00Z", "20261009", "20261015")
-        self.assertEqual(probes_a, probes_b,
-                         "a probe whose URL changes cannot be compared with last cycle")
-        self.assertNotEqual(a, b, "the surveys must not be frozen")
+        self.assertEqual(probes_a1, probes_a2,
+                         "the same clock must produce the identical probe list")
+        self.assertEqual(len(probes_a1), len(probes_b),
+                         "the probe count must not depend on the date")
+        windowed = re.compile(r"created|starttime|endtime|date=")
+        for url_a, url_b in zip(probes_a1, probes_b):
+            if not windowed.search(url_a):
+                self.assertEqual(url_a, url_b,
+                                 f"a date-free probe URL changed: {url_a}")
+        moved = [u for u in probes_b if "2026-09-" in u]
+        self.assertFalse(moved, f"a September date survived into an October probe: {moved}")
+        self.assertNotEqual(a1, b, "the surveys must not be frozen")
 
-    def test_no_survey_url_carries_a_date_that_is_not_in_this_plan(self):
-        """A blunt sweep: every date in a survey URL must be one the plan computed."""
-        urls, _ = self._tasks("2026-10-22T12:00:00Z", "20261009", "20261015")
+    def test_no_url_carries_a_date_that_is_not_in_this_plan(self):
+        """A blunt sweep: every date in ANY planned URL — survey or probe — must
+        be one the plan computed.  A probe URL used to be exempt from this rule,
+        which is how ``date=2026-09-20`` survived in the MLB probe for a month."""
+        urls, probes = self._tasks("2026-10-22T12:00:00Z", "20261009", "20261015")
         allowed = {"2026-10-09", "2026-10-15", "2026-10-22", "2026-07-24"}
-        for u in urls:
+        for u in urls + probes:
             for d in re.findall(r"20\d{2}-\d{2}-\d{2}", u):
                 self.assertIn(d, allowed, f"unexplained date {d} in {u}")
 
@@ -749,3 +782,100 @@ class SourceAppropriatePlanning(unittest.TestCase):
         self.assertIn("/20260914/20260920", wiki)
         self.assertIn("endtime=2026-09-22", usgs)
         self.assertIn("date=2026-09-22", mlb)
+
+
+class ProbeSurveyCollision(unittest.TestCase):
+    """Regression: probes used to be planned before surveys, and both stages
+    read the same URL for nominatim / nws_alerts / census_acs / nhl_web.  The
+    dedup kept the probe and silently dropped the survey, so every fact from
+    that read was filed under the maintenance topic ``source-health`` and the
+    travel-korea and sf-local families spent their whole history at zero
+    claims while being read every cycle."""
+
+    def setUp(self):
+        from msl.sources import BY_ID
+        from msl.tasks import build_plan
+        lib = Library(pathlib.Path(tempfile.mkdtemp()))
+        patches = [mock.patch.object(BY_ID[sid], "status", "verified-live-read")
+                   for sid in ("nominatim", "nws_alerts", "census_acs", "nhl_web",
+                               "usgs_fdsn", "mlb_statsapi")]
+        for p in patches:
+            p.start()
+        self.addCleanup(lambda: [p.stop() for p in patches])
+        self.plan = build_plan(lib, "2026-09-22T21:00:00Z", "20260914", "20260920",
+                               "last7")
+
+    def tasks_for(self, sid):
+        return [t for t in self.plan if t.source_id == sid]
+
+    def test_the_survey_wins_the_collision_and_carries_the_family_topic(self):
+        for sid, family in (("nominatim", "travel-korea"), ("nws_alerts", "sf-local"),
+                            ("census_acs", "sf-local"), ("nhl_web", "sports-signals")):
+            rows = self.tasks_for(sid)
+            self.assertEqual(len(rows), 1,
+                             f"{sid}: expected one read of the shared URL, got {len(rows)}")
+            self.assertEqual(rows[0].kind, "survey",
+                             f"{sid}: the probe swallowed the survey again")
+            self.assertEqual(rows[0].topic, family,
+                             f"{sid}: facts would be filed under {rows[0].topic}")
+
+    def test_the_winning_task_keeps_the_sources_accept_header(self):
+        nom = self.tasks_for("nominatim")[0]
+        self.assertIsNotNone(nom.accepts,
+                             "the survey must send the Accept header the probe would have")
+
+    def test_probes_still_run_for_urls_no_survey_reads(self):
+        """Availability checks are not lost: a source whose survey URL differs
+        from its probe URL still gets its probe."""
+        rows = self.tasks_for("github_search")
+        self.assertTrue(any(t.kind == "probe" for t in rows))
+
+    def test_no_plan_task_reads_a_frozen_date(self):
+        frozen = [t.url for t in self.plan
+                  if "2026-09-14" in t.url or "2026-09-20" in t.url]
+        self.assertEqual(frozen, [],
+                         "a date literal from the registry survived into the plan")
+
+
+class UnsupportedTopicReport(unittest.TestCase):
+    """The register's population and its repro command must be the same code."""
+
+    def setUp(self):
+        from msl.pipeline import unsupported_topic_report
+        self.report = unsupported_topic_report
+
+    def test_credit_only_is_not_unsupported(self):
+        led = Ledger(pathlib.Path(tempfile.mkdtemp()))
+        lib = Library(pathlib.Path(tempfile.mkdtemp()))
+        t = lib.ensure("repo:old/x", "old/x", "open-source-momentum",
+                       "2026-09-01T00:00:00Z", 1, status="active")
+        t.created_cycle = 1
+        t.claims = 42          # legacy credit, no row names it
+        rep = self.report(led, lib, cycle=20)
+        self.assertEqual([r["slug"] for r in rep["creditOnly"]], ["repo:old/x"])
+        self.assertEqual(rep["unsupported"], [],
+                         "a topic with accepted history is not 'unsupported'")
+
+    def test_truly_unsupported_needs_both_populations_empty(self):
+        led = Ledger(pathlib.Path(tempfile.mkdtemp()))
+        lib = Library(pathlib.Path(tempfile.mkdtemp()))
+        t = lib.ensure("pkg:ghost", "ghost", "open-source-momentum",
+                       "2026-09-01T00:00:00Z", 1, status="active")
+        t.created_cycle = 1
+        t.claims = 0
+        rep = self.report(led, lib, cycle=20)
+        self.assertEqual([r["slug"] for r in rep["unsupported"]], ["pkg:ghost"])
+        self.assertEqual(rep["creditOnly"], [])
+
+    def test_retired_and_blocked_and_young_topics_are_not_listed(self):
+        led = Ledger(pathlib.Path(tempfile.mkdtemp()))
+        lib = Library(pathlib.Path(tempfile.mkdtemp()))
+        for slug, status in (("pkg:retired", "retired"), ("pkg:blocked", "blocked-no-source")):
+            t = lib.ensure(slug, slug, "open-source-momentum",
+                           "2026-09-01T00:00:00Z", 1, status=status)
+            t.created_cycle = 1
+        young = lib.ensure("pkg:young", "young", "open-source-momentum",
+                           "2026-09-01T00:00:00Z", 20, status="active")
+        young.created_cycle = 20
+        rep = self.report(led, lib, cycle=21)
+        self.assertEqual(rep["unsupported"], [])
