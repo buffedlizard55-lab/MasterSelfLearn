@@ -17,20 +17,28 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 
 class SentenceDetector(unittest.TestCase):
-    def test_the_real_counts_match_what_was_found_by_hand(self):
-        """The numbers quoted in the fix's own documentation.
+    #: Rows counted by hand in the ledger as it stood at cycle 14:
+    #: 80 doubled phrases, 16 rows naming no subject, 39 placeholder arguments.
+    #: The ledger is append-only and the unattended workflow is still running the
+    #: *old* templates, so these numbers only grow — cycles 15 and 16 took them to
+    #: 102 / 20 / 63.  A lower bound is the honest assertion: it fails only if the
+    #: detector stops seeing rows that are demonstrably there.
+    DOCUMENTED_MINIMUM = {"SENT-DOUBLED-PHRASE": 80, "SENT-EMPTY-SUBJECT": 16,
+                          "SENT-PLACEHOLDER-ARGUMENT": 39}
 
-        Read from the published ledger, so this test fails loudly if the detector
-        stops seeing rows that are really there.
-        """
-        found = find_defects(Ledger(ROOT / "data").claims)
+    def test_the_real_counts_match_what_was_found_by_hand(self):
+        """The numbers quoted in the fix's own documentation, in the real ledger."""
+        claims = Ledger(ROOT / "data").claims
+        found = find_defects(claims)
         counts = {k: len(v) for k, v in found.items()}
-        self.assertEqual(counts.get("SENT-DOUBLED-PHRASE"), 80,
-                         "the Federal Register template published 80 doubled sentences")
-        self.assertEqual(counts.get("SENT-EMPTY-SUBJECT"), 16,
-                         "16 rows name no subject at all")
-        self.assertGreaterEqual(counts.get("SENT-PLACEHOLDER-ARGUMENT", 0), 39,
-                                "at least the 39 placeholder-argument rows")
+        for defect_id, minimum in self.DOCUMENTED_MINIMUM.items():
+            self.assertGreaterEqual(
+                counts.get(defect_id, 0), minimum,
+                f"{defect_id}: the ledger must still show the rows counted by hand")
+        # Every id the detector names must be a claim that is really in the ledger.
+        ids = {c.id for c in claims}
+        for defect_id, claimed in found.items():
+            self.assertTrue(set(claimed) <= ids, f"{defect_id} named an unknown claim id")
 
     def test_every_defect_id_is_unique_and_has_a_fix(self):
         ids = [d["id"] for d in DEFECTS]

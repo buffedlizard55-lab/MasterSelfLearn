@@ -20,6 +20,7 @@ It requires **no manual input**. Every cycle is triggered by
 | Verified claims in the ledger | **13,388** |
 | — captured from live payloads | 9,031 |
 | — derived by recorded arithmetic | 4,357 |
+| — negative (proof of absence) | 0 |
 | Claims rejected by the evidence gate | **0** |
 | Derived claims rechecked this cycle | 40 |
 | Derived claims that no longer recompute | **0** |
@@ -29,11 +30,14 @@ It requires **no manual input**. Every cycle is triggered by
 | Forecasts scored against outcomes | 620 |
 | Ideas in the competition | **14** (promoted: 0) |
 | Open irregularities | **30** (new: 1) |
-| Sources registered | 28 |
+| Sources registered | 30 |
 | — verified by a recorded live read | 23 |
 | — currently blocked | 5 |
-| — never read (not broken, just unprobed) | 0 |
+| — never read (not broken, just unprobed) | 2 |
 | Reads this cycle (ok / failed) | 63 / 7 |
+| Reads planned / refused by the cap | not recorded / not recorded |
+| Forecasts waiting for an observation | not recorded |
+| Forecasts that can never be scored | not recorded |
 | Bytes read this cycle | 1,804,907 |
 | Manual inputs required | **0** |
 
@@ -83,7 +87,7 @@ register and the cycle still publishes.
 | Family | Category | The question it answers | Sources |
 |---|---|---|---|
 | [AI research frontier](library.html#ai-research-frontier) | Science & ML Research | Which research directions are gaining published evidence fastest? | `arxiv`, `openalex`, `crossref`, `europepmc`, `huggingface`, `federal_register` |
-| [Open-source momentum](library.html#open-source-momentum) | Science & ML Research | Which new software is attracting maintainers and stars fastest? | `github_search`, `pypi_json`, `npm_registry`, `stackexchange` |
+| [Open-source momentum](library.html#open-source-momentum) | Science & ML Research | Which new software is attracting maintainers and stars fastest? | `github_search`, `github_repo`, `github_releases`, `pypi_json`, `npm_registry`, `stackexchange` |
 | [Public attention](library.html#public-attention) | Social & Creator Data | What is the public reading about, and is that attention rising or falling? | `wikimedia_pageviews`, `hn_firebase` |
 | [Regulatory flow](library.html#regulatory-flow) | Elections & Civic Data | Which policy areas are generating federal rulemaking activity? | `federal_register` |
 | [Macro signals](library.html#macro-signals) | Markets & Trading Research | What are the official macro series doing? | `ecb_sdmx`, `frankfurter`, `worldbank`, `bls` |
@@ -174,7 +178,7 @@ python3 -m msl.cli probe              # live-read every registered source, repor
 python3 -m msl.cli publish            # re-render site + docs from committed state
 python3 -m msl.cli verify-claims      # read-only: recheck derived claims, report drift
 python3 -m msl.cli gate-report        # read-only: show what the evidence gate rejected
-python3 -m unittest discover -s tests # 11 tests, standard library only
+python3 -m unittest discover -s tests # 293 tests in 12 modules, standard library only
 node tools/render_check.js            # render all 9 pages headlessly
 ```
 
@@ -209,8 +213,8 @@ Full register: [`IRREGULARITIES.md`](IRREGULARITIES.md) or
 
 ## Sources
 
-28 registered, 23 verified by a recorded
-live read, 5 blocked, 0 never read.
+30 registered, 23 verified by a recorded
+live read, 5 blocked, 2 never read.
 **"Never read" is not "broken"**: it means no recorded probe has reached the
 endpoint yet, which is a fact about this project, not a claim about the service.
 A source is promoted to `verified-live-read` only by `msl/probe.py`, which writes

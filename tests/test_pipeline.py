@@ -19,6 +19,8 @@ from msl.strategies import Forecast
 from msl.sources import BY_ID, KEYED_SOURCES_EXCLUDED, REGISTRY
 from tests.helpers import SEED, TmpDirCase, NOW1, NOW2, NOW3
 
+ROOT_DATA = pathlib.Path(__file__).resolve().parent.parent / "data"
+
 
 class OfflineCycle(TmpDirCase):
     def setUp(self):
@@ -361,13 +363,31 @@ class PlanWindows(unittest.TestCase):
     request every cycle or its health record compares two different things.
     """
 
+    #: The survey sources these tests inspect.  Their status comes from the probe
+    #: ledger on disk, and a blocked source is not planned — cycle 16 has
+    #: ``github_search`` blocked on three 403 rate limits and ``mlb_statsapi`` blocked
+    #: on the 400 this branch's date fix removes.  A test of URL construction must not
+    #: depend on which sources happen to be healthy today, so it forces these usable.
+    FORCED = ("github_search", "mlb_statsapi", "usgs_fdsn", "wikimedia_pageviews",
+              "nws_alerts")
+
     def _tasks(self, now, start_day, end_day, window_label="last7"):
+        from unittest import mock
+        from msl.sources import BY_ID
         from msl.tasks import build_plan
         lib = Library(pathlib.Path(tempfile.mkdtemp()))
         lib.ensure("repo:browser-use/jev-ultrafast", "browser-use/jev-ultrafast",
                    "open-source-momentum", NOW1, 5,
                    origin_url="https://github.com/browser-use/jev-ultrafast")
-        tasks = build_plan(lib, now, start_day, end_day, window_label)
+        patches = [mock.patch.object(BY_ID[sid], "status", "verified-live-read")
+                   for sid in self.FORCED]
+        for pt in patches:
+            pt.start()
+        try:
+            tasks = build_plan(lib, now, start_day, end_day, window_label)
+        finally:
+            for pt in patches:
+                pt.stop()
         return ([t.url for t in tasks if t.kind != "probe"],
                 [t.url for t in tasks if t.kind == "probe"])
 
@@ -553,3 +573,64 @@ class CycleRecordCompleteness(unittest.TestCase):
         self.assertEqual(back.forecasts_pending, 288)
         self.assertEqual(back.errors, ["boom"], "a failed cycle must keep saying so")
         self.assertFalse(back.ok)
+
+
+class CallerFaultIsNotASourceOutage(TmpDirCase):
+    """A 4xx refusal is evidence about the URL, not about somebody else's API.
+
+    Recorded evidence for this rule: cycle 16 asked MLB StatsAPI for
+    ``date=20260915``, got HTTP 400, and the registry marked the league's feed
+    ``blocked (1 failure)`` — while every MLB claim in the ledger was read with the
+    ISO form ``date=2026-09-20`` and returns 200.  A blocked source is not read, so
+    this engine's own malformed URL took a healthy source offline.
+    """
+
+    def _cycle_with_status(self, status, source_id="mlb_statsapi"):
+        from unittest import mock
+        from msl.http import FetchResult
+        from msl.sources import BY_ID
+        from msl import tasks as taskmod
+        task = taskmod.Task(source_id, "https://statsapi.mlb.com/api/v1/schedule"
+                                        "?sportId=1&date=2026-09-22", source_id,
+                            "sports-signals", "survey", {"topic": "sports-signals"})
+        result = FetchResult(url=task.url, status=status,
+                             error=f"HTTP {status} Bad Request", error_kind="HTTPError",
+                             attempts=1)
+        src = BY_ID[source_id]
+        before = (src.status, src.consecutive_failures)
+        with mock.patch.object(taskmod, "build_plan", return_value=[task]), \
+             mock.patch("msl.pipeline.fetch", return_value=result):
+            rep = run_cycle(data_dir=self.dir, docs_dir=self.dir,
+                            now_override=NOW1, offline=False)
+        return src, before, rep
+
+    def test_a_400_does_not_block_the_source(self):
+        src, before, rep = self._cycle_with_status(400)
+        self.assertEqual(src.consecutive_failures, before[1],
+                         "a malformed request is not a source failure")
+        self.assertEqual(src.status, before[0],
+                         "the source's health is left exactly as the probe ledger had it")
+        self.assertEqual(rep.claims_new, 0, "a failed read produces no claim")
+
+    def test_a_400_is_still_recorded_as_an_irregularity(self):
+        _, _, rep = self._cycle_with_status(400)
+        rows = json.loads((self.dir / "irregularities.json").read_text())["items"]
+        mine = [i for i in rows if i["sourceId"] == "mlb_statsapi"]
+        self.assertTrue(mine, "the refused request must still be reported")
+        self.assertIn("malformed request", mine[0]["title"])
+        self.assertIn("defect in the URL", mine[0]["detail"])
+
+    def test_a_403_does_block_the_source(self):
+        """Forbidden is about the relationship, not about our syntax."""
+        src, before, rep = self._cycle_with_status(403)
+        self.assertEqual(src.consecutive_failures, before[1] + 1)
+        self.assertEqual(src.status, "blocked")
+
+    def test_the_recorded_mlb_failure_is_reproducible_by_hand(self):
+        """The evidence behind the rule, kept where the rule lives."""
+        health = json.loads((ROOT_DATA / "source_health.json").read_text())
+        row = next((r for r in health["results"] if r["id"] == "mlb_statsapi"), None)
+        self.assertIsNotNone(row, "the MLB source must be in the health ledger")
+        if row["httpStatus"] in (400, 404, 405, 422):
+            self.assertIn("20260915", row["url"],
+                          "rule out the compact date before blaming the endpoint")

@@ -73,8 +73,9 @@ def gh_search(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
         return r
     total = _num(payload.get("total_count"))
     # The query is the subject of the count.  Without it the field name is empty —
-    # 87 rows in the ledger read ``github.total_count[]`` and were published as
-    # "GitHub Search reports 3,667,127 repositories matching ." — and, worse, every
+    # 106 rows in the ledger read ``github.total_count[]`` and were published as
+    # "GitHub Search reports 3,667,127 repositories matching ." (87 by cycle 14; the
+    # unattended workflow kept writing them until this fix was merged) — and, worse, every
     # query that lacked a context collapsed into that one field, so unrelated
     # searches shared a series.  A total that cannot be attributed to a query is not
     # recorded at all.
@@ -417,7 +418,7 @@ def federal_register(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     # "Documents matching 'artificial intelligence'".  An earlier template
     # interpolated that phrase after the word "matching" and published
     # "holds 1,573 documents matching Documents matching 'artificial intelligence'."
-    # 80 rows in the ledger carry that sentence.  The sentence is now built from
+    # 102 rows in the ledger carry that sentence (80 by cycle 14).  The sentence is now built from
     # the term this project actually asked for, so it cannot double a word, and the
     # API's own phrasing is recorded in the field's tags instead of being spliced
     # into a sentence it was not written for.
@@ -430,7 +431,7 @@ def federal_register(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
         # recorded as a tag (where a reader can compare it with what was asked for)
         # and never spliced into the sentence — that splice is what published
         # "holds 1,573 documents matching Documents matching 'artificial
-        # intelligence'" in 80 rows.
+        # intelligence'" in 102 rows.
         described = _str(payload.get("description"), 160)
         if term:
             sentence = (f"The U.S. Federal Register holds {int(count):,} documents "
@@ -773,7 +774,7 @@ def worldbank(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     # The indicator id builds the field name.  It used to come from the task
     # context only, so a read whose context did not carry it published the field
     # ``worldbank[?].latest`` and the sentence "The World Bank reports GDP ... "
-    # under a placeholder.  7 rows in the ledger carry that.  The payload names the
+    # under a placeholder.  9 rows in the ledger carry that (7 by cycle 14).  The payload names the
     # indicator itself; use it, and refuse the fact if neither source names it.
     code = _str(ind_obj.get("id"), 60) or _str(ctx.get("indicator"), 60)
     if not code:
@@ -870,7 +871,7 @@ def bls(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     # The payload names the series (seriesID); the task context also does.  The
     # field key and the sentence used the context alone, so a read without it
     # published ``bls[?].latest`` and the sentence "BLS reports series ? at ..."
-    # — a literal placeholder in a published claim.  7 rows in the ledger carry it.
+    # — a literal placeholder in a published claim.  9 rows in the ledger carry it.
     sid = _str(series.get("seriesID"), 40) or _str(ctx.get("series"), 40)
     if not sid:
         r.problems.append("bls: neither the payload's seriesID nor the task context "
@@ -920,7 +921,7 @@ def nominatim(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     # The place name is the whole content of the answer: three results for "Seoul"
     # is a different fact from three results for "Paris".  It used to be read from
     # the task context only, with a fallback sentence for when it was missing, so
-    # 7 rows in the ledger say "Nominatim returns 1 place result(s) for the query."
+    # 9 rows in the ledger say "Nominatim returns 1 place result(s) for the query."
     # with the field ``nominatim.results[?]``.  A read that cannot be attributed to
     # a place is refused rather than published under a placeholder.
     q = _str(ctx.get("query"), 120)

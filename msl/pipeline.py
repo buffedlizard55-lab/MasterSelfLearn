@@ -39,6 +39,15 @@ from .topics import (FAMILIES, FAMILY_BY_SLUG, STATUS_ACTIVE, STATUS_BLOCKED,
                      STATUS_CANDIDATE, STATUS_RETIRED, Library, build_interest_profile)
 
 
+#: HTTP statuses that mean "this request was wrong", not "this service is down".
+#: 400 malformed, 404 the addressed thing does not exist, 405 method, 422
+#: unprocessable.  A cycle synthesizes its URLs (dates, windows, queries, ids), so a
+#: 4xx here is evidence about the URL, and blocking the source for it publishes a
+#: false claim about somebody else's API — the source's own probe is the health
+#: signal, and it is unaffected by a cycle's request.
+CALLER_FAULT_STATUSES = frozenset({400, 404, 405, 422})
+
+
 @dataclass
 class CycleReport:
     cycle: int = 0
@@ -464,27 +473,45 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
                         if task.source_id not in egress_failures:
                             egress_failures.append(task.source_id)
                         continue
-                    register.add(CRITICAL if (src and src.consecutive_failures >=
+                    caller_fault = result.status in CALLER_FAULT_STATUSES
+                    # A 400/404/422 says "the request was malformed or points at
+                    # nothing", which is a statement about the URL this cycle
+                    # synthesized — not about somebody else's service.  Recorded
+                    # evidence: cycle 16 sent MLB StatsAPI `date=20260915`, got HTTP
+                    # 400, and the registry marked the league's feed `blocked (1
+                    # failure)` while every recorded MLB read in the ledger uses the
+                    # ISO form and returns 200.  That blocked a healthy source on
+                    # this engine's own mistake, and blocked sources are not read.
+                    register.add(CRITICAL if (src and not caller_fault and
+                                              src.consecutive_failures >=
                                               config.SOURCE_FAILS_BEFORE_CRITICAL) else WARN,
-                                 f"{task.source_id} could not be read",
+                                 (f"{task.source_id} refused a malformed request" if caller_fault
+                                  else f"{task.source_id} could not be read"),
                                  f"{result.describe_error()} on GET {task.url} after "
                                  f"{result.attempts} attempt(s). No claim was produced and no "
-                                 f"substitute value was invented.", cycle, now,
+                                 f"substitute value was invented."
+                                 + (f"  HTTP {result.status} means the source rejected the "
+                                    f"request itself, so this is a defect in the URL this cycle "
+                                    f"built rather than evidence that the endpoint is down: the "
+                                    f"source's health is left unchanged and it stays readable."
+                                    if caller_fault else ""),
+                                 cycle, now,
                                  repro=f"curl -sS -o /dev/null -w '%{{http_code}}\\n' '{task.url}'",
                                  source_id=task.source_id, topic=task.topic)
                     if src is not None:
-                        src.consecutive_failures += 1
-                        src.status = "blocked"
                         src.last_error = result.describe_error()
                         src.last_read_at = now
                         src.last_status = result.status
+                        if not caller_fault:
+                            src.consecutive_failures += 1
+                            src.status = "blocked"
                     if result.rate_limited:
                         register.add(WARN, f"{task.source_id} rate-limited this cycle",
                                      f"HTTP {result.status} on {task.url}. The engine backs off "
                                      f"rather than retrying, and produces no claim from this "
                                      f"source this cycle.", cycle, now,
                                      repro=f"curl -sSI '{task.url}' | head -5",
-                                     source_id=task.source_id)
+                                     source_id=task.source_id, fingerprint=f"IRR-RATELIMIT-{task.source_id}")
                 continue
 
             # record the read

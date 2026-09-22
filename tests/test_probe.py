@@ -151,7 +151,14 @@ class ProbeStatusTransitions(unittest.TestCase):
         self.assertEqual(src.last_error, "")
 
     def test_a_genuine_http_failure_blocks_the_source(self):
+        """The *transition* is what is under test, so the counter starts at zero.
+
+        It used to read the counter the registry had replayed from the health ledger,
+        so an unattended cycle recording more failures for whichever source happens
+        to be first in the registry made this test fail for the wrong reason.
+        """
         src = REGISTRY[0]
+        src.consecutive_failures = 0
         probe_mod.apply_result(src, _http_error(code=403), "2026-09-22T00:00:00Z")
         self.assertEqual(src.status, "blocked")
         self.assertEqual(src.last_status, 403)
