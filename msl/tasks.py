@@ -12,22 +12,58 @@ Three task classes:
 
 Everything is capped: ``MAX_TASKS_PER_CYCLE`` exists so growth never turns into
 abuse of somebody's API.
+
+Every date and window in a task URL is derived from the cycle's own clock.  They
+used to be literals recorded on 2026-09-21 (``created:>=2026-09-14`` for a query
+whose label said "created in the last 7 days", ``starttime=2026-09-14`` for a
+count whose label said a different week).  A literal window does not fail when it
+goes stale: it keeps returning a real number for a window the sentence no longer
+describes, which is a confidently-published false statement.  The window is now
+computed, so the query and the sentence cannot drift apart.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 from urllib.parse import quote
 
 from . import config
 from .sources import REGISTRY, BY_ID
-from .topics import FAMILY_BY_SLUG, Library
+from .topics import FAMILY_BY_SLUG, STATUS_RETIRED, Library
 
-MAX_TASKS_PER_CYCLE = 70
-MAX_DEEPEN_PER_CYCLE = 12
+#: Hard ceiling on reads in one cycle.  It exists to bound this engine's appetite,
+#: not to be reached: when it *is* reached the plan is truncated and, because a
+#: silent drop is a hidden gap, the dropped count is published as an irregularity.
+#: (Until 2026-09-22 the cap was 70 and the plan was already exactly 70, so the
+#: last deepening task was being dropped every cycle with nothing said about it.)
+MAX_TASKS_PER_CYCLE = 84
+#: Repositories followed up per cycle with the two Repositories API reads.
+MAX_REPO_DEEPEN_PER_CYCLE = 3
 MAX_GITHUB_SEARCHES = 6
 MAX_PAGEVIEW_ARTICLES = 8
 MAX_FR_TERMS = 4
+
+
+def iso_day(compact: str) -> str:
+    """``20260909`` → ``2026-09-09``.  Anything else is returned unchanged."""
+    s = str(compact)
+    return f"{s[0:4]}-{s[4:6]}-{s[6:8]}" if len(s) == 8 and s.isdigit() else s
+
+
+def compact_day(now: str, days_back: int) -> str:
+    """``now`` minus ``days_back`` days, as the ``YYYYMMDD`` the APIs want."""
+    d = datetime.strptime(now[:10], "%Y-%m-%d") - timedelta(days=days_back)
+    return d.strftime("%Y%m%d")
+
+
+def repo_full_name(url: str) -> str:
+    """``https://github.com/owner/name`` → ``owner/name`` (else ``""``)."""
+    parts = [p for p in (url or "").split("/") if p]
+    for i, p in enumerate(parts):
+        if p.endswith("github.com") and len(parts) > i + 2:
+            return f"{parts[i + 1]}/{parts[i + 2]}"
+    return ""
 
 
 @dataclass
@@ -61,15 +97,27 @@ def _fr(term: str, per: int = 5) -> str:
 
 
 def build_plan(library: Library, now: str, start_day: str, end_day: str,
-               window_label: str, offline: bool = False) -> List[Task]:
-    """Return the ordered read list for this cycle."""
+               window_label: str, offline: bool = False,
+               stats: Optional[Dict[str, int]] = None) -> List[Task]:
+    """Return the ordered read list for this cycle.
+
+    ``stats``, when given, is filled with ``planned`` / ``dropped`` / ``cap``.  A
+    task dropped by the cap used to be dropped in silence, which made the cap look
+    like a plan that simply happened to be that size.
+    """
     tasks: List[Task] = []
     seen: set = set()
+    since_90d = iso_day(compact_day(now, 90))
+    since_7d = iso_day(compact_day(now, 7))
 
     def push(t: Task) -> bool:
-        if t.key in seen or len(tasks) >= MAX_TASKS_PER_CYCLE:
-            return False
+        if t.key in seen:
+            return False                       # the same read twice is not a drop
         if BY_ID.get(t.source_id) is None:
+            return False                       # an unregistered source is not a drop
+        if len(tasks) >= MAX_TASKS_PER_CYCLE:
+            if stats is not None:
+                stats["dropped"] = stats.get("dropped", 0) + 1
             return False
         seen.add(t.key)
         tasks.append(t)
@@ -93,15 +141,17 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
 
         if "github_search" in usable and len(fam.keywords) > 0:
             for kw in fam.keywords[:2]:
-                push(Task("github_search", _gh(f"{kw} created:>=2026-06-23", 20),
+                push(Task("github_search", _gh(f"{kw} created:>={since_90d}", 20),
                           "github_search", fam_slug, "survey",
-                          {"topic": fam_slug, "query": f"{kw} created:>=2026-06-23",
-                           "query_label": f"new repositories matching “{kw}” since 2026-06-23"}))
-            push(Task("github_search", _gh(" ".join(fam.keywords[:2]) + " created:>=2026-09-14", 25),
+                          {"topic": fam_slug, "query": f"{kw} created:>={since_90d}",
+                           "query_label": f"new repositories matching “{kw}” created "
+                                          f"since {since_90d}"}))
+            push(Task("github_search", _gh(" ".join(fam.keywords[:2]) + f" created:>={since_7d}", 25),
                       "github_search", fam_slug, "survey",
                       {"topic": fam_slug,
-                       "query": " ".join(fam.keywords[:2]) + " created:>=2026-09-14",
-                       "query_label": f"repositories matching “{' '.join(fam.keywords[:2])}” created in the last 7 days"}))
+                       "query": " ".join(fam.keywords[:2]) + f" created:>={since_7d}",
+                       "query_label": f"repositories matching “{' '.join(fam.keywords[:2])}” "
+                                      f"created since {since_7d}"}))
 
         if "federal_register" in usable:
             terms = [k for k in fam.keywords if " " in k or len(k) > 4][:MAX_FR_TERMS]
@@ -162,17 +212,25 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
                       "huggingface", fam_slug, "survey", {"topic": fam_slug}))
 
         if "nws_alerts" in usable:
+            # No hand-written area here: the probe reads the same URL, and if the two
+            # tasks described it differently they would write the same measurement
+            # under two different field names — the probe used to file this count as
+            # ``nws.alerts[US]`` while the survey filed it as ``nws.alerts[California]``
+            # for one and the same California query.  The URL says CA; that is what
+            # both tasks now record.
             push(Task("nws_alerts", "https://api.weather.gov/alerts/active?area=CA",
-                      "nws_alerts", fam_slug, "survey",
-                      {"topic": fam_slug, "area": "California"}))
+                      "nws_alerts", fam_slug, "survey", {"topic": fam_slug}))
 
         if "usgs_fdsn" in usable:
             push(Task("usgs_fdsn",
                       "https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson"
-                      "&starttime=2026-09-14&minmagnitude=5.0",
+                      f"&starttime={iso_day(start_day)}&endtime={iso_day(end_day)}"
+                      "&minmagnitude=5.0",
                       "usgs_fdsn", fam_slug, "survey",
                       {"topic": fam_slug, "window": "7d",
-                       "label": f"{window_label} at magnitude 5.0 and above"}))
+                       # Only consulted if the URL loses its dates; the query's own
+                       # window wins, because that is what was read.
+                       "window_label": window_label}))
 
         if "census_acs" in usable:
             push(Task("census_acs",
@@ -215,8 +273,15 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
                       "kalshi_public", fam_slug, "survey", {"topic": fam_slug}))
 
         if "mlb_statsapi" in usable:
+            # StatsAPI wants ISO dates, and this engine has proof: every recorded
+            # MLB claim in data/claims.jsonl was read with `date=2026-09-20` and
+            # returned a coherent schedule (15 games).  The pageview and USGS APIs
+            # want the compact form, so `end_day` is compact here and has to be
+            # converted — passing it straight through would send `date=20260920`,
+            # a format this project has never seen answered.
             push(Task("mlb_statsapi",
-                      f"https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={end_day}",
+                      "https://statsapi.mlb.com/api/v1/schedule?sportId=1"
+                      f"&date={iso_day(end_day)}",
                       "mlb_statsapi", fam_slug, "survey", {"topic": fam_slug}))
 
         if "nhl_web" in usable:
@@ -240,15 +305,26 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
     # from its slug.  Slugs are lowercased for use as anchors; asking the API
     # for "artificial_intelligence" returns a different, near-empty page and the
     # engine then publishes a confident claim about the wrong subject.
+    # MediaWiki auto-capitalises the first letter of every article title, so a
+    # recorded title that starts lower-case is not a title — it is the slug read
+    # back.  Asking for a lowercased title returns a different page, which is what
+    # produced the retracted "artificial_intelligence" claims.  The old filter here
+    # approximated that by requiring an underscore in the slug, which would also
+    # have thrown away a perfectly good article such as "ChatGPT"; the capital is
+    # the actual rule and it is what is checked now.
     arts = []
+    skipped_titles = 0
     for t in library.topics.values():
-        if not t.slug.startswith("wiki:") or t.status == "retired":
+        if not t.slug.startswith("wiki:") or t.status == STATUS_RETIRED:
             continue
         title = (t.title or "").strip()
-        if not title or title.lower() == t.slug[5:].replace("-", "_") and "_" not in t.slug:
+        if not title or not title[0].isupper():
+            skipped_titles += 1
             continue
-        if title and title not in arts:
+        if title not in arts:
             arts.append(title)
+    if stats is not None and skipped_titles:
+        stats["wikiTitlesSkipped"] = skipped_titles
     arts = arts[:MAX_PAGEVIEW_ARTICLES]
     for a in (arts or ["Artificial_intelligence"]):
         push(Task("wikimedia_pageviews", _wiki(a, start_day, end_day),
@@ -256,28 +332,31 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
                   {"topic": "public-attention"}))
 
     # 4. deepen — follow up on the most-signalled tracked entities
-    deepened = 0
-    for t in sorted(library.topics.values(), key=lambda x: -x.signals):
-        if deepened >= MAX_DEEPEN_PER_CYCLE:
-            break
-        if t.status == "retired":
-            continue
-        if t.slug.startswith("repo:") and t.origin_url:
-            full = t.slug[5:]
-            push(Task("github_search", _gh(f"repo:{t.origin_url.split('github.com/')[-1]}", 1),
-                      "github_search", "open-source-momentum", "deepen",
-                      {"topic": "open-source-momentum",
-                       "query_label": f"the tracked repository {full}"}))
-            deepened += 1
-        elif t.slug.startswith("wiki:"):
-            deepened += 1  # already covered by the pageview survey above
+    #
+    # This used to be a `repo:owner/name` *search* per tracked repository, which is
+    # the wrong bucket to spend: GitHub's unauthenticated search limit is 10
+    # requests/minute and one of those deepen searches was answered "403 rate limit
+    # exceeded" (recorded in the irregularity register, cycle 11).  The two
+    # Repositories API reads below share nothing with that limit (they are core API,
+    # which this engine barely touches), and they return what the Search API does
+    # not: open issues, watching users, size, last push, primary language,
+    # repository state, and the newest release tag.  Star and fork counts still
+    # arrive, under the same field names as before, so no series is broken.
+    tracked_repos = [t for t in sorted(library.topics.values(),
+                                       key=lambda x: (-x.signals, x.slug))
+                     if t.status != STATUS_RETIRED and t.slug.startswith("repo:")
+                     and t.origin_url]
+    for t in tracked_repos[:MAX_REPO_DEEPEN_PER_CYCLE]:
+        full = repo_full_name(t.origin_url) or t.slug[5:]
+        family = t.family if t.family in FAMILY_BY_SLUG else "open-source-momentum"
+        push(Task("github_repo", f"https://api.github.com/repos/{full}",
+                  "github_repo", family, "deepen",
+                  {"topic": family, "repo": full}))
+        push(Task("github_releases", f"https://api.github.com/repos/{full}/releases?per_page=1",
+                  "github_releases", family, "deepen",
+                  {"topic": family, "repo": full}))
+    if stats is not None:
+        stats["planned"] = len(tasks)
+        stats["cap"] = MAX_TASKS_PER_CYCLE
     return tasks
 
-
-def offline_plan(library: Library, seed_dir=None) -> List[Task]:
-    """A plan that reads nothing from the network.
-
-    Used by the test suite and by ``--offline`` so the whole pipeline can be
-    exercised, deterministically, against the hashed seed captures.
-    """
-    return []

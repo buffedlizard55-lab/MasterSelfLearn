@@ -75,9 +75,14 @@ important open item and it cannot be closed from a sandbox.
 
 On the static seed corpus every metric is unchanged, so the null model scores
 100% and every other persona scores ≤ 0. That is honest but it is not a
-competition. Two live cycles with moving series are needed before any skill number
-means anything. Until then the leaderboard page should keep saying "no persona
-qualifies yet", and it does.
+competition. Live cycles with moving series are needed before any skill number
+means anything; the first ones have now run (cycles 15-16 recorded 1,036 forecasts
+against 620 scored) and the series that actually moved are `crossref.totalResults`,
+`nws.alerts`, `pubmed.hits[...]` and `usgs.events[7d]`.
+
+Partly addressed: the observation set was curated and the scoring series was
+deduplicated per cycle, and the new GitHub release surface gives the competition a
+subject whose change is observable one cycle later — see item 6.
 
 ### 3. Backfill the attention signal
 
@@ -123,7 +128,15 @@ of value:
 - **PyPI/npm next release within N days.** Verifiable from the registry.
 - **USGS event counts in a forward window.** Verifiable from the same endpoint.
 
-Each needs an adapter change and a scoring rule. None exists yet.
+**Done for the GitHub case.** `github_releases` reads
+`/repos/{owner}/{repo}/releases?per_page=1`, so "will the newest tag differ one cycle
+from now?" is answered by the same endpoint that asked it, and `S07_ChangeHazard`
+forecasts it from the subject's own recorded change history. An empty array is a
+`negative` claim on the same field name a real tag uses, so a repository's first
+release reads as a change rather than as a series appearing from nowhere.
+
+Still open: the Federal Register date target, a forward-window USGS target, and the
+PyPI/npm release-window target. Each needs its own adapter change and scoring rule.
 
 ## Limitations that are not fixable without manual input
 
@@ -133,7 +146,7 @@ Each needs an adapter change and a scoring rule. None exists yet.
 | Six useful sources excluded | FRED, NFL Game API, Google Trends, X, YouTube Data, TikTok/Instagram — all keyed |
 | No creator/social signal at all | Every official creator API requires an approved developer application |
 | The owner's ChatGPT transcript is not machine-readable | Client-side rendered; only the `<title>` is served. Any requirement in it that is missing here is missing |
-| No live execution proof in this repository | The sandbox egress allowlist blocked every source except GitHub, PyPI and npm. The first Actions run is the proof |
+| Live execution proof is thin outside the workflows | The unattended workflow has now run live cycles (cycle 16: 63 reads ok, 7 failed, recorded in `data/source_health.json`), and the sandbox that wrote the seeds reached only GitHub, PyPI and npm. Sources with no recorded success are named as such on the Sources page rather than assumed |
 
 ## Deliberate non-goals
 

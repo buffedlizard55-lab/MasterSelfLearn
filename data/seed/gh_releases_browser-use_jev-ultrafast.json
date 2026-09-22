@@ -1,0 +1,12 @@
+{
+ "captureMode": "sandbox-scripted-urllib",
+ "capturedAt": "2026-09-22T07:03:02Z",
+ "httpStatus": 200,
+ "payloadSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+ "projection": [],
+ "projectionNote": "Projection keeps the RAW GitHub field names that the registered adapter reads. payloadSha256 covers the full wire response, not the projection, so this capture can be re-verified byte for byte.",
+ "rawBytes": 2,
+ "source": "seed",
+ "url": "https://api.github.com/repos/browser-use/jev-ultrafast/releases?per_page=1",
+ "wireHashVerifiable": true
+}

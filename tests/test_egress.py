@@ -134,7 +134,11 @@ class EgressIsNotAFinding(TmpDirCase):
             if seen["n"] == 1:
                 return _ok_json(url, {"items": []})
             if seen["n"] == 2:
-                return _real_http_error(url, 404)
+                # A 500 is the source failing.  A 404 would be a caller-fault status
+                # (msl/pipeline.CALLER_FAULT_STATUSES): it says the addressed thing
+                # does not exist, which is a fact about the URL, not an outage — see
+                # CallerFaultIsNotASourceOutage in tests/test_pipeline.py.
+                return _real_http_error(url, 500)
             return _egress(url)
 
         with mock.patch("msl.pipeline.fetch", side_effect=responder):

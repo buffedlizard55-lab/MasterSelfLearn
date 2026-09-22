@@ -7,6 +7,7 @@ shows up here.
 from __future__ import annotations
 
 import json
+import re
 import pathlib
 import tempfile
 import unittest
@@ -14,8 +15,11 @@ import unittest
 from msl import config
 from msl.topics import Library
 from msl.pipeline import load_seeds, run_cycle, seed_plan
+from msl.strategies import Forecast
 from msl.sources import BY_ID, KEYED_SOURCES_EXCLUDED, REGISTRY
 from tests.helpers import SEED, TmpDirCase, NOW1, NOW2, NOW3
+
+ROOT_DATA = pathlib.Path(__file__).resolve().parent.parent / "data"
 
 
 class OfflineCycle(TmpDirCase):
@@ -115,12 +119,16 @@ class OfflineCycle(TmpDirCase):
         """Regression: the README published this cycle's derivation *delta* as if
         it were the ledger's derived *total*.
 
-        The breakdown is rendered as `claims - derivedClaims` captured plus
-        `derivedClaims` derived, so feeding it a per-cycle delta silently
+        The breakdown is rendered as a remainder (`claims - derivedClaims -
+        negativeClaims` captured), so feeding it a per-cycle delta silently
         reclassified every older derived claim as "captured from live payloads" —
         claiming evidence-backed reads for claims that were computed by
         arithmetic.  At 8,618 claims it reported 8,312 / 306 when the ledger held
         5,914 / 2,704.  Assert against the ledger's own kind counts.
+
+        `negative` is the third kind — proof of absence, such as a repository that
+        publishes no release — so the remainder has to subtract it too, or every
+        negative claim is published as a captured reading.
         """
         site = (self.dir / "site.js").read_text()
         data = json.loads(site.split("window.MSLDATA = ", 1)[1].rstrip().rstrip(";"))
@@ -128,14 +136,19 @@ class OfflineCycle(TmpDirCase):
                 for l in (self.dir / "claims.jsonl").read_text().splitlines() if l.strip()]
         derived = sum(1 for r in rows if r.get("kind") == "derived")
         captured = sum(1 for r in rows if r.get("kind") == "captured")
+        negative = sum(1 for r in rows if r.get("kind") == "negative")
         ac = data["autoCounts"]
         self.assertEqual(ac["derivedClaims"], derived,
                          "derivedClaims must be the ledger total, not this cycle's delta")
-        self.assertEqual(ac["claims"] - ac["derivedClaims"], captured,
+        self.assertEqual(ac["negativeClaims"], negative,
+                         "negativeClaims must be the ledger total of that kind")
+        self.assertEqual(ac["claims"] - ac["derivedClaims"] - ac["negativeClaims"],
+                         captured,
                          "the captured figure is the remainder and must match the ledger")
-        # The two halves are a partition of the whole; if they do not sum to the
+        # The three kinds are a partition of the whole; if they do not sum to the
         # total the breakdown is not a breakdown.
-        self.assertEqual(ac["derivedClaims"] + (ac["claims"] - ac["derivedClaims"]),
+        self.assertEqual(ac["derivedClaims"] + ac["negativeClaims"]
+                         + (ac["claims"] - ac["derivedClaims"] - ac["negativeClaims"]),
                          ac["claims"])
         self.assertEqual(data["claimKindCounts"].get("derived"), derived)
 
@@ -339,3 +352,285 @@ class PlanBuilding(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PlanWindows(unittest.TestCase):
+    """Every date in a *survey* has to come from the clock, not from the day the
+    template was written.  A hard-coded date makes a published sentence false the
+    moment the calendar moves past it.
+
+    Probe URLs are the exception and deliberately so: a probe must be the same
+    request every cycle or its health record compares two different things.
+    """
+
+    #: The survey sources these tests inspect.  Their status comes from the probe
+    #: ledger on disk, and a blocked source is not planned — cycle 16 has
+    #: ``github_search`` blocked on three 403 rate limits and ``mlb_statsapi`` blocked
+    #: on the 400 this branch's date fix removes.  A test of URL construction must not
+    #: depend on which sources happen to be healthy today, so it forces these usable.
+    FORCED = ("github_search", "mlb_statsapi", "usgs_fdsn", "wikimedia_pageviews",
+              "nws_alerts")
+
+    def _tasks(self, now, start_day, end_day, window_label="last7"):
+        from unittest import mock
+        from msl.sources import BY_ID
+        from msl.tasks import build_plan
+        lib = Library(pathlib.Path(tempfile.mkdtemp()))
+        lib.ensure("repo:browser-use/jev-ultrafast", "browser-use/jev-ultrafast",
+                   "open-source-momentum", NOW1, 5,
+                   origin_url="https://github.com/browser-use/jev-ultrafast")
+        patches = [mock.patch.object(BY_ID[sid], "status", "verified-live-read")
+                   for sid in self.FORCED]
+        for pt in patches:
+            pt.start()
+        try:
+            tasks = build_plan(lib, now, start_day, end_day, window_label)
+        finally:
+            for pt in patches:
+                pt.stop()
+        return ([t.url for t in tasks if t.kind != "probe"],
+                [t.url for t in tasks if t.kind == "probe"])
+
+    def test_the_usgs_window_moves_with_the_clock(self):
+        urls, _ = self._tasks("2026-10-22T12:00:00Z", "20261009", "20261015")
+        usgs = [u for u in urls if "earthquake.usgs.gov" in u]
+        self.assertEqual(len(usgs), 1)
+        self.assertIn("starttime=2026-10-09", usgs[0])
+        self.assertIn("endtime=2026-10-15", usgs[0])
+        self.assertNotIn("2026-09-14", " ".join(urls),
+                         "a September date survived into an October plan")
+
+    def test_the_github_created_windows_are_derived_from_now(self):
+        urls, _ = self._tasks("2026-10-22T12:00:00Z", "20261009", "20261015")
+        searches = [u for u in urls if "search/repositories" in u]
+        joined = " ".join(searches)
+        self.assertIn("created%3A%3E%3D2026-07-24", joined)   # 90 days before now
+        self.assertIn("created%3A%3E%3D2026-10-15", joined)   # 7 days before now
+        self.assertNotIn("2026-09-14", joined, "a frozen created:>= date survived")
+
+    def test_the_mlb_date_is_iso_because_that_is_the_form_we_have_read(self):
+        urls, _ = self._tasks("2026-10-22T12:00:00Z", "20261009", "20261015")
+        mlb = [u for u in urls if "statsapi.mlb.com" in u]
+        self.assertEqual(len(mlb), 1)
+        self.assertIn("date=2026-10-15", mlb[0],
+                      "every recorded MLB read used an ISO date; keep the proven form")
+        self.assertNotIn("date=20261015", mlb[0])
+
+    def test_the_pageview_window_is_compact_because_that_api_wants_it(self):
+        urls, _ = self._tasks("2026-10-22T12:00:00Z", "20261009", "20261015")
+        wiki = [u for u in urls if "pageviews" in u]
+        self.assertTrue(wiki)
+        self.assertIn("/20261009/20261015", wiki[0])
+
+    def test_probes_are_stable_because_they_are_health_checks(self):
+        a, probes_a = self._tasks("2026-09-22T12:00:00Z", "20260909", "20260915")
+        b, probes_b = self._tasks("2026-10-22T12:00:00Z", "20261009", "20261015")
+        self.assertEqual(probes_a, probes_b,
+                         "a probe whose URL changes cannot be compared with last cycle")
+        self.assertNotEqual(a, b, "the surveys must not be frozen")
+
+    def test_no_survey_url_carries_a_date_that_is_not_in_this_plan(self):
+        """A blunt sweep: every date in a survey URL must be one the plan computed."""
+        urls, _ = self._tasks("2026-10-22T12:00:00Z", "20261009", "20261015")
+        allowed = {"2026-10-09", "2026-10-15", "2026-07-24"}
+        for u in urls:
+            for d in re.findall(r"20\d{2}-\d{2}-\d{2}", u):
+                self.assertIn(d, allowed, f"unexplained date {d} in {u}")
+
+
+class PlanCapAccounting(unittest.TestCase):
+    def test_a_refused_read_is_counted_not_silently_shortened(self):
+        """The cap may refuse work; it may not hide that it did."""
+        from msl import tasks as taskmod
+        from msl.tasks import build_plan
+        lib = Library(pathlib.Path(tempfile.mkdtemp()))
+        lib.ensure("repo:browser-use/jev-ultrafast", "browser-use/jev-ultrafast",
+                   "open-source-momentum", NOW1, 5)
+        stats = {}
+        plan = build_plan(lib, NOW1, "20260909", "20260915", "last7", stats=stats)
+        self.assertEqual(stats["planned"], len(plan))
+        self.assertEqual(stats["cap"], taskmod.MAX_TASKS_PER_CYCLE)
+        self.assertEqual(stats.get("dropped", 0), 0,
+                         f"the standing plan is at {len(plan)}, over the cap "
+                         f"{taskmod.MAX_TASKS_PER_CYCLE}")
+
+    def test_the_cap_counts_refusals_when_it_binds(self):
+        from unittest import mock
+        from msl import tasks as taskmod
+        from msl.tasks import build_plan
+        lib = Library(pathlib.Path(tempfile.mkdtemp()))
+        stats = {}
+        with mock.patch.object(taskmod, "MAX_TASKS_PER_CYCLE", 5):
+            plan = build_plan(lib, NOW1, "20260909", "20260915", "last7", stats=stats)
+        self.assertEqual(len(plan), 5)
+        self.assertGreater(stats["dropped"], 0)
+        self.assertEqual(stats["planned"], 5)
+
+    def test_the_deepen_reads_use_the_core_api_not_the_search_bucket(self):
+        """One deepen search was answered 403 rate limit exceeded (IRR register).
+
+        The replacements are /repos/... reads, which GitHub meters in the core
+        bucket this engine barely uses.
+        """
+        from msl.tasks import MAX_REPO_DEEPEN_PER_CYCLE, build_plan
+        lib = Library(pathlib.Path(tempfile.mkdtemp()))
+        for i in range(MAX_REPO_DEEPEN_PER_CYCLE + 2):
+            lib.ensure(f"repo:owner{i}/name{i}", f"owner{i}/name{i}",
+                       "open-source-momentum", NOW1, 10 - i,
+                       origin_url=f"https://github.com/owner{i}/name{i}")
+        plan = build_plan(lib, NOW1, "20260909", "20260915", "last7")
+        deepen = [t for t in plan if t.kind == "deepen"]
+        repos = [t for t in deepen if t.source_id == "github_repo"]
+        releases = [t for t in deepen if t.source_id == "github_releases"]
+        self.assertEqual(len(repos), MAX_REPO_DEEPEN_PER_CYCLE)
+        self.assertEqual(len(releases), MAX_REPO_DEEPEN_PER_CYCLE)
+        self.assertEqual([t.source_id for t in deepen if t.source_id == "github_search"], [],
+                         "the per-repository search deepen is gone (search bucket)")
+        for t in repos + releases:
+            self.assertIn("/repos/", t.url)
+
+    def test_no_task_url_left_the_registry(self):
+        """Every planned read must map back to a registered source."""
+        from msl.pipeline import _source_for_url
+        from msl.tasks import build_plan
+        lib = Library(pathlib.Path(tempfile.mkdtemp()))
+        for t in build_plan(lib, NOW1, "20260909", "20260915", "last7"):
+            self.assertIsNotNone(_source_for_url(t.url), t.url)
+            self.assertEqual(_source_for_url(t.url), t.source_id, t.url)
+
+
+class ForecastRetention(TmpDirCase):
+    """A forecast waiting for an observation must not be dropped for being old."""
+
+    def test_pending_forecasts_survive_beyond_the_scored_window(self):
+        from msl.pipeline import _load_forecasts, _save_forecasts
+        many = [Forecast("S10_Persistence", 1, "t", f"field[{i}].v", "flat", 0.5)
+                for i in range(4500)]
+        _save_forecasts(self.dir, many, cycle=1, tracked={f"field[{i}].v" for i in range(4500)})
+        back = _load_forecasts(self.dir)
+        self.assertEqual(len(back), 4500,
+                         "unscored forecasts are the only state in which one can be "
+                         "lost before it is ever scored")
+
+    def test_a_metric_that_stopped_being_observed_is_abandoned_and_counted(self):
+        from msl.pipeline import _save_forecasts
+        pending = Forecast("S10_Persistence", 1, "t", "gone[1].v", "flat", 0.5)
+        counts = _save_forecasts(self.dir, [pending], cycle=9, tracked={"other[1].v"})
+        self.assertEqual(counts["abandoned"], 1,
+                         "five cycles with no observation means nothing will score it")
+        self.assertEqual(counts["pending"], 0)
+
+    def test_a_recent_pending_forecast_is_not_abandoned(self):
+        from msl.pipeline import _save_forecasts
+        pending = Forecast("S10_Persistence", 8, "t", "future[1].v", "flat", 0.5)
+        counts = _save_forecasts(self.dir, [pending], cycle=9, tracked={"other[1].v"})
+        self.assertEqual(counts["abandoned"], 0)
+        self.assertEqual(counts["pending"], 1)
+
+    def test_an_empty_tracked_set_abandons_nothing(self):
+        """Conservative on purpose: if the competition sees no metrics at all, the
+        problem is upstream, and erasing the forecast log is not a diagnosis."""
+        from msl.pipeline import _save_forecasts
+        pending = Forecast("S10_Persistence", 1, "t", "gone[1].v", "flat", 0.5)
+        counts = _save_forecasts(self.dir, [pending], cycle=9, tracked=set())
+        self.assertEqual(counts["abandoned"], 0)
+        self.assertEqual(counts["pending"], 1)
+
+
+class CycleRecordCompleteness(unittest.TestCase):
+    """Every per-cycle number must survive a republish.
+
+    A republish re-renders STATUS.md, the README counts block and the site from the
+    recorded cycle row.  A key in that row which the republish neither replays nor
+    recomputes silently becomes 0 — which is how STATUS.md published "Facts
+    extracted 0 / Derived 0" for a cycle that extracted 680 facts and derived 330
+    claims, and how "Duration 0 ms" was printed for a 52-second run.
+    """
+
+    def test_every_recorded_key_is_replayed_or_recomputed(self):
+        from msl.pipeline import (RECOMPUTED_CYCLE_KEYS, REPLAYED_CYCLE_KEYS,
+                                  CycleReport)
+        written = set(CycleReport().summary())
+        covered = REPLAYED_CYCLE_KEYS | RECOMPUTED_CYCLE_KEYS
+        self.assertEqual(sorted(written - covered), [],
+                         "these keys would silently be republished as 0")
+
+    def test_a_recorded_cycle_is_replayed_not_zeroed(self):
+        """End to end: write a row, republish from it, check the numbers survive."""
+        from msl.pipeline import CycleReport, republish
+        d = pathlib.Path(tempfile.mkdtemp())
+        report = CycleReport(cycle=7, at="2026-09-22T12:00:00Z", mode="test",
+                             facts=680, claims_new=431, derived=126, rechecks=40,
+                             duration_ms=52977, ok=False, errors=["boom"],
+                             tasks_planned=21, tasks_dropped=3, forecasts_pending=288)
+        (d / "cycles.jsonl").write_text(
+            json.dumps({**report.summary(), "autoCounts": report.auto_counts()}) + "\n",
+            encoding="utf-8")
+        back = republish(data_dir=d, docs_dir=d)
+        self.assertEqual(back.facts, 680, "the fact count was lost by the republish")
+        self.assertEqual(back.derived, 126)
+        self.assertEqual(back.tasks_dropped, 3)
+        self.assertEqual(back.forecasts_pending, 288)
+        self.assertEqual(back.errors, ["boom"], "a failed cycle must keep saying so")
+        self.assertFalse(back.ok)
+
+
+class CallerFaultIsNotASourceOutage(TmpDirCase):
+    """A 4xx refusal is evidence about the URL, not about somebody else's API.
+
+    Recorded evidence for this rule: cycle 16 asked MLB StatsAPI for
+    ``date=20260915``, got HTTP 400, and the registry marked the league's feed
+    ``blocked (1 failure)`` — while every MLB claim in the ledger was read with the
+    ISO form ``date=2026-09-20`` and returns 200.  A blocked source is not read, so
+    this engine's own malformed URL took a healthy source offline.
+    """
+
+    def _cycle_with_status(self, status, source_id="mlb_statsapi"):
+        from unittest import mock
+        from msl.http import FetchResult
+        from msl.sources import BY_ID
+        from msl import tasks as taskmod
+        task = taskmod.Task(source_id, "https://statsapi.mlb.com/api/v1/schedule"
+                                        "?sportId=1&date=2026-09-22", source_id,
+                            "sports-signals", "survey", {"topic": "sports-signals"})
+        result = FetchResult(url=task.url, status=status,
+                             error=f"HTTP {status} Bad Request", error_kind="HTTPError",
+                             attempts=1)
+        src = BY_ID[source_id]
+        before = (src.status, src.consecutive_failures)
+        with mock.patch.object(taskmod, "build_plan", return_value=[task]), \
+             mock.patch("msl.pipeline.fetch", return_value=result):
+            rep = run_cycle(data_dir=self.dir, docs_dir=self.dir,
+                            now_override=NOW1, offline=False)
+        return src, before, rep
+
+    def test_a_400_does_not_block_the_source(self):
+        src, before, rep = self._cycle_with_status(400)
+        self.assertEqual(src.consecutive_failures, before[1],
+                         "a malformed request is not a source failure")
+        self.assertEqual(src.status, before[0],
+                         "the source's health is left exactly as the probe ledger had it")
+        self.assertEqual(rep.claims_new, 0, "a failed read produces no claim")
+
+    def test_a_400_is_still_recorded_as_an_irregularity(self):
+        _, _, rep = self._cycle_with_status(400)
+        rows = json.loads((self.dir / "irregularities.json").read_text())["items"]
+        mine = [i for i in rows if i["sourceId"] == "mlb_statsapi"]
+        self.assertTrue(mine, "the refused request must still be reported")
+        self.assertIn("malformed request", mine[0]["title"])
+        self.assertIn("defect in the URL", mine[0]["detail"])
+
+    def test_a_403_does_block_the_source(self):
+        """Forbidden is about the relationship, not about our syntax."""
+        src, before, rep = self._cycle_with_status(403)
+        self.assertEqual(src.consecutive_failures, before[1] + 1)
+        self.assertEqual(src.status, "blocked")
+
+    def test_the_recorded_mlb_failure_is_reproducible_by_hand(self):
+        """The evidence behind the rule, kept where the rule lives."""
+        health = json.loads((ROOT_DATA / "source_health.json").read_text())
+        row = next((r for r in health["results"] if r["id"] == "mlb_statsapi"), None)
+        self.assertIsNotNone(row, "the MLB source must be in the health ledger")
+        if row["httpStatus"] in (400, 404, 405, 422):
+            self.assertIn("20260915", row["url"],
+                          "rule out the compact date before blaming the endpoint")

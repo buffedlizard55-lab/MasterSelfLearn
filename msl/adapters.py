@@ -72,13 +72,25 @@ def gh_search(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
         r.problems.append("github_search: payload is not a JSON object")
         return r
     total = _num(payload.get("total_count"))
-    qlabel = _str(ctx.get("query", ""), 120)
+    # The query is the subject of the count.  Without it the field name is empty —
+    # 106 rows in the ledger read ``github.total_count[]`` and were published as
+    # "GitHub Search reports 3,667,127 repositories matching ." (87 by cycle 14; the
+    # unattended workflow kept writing them until this fix was merged) — and, worse, every
+    # query that lacked a context collapsed into that one field, so unrelated
+    # searches shared a series.  A total that cannot be attributed to a query is not
+    # recorded at all.
+    qlabel = _str(ctx.get("query"), 120)
     if total is None:
         r.problems.append("github_search: total_count missing")
+    elif not qlabel:
+        r.problems.append("github_search: the read reported total_count="
+                          f"{int(total):,} but neither the task nor the URL names the "
+                          f"query, so the count cannot be attributed; no fact was "
+                          f"recorded rather than a field named after nothing")
     else:
+        label = _str(ctx.get("query_label"), 160) or f"the query “{qlabel}”"
         r.add(ctx["topic"], f"github.total_count[{qlabel}]", int(total), "repositories",
-              f"GitHub Search reports {int(total):,} repositories matching "
-              f"{ctx.get('query_label', qlabel)}.",
+              f"GitHub Search reports {int(total):,} repositories matching {label}.",
               path="total_count", tags=["github", "search", qlabel])
     items = payload.get("items")
     if not isinstance(items, list):
@@ -147,6 +159,170 @@ def gh_repos(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     r.add(ctx["topic"], "owner.total_kb", int(kb), "KiB",
           f"Combined repository size is {int(kb):,} KiB.", path="sum(size)",
           tags=["owner", "corpus"])
+    return r
+
+
+def gh_repo_detail(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
+    """``GET /repos/{owner}/{repo}`` — one repository, the fields search omits.
+
+    Counts are keyed by the repository name the payload reports (``full_name``),
+    never by position, and a missing field is a shape problem rather than a 0: the
+    failure that once published "0 stars" for every repository is always one shape
+    change away.  A field that is genuinely present and genuinely 0 is recorded as
+    the 0 it is — a real repository can have no stars.
+    """
+    r = ExtractResult()
+    if not isinstance(payload, dict):
+        r.problems.append("github_repo: payload is not a JSON object")
+        return r
+    full = _str(payload.get("full_name"), 120)
+    if not full:
+        r.problems.append("github_repo: payload has no full_name, so the counts "
+                          "cannot be attributed to a repository; nothing was recorded")
+        return r
+    declared = _str(ctx.get("repo"), 120)
+    if declared and declared.lower() != full.lower():
+        # The payload names the subject; the task names what it meant to read.  If
+        # they disagree, one of them is wrong and publishing either reading would be
+        # a claim about a repository that was not the one asked for.  This is the
+        # same class of defect as the retracted lowercased-Wikipedia-title claims.
+        r.problems.append(f"github_repo: the task asked for {declared} but the payload "
+                          f"describes {full}; the two disagree, so no claim was "
+                          f"recorded from this read")
+        return r
+    key = full.lower()
+    ents = ["repo:" + key]
+    tags = ["github", "repo", full]
+    # Discovery weight only; nothing in the sentence reads it.  An unknown star
+    # count leaves the weight at 1.0 rather than at an invented 0.
+    stars_value: Optional[float] = None
+    # The endpoint is in the sentence on purpose: this read and the Search API
+    # publish the same stars fields, and a reader comparing them should be able to
+    # see which endpoint said which.
+    api = "per the GitHub Repositories API"
+    numeric = [
+        ("stars", "stargazers_count", "stars", f"{full} has {{v:,}} stars, {api}."),
+        ("forks", "forks_count", "forks", f"{full} has {{v:,}} forks, {api}."),
+        ("open_issues", "open_issues_count", "open issues",
+         f"{full} has {{v:,}} open issues, {api}."),
+        ("watchers", "subscribers_count", "watching users",
+         f"{full} has {{v:,}} watching users, {api}."),
+        ("size_kb", "size", "KiB", f"The repository {full} is {{v:,}} KiB, {api}."),
+    ]
+    for fname, path, unit, template in numeric:
+        if path not in payload:
+            r.problems.append(f"github_repo: payload for {full} has no {path}; no "
+                              f"figure was recorded for it rather than a 0")
+            continue
+        v = _num(payload.get(path))
+        if v is None:
+            r.problems.append(f"github_repo: {path} for {full} is not numeric "
+                              f"({payload.get(path)!r}); no figure was recorded")
+            continue
+        if fname == "stars":
+            stars_value = float(v)
+        r.add(ctx["topic"], f"github.repo[{key}].{fname}", int(v), unit,
+              template.format(v=int(v)), path=path, tags=tags, entities=ents)
+    lang = payload.get("language")
+    if lang in (None, ""):
+        # Observed absence, reported as absence.  GitHub is the authority on how it
+        # classifies a repository, so "no primary language" is a fact about the repo
+        # and not a hole in our reading.
+        r.add(ctx["topic"], f"github.repo[{key}].language", "", "language",
+              f"GitHub reports no primary language for {full}.", path="language",
+              tags=tags, entities=ents)
+    else:
+        r.add(ctx["topic"], f"github.repo[{key}].language", _str(lang, 60), "language",
+              f"GitHub classifies {full} primarily as {_str(lang, 60)}.",
+              path="language", tags=tags, entities=ents)
+    pushed = _str(payload.get("pushed_at"), 40)
+    if pushed:
+        r.add(ctx["topic"], f"github.repo[{key}].pushed", pushed, "iso8601",
+              f"The most recent push to {full} was at {pushed}, per the GitHub "
+              f"Repositories API.", path="pushed_at", tags=tags, entities=ents)
+    if "archived" in payload:
+        # Not a boolean field: "active" and "archived" are the two states a
+        # repository can be in, and that is a categorical series the competition can
+        # ask a knowable question about ("will the state differ next cycle?").
+        state = "archived" if payload.get("archived") else "active"
+        r.add(ctx["topic"], f"github.repo[{key}].state", state, "state",
+              f"The GitHub Repositories API reports {full} as {state}.",
+              path="archived", tags=tags, entities=ents)
+    r.ent("repo:" + key, full, 1.0 if stars_value is None else stars_value,
+          _str(payload.get("html_url"), 200) or f"https://github.com/{full}")
+    return r
+
+
+def repo_from_html_url(html_url: str) -> str:
+    """``https://github.com/owner/name/...`` → ``owner/name``, else ``""``."""
+    s = _str(html_url, 200)
+    if not s.startswith("https://") and not s.startswith("http://"):
+        return ""
+    parts = [p for p in s.split("/") if p]
+    # ["https:", "github.com", "owner", "name", ...]
+    return f"{parts[2]}/{parts[3]}" if len(parts) >= 4 else ""
+
+
+def gh_releases(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
+    """``GET /repos/{owner}/{repo}/releases?per_page=1`` — the newest release.
+
+    GitHub returns releases newest-first, so element 0 is the one that answers
+    "when did this project last ship, and what was it called?".  An empty list is
+    not an error and not an absence of data: it is proof that the repository
+    publishes no release, which is recorded as a ``negative`` claim carrying the
+    same field name as a real tag.  That keeps one continuous series per repository
+    — "" until the first release, then the tag — so a first release is visible as a
+    change rather than as the series appearing from nowhere.
+    """
+    r = ExtractResult()
+    if not isinstance(payload, list):
+        r.problems.append("github_releases: payload is not a JSON array")
+        return r
+    declared = _str(ctx.get("repo"), 120)
+    first = payload[0] if payload and isinstance(payload[0], dict) else {}
+    stated = (repo_from_html_url(_str(first.get("html_url"), 200))
+              or repo_from_html_url(_str(first.get("url"), 200)))
+    if payload and not first:
+        r.problems.append("github_releases: the first record in the array is not an "
+                          "object, so no release could be read from this payload")
+        return r
+    if stated and declared and stated.lower() != declared.lower():
+        r.problems.append(f"github_releases: the task asked for {declared} but the "
+                          f"payload describes {stated}; the two disagree, so no claim "
+                          f"was recorded from this read")
+        return r
+    full = stated or declared
+    if not full:
+        r.problems.append("github_releases: the task did not record which repository "
+                          "was asked about and the payload does not name it; the "
+                          "release cannot be attributed, so nothing was recorded")
+        return r
+    slug = "repo:" + full.lower()
+    field = f"github.release[{full.lower()}].tag"
+    if not payload:
+        r.add(ctx["topic"], field, "", "tag",
+              f"The GitHub Releases API lists no release for {full}.",
+              kind="negative", path="[]", tags=["github", "releases", full], entities=[slug])
+        return r
+    tag = _str(first.get("tag_name"), 80)
+    if not tag:
+        r.problems.append(f"github_releases: the newest record for {full} has no "
+                          f"tag_name; no release fact was recorded")
+        return r
+    published = _str(first.get("published_at"), 30)
+    flags = ", ".join(x for x in ("prerelease" if first.get("prerelease") else "",
+                                  "draft" if first.get("draft") else "") if x)
+    r.add(ctx["topic"], field, tag, "tag",
+          f"The newest release of {full} is tagged {tag}"
+          + (f", published {published}" if published else "")
+          + (f" ({flags})." if flags else "."),
+          path="[0].tag_name", tags=["github", "releases", full], entities=[slug])
+    if published:
+        r.add(ctx["topic"], f"github.release[{full.lower()}].published", published,
+              "iso8601",
+              f"The GitHub Releases API dates release {tag} of {full} at {published}.",
+              path="[0].published_at", tags=["github", "releases", full], entities=[slug])
+    r.ent(slug, full, 1.0, _str(first.get("html_url"), 200) or f"https://github.com/{full}")
     return r
 
 
@@ -238,15 +414,37 @@ def federal_register(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
         r.problems.append("federal_register: payload is not a JSON object")
         return r
     count = _num(payload.get("count"))
-    term = _str(payload.get("description"), 160)
-    key = ctx.get("term") or "newest"
+    # The API's own ``description`` for a term query is the phrase
+    # "Documents matching 'artificial intelligence'".  An earlier template
+    # interpolated that phrase after the word "matching" and published
+    # "holds 1,573 documents matching Documents matching 'artificial intelligence'."
+    # 102 rows in the ledger carry that sentence (80 by cycle 14).  The sentence is now built from
+    # the term this project actually asked for, so it cannot double a word, and the
+    # API's own phrasing is recorded in the field's tags instead of being spliced
+    # into a sentence it was not written for.
+    term = _str(ctx.get("term"), 160)
+    key = term or "newest"
     if count is None:
         r.problems.append("federal_register: count missing")
     else:
+        # ``description`` is the API's own phrasing for the query it answered.  It is
+        # recorded as a tag (where a reader can compare it with what was asked for)
+        # and never spliced into the sentence — that splice is what published
+        # "holds 1,573 documents matching Documents matching 'artificial
+        # intelligence'" in 102 rows.
+        described = _str(payload.get("description"), 160)
+        if term:
+            sentence = (f"The U.S. Federal Register holds {int(count):,} documents "
+                        f"matching “{term}”.")
+        else:
+            # An unfiltered count: say what the number covers, and let the API's own
+            # description of the query stand next to it rather than inside it.
+            sentence = f"The U.S. Federal Register holds {int(count):,} documents in total."
+            if described:
+                sentence += f" The API describes this query as “{described}”."
         r.add(ctx["topic"], f"fedreg.documents[{key}]", int(count), "documents",
-              f"The U.S. Federal Register holds {int(count):,} documents matching "
-              f"{term or 'the configured query'}.",
-              path="count", tags=["federal-register", "regulatory"])
+              sentence, path="count",
+              tags=["federal-register", "regulatory"] + ([term] if term else []))
     res = payload.get("results")
     if not isinstance(res, list):
         r.problems.append("federal_register: results is not a list")
@@ -280,6 +478,54 @@ def federal_register(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     return r
 
 
+def _window_id(ctx: Dict[str, Any]) -> str:
+    """The window a count covers, as a field-key component.
+
+    The rolling weekly count and the probe's open-ended count are different
+    measurements, so they must not share a field name: mixing them would put a
+    7-day count and a count-from-a-fixed-date-until-now into one series and make
+    every comparison between them meaningless.
+    """
+    window = _str(ctx.get("window"), 40)
+    if window:
+        return window
+    start = _str(ctx.get("starttime"), 20)
+    end = _str(ctx.get("endtime"), 20)
+    if start and end:
+        return f"{start}..{end}"
+    if start:
+        return f"from-{start}"
+    return "unspecified"
+
+
+def _window_phrase(ctx: Dict[str, Any]) -> str:
+    """Describe the window a count was taken over, from the query that took it.
+
+    The window used to be a hand-written label in the task ("the configured
+    window") that named nothing, while the URL carried the real dates.  A count is
+    only meaningful with the window it covers, so the phrase is built from the
+    parameters of the read itself.
+    """
+    start = _str(ctx.get("starttime"), 20)
+    end = _str(ctx.get("endtime"), 20)
+    mag = ctx.get("minmagnitude")
+    if start and end:
+        where = f"between {start} and {end}"
+    elif start:
+        where = f"from {start} to the time of this read"
+    elif end:
+        where = f"up to {end}"
+    else:
+        # No dates in the query at all.  Fall back to the plan's own window label if
+        # the task carried one, and otherwise say plainly that the window is not
+        # pinned down rather than inventing one.
+        label = _str(ctx.get("window_label"), 80)
+        where = f"in the window {label}" if label else "over the window this query leaves open"
+    if mag is not None:
+        where += f", at magnitude {mag} and above"
+    return where
+
+
 def usgs_count(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     r = ExtractResult()
     if not isinstance(payload, dict) or "count" not in payload:
@@ -287,13 +533,12 @@ def usgs_count(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
         return r
     c = _num(payload.get("count"))
     mx = _num(payload.get("maxAllowed"))
-    label = ctx.get("label", "the configured window")
     if c is None:
         r.problems.append("usgs_fdsn: count is not numeric")
         return r
-    r.add(ctx["topic"], f"usgs.events[{ctx.get('window','7d')}]", int(c), "events",
-          f"USGS counts {int(c)} earthquakes {label}.", path="count",
-          tags=["usgs", "geohazard"])
+    r.add(ctx["topic"], f"usgs.events[{_window_id(ctx)}]", int(c), "events",
+          f"USGS counts {int(c)} earthquakes {_window_phrase(ctx)}.", path="count",
+          tags=["usgs", "geohazard", _window_id(ctx)])
     if mx is not None:
         r.add(ctx["topic"], "usgs.maxAllowed", int(mx), "events",
               f"The USGS count endpoint caps its reply at {int(mx)} events.",
@@ -524,11 +769,22 @@ def worldbank(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     if v is None:
         r.problems.append("worldbank: latest value is not numeric")
         return r
-    ind = _str(latest.get("indicator", {}).get("value") if isinstance(latest.get("indicator"), dict) else "", 120)
-    r.add(ctx["topic"], f"worldbank[{ctx.get('indicator','?')}].latest", v, "units",
-          f"The World Bank reports {ind or ctx.get('indicator','the indicator')} at "
-          f"{v:,.0f} for {latest.get('date')}.", path="1[latest].value",
-          tags=["worldbank", "macro"])
+    ind_obj = latest.get("indicator") if isinstance(latest.get("indicator"), dict) else {}
+    ind = _str(ind_obj.get("value"), 120)
+    # The indicator id builds the field name.  It used to come from the task
+    # context only, so a read whose context did not carry it published the field
+    # ``worldbank[?].latest`` and the sentence "The World Bank reports GDP ... "
+    # under a placeholder.  9 rows in the ledger carry that (7 by cycle 14).  The payload names the
+    # indicator itself; use it, and refuse the fact if neither source names it.
+    code = _str(ind_obj.get("id"), 60) or _str(ctx.get("indicator"), 60)
+    if not code:
+        r.problems.append("worldbank: neither the payload's indicator.id nor the task "
+                          "context names the indicator; no fact was recorded rather "
+                          "than a field named after a placeholder")
+        return r
+    r.add(ctx["topic"], f"worldbank[{code}].latest", v, "units",
+          f"The World Bank reports {ind or code} at {v:,.0f} for {latest.get('date')}.",
+          path="1[latest].value", tags=["worldbank", "macro", code])
     return r
 
 
@@ -612,10 +868,28 @@ def bls(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     if v is None:
         r.problems.append("bls: latest value is not numeric")
         return r
-    r.add(ctx["topic"], f"bls[{ctx.get('series','?')}].latest", v, "index",
-          f"BLS reports series {ctx.get('series','?')} at {v} for "
-          f"{d0.get('periodName','?')} {d0.get('year','?')}.",
-          path="Results.series[0].data[0].value", tags=["bls", "macro"])
+    # The payload names the series (seriesID); the task context also does.  The
+    # field key and the sentence used the context alone, so a read without it
+    # published ``bls[?].latest`` and the sentence "BLS reports series ? at ..."
+    # — a literal placeholder in a published claim.  9 rows in the ledger carry it.
+    sid = _str(series.get("seriesID"), 40) or _str(ctx.get("series"), 40)
+    if not sid:
+        r.problems.append("bls: neither the payload's seriesID nor the task context "
+                          "names the series; no fact was recorded rather than a field "
+                          "named after a placeholder")
+        return r
+    # A missing period is described in words, never with a "?": the same class of
+    # defect as the placeholder field name, one field further along the sentence.
+    period = " ".join(x for x in (_str(d0.get("periodName"), 20),
+                                  _str(d0.get("year"), 8)) if x)
+    when = f"for {period}" if period else "for an unstated period"
+    r.add(ctx["topic"], f"bls[{sid}].latest", v, "index",
+          f"BLS reports series {sid} at {v} {when}.",
+          path="Results.series[0].data[0].value", tags=["bls", "macro", sid])
+    if not period:
+        r.problems.append("bls: the returned observation carries no periodName/year, "
+                          "so the figure is published without a period rather than "
+                          "with a placeholder")
     return r
 
 
@@ -644,13 +918,25 @@ def nominatim(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     if not isinstance(payload, list):
         r.problems.append("nominatim: payload is not a JSON array")
         return r
-    r.add(ctx["topic"], f"nominatim.results[{ctx.get('query','?')}]", len(payload), "results",
-          f"Nominatim returns {len(payload)} place result(s) for {ctx.get('query','the query')}.",
-          path="len(payload)", tags=["osm", "travel"])
+    # The place name is the whole content of the answer: three results for "Seoul"
+    # is a different fact from three results for "Paris".  It used to be read from
+    # the task context only, with a fallback sentence for when it was missing, so
+    # 9 rows in the ledger say "Nominatim returns 1 place result(s) for the query."
+    # with the field ``nominatim.results[?]``.  A read that cannot be attributed to
+    # a place is refused rather than published under a placeholder.
+    q = _str(ctx.get("query"), 120)
+    if not q:
+        r.problems.append("nominatim: the task did not record which place was asked "
+                          "for, so the result cannot be attributed; no fact was "
+                          "recorded")
+        return r
+    r.add(ctx["topic"], f"nominatim.results[{q}]", len(payload), "results",
+          f"Nominatim returns {len(payload)} place result(s) for “{q}”.",
+          path="len(payload)", tags=["osm", "travel", q])
     for i, p in enumerate(payload[:3]):
         r.add(ctx["topic"], f"nominatim[{i}].display", _str((p or {}).get("display_name"), 200),
-              "place", f"Nominatim resolves the query to “{_str((p or {}).get('display_name'),200)}”.",
-              path=f"[{i}].display_name", tags=["osm", "travel"])
+              "place", f"Nominatim resolves “{q}” to “{_str((p or {}).get('display_name'),200)}”.",
+              path=f"[{i}].display_name", tags=["osm", "travel", q])
     return r
 
 
@@ -678,6 +964,10 @@ def kalshi_markets(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     return r
 
 
+# The three league feeds below are undocumented public endpoints (IRR-009): no
+# operator contract, no versioning promise, no status page.  Every fact they produce
+# carries the tag ``undocumented`` so the claim itself says what it rests on, rather
+# than the site promising a marker that the claims do not have.
 def mlb_schedule(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     r = ExtractResult()
     dates = (payload or {}).get("dates") if isinstance(payload, dict) else None
@@ -689,7 +979,7 @@ def mlb_schedule(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
         day = _str((d or {}).get("date"), 20)
         r.add(ctx["topic"], f"mlb.games[{day}]", len(games), "games",
               f"MLB's StatsAPI lists {len(games)} game(s) on {day}.",
-              path=f"dates[{i}].games.length", tags=["mlb", "sports"])
+              path=f"dates[{i}].games.length", tags=["mlb", "sports", "undocumented"])
     return r
 
 
@@ -701,7 +991,7 @@ def nhl_scoreboard(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
         return r
     r.add(ctx["topic"], "nhl.games_today", len(games), "games",
           f"The NHL public scoreboard lists {len(games)} game(s) for the current date.",
-          path="len(games)", tags=["nhl", "sports"])
+          path="len(games)", tags=["nhl", "sports", "undocumented"])
     return r
 
 
@@ -713,13 +1003,15 @@ def nba_scoreboard(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
         return r
     r.add(ctx["topic"], "nba.games_today", len(games), "games",
           f"The NBA CDN scoreboard lists {len(games)} game(s) for the current date.",
-          path="scoreboard.games.length", tags=["nba", "sports"])
+          path="scoreboard.games.length", tags=["nba", "sports", "undocumented"])
     return r
 
 
 ADAPTERS: Dict[str, Callable[[Any, Dict[str, Any]], ExtractResult]] = {
     "github_search": gh_search,
     "github_repos": gh_repos,
+    "github_repo": gh_repo_detail,
+    "github_releases": gh_releases,
     "pypi_json": pypi_json,
     "npm_registry": npm_latest,
     "wikimedia_pageviews": wiki_pageviews,

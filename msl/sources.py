@@ -97,6 +97,36 @@ def _registry() -> List[Source]:
         docs_note=("Seed capture 2026-09-21 hashed into data/seed/owner_repos.json. "
                    "Status is set by the probe, not by this note."))
 
+    add(id="github_repo", name="GitHub Repos API — one repository",
+        operator="GitHub, Inc.",
+        docs_url="https://docs.github.com/en/rest/repos/repos#get-a-repository",
+        probe_url="https://api.github.com/repos/buffedlizard55-lab/MasterSelfLearn",
+        topics=["open-source-momentum", "owner-corpus", "market-lab-ecosystem"],
+        notes=("Per-repository read used by the deepening stage: it returns the "
+               "counts the Search API does not (open issues, watching users, "
+               "repository size, last push, primary language), so a tracked "
+               "repository gets its own moving series instead of only a star count. "
+               "It shares the field names github.repo[<name>].stars/.forks/.created "
+               "with github_search, so two endpoints of the same operator can be "
+               "compared on the same subject — see the contradiction rule in "
+               "msl/ideas.py."),
+        docs_note=("Registered 2026-09-22. One real capture is hashed into data/seed/ "
+                   "(browser-use/jev-ultrafast, 16,731 stars at capture time); status "
+                   "is set by the probe and by nothing else."))
+
+    add(id="github_releases", name="GitHub Releases API — newest release",
+        operator="GitHub, Inc.",
+        docs_url="https://docs.github.com/en/rest/releases/releases#list-releases",
+        probe_url="https://api.github.com/repos/buffedlizard55-lab/MasterSelfLearn/releases?per_page=1",
+        topics=["open-source-momentum", "owner-corpus"],
+        notes=("An empty array here is a fact, not a failure: it means the repository "
+               "publishes no release, which is recorded as a negative claim. That is "
+               "what lets the competition ask a question with a knowable answer — "
+               "will the tag be different one cycle from now?"),
+        docs_note=("Registered 2026-09-22. Two real captures are hashed into data/seed/: "
+                   "an empty list (browser-use/jev-ultrafast) and a release object "
+                   "(ollama/ollama, tag v0.34.3-rc1). Status is set by the probe."))
+
     add(id="pypi_json", name="PyPI JSON API",
         operator="Python Software Foundation",
         docs_url="https://docs.pypi.org/api/json/",
