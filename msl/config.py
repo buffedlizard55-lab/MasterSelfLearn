@@ -9,6 +9,7 @@ REPO_NAME = "MasterSelfLearn"
 SITE_URL = f"https://{REPO_OWNER}.github.io/{REPO_NAME}/"
 REPO_URL = f"https://github.com/{REPO_OWNER}/{REPO_NAME}"
 MASTER_SITE_URL = f"https://{REPO_OWNER}.github.io/MasterSite/"
+OWNER_TIMEZONE = "America/Los_Angeles"
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
@@ -29,10 +30,22 @@ CYCLE_CRON = "*/30 * * * *"
 CYCLE_INTERVAL_MINUTES = 30
 
 # --- network ---------------------------------------------------------------
-HTTP_TIMEOUT = int(os.environ.get("MSL_HTTP_TIMEOUT", "45"))
-HTTP_RETRIES = 3
+HTTP_TIMEOUT = int(os.environ.get("MSL_HTTP_TIMEOUT", "15"))
+HTTP_RETRIES = int(os.environ.get("MSL_HTTP_RETRIES", "2"))
 HTTP_BACKOFF_SECONDS = 2.0
 MAX_RESPONSE_BYTES = 8 * 1024 * 1024
+# Keep one half-hour scheduled cycle bounded even when many hosts black-hole
+# connections. Deferred tasks are counted and flagged rather than letting the
+# workflow be killed mid-write by its job timeout.
+CYCLE_COLLECTION_BUDGET_SECONDS = int(
+    os.environ.get("MSL_COLLECTION_BUDGET_SECONDS", "480"))
+# Operator-specific host pacing. This is applied centrally before *every* HTTP
+# attempt so probes, surveys, and retries cannot accidentally bypass it.
+HOST_MIN_INTERVAL_SECONDS = {
+    "export.arxiv.org": 3.0,            # arXiv API terms ask for a 3 s delay
+    "nominatim.openstreetmap.org": 1.0, # public Nominatim policy: max 1 req/s
+    "eutils.ncbi.nlm.nih.gov": 0.34,    # keyless NCBI ceiling: 3 req/s
+}
 
 # --- growth limits (keeps the library honest rather than merely large) -------
 MAX_NEW_TOPICS_PER_CYCLE = 6          # expansion is deliberate, not greedy

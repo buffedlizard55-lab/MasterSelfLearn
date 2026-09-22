@@ -432,7 +432,8 @@ class OtherAdapters(unittest.TestCase):
                                         "query_label": "cs.AI"})
         vals = {f.field: f.value for f in xr.facts}
         self.assertEqual(vals["arxiv.totalResults"], 12345)
-        self.assertEqual(vals["arxiv.entry[0].published"], "2026-09-20T00:00:00Z")
+        self.assertEqual(vals["arxiv.entry[2609.00001v1].published"],
+                         "2026-09-20T00:00:00Z")
 
     def test_arxiv_unparseable_body_is_a_problem_not_a_guess(self):
         xr = adapters.arxiv_atom(b"<not xml", {"topic": "ai-research-frontier"})
@@ -471,6 +472,87 @@ class OtherAdapters(unittest.TestCase):
         xr = adapters.stackexchange({"items": [], "quota_remaining": 3},
                                     {"topic": "open-source-momentum"})
         self.assertTrue(any("quota_remaining=3" in p for p in xr.problems))
+
+
+class CorrectedLiveShapes(unittest.TestCase):
+    def test_ecb_reads_root_jsondata_and_latest_numeric_observation(self):
+        payload = {
+            "dataSets": [{"series": {"0:0:0:0:0": {"observations": {
+                "9": [1.09], "10": [1.10]
+            }}}}],
+            "structure": {"dimensions": {"observation": [{
+                "id": "TIME_PERIOD",
+                "values": [{"id": f"2026-09-{i + 1:02d}"} for i in range(11)]
+            }]}}
+        }
+        result = adapters.ecb_sdmx(payload, {
+            "topic": "macro-signals", "flow": "EXR D.USD.EUR.SP00.A",
+            "label": "USD/EUR"
+        })
+        self.assertEqual(result.problems, [])
+        self.assertEqual(len(result.facts), 1)
+        self.assertEqual(result.facts[0].value, 1.10)
+        self.assertIn('dataSets[0].series["0:0:0:0:0"]', result.facts[0].path)
+        self.assertIn("2026-09-11", result.facts[0].statement)
+
+    def test_nhl_selects_games_by_the_focused_date(self):
+        payload = {
+            "focusedDate": "2026-09-22",
+            "gamesByDate": [
+                {"date": "2026-09-21", "games": [{}, {}]},
+                {"date": "2026-09-22", "games": [{}, {}, {}]},
+            ],
+        }
+        result = adapters.nhl_scoreboard(payload, {"topic": "sports-signals"})
+        self.assertEqual(result.problems, [])
+        self.assertEqual(result.facts[0].value, 3)
+        self.assertEqual(result.facts[0].field, "nhl.games_today")
+        self.assertIn("gamesByDate[1]", result.facts[0].path)
+
+    def test_nhl_refuses_a_missing_focused_group(self):
+        result = adapters.nhl_scoreboard(
+            {"focusedDate": "2026-09-22", "gamesByDate": []},
+            {"topic": "sports-signals"})
+        self.assertEqual(result.facts, [])
+        self.assertTrue(result.problems)
+
+    def test_clinical_trial_fields_use_nct_identity_not_array_position(self):
+        payload = {"totalCount": 1, "studies": [{"protocolSection": {
+            "identificationModule": {"nctId": "NCT123", "briefTitle": "Trial"},
+            "statusModule": {"overallStatus": "RECRUITING"},
+        }}]}
+        result = adapters.clinicaltrials(
+            payload, {"topic": "clinical-evidence", "query": "AI"})
+        fields = {fact.field for fact in result.facts}
+        self.assertIn("clinicaltrials.totalCount[AI]", fields)
+        self.assertIn("clinicaltrials.study[NCT123].status", fields)
+        study = next(f for f in result.facts if ".study[" in f.field)
+        self.assertEqual(study.entities, ["trial:nct123"])
+
+    def test_dynamic_result_fields_use_entity_ids(self):
+        hn = adapters.hn_top([42], {"topic": "public-attention"})
+        self.assertIn("hn.story[42].rank", {f.field for f in hn.facts})
+        hf = adapters.huggingface(
+            [{"modelId": "org/model", "downloads": 9}],
+            {"topic": "ai-research-frontier"})
+        self.assertIn("huggingface.model[org/model].downloads",
+                      {f.field for f in hf.facts})
+        stack = adapters.stackexchange(
+            {"items": [{"question_id": 99, "title": "Q", "score": 4}],
+             "quota_remaining": 100}, {"topic": "open-source-momentum"})
+        self.assertIn("stackexchange.q[99].score", {f.field for f in stack.facts})
+
+    def test_master_site_seed_decodes_all_audited_projects(self):
+        seed = json.loads((SEED / "master_site_catalog.json").read_text())
+        result = adapters.master_site_catalog(seed["projection"], {"topic": "source-health"})
+        records = [f for f in result.facts
+                   if f.field.startswith("mastersite.project[")]
+        self.assertEqual(result.problems, [])
+        self.assertEqual(len(records), 52)
+        self.assertTrue(all(isinstance(f.value, dict) for f in records))
+        self.assertTrue(all(f.value.get("verifiedBasis") for f in records))
+        self.assertTrue(all(f.entities and f.entities[0].startswith("project:")
+                            for f in records))
 
 
 if __name__ == "__main__":

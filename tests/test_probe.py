@@ -199,6 +199,24 @@ class ProbeStatusTransitions(unittest.TestCase):
         self.assertEqual((rep.ok, rep.failed, rep.inconclusive), (1, 1, 1))
         self.assertEqual(rep.attempted, 3)
 
+    def test_probe_caller_fault_and_local_cap_leave_health_unchanged(self):
+        src = REGISTRY[0]
+        for result, reason in (
+            (_http_error(code=404), "caller-request"),
+            (FetchResult(url="u", status=200, body=b"{}", attempts=1,
+                         truncated=True, error_kind="ResponseTooLarge",
+                         error="cap"), "local-response-cap"),
+        ):
+            src.status, src.consecutive_failures = "verified-live-read", 2
+            with mock.patch.object(probe_mod, "fetch", return_value=result):
+                rep = probe_mod.probe_registry(only=[src.id], verbose=False)
+            self.assertEqual(rep.inconclusive, 1)
+            self.assertEqual(rep.failed, 0)
+            self.assertFalse(rep.rows[0].verdict)
+            self.assertEqual(rep.rows[0].inconclusiveReason, reason)
+            self.assertEqual(src.status, "verified-live-read")
+            self.assertEqual(src.consecutive_failures, 2)
+
     def test_egress_blocked_is_detected_only_when_every_failure_is_egress(self):
         seq = iter([_egress_blocked("a"), _egress_blocked("b")])
         with mock.patch.object(probe_mod, "fetch", side_effect=lambda u, **k: next(seq)):
@@ -301,6 +319,19 @@ class ProbePersistence(unittest.TestCase):
                          "replay must restore the recorded count, not recount")
         self.assertEqual(src.last_read_at, rep.rows[0].checkedAt)
 
+    def test_targeted_probe_preserves_unselected_health_rows(self):
+        path = self.dir / "health.json"
+        path.write_text(json.dumps({"results": [
+            {"id": "arxiv", "ok": True, "verdict": True,
+             "statusAfter": "verified-live-read"}]}), encoding="utf-8")
+        with mock.patch.object(probe_mod, "fetch", side_effect=lambda u, **k: _ok(u)):
+            rep = probe_mod.probe_registry(only=["github_search"], verbose=False)
+        probe_mod.write_report(rep, path)
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual({r["id"] for r in doc["results"]},
+                         {"arxiv", "github_search"})
+        self.assertEqual(doc["lastWriteCounts"]["ok"], 1)
+
     def test_missing_ledger_applies_nothing_and_verifies_nothing(self):
         """The honest default: no recorded read means no verified source."""
         self.assertEqual(load_probe_results(self.dir / "absent.json"), 0)
@@ -371,10 +402,9 @@ class EntryPointEndToEnd(unittest.TestCase):
 
         self.assertEqual(rc, 0)
         payload = json.loads(self.health.read_text(encoding="utf-8"))
-        self.assertEqual(payload["ok"], 2)
-        self.assertEqual(payload["attempted"], 2)
-        self.assertEqual({r["id"] for r in payload["results"]},
-                         {"github_search", "pypi_json"})
+        self.assertEqual(payload["lastWriteCounts"]["ok"], 2)
+        self.assertTrue({"github_search", "pypi_json"}.issubset(
+            {r["id"] for r in payload["results"]}))
 
     def test_cli_probe_runs_end_to_end(self):
         from msl.cli import main as cli_main
@@ -384,7 +414,8 @@ class EntryPointEndToEnd(unittest.TestCase):
 
         self.assertEqual(rc, 0)
         payload = json.loads(self.health.read_text(encoding="utf-8"))
-        self.assertEqual(payload["ok"], 1)
+        self.assertEqual(payload["lastWriteCounts"]["ok"], 1)
+        self.assertIn("github_search", {r["id"] for r in payload["results"]})
 
     def test_cli_probe_goes_red_when_the_runner_has_no_egress(self):
         """The daily job must not report success for a probe that proved nothing."""
@@ -485,7 +516,8 @@ class RegistryHonesty(unittest.TestCase):
                          f"probe loop duplicated in {defs}")
 
     def test_source_dataclass_defaults_are_honest(self):
-        s = Source(id="x", name="x", operator="o", docs_url="d", probe_url="p")
+        s = Source(id="x", name="x", operator="o", docs_url="d", probe_url="p",
+                   trust_tier="test-fixture")
         self.assertEqual(s.status, "registered")
         self.assertEqual(s.live_reads, 0)
         self.assertEqual(s.last_read_at, "")

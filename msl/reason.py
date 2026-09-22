@@ -121,6 +121,15 @@ def derive(ledger: Ledger, cycle: int, now: str,
            seq: List[int]) -> ReasonResult:
     res = ReasonResult()
     ins_n = [0]
+    # One rule evaluation may encounter the same historical series many times
+    # (the old Federal Register loop emitted it once per observation). Keep an
+    # exact lineage signature so one arithmetic result can be appended at most
+    # once per cycle.
+    emitted: Dict[Tuple[str, str, Tuple[str, ...], str], Claim] = {}
+    existing: Dict[Tuple[str, str, Tuple[str, ...], str], Claim] = {
+        (claim.field, claim.formula, tuple(claim.computed_from), repr(claim.value)): claim
+        for claim in ledger.claims if claim.kind == KIND_DERIVED
+    }
 
     def insight(topic: str, kind: str, text: str, ids: List[str], importance: float) -> None:
         ins_n[0] += 1
@@ -131,12 +140,24 @@ def derive(ledger: Ledger, cycle: int, now: str,
     def emit(topic: str, statement: str, field_name: str, value: Any, unit: str,
              formula: str, computed_from: List[str], tags: List[str],
              importance: float = 0.0, kind: str = "trend") -> Optional[Claim]:
+        signature = (field_name, formula, tuple(computed_from), repr(value))
+        prior = emitted.get(signature)
+        if prior is not None:
+            return prior
+        prior = existing.get(signature)
+        if prior is not None:
+            emitted[signature] = prior
+            # The conclusion remains relevant to this cycle even though the
+            # append-only claim ledger does not need another identical row.
+            insight(topic, kind, statement, [prior.id], importance)
+            return prior
         seq[0] += 1
         c = ledger.try_accept(
             topic, KIND_DERIVED, statement, "derived", now, cycle,
             value=value, unit=unit, field=field_name, formula=formula,
             computed_from=computed_from, tags=tags)
         if c is not None:
+            emitted[signature] = c
             res.derived += 1
             insight(topic, kind, statement, [c.id], importance)
         return c
@@ -175,9 +196,11 @@ def derive(ledger: Ledger, cycle: int, now: str,
     for c in claims:
         if c.source_id == "derived":
             continue
-        for t in c.tags:
-            if "/" in t or t.startswith(("wiki:", "repo:")):
-                by_entity.setdefault(t, {}).setdefault(c.source_id, []).append(c)
+        entities = (c.subjects or
+                    [t for t in c.tags
+                     if "/" in t or t.startswith(("wiki:", "repo:"))])
+        for entity in entities:
+            by_entity.setdefault(entity, {}).setdefault(c.source_id, []).append(c)
     for ent, per_src in sorted(by_entity.items()):
         if len(per_src) < 2:
             continue
@@ -239,15 +262,19 @@ def derive(ledger: Ledger, cycle: int, now: str,
              "last.value - first.value", [a.id, b.id],
              ["delta", fld], importance=min(abs(d) / 10.0, 1.0), kind="growth")
 
-    for c in claims:
-        if not c.field.startswith("fedreg.documents[") or not isinstance(c.value, (int, float)):
-            continue
-        hist = [h for h in claims if h.field == c.field and isinstance(h.value, (int, float))]
+    fedreg_fields = sorted({
+        c.field for c in claims
+        if c.field.startswith("fedreg.documents[")
+        and isinstance(c.value, (int, float))
+    })
+    for field_name in fedreg_fields:
+        hist = [h for h in claims if h.field == field_name
+                and isinstance(h.value, (int, float))]
         if len(hist) < 2:
             continue
         a, b = hist[0], hist[-1]
         d = float(b.value) - float(a.value)
-        term = c.field[len("fedreg.documents["):-1]
+        term = field_name[len("fedreg.documents["):-1]
         if term in ("newest", "*", ""):
             continue
         emit(b.topic,
@@ -263,14 +290,15 @@ def derive(ledger: Ledger, cycle: int, now: str,
     for c in claims:
         if c.source_id == "derived":
             continue
-        for t in c.tags:
-            if "/" in t:
-                fams.setdefault(t, {}).setdefault(c.topic, 0)
-                fams[t][c.topic] += 1
+        entities = c.subjects or [t for t in c.tags if "/" in t]
+        for entity in entities:
+            fams.setdefault(entity, {}).setdefault(c.topic, 0)
+            fams[entity][c.topic] += 1
     for ent, per_fam in sorted(fams.items()):
         if len(per_fam) < 2:
             continue
-        ids = [next(c.id for c in reversed(claims) if ent in c.tags and c.topic == f)
+        ids = [next(c.id for c in reversed(claims)
+                    if ent in (c.subjects or c.tags) and c.topic == f)
                for f in sorted(per_fam)]
         emit(sorted(per_fam)[0],
              f"“{ent}” appears in {len(per_fam)} topic families "
@@ -294,13 +322,9 @@ def recheck_derived(ledger: Ledger, cycle: int, now: str) -> ReasonResult:
     """
     res = ReasonResult()
     by_id = {c.id: c for c in ledger.claims}
-    seen: set = set()
     for c in ledger.claims:
         if c.kind != KIND_DERIVED or not c.computed_from or not c.formula:
             continue
-        if c.fingerprint in seen:
-            continue
-        seen.add(c.fingerprint)
         inputs = [by_id[i] for i in c.computed_from if i in by_id]
         if len(inputs) != len(c.computed_from):
             res.drift.append({"claimId": c.id, "reason": "missing input claim",

@@ -12,9 +12,9 @@ import unittest
 from msl import config
 from tests.helpers import TmpDirCase, NOW1
 
-PAGES = ["index.html", "library.html", "leaderboard.html", "ideas.html",
-         "evidence.html", "sources.html", "irregularities.html", "cycles.html",
-         "methodology.html"]
+PAGES = ["index.html", "library.html", "projects.html", "leaderboard.html",
+         "ideas.html", "evidence.html", "sources.html", "irregularities.html",
+         "cycles.html", "methodology.html"]
 
 
 class StaticAssets(unittest.TestCase):
@@ -55,6 +55,17 @@ class StaticAssets(unittest.TestCase):
         js = (config.ROOT / "app.js").read_text()
         for banned in ("fetch(", "XMLHttpRequest", "localhost", "127.0.0.1"):
             self.assertNotIn(banned, js, f"app.js uses {banned}")
+
+    def test_claim_verifier_library_accounting_is_a_partition(self):
+        run = subprocess.run(["python3", "tools/verify_claims.py"],
+                             cwd=config.ROOT, text=True, capture_output=True)
+        self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
+        tracked = int(re.search(r"topics tracked\s+: (\d+)", run.stdout).group(1))
+        supported = int(re.search(
+            r"with >=1 accepted claim credit: (\d+)", run.stdout).group(1))
+        unsupported = int(re.search(
+            r"with 0 accepted claim credits\s+: (\d+)", run.stdout).group(1))
+        self.assertEqual(tracked, supported + unsupported)
 
 
 class GeneratedSiteData(TmpDirCase):
@@ -107,6 +118,28 @@ class GeneratedSiteData(TmpDirCase):
         self.assertTrue(self.data["keyedExcluded"])
         self.assertTrue(self.data["categoriesWithoutSource"])
 
+    def test_integrity_level_and_source_path_are_published(self):
+        for claim in self.data["evidence"]:
+            if claim["kind"] == "derived":
+                continue
+            self.assertTrue(claim["sourcePath"])
+            row = self.data["evidenceRows"][claim["evidenceIds"][0]]
+            self.assertIn(row["integrity"], ("wire", "projection", "missing"))
+            self.assertIn("finalUrl", row)
+            self.assertIn("contentType", row)
+
+    def test_master_site_catalog_is_evidence_gated_and_complete(self):
+        self.assertEqual(self.data["projectCatalog"]["count"], 52)
+        self.assertEqual(len(self.data["projects"]), 52)
+        for project in self.data["projects"]:
+            self.assertTrue(project["claimId"].startswith("C"))
+            self.assertTrue(project["sourceUrl"].startswith("https://api.github.com/"))
+            self.assertTrue(project["verifiedBasis"])
+
+    def test_every_source_exposes_its_provenance_tier(self):
+        self.assertTrue(self.data["sources"])
+        self.assertTrue(all(source.get("trustTier") for source in self.data["sources"]))
+
     def test_the_leaderboard_states_its_qualification_rule(self):
         q = self.data["leaderboard"]["qualification"]
         self.assertEqual(q["minScoredForecasts"], config.MIN_SCORED_FORECASTS_TO_RANK)
@@ -143,7 +176,7 @@ class GeneratedDocs(TmpDirCase):
         r = self._readme()
         block = r.split("AUTO:COUNTS:BEGIN", 1)[1].split("AUTO:COUNTS:END", 1)[0]
         claims = [l for l in (self.dir / "claims.jsonl").read_text().splitlines() if l.strip()]
-        m = re.search(r"\| Verified claims in the ledger \| \*\*([\d,]+)\*\*", block)
+        m = re.search(r"\| Accepted claims in the ledger \| \*\*([\d,]+)\*\*", block)
         self.assertIsNotNone(m, "the counts table has no claim total")
         self.assertEqual(int(m.group(1).replace(",", "")), len(claims))
 
@@ -155,6 +188,13 @@ class GeneratedDocs(TmpDirCase):
         from msl.sources import REGISTRY
         for s in REGISTRY:
             self.assertIn(f"`{s.id}`", v, f"{s.id} is missing from the audit ledger")
+
+    def test_verification_library_accounting_cannot_go_negative(self):
+        v = (self.dir / "VERIFICATION.md").read_text()
+        tracked = int(re.search(r"Topics tracked \| ([\d,]+)", v).group(1).replace(",", ""))
+        supported = int(re.search(r"Topics with ≥1 accepted claim credit \| ([\d,]+)", v).group(1).replace(",", ""))
+        unsupported = int(re.search(r"Topics with 0 accepted claim credits \| ([\d,]+)", v).group(1).replace(",", ""))
+        self.assertEqual(tracked, supported + unsupported)
 
     def test_irregularities_doc_groups_by_severity(self):
         i = (self.dir / "IRREGULARITIES.md").read_text()
@@ -174,7 +214,7 @@ class RenderCheck(unittest.TestCase):
     """Every page must actually DRAW, not merely parse.
 
     app.js has twice shipped with a bracket bug that node --check caught but no
-    test did, and the result would have been nine blank pages.  This runs the
+    test did, and the result would have been ten blank pages. This runs the
     headless DOM render over every .html file in the repo and fails if a page is
     blank or throws.
     """
@@ -189,7 +229,7 @@ class RenderCheck(unittest.TestCase):
                          "a page did not render:\n" + r.stdout + r.stderr)
         self.assertIn("RENDER CHECK PASSED", r.stdout)
 
-    def test_the_nine_pages_on_disk_are_the_nine_routes_in_app_js(self):
+    def test_every_page_on_disk_has_exactly_one_route_in_app_js(self):
         js = (config.ROOT / "app.js").read_text(encoding="utf-8")
         on_disk = {p.name for p in config.ROOT.glob("*.html")}
         routed = set(re.findall(r'"([a-z]+\.html)": page', js))
@@ -307,7 +347,7 @@ class SourceHealthSurface(TmpDirCase):
         app = (config.ROOT / "app.js").read_text(encoding="utf-8")
         self.assertIn("D.sourceHealth", app,
                       "app.js never reads the probe ledger it is given")
-        self.assertIn("no verdict — egress", app,
+        self.assertIn("runner-egress", app,
                       "the egress caveat is not rendered anywhere")
 
 

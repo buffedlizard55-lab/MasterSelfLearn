@@ -7,6 +7,9 @@ lives in :mod:`msl.reason` where it can be rechecked.
 """
 from __future__ import annotations
 
+import base64
+import hashlib
+import json
 import re
 import xml.etree.ElementTree as ET
 import dataclasses
@@ -326,6 +329,81 @@ def gh_releases(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     return r
 
 
+def master_site_catalog(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
+    """Decode MasterSite's audited catalog from GitHub's Contents API envelope."""
+    r = ExtractResult()
+    if not isinstance(payload, dict):
+        r.problems.append("master_site_catalog: payload is not a JSON object")
+        return r
+    encoded = payload.get("content")
+    if payload.get("encoding") != "base64" or not isinstance(encoded, str):
+        r.problems.append("master_site_catalog: expected base64 GitHub content")
+        return r
+    try:
+        raw_script = base64.b64decode(encoded, validate=False)
+        script = raw_script.decode("utf-8")
+    except (ValueError, UnicodeDecodeError) as e:
+        r.problems.append(f"master_site_catalog: content decode failed: {e}")
+        return r
+    declared_blob = _str(payload.get("sha"), 64)
+    computed_blob = hashlib.sha1(
+        f"blob {len(raw_script)}\0".encode("ascii") + raw_script).hexdigest()
+    if not declared_blob or declared_blob != computed_blob:
+        r.problems.append(
+            "master_site_catalog: decoded content does not match GitHub's blob sha")
+        return r
+    match = re.search(r"window\.MASTERDATA\s*=\s*(\{.*\})\s*;?\s*$", script, re.S)
+    if not match:
+        r.problems.append("master_site_catalog: window.MASTERDATA assignment missing")
+        return r
+    try:
+        catalog = json.loads(match.group(1))
+    except json.JSONDecodeError as e:
+        r.problems.append(f"master_site_catalog: embedded JSON is invalid: {e}")
+        return r
+    sites = catalog.get("sites") if isinstance(catalog, dict) else None
+    if not isinstance(sites, list):
+        r.problems.append("master_site_catalog: MASTERDATA.sites is not a list")
+        return r
+    generated = _str(catalog.get("generated"), 30)
+    r.add("owner-corpus", "mastersite.projects.count", len(sites), "projects",
+          f"MasterSite's audited catalog lists {len(sites)} published projects"
+          + (f" as of {generated}." if generated else "."),
+          path="content(base64).MASTERDATA.sites (length)",
+          tags=["master-site", "owner-corpus"])
+    keep = ("repo", "title", "category", "kind", "description", "created",
+            "lastCommit", "lastCommitSha", "pushedAt", "updatedAt", "commits",
+            "pagesStatus", "pagesSource", "pagesUrl", "defaultBranch", "sizeKb",
+            "flags", "lastVerified", "verifiedBasis", "verifiedAtSha", "headSha",
+            "proseStale")
+    for i, item in enumerate(sites):
+        if not isinstance(item, dict):
+            r.problems.append(f"master_site_catalog: sites[{i}] is not an object")
+            continue
+        repo = _str(item.get("repo"), 120)
+        title = _str(item.get("title"), 180)
+        category = _str(item.get("category"), 100)
+        page = _str(item.get("pagesUrl"), 300)
+        if not repo or not title or not category or not page:
+            r.problems.append(
+                f"master_site_catalog: sites[{i}] lacks repo/title/category/pagesUrl; skipped")
+            continue
+        record = {k: item.get(k) for k in keep}
+        record["catalogGeneratedAt"] = generated
+        slug = "project:" + repo.lower()
+        status = _str(item.get("pagesStatus"), 40) or "unreported"
+        r.add("owner-corpus", f"mastersite.project[{repo.lower()}].record", record,
+              "project record",
+              f"MasterSite catalogs {title} in {category}; its recorded Pages status "
+              f"is {status}.",
+              path=f"content(base64).MASTERDATA.sites[{i}]",
+              tags=["master-site", "owner-corpus", repo, category],
+              entities=[slug])
+        weight = _num(item.get("commits")) or 1.0
+        r.ent(slug, title, float(weight), page)
+    return r
+
+
 def pypi_json(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     r = ExtractResult()
     info = (payload or {}).get("info") if isinstance(payload, dict) else None
@@ -399,9 +477,14 @@ def hn_top(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
         n = _num(sid)
         if n is None:
             continue
-        r.add(ctx["topic"], f"hn.top[{i}].id", int(n), "story id",
-              f"Story id {int(n)} is at rank {i + 1} on Hacker News.",
-              path=f"[{i}]", tags=["hn", "attention"])
+        story_id = str(int(n))
+        slug = "hn-story:" + story_id
+        r.add(ctx["topic"], f"hn.story[{story_id}].rank", i + 1, "rank",
+              f"Story id {story_id} is at rank {i + 1} on Hacker News.",
+              path=f"[{i}]", tags=["hn", "attention", story_id],
+              entities=[slug])
+        r.ent(slug, f"Hacker News story {story_id}", float(10 - i),
+              f"https://news.ycombinator.com/item?id={story_id}")
     return r
 
 
@@ -462,11 +545,11 @@ def federal_register(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
                         for a in agencies if a]
         doc_slug = "frdoc:" + num
         ents = [doc_slug] + agency_slugs
-        r.add(ctx["topic"], f"fedreg.doc[{i}].published", pub, "date",
+        r.add(ctx["topic"], f"fedreg.doc[{num}].published", pub, "date",
               f"Federal Register document {num} (“{title}”) was published {pub}.",
               path=f"results[{i}].publication_date",
               tags=["federal-register", "regulatory", num], entities=ents)
-        r.add(ctx["topic"], f"fedreg.doc[{i}].agency", agencies[0] if agencies else "",
+        r.add(ctx["topic"], f"fedreg.doc[{num}].agency", agencies[0] if agencies else "",
               "agency",
               f"Document {num} was issued by {agencies[0] if agencies else 'an unnamed agency'}.",
               path=f"results[{i}].agencies[0].name",
@@ -575,13 +658,18 @@ def arxiv_atom(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
         title = _str((e.findtext(f"{ATOM}title") or "").strip(), 220)
         pub = _str(e.findtext(f"{ATOM}published"), 30)
         aid = _str(e.findtext(f"{ATOM}id"), 160)
-        if not title:
+        if not title or not aid:
+            if title and not aid:
+                r.problems.append(
+                    f"arxiv: entry[{i}] has a title but no stable id; item skipped")
             continue
-        r.add(ctx["topic"], f"arxiv.entry[{i}].published", pub, "iso8601",
+        paper_id = aid.rstrip("/").rsplit("/", 1)[-1]
+        slug = "paper:arxiv:" + paper_id.lower()
+        r.add(ctx["topic"], f"arxiv.entry[{paper_id}].published", pub, "iso8601",
               f"arXiv lists “{title}” published {pub}.",
-              path=f"entry[{i}].published", tags=["arxiv", "research"])
-        slug = "paper:" + re.sub(r"[^a-z0-9]+", "-", title.lower())[:70].strip("-")
-        r.ent(slug, title, 1.5, aid or "https://arxiv.org/")
+              path=f"entry[{i}].published", tags=["arxiv", "research", paper_id],
+              entities=[slug])
+        r.ent(slug, title, 1.5, aid)
     return r
 
 
@@ -608,10 +696,13 @@ def clinicaltrials(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
         r.problems.append("clinicaltrials: payload is not a JSON object")
         return r
     total = _num(payload.get("totalCount"))
+    query = _str(ctx.get("query"), 120)
+    query_key = query or "all"
     if total is not None:
-        r.add(ctx["topic"], "clinicaltrials.totalCount", int(total), "studies",
-              f"ClinicalTrials.gov returns {int(total):,} studies for the configured query.",
-              path="totalCount", tags=["clinicaltrials", "clinical"])
+        scope = f" matching “{query}”" if query else " in total"
+        r.add(ctx["topic"], f"clinicaltrials.totalCount[{query_key}]", int(total),
+              "studies", f"ClinicalTrials.gov returns {int(total):,} studies{scope}.",
+              path="totalCount", tags=["clinicaltrials", "clinical", query_key])
     studies = payload.get("studies")
     if not isinstance(studies, list):
         r.problems.append("clinicaltrials: studies is not a list")
@@ -624,11 +715,14 @@ def clinicaltrials(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
         if not nct:
             continue
         status = _str(((proto.get("statusModule") or {}).get("overallStatus")), 60)
-        r.add(ctx["topic"], f"clinicaltrials.study[{i}].status", status, "status",
-              f"ClinicalTrials.gov study {nct} (“{title}”) is {status or 'of unreported status'}.",
+        trial_slug = "trial:" + nct.lower()
+        r.add(ctx["topic"], f"clinicaltrials.study[{nct}].status", status, "status",
+              f"ClinicalTrials.gov study {nct} (“{title}”) is "
+              f"{status or 'of unreported status'}.",
               path=f"studies[{i}].protocolSection.statusModule.overallStatus",
-              tags=["clinicaltrials", "clinical"])
-        r.ent("trial:" + nct.lower(), title or nct, 1.5, f"https://clinicaltrials.gov/study/{nct}")
+              tags=["clinicaltrials", "clinical", nct], entities=[trial_slug])
+        r.ent(trial_slug, title or nct, 1.5,
+              f"https://clinicaltrials.gov/study/{nct}")
     return r
 
 
@@ -646,13 +740,19 @@ def openalex(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     for i, w in enumerate((payload or {}).get("results") or []):
         title = _str((w or {}).get("title"), 200)
         date = _str((w or {}).get("publication_date"), 20)
-        if not title:
+        wid_url = _str((w or {}).get("id"), 200)
+        wid = wid_url.rstrip("/").rsplit("/", 1)[-1]
+        if not title or not wid:
+            if title:
+                r.problems.append(
+                    f"openalex: results[{i}] has no stable work id; item skipped")
             continue
-        r.add(ctx["topic"], f"openalex.work[{i}].date", date, "date",
+        slug = "work:openalex:" + wid.lower()
+        r.add(ctx["topic"], f"openalex.work[{wid}].date", date, "date",
               f"OpenAlex lists “{title}” with publication date {date}.",
-              path=f"results[{i}].publication_date", tags=["openalex", "research"])
-        r.ent("work:" + re.sub(r"[^a-z0-9]+", "-", title.lower())[:70].strip("-"),
-              title, 1.2, _str((w or {}).get("id"), 200) or "https://openalex.org/")
+              path=f"results[{i}].publication_date",
+              tags=["openalex", "research", wid], entities=[slug])
+        r.ent(slug, title, 1.2, wid_url)
     return r
 
 
@@ -701,11 +801,21 @@ def stackexchange(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     for i, q in enumerate(items[:10]):
         title = _str((q or {}).get("title"), 200)
         score = _num((q or {}).get("score"))
-        if not title:
+        qid_num = _num((q or {}).get("question_id"))
+        if not title or score is None or qid_num is None:
+            if title:
+                r.problems.append(
+                    f"stackexchange: items[{i}] lacks score or question_id; item skipped")
             continue
-        r.add(ctx["topic"], f"stackexchange.q[{i}].score", int(score or 0), "score",
-              f"Stack Overflow question “{title}” scores {int(score or 0)}.",
-              path=f"items[{i}].score", tags=["stackexchange"])
+        qid = str(int(qid_num))
+        slug = "stackoverflow-question:" + qid
+        r.add(ctx["topic"], f"stackexchange.q[{qid}].score", int(score), "score",
+              f"Stack Overflow question {qid}, “{title}”, scores {int(score)}.",
+              path=f"items[{i}].score", tags=["stackexchange", qid],
+              entities=[slug])
+        r.ent(slug, title, float(max(1, score)),
+              _str((q or {}).get("link"), 300) or
+              f"https://stackoverflow.com/questions/{qid}")
     return r
 
 
@@ -722,11 +832,15 @@ def huggingface(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
         dl = _num((m or {}).get("downloads"))
         if not mid:
             continue
+        slug = "model:" + mid.lower()
         if dl is not None:
-            r.add(ctx["topic"], f"huggingface.model[{i}].downloads", int(dl), "downloads/30d",
+            r.add(ctx["topic"], f"huggingface.model[{mid}].downloads", int(dl),
+                  "downloads/30d",
                   f"Hub model {mid} records {int(dl):,} downloads in the last 30 days.",
-                  path=f"[{i}].downloads", tags=["huggingface", "research"])
-        r.ent("model:" + mid.lower(), mid, float(dl or 1) / 1000.0, f"https://huggingface.co/{mid}")
+                  path=f"[{i}].downloads", tags=["huggingface", "research", mid],
+                  entities=[slug])
+        r.ent(slug, mid, float(dl or 1) / 1000.0,
+              f"https://huggingface.co/{mid}")
     return r
 
 
@@ -743,15 +857,24 @@ def nws_alerts(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
           f"The National Weather Service lists {len(feats)} active alerts for "
           f"{ctx.get('area','the configured area')}.", path="len(features)",
           tags=["nws", "sf-local"])
-    for i, f in enumerate(feats[:10]):
-        props = (f or {}).get("properties") or {}
+    for i, feature in enumerate(feats[:10]):
+        props = (feature or {}).get("properties") or {}
         ev = _str(props.get("event"), 90)
         sev = _str(props.get("severity"), 40)
-        if not ev:
+        alert_url = _str((feature or {}).get("id") or props.get("id"), 300)
+        alert_id = alert_url.rstrip("/").rsplit("/", 1)[-1]
+        if not ev or not alert_id:
+            if ev:
+                r.problems.append(
+                    f"nws_alerts: features[{i}] has no stable alert id; item skipped")
             continue
-        r.add(ctx["topic"], f"nws.alert[{i}].event", ev, "event",
-              f"Active NWS alert #{i + 1}: {ev} (severity {sev or 'unreported'}).",
-              path=f"features[{i}].properties.event", tags=["nws", "sf-local"])
+        slug = "nws-alert:" + alert_id.lower()
+        r.add(ctx["topic"], f"nws.alert[{alert_id}].event", ev, "event",
+              f"Active NWS alert {alert_id}: {ev} "
+              f"(severity {sev or 'unreported'}).",
+              path=f"features[{i}].properties.event",
+              tags=["nws", "sf-local", alert_id], entities=[slug])
+        r.ent(slug, ev, 1.0, alert_url)
     return r
 
 
@@ -789,29 +912,76 @@ def worldbank(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
 
 
 def ecb_sdmx(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
+    """Project the latest observation from ECB's JSON-data SDMX response.
+
+    The live endpoint's ``dataSets`` and ``structure`` members are at the root.
+    Older seed captures wrapped that object in ``data``; accepting that wrapper is
+    useful for historical replay, but every emitted source path records which
+    shape was actually read.
+    """
     r = ExtractResult()
+    if not isinstance(payload, dict):
+        r.problems.append("ecb_sdmx: payload is not a JSON object")
+        return r
+    root = payload.get("data") if isinstance(payload.get("data"), dict) else payload
+    prefix = "data." if root is not payload else ""
     try:
-        ds = payload["data"]["dataSets"][0]
-        series = ds.get("series") or {}
-        obs = {}
-        for s in series.values():
-            obs.update(s.get("observations") or {})
-        if not obs:
-            obs = ds.get("observations") or {}
-        if not obs:
+        datasets = root.get("dataSets")
+        if not isinstance(datasets, list) or not datasets or not isinstance(datasets[0], dict):
+            raise KeyError("dataSets[0]")
+        series = datasets[0].get("series") or {}
+        candidates = []
+        if isinstance(series, dict):
+            for series_key, series_row in series.items():
+                observations = ((series_row or {}).get("observations")
+                                if isinstance(series_row, dict) else None)
+                if not isinstance(observations, dict):
+                    continue
+                for observation_key, values in observations.items():
+                    try:
+                        order = int(observation_key)
+                    except (TypeError, ValueError):
+                        continue
+                    candidates.append((order, str(series_key), str(observation_key), values))
+        # Some valid SDMX JSON encodings put observations directly on the data set.
+        direct = datasets[0].get("observations") or {}
+        if isinstance(direct, dict):
+            for observation_key, values in direct.items():
+                try:
+                    order = int(observation_key)
+                except (TypeError, ValueError):
+                    continue
+                candidates.append((order, "", str(observation_key), values))
+        if not candidates:
             r.problems.append("ecb_sdmx: no observations in dataSets[0]")
             return r
-        key = sorted(obs.keys())[-1]
-        vals = obs[key]
-        v = _num(vals[0]) if isinstance(vals, list) and vals else None
-        if v is None:
-            r.problems.append("ecb_sdmx: observation value is not numeric")
+        order, series_key, observation_key, values = max(candidates, key=lambda x: x[0])
+        value = _num(values[0]) if isinstance(values, list) and values else None
+        if value is None:
+            r.problems.append("ecb_sdmx: latest observation value is not numeric")
             return r
-        r.add(ctx["topic"], f"ecb[{ctx.get('flow','EXR')}].latest", v, "rate",
-              f"The ECB publishes {ctx.get('label','the configured exchange-rate series')} at {v}.",
-              path=f"data.dataSets[0].observations[{key}][0]", tags=["ecb", "macro"])
+
+        date = ""
+        dims = ((root.get("structure") or {}).get("dimensions") or {}).get("observation") or []
+        for dim in dims if isinstance(dims, list) else []:
+            if isinstance(dim, dict) and dim.get("id") == "TIME_PERIOD":
+                vals = dim.get("values") or []
+                if order < len(vals) and isinstance(vals[order], dict):
+                    date = _str(vals[order].get("id") or vals[order].get("name"), 30)
+                break
+        flow = _str(ctx.get("flow"), 100) or "EXR"
+        if series_key:
+            path = (f'{prefix}dataSets[0].series["{series_key}"].'
+                    f'observations["{observation_key}"][0]')
+        else:
+            path = f'{prefix}dataSets[0].observations["{observation_key}"][0]'
+        when = f" for {date}" if date else ""
+        r.add(ctx["topic"], f"ecb[{flow}].latest", value, "rate",
+              f"The ECB publishes {ctx.get('label','the configured exchange-rate series')} "
+              f"at {value}{when}.", path=path, tags=["ecb", "macro"])
     except (KeyError, IndexError, TypeError) as e:
-        r.problems.append(f"ecb_sdmx: unexpected jsondata shape ({type(e).__name__}: {e})")
+        r.problems.append(
+            f"ecb_sdmx: unexpected jsondata shape ({type(e).__name__}: {e})")
     return r
 
 
@@ -845,9 +1015,21 @@ def census_acs(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
         v = _num(row[1])
         if v is None:
             continue
-        r.add(ctx["topic"], f"census.row[{i}].value", int(v), "count",
-              f"U.S. Census ACS reports {header[1] if len(header) > 1 else 'the variable'} "
-              f"= {int(v):,} for {row[0]}.", path=f"[{i+1}][1]", tags=["census", "sf-local"])
+        variable = _str(header[1], 80) if len(header) > 1 else "unknown-variable"
+        geo_kind = _str(header[-1], 40) if header else "geography"
+        geo_code = _str(row[-1], 40) if row else ""
+        if not geo_code:
+            r.problems.append(
+                f"census_acs: row {i + 1} has no geography identity; row skipped")
+            continue
+        geo = f"{geo_kind}:{geo_code}"
+        slug = "census-geography:" + geo.lower()
+        r.add(ctx["topic"], f"census[{geo}].{variable}", int(v), "count",
+              f"U.S. Census ACS reports {variable} = {int(v):,} for {row[0]}.",
+              path=f"[{i+1}][1]", tags=["census", "sf-local", geo],
+              entities=[slug])
+        r.ent(slug, _str(row[0], 120) or geo, 1.0,
+              "https://data.census.gov/")
     return r
 
 
@@ -933,10 +1115,20 @@ def nominatim(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
     r.add(ctx["topic"], f"nominatim.results[{q}]", len(payload), "results",
           f"Nominatim returns {len(payload)} place result(s) for “{q}”.",
           path="len(payload)", tags=["osm", "travel", q])
-    for i, p in enumerate(payload[:3]):
-        r.add(ctx["topic"], f"nominatim[{i}].display", _str((p or {}).get("display_name"), 200),
-              "place", f"Nominatim resolves “{q}” to “{_str((p or {}).get('display_name'),200)}”.",
-              path=f"[{i}].display_name", tags=["osm", "travel", q])
+    for i, place in enumerate(payload[:3]):
+        display = _str((place or {}).get("display_name"), 200)
+        place_id = _str((place or {}).get("place_id"), 60)
+        if not display or not place_id:
+            r.problems.append(
+                f"nominatim: result [{i}] lacks display_name or place_id; item skipped")
+            continue
+        slug = "osm-place:" + place_id
+        r.add(ctx["topic"], f"nominatim[{place_id}].display", display,
+              "place", f"Nominatim resolves “{q}” to “{display}”.",
+              path=f"[{i}].display_name", tags=["osm", "travel", q, place_id],
+              entities=[slug])
+        r.ent(slug, display, 1.0,
+              f"https://www.openstreetmap.org/search?query={q}")
     return r
 
 
@@ -984,14 +1176,39 @@ def mlb_schedule(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
 
 
 def nhl_scoreboard(payload: Any, ctx: Dict[str, Any]) -> ExtractResult:
+    """Read the group identified by ``focusedDate`` from NHL's scoreboard."""
     r = ExtractResult()
-    games = (payload or {}).get("games") if isinstance(payload, dict) else None
+    if not isinstance(payload, dict):
+        r.problems.append("nhl_web: payload is not a JSON object")
+        return r
+    focused = _str(payload.get("focusedDate"), 20)
+    groups = payload.get("gamesByDate")
+    if not focused:
+        r.problems.append("nhl_web: focusedDate is missing")
+        return r
+    if not isinstance(groups, list):
+        r.problems.append("nhl_web: gamesByDate is not a list")
+        return r
+    match = None
+    match_index = -1
+    for i, group in enumerate(groups):
+        if isinstance(group, dict) and _str(group.get("date"), 20) == focused:
+            match, match_index = group, i
+            break
+    if match is None:
+        r.problems.append(
+            f"nhl_web: no gamesByDate group matches focusedDate={focused!r}")
+        return r
+    games = match.get("games")
     if not isinstance(games, list):
-        r.problems.append("nhl_web: games is not a list")
+        r.problems.append(
+            f"nhl_web: gamesByDate[{match_index}].games is not a list")
         return r
     r.add(ctx["topic"], "nhl.games_today", len(games), "games",
-          f"The NHL public scoreboard lists {len(games)} game(s) for the current date.",
-          path="len(games)", tags=["nhl", "sports", "undocumented"])
+          f"The NHL public scoreboard lists {len(games)} game(s) for its "
+          f"focused date, {focused}.",
+          path=f"gamesByDate[{match_index}].games (length)",
+          tags=["nhl", "sports", "undocumented"])
     return r
 
 
@@ -1012,6 +1229,7 @@ ADAPTERS: Dict[str, Callable[[Any, Dict[str, Any]], ExtractResult]] = {
     "github_repos": gh_repos,
     "github_repo": gh_repo_detail,
     "github_releases": gh_releases,
+    "master_site_catalog": master_site_catalog,
     "pypi_json": pypi_json,
     "npm_registry": npm_latest,
     "wikimedia_pageviews": wiki_pageviews,

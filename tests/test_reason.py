@@ -149,7 +149,45 @@ class Derivation(TmpDirCase):
         self.assertEqual(corr[0].value, 2)
 
 
+    def test_federal_register_delta_is_emitted_once_per_field(self):
+        ledger = Ledger(self.dir)
+        evidence = ev(ledger, source_id="federal_register")
+        for cycle, value in ((1, 10), (2, 11), (3, 12), (4, 13)):
+            ledger.accept("regulatory-flow", KIND_CAPTURED, "count",
+                          "federal_register", NOW1, cycle, value=value,
+                          evidence=[evidence.id],
+                          field="fedreg.documents[artificial intelligence]",
+                          tags=["federal-register", "artificial intelligence"])
+        result = derive(ledger, 5, NOW2, [0])
+        deltas = [c for c in ledger.claims
+                  if c.field == "delta[fedreg:artificial intelligence]"]
+        self.assertEqual(len(deltas), 1)
+        self.assertEqual(result.derived, 1)
+        repeated = derive(ledger, 6, NOW2, [100])
+        self.assertEqual(len([c for c in ledger.claims
+                              if c.field == "delta[fedreg:artificial intelligence]"]), 1)
+        self.assertEqual(repeated.derived, 0)
+        self.assertEqual(len(repeated.insights), 1)
+
+
+
 class Recheck(TmpDirCase):
+    def test_every_derived_row_is_rechecked_even_when_fingerprints_match(self):
+        ledger = Ledger(self.dir)
+        evidence = ev(ledger)
+        a = ledger.accept("t", KIND_CAPTURED, "a", "github_search", NOW1, 1,
+                          value=1, evidence=[evidence.id], field="a")
+        b = ledger.accept("t", KIND_CAPTURED, "b", "github_search", NOW1, 1,
+                          value=3, evidence=[evidence.id], field="b")
+        for _ in range(2):
+            ledger.accept("t", KIND_DERIVED, "delta", "derived", NOW2, 2,
+                          value=2.0, field="delta[x]",
+                          formula="last.value - first.value",
+                          computed_from=[a.id, b.id])
+        result = recheck_derived(ledger, 3, NOW2)
+        self.assertEqual(result.rechecks, 2)
+        self.assertEqual(result.drift, [])
+
     def test_recheck_passes_when_inputs_are_unchanged(self):
         l = Ledger(self.dir)
         e = ev(l, source_id="wikimedia_pageviews")

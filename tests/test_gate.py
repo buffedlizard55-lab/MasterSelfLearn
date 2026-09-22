@@ -140,11 +140,94 @@ class LedgerPersistence(TmpDirCase):
         first = l.accept("t", KIND_CAPTURED, "a", "s", "2026-01-01T00:00:00Z", 1,
                          value=1, evidence=[e.id], field="f")
         again = Ledger(self.dir)
-        e2 = again.add_evidence("s", "https://example.test/2", "2026-01-01T00:00:00Z",
-                                200, body=b"{}")
+        e2 = again.add_evidence(
+            "s", "https://example.test/2", "2026-01-01T00:00:00Z",
+            200, body=b"{}", capture_mode="test-fixture")
         second = again.accept("t", KIND_CAPTURED, "b", "s", "2026-01-01T00:00:00Z", 1,
                               value=2, evidence=[e2.id], field="g")
         self.assertNotEqual(first.id, second.id)
+
+
+class StrictTraceContract(TmpDirCase):
+    URL = "https://official.example/data"
+
+    def evidence(self, ledger, **kw):
+        options = dict(source_id="official", url=self.URL,
+                       captured_at="2026-09-22T00:00:00Z", status=200,
+                       body=b'{"value":7}', final_url=self.URL,
+                       content_type="application/json")
+        options.update(kw)
+        return ledger.add_evidence(**options)
+
+    def claim(self, ledger, evidence, **kw):
+        options = dict(topic="t", kind=KIND_CAPTURED, statement="value is seven",
+                       source_id="official", retrieved_at="2026-09-22T00:00:00Z",
+                       cycle=19, value=7, field="metric[subject]",
+                       source_path="value", evidence=[evidence.id], url=self.URL)
+        options.update(kw)
+        return ledger.accept(**options)
+
+    def test_complete_matching_read_is_accepted_with_trace_fields(self):
+        ledger = Ledger(self.dir)
+        claim = self.claim(ledger, self.evidence(ledger), subjects=["entity:x"])
+        self.assertEqual(claim.source_path, "value")
+        self.assertEqual(claim.subjects, ["entity:x"])
+        self.assertEqual(claim.schema_version, 2)
+
+    def test_source_path_and_stable_field_are_mandatory(self):
+        for missing in ("field", "source_path", "url"):
+            ledger = Ledger(self.dir / missing)
+            evidence = self.evidence(ledger)
+            with self.assertRaises(RejectedClaim):
+                self.claim(ledger, evidence, **{missing: ""})
+
+    def test_source_and_url_must_match_the_evidence(self):
+        ledger = Ledger(self.dir)
+        evidence = self.evidence(ledger)
+        with self.assertRaisesRegex(RejectedClaim, "belongs to"):
+            self.claim(ledger, evidence, source_id="different")
+        with self.assertRaisesRegex(RejectedClaim, "URL does not match"):
+            self.claim(ledger, evidence, url="https://other.example/data")
+
+    def test_original_or_recorded_final_url_is_accepted(self):
+        ledger = Ledger(self.dir)
+        evidence = self.evidence(ledger, final_url="https://cdn.official.example/data")
+        claim = self.claim(ledger, evidence, url="https://cdn.official.example/data")
+        self.assertIsNotNone(claim)
+
+    def test_failed_truncated_and_unhashed_reads_are_unusable(self):
+        cases = (
+            {"status": 503},
+            {"truncated": True},
+            {"body": b"", "projection": None},
+        )
+        for i, overrides in enumerate(cases):
+            ledger = Ledger(self.dir / str(i))
+            evidence = self.evidence(ledger, **overrides)
+            with self.assertRaises(RejectedClaim):
+                self.claim(ledger, evidence)
+
+    def test_rejections_survive_process_reload(self):
+        ledger = Ledger(self.dir)
+        self.assertIsNone(ledger.try_accept(
+            "t", KIND_CAPTURED, "unsupported", "official",
+            "2026-09-22T00:00:00Z", 19, value=1, field="x",
+            source_path="x", url=self.URL))
+        again = Ledger(self.dir)
+        self.assertEqual(len(again.rejections), 1)
+        self.assertIn("no evidence row", again.rejections[0]["reason"])
+
+    def test_nested_non_finite_values_are_rejected(self):
+        ledger = Ledger(self.dir)
+        evidence = self.evidence(ledger)
+        with self.assertRaisesRegex(RejectedClaim, "strict JSON"):
+            self.claim(ledger, evidence, value={"nested": [float("nan")]})
+
+    def test_entity_subjects_contribute_to_topic_support(self):
+        ledger = Ledger(self.dir)
+        claim = self.claim(ledger, self.evidence(ledger), subjects=["entity:x"])
+        self.assertEqual(ledger.by_topic("entity:x"), [claim])
+        self.assertEqual(ledger.topics_with_claims()["entity:x"], 1)
 
 
 if __name__ == "__main__":

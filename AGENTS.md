@@ -42,16 +42,18 @@ a **new** row plus a drift irregularity; it is never edited in place, because
 regenerated in full each cycle. They may be deleted safely; the JSONL files may
 not.
 
-`data/source_health.json` is the exception among the regenerable files: it is
-written **only by the probe**, never by a cycle, and it is the sole record of
-which endpoints this project has actually read. `msl/sources.py` replays it at
-import, so deleting it does not lose a claim — it correctly demotes every source
-back to `registered` until the next probe run.
+`data/source_health.json` is the exception among the regenerable files: both the
+live cycle and daily probe fold conclusive observations into this one shared
+ledger under the same workflow writer lock. It is the sole record of endpoint
+availability. `msl/sources.py` replays it at import, so deleting it does not lose
+a claim — it correctly demotes every source back to `registered` until a later
+recorded read.
 
 ## 4. `data/seed/` is bootstrap evidence, not fixtures
 
-These are real captures with real SHA-256 hashes over real wire responses, taken
-2026-09-21. They serve two purposes:
+These are dated captures or canonical projections with SHA-256 integrity
+metadata. Their `captureMode` and `wireHashVerifiable` fields say which; do not
+call a projection a wire response. They serve two purposes:
 
 1. the first cycle has something true to build on;
 2. `--offline` and the test suite run the identical pipeline with no network.
@@ -63,16 +65,18 @@ Two rules:
   reads `stargazers_count`, the adapter got `None`, and the ledger published
   "0 stars" for every repository. The adapters now refuse to record a 0 and raise
   a shape problem instead. Keep it that way.
-- **A capture made by an interactive read is not wire-verifiable.** Those rows
-  carry `captureMode: agent-fetch-page-transcribed` and
-  `wireHashVerifiable: false`. Do not upgrade that flag; the first automated probe
-  re-reads the endpoint and reports whether the *values* still match.
+- **An interactive or API-decoded projection is not wire-verifiable.** Such rows
+  carry modes including `agent-fetch-page-transcribed` or `gh-api-projection` and
+  `wireHashVerifiable: false`. Do not upgrade that flag. A later automated read
+  is a new observation; it cannot retroactively prove old response bytes.
 
-## 5. A blocked source produces nothing
+## 5. A failed response produces no fresh claim
 
-If a read fails, the pipeline records the failure with its HTTP status and a
-reproduction command, marks the source `blocked`, and produces zero claims from
-it. Never substitute a cached value, an estimate, or a value from memory.
+A conclusive source-side failure is recorded with its HTTP status and reproduction
+command and may mark the source `blocked`. Caller-generated 400/404/405/422,
+runner egress, and the local response-size cap produce **no source-health verdict**
+because they do not establish that the service is down. No value may be attributed
+to the failed response.
 
 One exception, already implemented and loudly labelled: when a source is
 unreadable and a seed capture exists for that exact URL, the seed is used and
@@ -93,11 +97,11 @@ service, so:
   it `blocked`, and does **not** increment `consecutive_failures` (that counter
   drives the CRITICAL escalation, so an egress blip would otherwise manufacture
   critical findings about other people's APIs);
-- a genuine HTTP failure — 403, 404, 500 — still blocks the source and still
-  escalates. Do not widen the egress exception to cover those.
+- a conclusive HTTP failure such as 403 or 5xx still affects source health;
+  caller-generated 400/404/405/422 does not. Do not widen either category without
+  proving what the status says about source availability.
 
-Both behaviours are covered by `tests/test_egress.py`; break the guard and five
-of those tests fail.
+These behaviors are covered by `tests/test_egress.py` and pipeline health tests.
 
 ## 6. The competition's honesty rules
 
@@ -122,9 +126,9 @@ across cycles. A non-standing entry that stops recurring is marked `resolved`,
 never deleted.
 
 **Standing** entries are structural limits (no language model in the loop; GitHub
-has no trending API; three interest categories have no source; the owner's shared
-document is not machine-readable). They do not auto-resolve, because the owner
-needs to keep seeing them. Do not clear them by hand.
+has no trending API; documented interest-category coverage gaps; the owner's
+shared document is not machine-readable). They do not auto-resolve, because the
+owner needs to keep seeing them. Do not clear them by hand.
 
 Aggregate rather than spam: one warn naming N unsupported topics, not N warns.
 A register with 400 identical rows hides the three that matter.
@@ -154,7 +158,7 @@ python3 -m msl.cli cycle --offline     # rebuild every artifact with no network
 python3 -m msl.cli publish             # re-render site+docs from committed state
 python3 tools/verify_claims.py         # read-only: recheck derived claims
 python3 tools/probe_sources.py         # live-read every source (needs egress)
-node tools/render_check.js             # render all 9 pages headlessly
+node tools/render_check.js             # render all 10 pages headlessly
 ```
 
 `tools/probe_sources.py` exits non-zero when it could not do its job — nothing
@@ -183,7 +187,7 @@ reading nothing — find it before committing.
 | npm dist-tags `Accept` header | HTTP 406 with the registry's own documented media type | `Accept: application/json`, recorded as IRR |
 | Two copies of the probe, both calling `fetch(accepts=…)` | `TypeError` on source #1; `probe.yml` still went green and nothing was ever probed | One loop in `msl/probe.py`; entry points delegate; `set -o pipefail` in both workflows |
 | `cmd \| tee log` in a workflow step | the step's status is `tee`'s, so a crash exits 0 and looks like a pass | `set -o pipefail` before any piped command |
-| Hand-typed `status="verified-live-read"` in the registry | the site advertised verified sources no code had ever read | registry hard-codes no status; `load_probe_results()` replays the probe ledger |
+| Hand-typed `status="verified-live-read"` in the registry | the site advertised verified sources no code had ever read | registry hard-codes no status; `load_probe_results()` replays the shared cycle/probe health ledger |
 | `EgressBlocked` treated as a source failure | 22 healthy services published as `blocked`, 3 CRITICAL findings invented | egress is a runner fact: no status change, no escalation, one aggregated finding |
 | A per-cycle delta used where a total belongs | README reported 8,312 captured / 306 derived for a ledger holding 5,914 / 2,704 | `derived_total` for the breakdown, `derivedThisCycle` for the delta |
 | Reflective `setattr` from a JSON row | camelCase keys vs snake_case fields matched nothing; every figure silently defaulted to 0 | map recorded keys explicitly; `republish` recomputes totals from the ledger |

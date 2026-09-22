@@ -85,25 +85,67 @@ class IdeaResult:
 
 
 def score_idea(idea: Idea, ledger: Ledger, now: str, blocked_sources: set) -> None:
-    """Recompute robustness from the current ledger.  Never uses a stored value."""
-    claims = [c for c in ledger.claims if c.id in set(idea.lineage)]
+    """Recompute robustness from current terminal evidence, never stored scores.
+
+    Derived claims are useful lineage nodes, but they are not fresh independent
+    evidence. Recursing to their captured inputs prevents a newly re-run formula
+    from making a week-old observation look new or corroborated.
+    """
+    by_id = {c.id: c for c in ledger.claims}
+    terminal: Dict[str, Claim] = {}
+    visiting: set = set()
+
+    def visit(claim_id: str) -> None:
+        if claim_id in visiting:
+            return
+        claim = by_id.get(claim_id)
+        if claim is None:
+            return
+        visiting.add(claim_id)
+        if claim.kind == "derived" and claim.computed_from:
+            for parent in claim.computed_from:
+                visit(parent)
+        else:
+            terminal[claim.id] = claim
+
+    for claim_id in idea.lineage:
+        visit(claim_id)
+    claims = list(terminal.values())
     if not claims:
         idea.components = {"evidence": 0.0, "corroboration": 0.0, "breadth": 0.0,
                            "freshness": 0.0, "reproducibility": 0.0}
         idea.robustness = 0.0
+        idea.sources = []
+        idea.families = []
         return
-    srcs = {c.source_id for c in claims}
+    srcs = {c.source_id for c in claims if c.source_id != "derived"}
     fams = {c.topic for c in claims}
     newest = max(c.retrieved_at for c in claims)
-    age = days_between(newest, now) or 999.0
-    live = [c for c in claims if c.source_id not in blocked_sources]
+    measured_age = days_between(newest, now)
+    age_days = max(0.0, measured_age) if measured_age is not None else 999.0
+    evidence_by_id = {e.id: e for e in ledger.evidence}
 
+    def reproducible(c: Claim) -> bool:
+        if c.source_id in blocked_sources or not c.url or not c.evidence:
+            return False
+        for evidence_id in c.evidence:
+            evidence = evidence_by_id.get(evidence_id)
+            if (evidence is not None and evidence.successful
+                    and evidence.has_integrity_hash
+                    and evidence.source_id == c.source_id
+                    and c.url in (evidence.url, evidence.final_url)):
+                return True
+        return False
+
+    live = [c for c in claims if reproducible(c)]
     comp = {
         "evidence": min(len(claims) / 12.0, 1.0),
-        "corroboration": min((len(srcs) - 1) / 3.0, 1.0),
-        "breadth": min((len(fams) - 1) / 3.0, 1.0),
-        "freshness": max(0.0, 1.0 - age / (7 * 24)),
-        "reproducibility": (len(live) / len(claims)) if claims else 0.0,
+        "corroboration": min(max(len(srcs) - 1, 0) / 3.0, 1.0),
+        "breadth": min(max(len(fams) - 1, 0) / 3.0, 1.0),
+        # days_between returns days. The old divisor was 7*24, accidentally
+        # granting full freshness over 168 days instead of one week.
+        "freshness": max(0.0, 1.0 - age_days / 7.0),
+        "reproducibility": len(live) / len(claims),
     }
     idea.components = comp
     idea.robustness = sum(comp[k] * ROBUSTNESS_WEIGHTS[k] for k in ROBUSTNESS_WEIGHTS)
@@ -129,7 +171,10 @@ def synthesize(ledger: Ledger, cycle: int, now: str, previous: List[Idea],
         # subject, and one idea should not be published three times
         already = next((x for x in fresh if x.fingerprint == fp), None)
         if already is not None:
+            # Multiple rules for the same fingerprint in this cycle may each add
+            # current support. Do not mix in support from earlier cycles here.
             already.lineage = list(dict.fromkeys(already.lineage + lineage))
+            already.urls = list(dict.fromkeys(already.urls + urls))[:4]
             return already
         prev = by_fp.get(fp)
         seq[0] += 1
@@ -137,8 +182,10 @@ def synthesize(ledger: Ledger, cycle: int, now: str, previous: List[Idea],
             prev.cycle = cycle
             prev.last_seen_cycle = cycle
             prev.appearances += 1
-            prev.lineage = list(dict.fromkeys(prev.lineage + lineage))
-            prev.urls = list(dict.fromkeys(prev.urls + urls))[:4]
+            # A recurring idea is rescored from this cycle's support, not an
+            # ever-growing bag of every claim it has seen since birth.
+            prev.lineage = lineage
+            prev.urls = list(dict.fromkeys(urls))[:4]
             prev.status = "carried"
             fresh.append(prev)
             return prev
@@ -159,9 +206,9 @@ def synthesize(ledger: Ledger, cycle: int, now: str, previous: List[Idea],
     for c in claims:
         if c.source_id == "derived":
             continue
-        for t in c.tags:
-            if "/" in t:
-                ent_src.setdefault(t, {}).setdefault(c.source_id, []).append(c)
+        entities = c.subjects or [t for t in c.tags if "/" in t]
+        for entity in entities:
+            ent_src.setdefault(entity, {}).setdefault(c.source_id, []).append(c)
     for ent, per_src in sorted(ent_src.items()):
         if len(per_src) < 2:
             continue
@@ -214,27 +261,34 @@ def synthesize(ledger: Ledger, cycle: int, now: str, previous: List[Idea],
                 [stars.id, created.id], [stars.url] if stars.url else [])
 
     # 3. regulatory lead — rulemaking outrunning published research
-    for c in claims:
-        if not c.field.startswith("fedreg.documents[") or not isinstance(c.value, (int, float)):
-            continue
-        term = c.field[len("fedreg.documents["):-1]
+    newest_regulatory: Dict[str, Claim] = {}
+    newest_research: Dict[str, Claim] = {}
+    for claim in claims:
+        if (claim.field.startswith("fedreg.documents[")
+                and isinstance(claim.value, (int, float))):
+            newest_regulatory[claim.field] = claim
+        if claim.kind == "derived" and claim.field.startswith("trend[wiki:"):
+            newest_research[claim.field] = claim
+    for field_name, c in sorted(newest_regulatory.items()):
+        term = field_name[len("fedreg.documents["):-1]
         if term in ("newest", "*", ""):
-            # that is the source-health probe ("newest documents overall"), not a
-            # topical query, so there is no research question to lead
             continue
-        research = [r for r in claims if r.kind == "derived" and r.field == f"trend[wiki:{term}]"]
+        research = newest_research.get(f"trend[wiki:{term}]")
+        lineage = [c.id] + ([research.id] if research is not None else [])
         add("regulatory-lead", term,
             f"Watch for research lagging rulemaking on “{term}”",
             f"The Federal Register holds {int(c.value):,} documents matching “{term}”. "
             f"If published-research attention on the same term stays flat while that "
             f"count rises, rulemaking is leading and the literature will follow.",
-            [c.id] + [r.id for r in research], [c.url] if c.url else [])
+            lineage, [c.url] if c.url else [])
 
     # 4. contradiction — the same field, two sources, two answers
     by_field: Dict[str, Dict[str, Claim]] = {}
     for c in claims:
         if c.kind == "captured" and isinstance(c.value, (int, float)):
-            by_field.setdefault(c.field, {}).setdefault(c.source_id, c)
+            # Ledger order is append-only; assignment keeps the latest value from
+            # each source rather than freezing the contradiction at cycle one.
+            by_field.setdefault(c.field, {})[c.source_id] = c
     for fld, per_src in sorted(by_field.items()):
         if len(per_src) < 2:
             continue

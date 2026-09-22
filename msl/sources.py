@@ -3,11 +3,11 @@
 Every entry names the **operator** and a documentation URL a human can open to
 check the endpoint contract.  A source is in one of three honest states:
 
-``verified-live-read``  this project has actually read it and recorded the bytes
+``verified-live-read``  this project read it and recorded status, byte count, and hash
 ``registered``          endpoint + docs recorded; first read pending the next probe
 ``blocked``             last read failed; no claim may be produced from it
 
-A source is promoted to ``verified-live-read`` only by the probe, never by hand.
+A source is promoted to ``verified-live-read`` only by a recorded probe or cycle read, never by hand.
 Sources that need an API key are deliberately **not** registered — see
 ``KEYED_SOURCES_EXCLUDED`` — because obtaining a key would be manual input.
 """
@@ -33,12 +33,15 @@ class Source:
     docs_url: str
     #: a concrete, parameter-free URL the probe can GET to prove the endpoint is live
     probe_url: str
+    #: Provenance class, separate from live-read status. A responsive mirror is
+    #: not thereby an official source, and an operator endpoint can be undocumented.
+    trust_tier: str
     accepts: str = "application/json"
     payload_kind: str = "json"          # json | atom | geojson
     #: owner interest categories this source can serve (see config/topics)
     topics: List[str] = field(default_factory=list)
     notes: str = ""
-    # --- filled in by the probe, never by hand ---
+    # --- filled from the shared recorded-read health ledger, never by hand ---
     status: str = "registered"
     live_reads: int = 0
     last_read_at: str = ""
@@ -50,6 +53,7 @@ class Source:
     def as_dict(self) -> Dict[str, Any]:
         return {
             "id": self.id, "name": self.name, "operator": self.operator,
+            "trustTier": self.trust_tier,
             "docsUrl": self.docs_url, "probeUrl": self.probe_url,
             "accepts": self.accepts, "payloadKind": self.payload_kind,
             "topics": self.topics, "notes": self.notes, "status": self.status,
@@ -66,14 +70,54 @@ class Source:
 # ---------------------------------------------------------------------------
 def _registry() -> List[Source]:
     S: List[Source] = []
+    # This describes provenance, not availability. It is deliberately exhaustive:
+    # a newly registered endpoint cannot inherit an over-confident "official"
+    # default merely because its author forgot to classify it.
+    trust_tiers = {
+        "github_search": "first-party-documented",
+        "github_repos": "first-party-documented",
+        "github_repo": "first-party-documented",
+        "github_releases": "first-party-documented",
+        "master_site_catalog": "first-party-documented",
+        "pypi_json": "trusted-registry",
+        "npm_registry": "trusted-registry",
+        "wikimedia_pageviews": "primary-official-documented",
+        "federal_register": "primary-official-documented",
+        "usgs_fdsn": "primary-official-documented",
+        "hn_firebase": "first-party-documented",
+        "arxiv": "trusted-registry",
+        "pubmed": "primary-official-documented",
+        "clinicaltrials": "primary-official-documented",
+        "openalex": "trusted-registry",
+        "crossref": "trusted-registry",
+        "stackexchange": "first-party-documented",
+        "huggingface": "first-party-documented",
+        "nws_alerts": "primary-official-documented",
+        "worldbank": "primary-official-documented",
+        "ecb_sdmx": "primary-official-documented",
+        "frankfurter": "third-party-mirror",
+        "sec_edgar": "primary-official-documented",
+        "census_acs": "primary-official-documented",
+        "bls": "primary-official-documented",
+        "nominatim": "trusted-community-service",
+        "europepmc": "trusted-registry",
+        "kalshi_public": "first-party-documented",
+        "mlb_statsapi": "first-party-undocumented",
+        "nhl_web": "first-party-undocumented",
+        "nba_cdn": "first-party-undocumented",
+    }
 
     def add(**kw: Any) -> None:
+        sid = kw.get("id")
+        if sid not in trust_tiers:
+            raise ValueError(f"source {sid!r} has no explicit trust tier")
+        kw["trust_tier"] = trust_tiers[sid]
         S.append(Source(**kw))
 
     # --- bootstrapped from hashed seed captures (data/seed/) ----------------
     # NOTE: status/live_reads/last_read_at are NOT set here on purpose.  They
-    # are filled in only by msl.probe, which writes data/source_health.json;
-    # sources.py replays that file at import (see load_probe_results).
+    # are filled only by the shared health recorder in msl.probe, which both the
+    # cycle and daily probe use; sources.py replays that file at import.
     # Every source starts life as "registered" — an unread endpoint is not a
     # verified one, no matter how many seed captures exist for it.
     add(id="github_search", name="GitHub Search API — repositories",
@@ -126,6 +170,16 @@ def _registry() -> List[Source]:
         docs_note=("Registered 2026-09-22. Two real captures are hashed into data/seed/: "
                    "an empty list (browser-use/jev-ultrafast) and a release object "
                    "(ollama/ollama, tag v0.34.3-rc1). Status is set by the probe."))
+
+    add(id="master_site_catalog", name="MasterSite verified project catalog",
+        operator="buffedlizard55-lab, served by GitHub Contents API",
+        docs_url="https://docs.github.com/en/rest/repos/contents#get-repository-content",
+        probe_url=("https://api.github.com/repos/buffedlizard55-lab/MasterSite/"
+                   "contents/data/sites.js"),
+        topics=["owner-corpus"],
+        notes=("First-party catalog generated by MasterSite from GitHub's official REST "
+               "API plus its audited narrative overlay. Project descriptions retain "
+               "MasterSite's own verifiedBasis; they are not relabelled as GitHub facts."))
 
     add(id="pypi_json", name="PyPI JSON API",
         operator="Python Software Foundation",
@@ -209,7 +263,8 @@ def _registry() -> List[Source]:
     add(id="clinicaltrials", name="ClinicalTrials.gov API v2",
         operator="U.S. National Library of Medicine",
         docs_url="https://clinicaltrials.gov/data-api/api",
-        probe_url="https://clinicaltrials.gov/api/v2/studies?pageSize=1",
+        probe_url=("https://clinicaltrials.gov/api/v2/studies?pageSize=1&countTotal=true"
+                   "&query.term=artificial%20intelligence"),
         topics=["clinical-evidence", "public-health-policy"])
 
     add(id="openalex", name="OpenAlex scholarly graph",
@@ -344,10 +399,10 @@ BY_ID: Dict[str, Source] = {s.id: s for s in REGISTRY}
 
 
 def load_probe_results(path: Optional["os.PathLike"] = None) -> int:
-    """Replay the last recorded probe into ``REGISTRY``.  Returns rows applied.
+    """Replay the shared recorded-read ledger into ``REGISTRY``. Returns rows applied.
 
     ``status`` is a fact about a read, so the fact is stored rather than typed:
-    ``msl.probe`` writes ``data/source_health.json`` and this function is the
+    ``msl.probe`` writes ``data/source_health.json`` for both writers; this is the
     only way that fact reaches the registry.  Nothing in this module hard-codes
     ``verified-live-read`` any more — eight entries used to, which meant the site
     advertised verified sources that no code in this repository had ever read
@@ -412,8 +467,9 @@ INTEREST_CATEGORIES_WITHOUT_A_SOURCE: List[Dict[str, str]] = [
      "gap": "No official keyless API for hotel pricing or airfare is registered.  nominatim "
             "can place-geocode but cannot price anything."},
     {"category": "Social & Creator Data",
-     "gap": "Every official creator API is keyed (see KEYED_SOURCES_EXCLUDED).  No verified "
-            "signal exists, so no claim is made about this category."},
+     "gap": "Wikimedia and Hacker News cover public attention, but every official "
+            "creator-platform API is keyed (see KEYED_SOURCES_EXCLUDED). No verified "
+            "creator-platform metric is claimed."},
     {"category": "Elections & Civic Data",
      "gap": "federal_register covers federal rulemaking, but the FEC API needs a key for most "
             "endpoints and state results are per-jurisdiction.  Partial coverage only."},

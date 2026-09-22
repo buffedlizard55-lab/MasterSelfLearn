@@ -21,6 +21,18 @@ class SourceRegistry(unittest.TestCase):
         ids = [s.id for s in REGISTRY]
         self.assertEqual(len(ids), len(set(ids)))
 
+    def test_every_source_has_an_explicit_provenance_tier(self):
+        allowed = {
+            "primary-official-documented", "first-party-documented",
+            "first-party-undocumented", "trusted-registry",
+            "trusted-community-service", "third-party-mirror",
+        }
+        self.assertTrue(REGISTRY)
+        self.assertTrue(all(s.trust_tier in allowed for s in REGISTRY))
+        self.assertEqual(BY_ID["frankfurter"].trust_tier, "third-party-mirror")
+        for sid in ("mlb_statsapi", "nhl_web", "nba_cdn"):
+            self.assertEqual(BY_ID[sid].trust_tier, "first-party-undocumented")
+
     def test_no_registered_source_requires_an_api_key(self):
         """Obtaining a key would be manual input, which the project refuses."""
         keyed = {k["id"] for k in KEYED_SOURCES_EXCLUDED}

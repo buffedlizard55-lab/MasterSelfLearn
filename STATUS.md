@@ -1,26 +1,27 @@
-# STATUS — cycle 18
+# STATUS — cycle 20
 
-Generated `2026-09-22T17:31:33Z` by `msl/docs.py`. Every figure here is read from the same
+Generated `2026-09-22T19:23:59Z` by `msl/docs.py`. Every figure here is read from the same
 objects the site is built from.
 
 ## Last cycle
 
 | | |
 |---|---|
-| Cycle | 18 |
-| Mode | `github-actions` |
-| Duration | 40,218 ms |
-| Reads (ok / failed) | 66 / 3 |
-| Bytes read | 1,823,642 |
-| Facts extracted | 679 |
-| New claims | 679 |
-| Claims rejected by the gate | 0 |
-| Derived / rechecked / drifted | 386 / 44 / 0 |
-| Topics (new) | 121 (6) |
-| Insights published | 386 |
-| Forecasts issued / scored | 1153 / 1215 |
-| Ideas (promoted) | 24 (0) |
-| Irregularities open (new) | 32 (2) |
+| Cycle | 20 |
+| Mode | `offline-fixtures` |
+| Duration | 1,791 ms |
+| Reads (ok / failed) | 22 / 0 |
+| Bytes read | 0 |
+| Facts extracted | 484 |
+| New claims | 484 |
+| Claims rejected by the gate this cycle | 0 |
+| Gate rejections in append-only history | 0 |
+| Derived / rechecked / drifted | 228 / 1,446 / 0 |
+| Topics (new) | 133 (6) |
+| Insights published | 271 |
+| Forecasts issued / scored | 1091 / 496 |
+| Ideas (promoted) | 25 (0) |
+| Irregularities open (new) | 24 (0) |
 | Pipeline errors | 0 |
 
 No pipeline stage raised.
@@ -29,23 +30,19 @@ No pipeline stage raised.
 
 | Id | Title | First seen | Reproduce |
 |---|---|---|---|
-| `IRR-043` | clinicaltrials could not be read | cycle 4 | `curl -sS -o /dev/null -w '%{http_code}\n' 'https://clinicaltrials.gov/api/v2/studies?pageSize=1'` |
-| `IRR-046` | sec_edgar could not be read | cycle 4 | `curl -sS -o /dev/null -w '%{http_code}\n' 'https://data.sec.gov/submissions/CIK0000320193.json'` |
-| `IRR-049` | nba_cdn could not be read | cycle 4 | `curl -sS -o /dev/null -w '%{http_code}\n' 'https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json'` |
+| — | *No critical irregularity is open.* | — | — |
 
 ## Register totals
 
-116 registered — 6 critical,
-68 warn, 42 info;
-32 open, 84 resolved,
-19 standing.
+119 registered — 6 critical,
+69 warn, 44 info;
+24 open, 95 resolved,
+21 standing.
 
 ## Recent cycles
 
 | Cycle | At (UTC) | Claims | Topics | New | Forecasts | Scored | Ideas | Irr open | Result |
 |---|---|---|---|---|---|---|---|---|---|
-| 9 | 2026-09-22T03:49:52Z | 7,076 | 67 | 6 | 760 | 0 | 14 | 40 | ok |
-| 10 | 2026-09-22T03:50:22Z | 7,847 | 73 | 6 | 950 | 832 | 14 | 61 | ok |
 | 11 | 2026-09-22T03:58:55Z | 8,618 | 79 | 6 | 894 | 603 | 14 | 45 | ok |
 | 12 | 2026-09-22T04:12:37Z | 9,343 | 85 | 6 | 894 | 0 | 14 | 40 | ok |
 | 13 | 2026-09-22T04:15:17Z | 10,334 | 91 | 6 | 834 | 1216 | 14 | 31 | ok |
@@ -54,6 +51,8 @@ No pipeline stage raised.
 | 16 | 2026-09-22T12:45:18Z | 13,388 | 109 | 6 | 1036 | 620 | 14 | 30 | ok |
 | 17 | 2026-09-22T17:24:28Z | 14,042 | 115 | 6 | 1138 | 105 | 24 | 31 | ok |
 | 18 | 2026-09-22T17:31:33Z | 15,107 | 121 | 6 | 1153 | 1215 | 24 | 32 | ok |
+| 19 | 2026-09-22T19:08:58Z | 15,820 | 127 | 6 | 1143 | 2256 | 25 | 24 | ok |
+| 20 | 2026-09-22T19:23:59Z | 16,532 | 133 | 6 | 1091 | 496 | 25 | 24 | ok |
 
 ## What runs next
 

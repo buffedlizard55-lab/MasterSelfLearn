@@ -1,9 +1,9 @@
 name: probe
 
 # Live-reads every registered source once a day and publishes the health ledger.
-# This is the only job allowed to move a source between registered /
-# verified-live-read / blocked, so a source's status on the site is always a fact
-# about the last read rather than an assertion.
+# The probe and think cycle share one health-ledger implementation and one writer
+# lock. A source moves between registered / verified-live-read / blocked only from
+# a recorded read, never from a hand-edited registry assertion.
 #
 # NOTE ON `set -o pipefail`: this step originally ran
 # `python3 tools/probe_sources.py 2>&1 | tee data/probe.log` with no pipefail.
@@ -21,7 +21,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: source-probe
+  # Shared with think.yml: both mutate source_health.json and generated state.
+  group: msl-state-writer-main
   cancel-in-progress: false
 
 jobs:

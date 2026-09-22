@@ -107,7 +107,7 @@ class VelocityOutliers(TmpDirCase):
 class PersistenceAndScoring(TmpDirCase):
     def _three_repos(self):
         l = Ledger(self.dir)
-        e = ev(l)
+        e = ev(l, url="https://example.test/q")
         repo_claims(l, e, "zai-org/zcode", 5548, "2026-09-20T00:00:00Z")
         repo_claims(l, e, "b/mid", 500, "2026-08-01T00:00:00Z")
         repo_claims(l, e, "c/slow", 10, "2026-01-01T00:00:00Z")
@@ -183,6 +183,42 @@ class FederalRegisterIdeas(TmpDirCase):
                  field="fedreg.documents[newest]", tags=["federal-register"])
         res = synthesize(l, 1, NOW2, [], [], set())
         self.assertEqual([i for i in res.ideas if i.kind == "regulatory-lead"], [])
+
+
+class FreshnessAndCurrentLineage(TmpDirCase):
+    def test_freshness_decays_over_seven_days_not_168(self):
+        ledger = Ledger(self.dir)
+        evidence = ev(ledger, url="https://example.test/q")
+        claim = ledger.accept(
+            "t", KIND_CAPTURED, "observation", "github_search", NOW1, 1,
+            value=1, field="metric[x]", evidence=[evidence.id],
+            url="https://example.test/q")
+        idea = Idea("I", 1, "test", "title", "statement", lineage=[claim.id])
+        score_idea(idea, ledger, "2026-09-29T12:00:01Z", set())
+        self.assertEqual(idea.components["freshness"], 0.0)
+
+    def test_recurring_idea_replaces_stale_lineage_with_latest_support(self):
+        ledger = Ledger(self.dir)
+        evidence = ev(ledger, source_id="federal_register",
+                      url="https://example.test/fed")
+        first_claim = ledger.accept(
+            "regulatory-flow", KIND_CAPTURED, "ten documents",
+            "federal_register", NOW1, 1, value=10,
+            field="fedreg.documents[reasoning]", evidence=[evidence.id],
+            url="https://example.test/fed", tags=["federal-register"])
+        first = synthesize(ledger, 1, NOW2, [], [], set())
+        idea = next(i for i in first.ideas if i.kind == "regulatory-lead")
+        self.assertIn(first_claim.id, idea.lineage)
+
+        second_claim = ledger.accept(
+            "regulatory-flow", KIND_CAPTURED, "eleven documents",
+            "federal_register", NOW2, 2, value=11,
+            field="fedreg.documents[reasoning]", evidence=[evidence.id],
+            url="https://example.test/fed", tags=["federal-register"])
+        second = synthesize(ledger, 2, NOW2, first.ideas, [], set())
+        carried = next(i for i in second.ideas if i.fingerprint == idea.fingerprint)
+        self.assertEqual(carried.lineage, [second_claim.id])
+        self.assertNotIn(first_claim.id, carried.lineage)
 
 
 if __name__ == "__main__":

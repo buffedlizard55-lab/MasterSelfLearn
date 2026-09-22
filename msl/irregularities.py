@@ -132,12 +132,13 @@ def standing_findings() -> List[Dict[str, Any]]:
     _detail = " ".join(f"• {g['category']}: {g['gap']}" for g in _gaps)
     out.append({
         "severity": WARN,
-        "title": (f"{len(_gaps)} interest categories have no registered source "
-                  f"that can serve them"),
+        "title": (f"{len(_gaps)} interest categories have documented missing or "
+                  f"partial coverage"),
         "detail": (f"{_names} appear in the owner's verified corpus "
-                   f"({config.MASTER_SITE_URL}), but no official keyless API is "
-                   f"registered that can answer their questions, so no claim is made "
-                   f"about any of them. Per category: {_detail} "
+                   f"({config.MASTER_SITE_URL}), but the registered official/keyless "
+                   f"surface cannot answer important parts of their questions. Partial "
+                   f"signals are retained where available; no claim is made beyond that "
+                   f"surface. Per category: {_detail} "
                    f"See KEYED_SOURCES_EXCLUDED and "
                    f"INTEREST_CATEGORIES_WITHOUT_A_SOURCE in msl/sources.py and "
                    f"ROADMAP.md."),
@@ -199,13 +200,25 @@ def standing_findings() -> List[Dict[str, Any]]:
         "and adding a secret is manual input. See METHODOLOGY.md §3.",
         repro="grep -rn 'openai\\|anthropic\\|llm_client' msl/ || echo 'no model client present'")
 
-    add(INFO, "Seed captures taken by an interactive read are not wire-hash verifiable",
-        "The first captures for wikimedia_pageviews, federal_register, usgs_fdsn and "
-        "hn_firebase were read through an interactive agent fetch rather than by this "
-        "process, so the stored SHA-256 covers the recorded body and not the bytes on the "
-        "wire. Those evidence rows carry wireHashVerifiable=false, and the first automated "
-        "probe re-reads each endpoint and reports whether the values still match.",
-        repro="python3 -c \"import json;[print(json.loads(l)['id'], json.loads(l)['wireHashVerifiable']) for l in open('data/evidence.jsonl') if not json.loads(l)['wireHashVerifiable']]\"")
+    add(WARN, "Cycles 1–18 retained projection hashes, not response-byte hashes",
+        "An audit of the 817 historical evidence rows found 795 with rawBytes=0 and no "
+        "payloadSha256; 777 of those also carried the old wireHashVerifiable=true flag. "
+        "Every one has a canonical projection hash, but that cannot prove the bytes that "
+        "arrived over HTTP. The loader now classifies them as integrity=projection rather "
+        "than retroactively upgrading them. Schema-v2 live reads hash the exact "
+        "decompressed body handed to the adapter and retain final URL, content type, and "
+        "truncation state.",
+        repro="python3 tools/verify_claims.py | sed -n '/evidence integrity/,/claim trace/p'",
+        topic="evidence-integrity")
+
+    add(INFO, "GitHub's half-hour schedule is best effort, not a nonstop SLA",
+        "think.yml requests a cycle every 30 minutes, but GitHub documents that scheduled "
+        "workflows can be delayed or dropped during high load. The generated timestamp and "
+        "cycle history expose gaps, and writer workflows are serialized, but a repository "
+        "running on hosted Actions cannot guarantee hard real-time continuous execution.",
+        repro=("open https://docs.github.com/en/actions/reference/workflows-and-actions/"
+               "events-that-trigger-workflows#schedule"),
+        topic="source-health")
 
     return out
 
@@ -239,8 +252,10 @@ class Register:
             "counts": self.counts(),
             "items": [i.as_dict() for i in items],
         }
-        self.path.write_text(json.dumps(payload, indent=1, ensure_ascii=False) + "\n",
-                             encoding="utf-8")
+        tmp = self.path.with_name(self.path.name + ".tmp")
+        tmp.write_text(json.dumps(payload, indent=1, ensure_ascii=False,
+                                  allow_nan=False) + "\n", encoding="utf-8")
+        tmp.replace(self.path)
 
     def counts(self) -> Dict[str, int]:
         out = {"total": len(self.items), CRITICAL: 0, WARN: 0, INFO: 0,
@@ -262,7 +277,15 @@ class Register:
             existing.last_seen_cycle = cycle
             existing.last_seen_at = now
             existing.severity = severity
+            # A pinned fingerprint deliberately keeps identity across a wording
+            # correction. Update every display field; otherwise the stale title
+            # that motivated the pin survives forever while only its detail moves.
+            existing.title = title
             existing.detail = detail
+            existing.repro = repro
+            existing.standing = standing
+            existing.source_id = source_id
+            existing.topic = topic
             if existing.status == "resolved":
                 existing.status = "open"
             return existing

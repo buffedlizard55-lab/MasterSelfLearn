@@ -103,6 +103,7 @@
   var PAGES = [
     ["index.html", "Today"],
     ["library.html", "Library"],
+    ["projects.html", "Projects"],
     ["leaderboard.html", "Competition"],
     ["ideas.html", "Ideas"],
     ["evidence.html", "Evidence"],
@@ -198,13 +199,16 @@
 
     main.appendChild(h("h1", { text: "Today's briefing" }));
     main.appendChild(h("p", { class: "lede", text:
-      "Everything below was read from official public data by an unattended cycle. " +
-      "Every number links to the payload it came from. Nothing here was written by " +
+      "Everything below came from classified public sources in an unattended cycle. " +
+      "Official, trusted-registry, community, mirror, and undocumented first-party " +
+      "sources are labelled separately. Every number links to its source. Nothing was written by " +
       "a model from memory — the reasoning stage is a fixed rule set over the " +
-      "verified ledger, which is what makes it checkable." }));
+      "accepted ledger, which is what makes it checkable." }));
 
     main.appendChild(h("div", { class: "stats" }, [
-      stat("Verified claims", n(ac.claims), n(ac.claimsNewThisCycle) + " new this cycle", "ok"),
+      stat("Accepted claims", n(ac.claims),
+           n(ac.strictTraceClaims) + " strict · " + n(ac.legacyTraceClaims) + " legacy",
+           "ok"),
       stat("Topics", n(ac.topics), n(ac.newTopics) + " new · " + D.families.length + " families", ""),
       stat("Ideas", n(ac.ideas), n(ac.ideasPromoted) + " promoted", "ok"),
       stat("Personas scored", n(ac.forecastsScored), n(ac.forecastsIssued) + " forecasts issued", ""),
@@ -253,7 +257,7 @@
 
     // attention movers
     var topics = D.topics.filter(function (t) { return t.verifiedClaims > 0; }).slice(0, 10);
-    main.appendChild(section("trending", "Topics with the most verified support", topics.length,
+    main.appendChild(section("trending", "Topics with the most accepted support", topics.length,
       topics.length ? table(["Topic", "Family", "Signals", "Claims", "Interest", "Status"],
         topics.map(function (t) {
           return tr([
@@ -263,26 +267,26 @@
             td(badge(t.status, t.status === "active" ? "ok" : (t.status === "retired" ? "mute" : "info"))),
           ]);
         }), { nums: [2, 3, 4] })
-        : empty("No topic has a verified claim yet.")));
+        : empty("No topic has an accepted claim yet.")));
 
     // leaderboard snapshot
     var lb = D.leaderboard || {};
     var ranked = (lb.ranked || []).slice(0, 8);
     main.appendChild(section("board", "Persona competition", (lb.ranked || []).length + " ranked",
-      [ranked.length ? table(["#", "Persona", "Scored", "Accuracy", "Skill vs null"],
+      [ranked.length ? table(["#", "Persona", "Paired", "Paired accuracy", "Skill vs paired null"],
         ranked.map(function (r, i) {
           return tr([td(i + 1), td(h("a", { href: "leaderboard.html#" + r.strategyId, text: r.name })),
-            tdn(r.scored), td(pct(r.accuracy)),
+            tdn(r.pairedScored), td(pct(r.pairedAccuracy)),
             td(h("span", { class: (r.skill || 0) >= 0 ? "up" : "down", text: signed((r.skill || 0) * 100, 1) + " pts" }), "num")]);
         }), { nums: [0, 2, 3, 4] })
         : h("div", { class: "note warn", html:
             "<b>No persona is ranked yet, and that is the correct state.</b> A persona needs " +
-            D.leaderboard.qualification.minScoredForecasts + " scored forecasts and a scored null model " +
+            D.leaderboard.qualification.minScoredForecasts + " paired scored forecasts " +
             "before a rank means anything. Until then every persona is reported UNRANKED " +
             "with the reason rather than shown at 0%." }),
         h("p", { class: "small", text:
-          "Skill = accuracy − accuracy of S10_Persistence, which always predicts “no change”. " +
-          "A persona with positive accuracy but non-positive skill has demonstrated nothing." })]));
+          "Skill compares a persona and S10_Persistence only where both forecast the " +
+          "same metric and cycle. A global null accuracy over a different target mix is not used." })]));
 
     // top ideas
     var ideas = (D.ideas || []).slice(0, 6);
@@ -293,7 +297,7 @@
           h("div", { class: "m" }, [
             badge(i.kind, "acc"), badge(i.status, i.status === "promoted" ? "ok" : "mute"),
             document.createTextNode("  robustness " + i.robustness.toFixed(3) +
-              " · " + i.lineage.length + " verified claims · " + i.sources.length + " sources · seen " + i.appearances + "×"),
+              " · " + i.lineage.length + " accepted claims · " + i.sources.length + " sources · seen " + i.appearances + "×"),
           ]),
         ]);
       })) : empty("No idea has a verified lineage yet.")));
@@ -345,7 +349,7 @@
     var fams = D.families;
 
     main.appendChild(section("families", "Families", fams.length,
-      table(["Family", "Category", "The question", "Topics", "Verified claims", "Sources"],
+      table(["Family", "Category", "The question", "Topics", "Accepted claims", "Sources"],
         fams.map(function (f) {
           return tr([
             td(h("a", { href: "#" + f.slug, text: f.title })),
@@ -396,7 +400,7 @@
           h("dl", { class: "kv" }, [
             h("dt", { text: "Status" }), h("dd", {}, [badge(t.status, t.status === "active" ? "ok" : (t.status === "retired" ? "mute" : "info"))]),
             h("dt", { text: "Family" }), h("dd", { text: t.familyTitle + " — " + t.question }),
-            h("dt", { text: "Verified claims" }), h("dd", { text: String(claims.length) }),
+            h("dt", { text: "Accepted claims" }), h("dd", { text: String(claims.length) }),
             h("dt", { text: "Signals" }), h("dd", { text: String(t.signals) }),
             h("dt", { text: "Created" }), h("dd", { text: "cycle " + t.createdCycle + " · " + (t.firstSeenAt || "—") }),
             h("dt", { text: "Last signal" }), h("dd", { text: "cycle " + t.lastSignalCycle + " · " + ago(t.lastSeenAt) }),
@@ -406,7 +410,7 @@
             t.notes ? h("dt", { text: "Note" }) : null,
             t.notes ? h("dd", { text: t.notes }) : null,
           ]),
-          h("h3", { text: "Verified claims (" + claims.length + ")" }),
+          h("h3", { text: "Accepted claims (" + claims.length + ")" }),
           claims.length ? table(["Claim", "Kind", "Source", "Evidence"],
             claims.slice(0, 60).map(function (c) {
               var ev = (D.evidenceRows || {})[(c.evidenceIds || [])[0]] || {};
@@ -416,7 +420,7 @@
                 td(h("code", { text: c.sourceId })),
                 td(ev.url ? link(ev.url, "open", ev.url) : h("span", { class: "small", text: "derived" })),
               ]);
-            })) : h("p", { class: "empty", text: "This topic has no verified claim. It is listed so the gap is visible; nothing is asserted about it." }),
+            })) : h("p", { class: "empty", text: "This topic has no accepted claim. It is listed so the gap is visible; nothing is asserted about it." }),
         ]);
         var det = h("details", { class: "row", id: encodeURIComponent(t.slug) }, [
           h("summary", {}, [
@@ -442,7 +446,7 @@
     var lb = D.leaderboard || {};
     main.appendChild(h("h1", { text: "Persona competition" }));
     main.appendChild(h("p", { class: "lede", text:
-      "Each persona reads only the verified ledger and issues a falsifiable forecast " +
+      "Each persona reads only the accepted ledger and issues a falsifiable forecast " +
       "about the next observation of a tracked metric. The following cycle the engine " +
       "looks up what actually happened and scores it. Nothing is scored that was not " +
       "forecast in advance." }));
@@ -457,30 +461,31 @@
 
     var ranked = lb.ranked || [];
     main.appendChild(section("ranked", "Ranked", ranked.length,
-      ranked.length ? table(["#", "Persona", "Thesis", "Issued", "Scored", "Accuracy", "Mean Brier", "Skill"],
+      ranked.length ? table(["#", "Persona", "Thesis", "Issued", "All scored", "Paired", "Paired accuracy", "Paired null", "Mean Brier", "Skill"],
         ranked.map(function (r, i) {
           return tr([
             td(i + 1, "num"),
             td(h("b", { id: r.strategyId, text: r.name })),
             td(h("span", { class: "small", text: r.thesis })),
-            tdn(r.issued), tdn(r.scored), td(pct(r.accuracy)),
+            tdn(r.issued), tdn(r.scored), tdn(r.pairedScored),
+            td(pct(r.pairedAccuracy)), td(pct(r.pairedNullAccuracy)),
             td(r.meanBrier === null || r.meanBrier === undefined ? "—" : r.meanBrier.toFixed(4), "num"),
             td(h("span", { class: (r.skill || 0) >= 0 ? "up" : "down", text: signed((r.skill || 0) * 100, 1) }), "num"),
           ]);
-        }), { nums: [0, 3, 4, 5, 6, 7] })
+        }), { nums: [0, 3, 4, 5, 6, 7, 8, 9] })
         : h("div", { class: "note warn", text: "No persona qualifies yet. See the qualification rule above — this is the honest state, not a failure." })));
 
     var unranked = lb.unranked || [];
     main.appendChild(section("unranked", "Unranked, with the reason", unranked.length,
-      unranked.length ? table(["Persona", "Thesis", "Issued", "Scored", "Why it is not ranked"],
+      unranked.length ? table(["Persona", "Thesis", "Issued", "All scored", "Paired", "Why it is not ranked"],
         unranked.map(function (r) {
           return tr([
             td(h("b", { id: r.strategyId + "-u", text: r.name })),
             td(h("span", { class: "small", text: r.thesis })),
-            tdn(r.issued), tdn(r.scored),
+            tdn(r.issued), tdn(r.scored), tdn(r.pairedScored),
             td(r.unrankedReason || "—"),
           ]);
-        }), { nums: [2, 3] }) : empty("Every persona is ranked.")));
+        }), { nums: [2, 3, 4] }) : empty("Every persona is ranked.")));
 
     var fc = (D.forecasts || []).slice().reverse().slice(0, 150);
     main.appendChild(section("forecasts", "Forecast log", (D.forecasts || []).length,
@@ -512,10 +517,10 @@
   function pageIdeas(main) {
     main.appendChild(h("h1", { text: "Idea competition" }));
     main.appendChild(h("p", { class: "lede", text:
-      "Ideas are generated by a fixed rule set over verified claims and scored for " +
+      "Ideas are generated by a fixed rule set over accepted claims and scored for " +
       "robustness. They persist: each cycle they are re-scored against the current " +
       "ledger, so one that keeps gaining corroboration climbs and one whose support " +
-      "disappears sinks. An idea with no verified claim behind it is not produced." }));
+      "disappears sinks. An idea with no accepted claim behind it is not produced." }));
 
     var ideas = D.ideas || [];
     var kinds = {};
@@ -528,7 +533,7 @@
         }), { nums: [1] }) : empty("No idea yet.")));
 
     var weights = [
-      ["evidence", "how many verified claims stand behind it", 0.30],
+      ["evidence", "how many accepted claims stand behind it", 0.30],
       ["corroboration", "how many independent sources report it", 0.30],
       ["breadth", "how many topic families it spans", 0.15],
       ["freshness", "how recent the newest supporting claim is", 0.15],
@@ -561,7 +566,7 @@
             h("dt", { text: "Families" }), h("dd", { class: "small", text: (i.families || []).join(", ") || "—" }),
             h("dt", { text: "Lifecycle" }), h("dd", { class: "small", text: "first cycle " + i.firstSeenCycle + ", last cycle " + i.lastSeenCycle + ", " + i.appearances + " appearance(s)" }),
           ]),
-          h("h3", { text: "Verified claims behind this idea (" + (i.lineage || []).length + ")" }),
+          h("h3", { text: "Accepted claims behind this idea (" + (i.lineage || []).length + ")" }),
           (i.lineage || []).length ? h("p", { class: "small" }, (i.lineage || []).map(function (id) {
             return h("a", { href: "evidence.html#claim-" + id, text: id });
           }).reduce(function (acc, el, k) {
@@ -582,12 +587,78 @@
       ideas.length ? host : empty("No idea has a verified lineage yet.")));
   }
 
+  // =========================================================== PROJECTS page
+  function pageProjects(main) {
+    var projects = D.projects || [];
+    var catalog = D.projectCatalog || {};
+    var categories = {};
+    projects.forEach(function (p) {
+      var name = p.category || "Uncategorized";
+      (categories[name] = categories[name] || []).push(p);
+    });
+    var stale = projects.filter(function (p) { return p.proseStale; }).length;
+
+    main.appendChild(h("h1", { text: "Verified project catalog" }));
+    main.appendChild(h("p", { class: "lede", text:
+      "The owner's MasterSite catalog, brought through the evidence gate. Descriptions " +
+      "remain first-party audited narrative; repository, commit, and Pages fields come " +
+      "from MasterSite's recorded GitHub API audit. Open any source or evidence link to review it." }));
+    main.appendChild(h("div", { class: "stats" }, [
+      stat("Published projects", projects.length, "from the latest accepted catalog", "ok"),
+      stat("Categories", Object.keys(categories).length, "owner interest map", ""),
+      stat("Built Pages sites", projects.filter(function (p) { return p.pagesStatus === "built"; }).length,
+           "status recorded by MasterSite", "ok"),
+      stat("Stale descriptions", stale, stale ? "flagged by MasterSite" : "none flagged", stale ? "warn" : "ok"),
+    ]));
+    if (!projects.length) {
+      main.appendChild(empty("No MasterSite catalog claim has passed the evidence gate yet. The next successful catalog read will populate this page."));
+      return;
+    }
+    main.appendChild(h("div", { class: "note" }, [
+      document.createTextNode("Catalog source: "),
+      link(catalog.masterSiteUrl || D.meta.masterSiteUrl, catalog.source || "MasterSite"),
+      document.createTextNode(". Project prose carries its own verified basis; a live Pages status does not turn narrative prose into a GitHub-authored fact."),
+    ]));
+
+    Object.keys(categories).sort().forEach(function (category) {
+      var rows = categories[category].sort(function (a, b) {
+        return String(a.title || a.repo).localeCompare(String(b.title || b.repo));
+      }).map(function (p) {
+        var title = h("div", {}, [
+          link(p.pagesUrl, p.title || p.repo),
+          h("div", { class: "small", text: p.repo || "" }),
+        ]);
+        var description = h("div", {}, [
+          h("div", { text: p.description || "No verified description recorded." }),
+          p.flags && p.flags.length ? h("div", { class: "small warn-text", text: "Flags: " + p.flags.join("; ") }) : null,
+        ]);
+        var audit = h("details", {}, [
+          h("summary", { text: p.lastVerified ? "verified " + p.lastVerified : "verification basis" }),
+          h("p", { class: "small", text: p.verifiedBasis || "No narrative verification basis recorded." }),
+          h("p", { class: "small", text: "Head " + (p.headSha || "—") + " · " +
+            n(p.commits) + " commits · retrieved " + (p.retrievedAt || "—") +
+            " · path " + (p.sourcePath || "—") }),
+          h("p", {}, [link(p.sourceUrl, "API source"), document.createTextNode(" · "),
+            h("a", { href: "evidence.html#claim-" + encodeURIComponent(p.claimId || ""), text: "accepted claim" })]),
+        ]);
+        return tr([td(title), td(description), td([
+          badge(p.pagesStatus || "unreported", p.pagesStatus === "built" ? "ok" : "warn"),
+          document.createTextNode(" "), badge(p.kind || "project", ""),
+        ]), td(audit)]);
+      });
+      main.appendChild(section("project-" + category.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        category, rows.length, table(["Project", "What it does", "Pages", "Audit"], rows)));
+    });
+  }
+
   // =========================================================== EVIDENCE page
   function pageEvidence(main) {
     main.appendChild(h("h1", { text: "Evidence ledger" }));
     main.appendChild(h("p", { class: "lede", text:
-      "Every claim this site is allowed to make, with the URL it was read from, the " +
-      "hash of what came back, and when. Derived claims show the formula and the claim " +
+      "The most recent accepted-claim window, with source URL, source path, retained " +
+      "integrity hash, and capture time; the full append-only ledger is linked below. " +
+      "Wire and projection-only hashes are labelled separately. " +
+      "Derived claims show the formula and the claim " +
       "ids they were computed from, so the arithmetic can be redone by hand." }));
 
     var kinds = D.claimKindCounts || {};
@@ -598,11 +669,14 @@
       stat("negative", n(kinds.negative), "proof of absence", ""),
       stat("documented", n(kinds.documented), "operator's own record", ""),
       stat("Distinct evidence reads", n(D.evidenceTotal), n((D.evidence || []).length) + " claims trace to them", "ok"),
-      stat("Gate rejections", n(D.gateRejections.length), "logged, never deleted", D.gateRejections.length ? "warn" : "ok"),
+      stat("Gate rejections", n(D.gateRejectionsTotal || 0),
+           n(D.gateRejectionWindow || 0) + " recent rows shown · append-only",
+           (D.gateRejectionsTotal || 0) ? "warn" : "ok"),
     ]));
 
     var rej = D.gateRejections || [];
-    main.appendChild(section("gate", "What the evidence gate rejected", rej.length,
+    main.appendChild(section("gate", "What the evidence gate rejected (recent window)",
+      D.gateRejectionsTotal || rej.length,
       rej.length ? table(["Kind", "Source", "Reason"], rej.map(function (r) {
         return tr([td(badge(r.kind || "?", "crit")), td(h("code", { text: r.sourceId || "?" })), td(r.reason)]);
       })) : h("p", { class: "empty", text: "Nothing has been rejected. A permanent zero here would be suspicious — it would mean the gate never sees a claim without evidence." })));
@@ -653,15 +727,28 @@
             h("dl", { class: "kv" }, [
               h("dt", { text: "Topic" }), h("dd", {}, [h("a", { href: "library.html#" + encodeURIComponent(c.topic), text: c.topic })]),
               h("dt", { text: "Field" }), h("dd", {}, [h("code", { text: c.field || "—" })]),
+              c.sourcePath ? h("dt", { text: "Source path" }) : null,
+              c.sourcePath ? h("dd", {}, [h("code", { text: c.sourcePath })]) : null,
+              (c.subjects || []).length ? h("dt", { text: "Subjects" }) : null,
+              (c.subjects || []).length ? h("dd", { class: "small", text: c.subjects.join(", ") }) : null,
               h("dt", { text: "Value" }), h("dd", { text: (typeof c.value === "object" ? JSON.stringify(c.value) : String(c.value)) + (c.unit ? " " + c.unit : "") }),
               h("dt", { text: "Source" }), h("dd", {}, [h("code", { text: c.sourceId }), ev ? document.createTextNode("  ·  captured " + (ev.capturedAt || "—")) : null]),
               ev ? h("dt", { text: "Read from" }) : null,
-              ev ? h("dd", {}, [link(ev.url, short(ev.url, 100))]) : null,
+              ev ? h("dd", {}, [link(ev.url, short(ev.url, 100)),
+                ev.finalUrl && ev.finalUrl !== ev.url ? document.createTextNode(" → ") : null,
+                ev.finalUrl && ev.finalUrl !== ev.url ? link(ev.finalUrl, "final URL") : null]) : null,
               ev ? h("dt", { text: "HTTP / bytes" }) : null,
-              ev ? h("dd", { text: (ev.status === null || ev.status === undefined ? "—" : ev.status) + " · " + n(ev.rawBytes) + " B · mode " + ev.captureMode }) : null,
-              ev ? h("dt", { text: "SHA-256" }) : null,
-              ev ? h("dd", {}, [h("span", { class: "hash", text: ev.sha256 || "—" }),
-                ev.wireHashVerifiable === false ? badge("not wire-verifiable", "warn") : null]) : null,
+              ev ? h("dd", { text: (ev.status === null || ev.status === undefined ? "—" : ev.status) +
+                " · " + n(ev.rawBytes) + " B · " + (ev.contentType || "type unrecorded") +
+                " · mode " + ev.captureMode }) : null,
+              ev ? h("dt", { text: "Integrity / SHA-256" }) : null,
+              ev ? h("dd", {}, [
+                badge(ev.integrity || "missing", ev.integrity === "wire" ? "ok" :
+                  (ev.integrity === "projection" ? "warn" : "crit")),
+                document.createTextNode(" "),
+                h("span", { class: "hash", text: ev.sha256 || "—" }),
+                ev.truncated ? badge("truncated — unusable", "crit") : null,
+              ]) : null,
               c.formula ? h("dt", { text: "Formula" }) : null,
               c.formula ? h("dd", {}, [h("code", { text: c.formula })]) : null,
               (c.computedFrom || []).length ? h("dt", { text: "Computed from" }) : null,
@@ -686,7 +773,8 @@
     main.appendChild(h("p", { class: "lede", text:
       "Every source names its operator and a documentation URL you can open to check " +
       "the endpoint contract. A source is promoted to verified only by a recorded " +
-      "live read — never by hand — and a blocked source produces no claim." }));
+      "live read — never by hand. A failed read itself produces no fresh claim; an " +
+      "older exact-URL seed, when available, is labelled seed-fallback." }));
 
     var src = D.sources || [];
     var verified = src.filter(function (s) { return s.status === "verified-live-read"; }).length;
@@ -694,26 +782,29 @@
     var registered = src.filter(function (s) { return s.status === "registered"; }).length;
 
     main.appendChild(h("div", { class: "stats" }, [
-      stat("Registered", n(src.length), "official operators only", ""),
+      stat("Registered", n(src.length), "each provenance tier is explicit", ""),
       stat("Verified", n(verified), "by a recorded live read", "ok"),
-      stat("Blocked", n(blocked), "last read failed", blocked ? "bad" : "ok"),
+      stat("Blocked", n(blocked), "last conclusive read failed", blocked ? "bad" : "ok"),
       stat("Never read", n(registered), "first read pending", registered ? "warn" : "ok"),
       stat("Excluded", n((D.keyedExcluded || []).length), "require an API key", "warn"),
-      stat("Categories unserved", n((D.categoriesWithoutSource || []).length), "no source can answer", "warn"),
+      stat("Coverage gaps", n((D.categoriesWithoutSource || []).length), "documented partial or missing coverage", "warn"),
     ]));
 
     main.appendChild(section("registry", "Registry", src.length,
-      table(["Source", "Operator", "Status", "Reads", "Last read", "HTTP", "Documentation"],
+      table(["Source", "Operator", "Trust", "Status", "Reads", "Last read", "HTTP", "Documentation"],
         src.map(function (s) {
           return tr([
             td(h("span", { id: s.id }, [h("b", { text: s.name })])),
             td(short(s.operator, 40)),
+            td(badge(s.trustTier || "unclassified",
+              (s.trustTier || "").indexOf("undocumented") >= 0 ||
+              (s.trustTier || "").indexOf("third-party") >= 0 ? "warn" : "mute")),
             td(badge(s.status, s.status === "verified-live-read" ? "ok" : (s.status === "blocked" ? "crit" : "warn"))),
             tdn(s.liveReads), td(s.lastReadAt ? ago(s.lastReadAt) : "—"),
             td(s.lastStatus === null || s.lastStatus === undefined ? "—" : String(s.lastStatus), "num"),
             td(h("span", {}, [link(s.docsUrl, "docs"), document.createTextNode(" · "), link(s.probeUrl, "probe")])),
           ]);
-        }), { nums: [3, 5] })));
+        }), { nums: [4, 6] })));
 
     var health = D.sourceHealth || {};
     if (!health.ran) {
@@ -726,13 +817,13 @@
     } else {
       var hrows = health.results || [];
       var nEgress = hrows.filter(function (r) { return r.egressBlocked; }).length;
-      main.appendChild(section("probe", "Last recorded probe", hrows.length,
+      main.appendChild(section("probe", "Last recorded source-health check", hrows.length,
         h("div", {}, [
           h("p", { class: "small", text:
             "Recorded " + (health.generatedAt || "—") + " in mode `" + (health.mode || "?") +
             "` by `" + (health.lastWriter || "probe") + "`. " +
             n(health.ok) + " read successfully, " + n(health.failed) +
-            " failed on the source's side, " + n(health.inconclusive) +
+            " recorded a health-affecting failure, " + n(health.inconclusive) +
             " reached no verdict. A source's status on this page comes from this " +
             "table and from nothing else." }),
           health.egressBlocked ? h("div", { class: "note warn" }, [
@@ -747,10 +838,12 @@
           table(["Source", "Verdict", "HTTP", "Bytes", "ms", "SHA-256 (16)", "Checked", "Detail"],
             hrows.map(function (r) {
               var verdict = r.ok ? "read ok"
-                : (r.egressBlocked ? "no verdict — egress" : "FAILED");
+                : (!r.verdict ? "no verdict — " + (r.inconclusiveReason ||
+                    (r.egressBlocked ? "runner-egress" : "inconclusive"))
+                  : "FAILED");
               return tr([
                 td(h("span", {}, [h("a", { href: "#" + r.id, text: r.id })])),
-                td(badge(verdict, r.ok ? "ok" : (r.egressBlocked ? "mute" : "crit"))),
+                td(badge(verdict, r.ok ? "ok" : (!r.verdict ? "mute" : "crit"))),
                 td(r.httpStatus === null || r.httpStatus === undefined ? "—" : String(r.httpStatus), "num"),
                 tdn(r.bytes), tdn(r.elapsedMs),
                 td(h("span", { class: "hash", text: r.sha256 || "—" })),
@@ -787,10 +880,10 @@
       })) : empty("Nothing excluded.")));
 
     var gaps = D.categoriesWithoutSource || [];
-    main.appendChild(section("gaps", "Interest categories with no source that can serve them", gaps.length,
-      gaps.length ? table(["Category", "The gap"], gaps.map(function (s) {
+    main.appendChild(section("gaps", "Documented interest-category coverage gaps", gaps.length,
+      gaps.length ? table(["Category", "Missing or partial coverage"], gaps.map(function (s) {
         return tr([td(h("b", { text: s.category })), td(s.gap)]);
-      })) : empty("Every interest category has at least one registered source.")));
+      })) : empty("No interest-category coverage gap is currently recorded.")));
 
     var prof = D.profile || {};
     main.appendChild(section("profile", "Derived interest profile", null,
@@ -933,16 +1026,16 @@
 
     var blocks = [
       ["1. What “thinks” means here", [
-        h("p", { text: "There is no language model in this loop and no API key anywhere in the repository. The reasoning stage is a fixed rule set over the verified ledger: trend deltas, velocity, corroboration counts, acceleration, cross-family presence, and counters moving between cycles. Every published sentence is a template whose slots are filled from claim values." }),
+        h("p", { text: "There is no language model in this loop and no API key anywhere in the repository. The reasoning stage is a fixed rule set over the accepted ledger: trend deltas, velocity, corroboration counts, acceleration, cross-family presence, and counters moving between cycles. Every published sentence is a template whose slots are filled from claim values." }),
         h("p", { text: "That is a deliberate trade. It costs novelty — the engine will not invent a framing nobody wrote down — and buys auditability: any number on this site can be recomputed from the ledger with one command. A model with an API key would need a secret, and adding a secret is manual input, which the brief rules out." }),
       ]],
       ["2. The anti-hallucination contract", [
         h("ol", {}, [
           "No evidence, no claim. Ledger.accept rejects a captured, documented or negative claim with no evidence row, and a derived claim with no lineage or formula. Rejections are counted and published.",
-          "Unreadable is not unknown. A source that fails produces a recorded failure with its HTTP status and a reproduction command, and is marked blocked so no claim can be built from it.",
+          "Unreadable is not unknown. A conclusive source failure is recorded; caller mistakes, local response caps, and runner egress produce no source-health verdict. A failed response yields no fresh claim. An exact-URL seed can only reappear as an explicitly stale seed-fallback.",
           "Yesterday's arithmetic is re-checked today. Every derived claim is recomputed from its recorded inputs each cycle; a mismatch is a drift irregularity and both numbers are shown.",
           "Nothing is inferred from a model's memory. Every fact traces to a URL that was actually read, with a hash.",
-          "Gaps are printed. Topics with no verified claims, families with no source that can answer their question, and sources excluded for needing a key are all listed with the reason.",
+          "Gaps are printed. Topics with no accepted claims, families with no source that can answer their question, and sources excluded for needing a key are all listed with the reason.",
         ].map(function (t) { return h("li", { text: t }); })),
       ]],
       ["3. The cycle", [
@@ -965,8 +1058,8 @@
         h("p", { text: "A forecast that waits for an observation that never arrives does not disappear quietly: pending forecasts are counted, and ones whose metric has stopped being observed are reported as unscoreable rather than kept as if something were still coming." }),
       ]],
       ["5. Why the competition is scored the way it is", [
-        h("p", { text: "Skill, not accuracy, is the headline number: accuracy minus the accuracy of S10_Persistence, which always predicts “no change”. Most real-world daily series are dominated by no-change, so a persona can post a respectable accuracy while demonstrating nothing. Skill removes that." }),
-        h("p", { text: "A persona needs " + (D.leaderboard.qualification || {}).minScoredForecasts + " scored forecasts and a scored null model before it is ranked. Below that it is reported UNRANKED with the reason. It is never shown at 0%, which would present an untested design as a losing one." }),
+        h("p", { text: "Paired skill, not raw accuracy, is the headline number. For each persona, only metric/cycle targets that S10_Persistence also forecast are compared; skill is that persona's accuracy minus persistence accuracy on those exact targets. Comparing each persona with the null's global, differently mixed target set would be invalid." }),
+        h("p", { text: "A persona needs " + (D.leaderboard.qualification || {}).minScoredForecasts + " paired scored forecasts before it is ranked. Below that it is reported UNRANKED with the reason. It is never shown at 0%, which would present an untested design as a losing one." }),
       ]],
       ["6. Known limits", (D.keyedExcluded || []).length ? [
         h("ul", {}, [
@@ -978,10 +1071,10 @@
             "). Each is listed on the Sources page with the reason." }),
           h("li", { text: (D.categoriesWithoutSource || []).length + " interest categories — " +
             (D.categoriesWithoutSource || []).map(function (c) { return c.category; }).join(", ") +
-            " — have no registered source that can answer their question. No claim is made about them." }),
+            " — have documented missing or partial coverage. No claim is made beyond the registered source surface." }),
           h("li", { text: "Some league feeds are undocumented public endpoints (no operator contract, no versioning promise). A claim built from one carries an “undocumented” tag, so the claim itself says what it rests on." }),
           h("li", { text: "GitHub has no trending API. The Search API sorted by stars over a created window is a reproducible substitute, not the same thing." }),
-          h("li", { text: "Seed captures taken by an interactive read are not wire-hash verifiable; those rows are marked and re-read by the next probe." }),
+          h("li", { text: "Seed captures taken by an interactive or projected read are not wire-hash verifiable; those rows are marked projection-only and remain a disclosed historical limitation." }),
         ]),
         h("p", {}, [document.createTextNode("Full list: "), h("a", { href: "ROADMAP.md", text: "ROADMAP.md" }), document.createTextNode(".")]),
       ] : [h("p", { text: "See ROADMAP.md." })]],
@@ -1004,6 +1097,7 @@
   // ------------------------------------------------------------------ boot
   var ROUTES = {
     "index.html": pageToday, "library.html": pageLibrary,
+    "projects.html": pageProjects,
     "leaderboard.html": pageLeaderboard, "ideas.html": pageIdeas,
     "evidence.html": pageEvidence, "sources.html": pageSources,
     "irregularities.html": pageIrregularities, "cycles.html": pageCycles,

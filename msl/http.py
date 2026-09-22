@@ -11,6 +11,7 @@ import gzip
 import hashlib
 import json
 import ssl
+import threading
 import time
 import urllib.error
 import urllib.parse
@@ -20,6 +21,28 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, Optional
 
 from . import config
+
+
+_LAST_REQUEST_BY_HOST: Dict[str, float] = {}
+_PACE_LOCK = threading.Lock()
+
+# These statuses establish that the generated request was unusable, not that the
+# remote service is unavailable. Keep this policy shared by cycle and daily probe.
+CALLER_FAULT_STATUSES = frozenset({400, 404, 405, 422})
+
+
+def _pace(url: str) -> None:
+    """Honor a host operator's minimum interval across all callers in-process."""
+    host = (urllib.parse.urlsplit(url).hostname or "").lower()
+    minimum = float(config.HOST_MIN_INTERVAL_SECONDS.get(host, 0.0))
+    if minimum <= 0:
+        return
+    with _PACE_LOCK:
+        now = time.monotonic()
+        wait = minimum - (now - _LAST_REQUEST_BY_HOST.get(host, 0.0))
+        if wait > 0:
+            time.sleep(wait)
+        _LAST_REQUEST_BY_HOST[host] = time.monotonic()
 
 
 @dataclass
@@ -36,10 +59,14 @@ class FetchResult:
     rate_limited: bool = False
     final_url: str = ""
     content_type: str = ""
+    #: True when the response exceeded MAX_RESPONSE_BYTES. A truncated body is
+    #: never parseable evidence, even if its HTTP status was 200.
+    truncated: bool = False
 
     @property
     def ok(self) -> bool:
-        return self.status is not None and 200 <= self.status < 300
+        return (self.status is not None and 200 <= self.status < 300
+                and not self.truncated)
 
     @property
     def sha256(self) -> str:
@@ -53,11 +80,30 @@ class FetchResult:
         return self.body.decode("utf-8", "replace")
 
     def json(self) -> Any:
-        """Parse the body, or raise.  Callers must treat a raise as a failed read."""
-        return json.loads(self.text())
+        """Parse strict JSON, or raise; NaN/Infinity are not JSON values."""
+        def reject_constant(token: str) -> None:
+            raise ValueError(f"non-JSON numeric constant {token}")
+        return json.loads(self.text(), parse_constant=reject_constant)
 
     def describe_error(self) -> str:
         return f"{self.error_kind or 'unknown'}: {self.error or ''}".strip()
+
+
+def health_inconclusive_reason(result: FetchResult) -> str:
+    """Why this read cannot support a verdict about source availability.
+
+    A TLS egress policy is about the runner, selected 4xx statuses are about the
+    caller-generated URL, and ``ResponseTooLarge`` is this engine's own cap.
+    """
+    if result.ok:
+        return ""
+    if result.error_kind == "EgressBlocked":
+        return "runner-egress"
+    if result.status in CALLER_FAULT_STATUSES:
+        return "caller-request"
+    if result.error_kind == "ResponseTooLarge":
+        return "local-response-cap"
+    return ""
 
 
 @dataclass
@@ -133,6 +179,7 @@ def fetch(url: str, headers: Optional[Dict[str, str]] = None,
         res.attempts = attempt
         t0 = time.monotonic()
         try:
+            _pace(url)
             req = urllib.request.Request(url, headers=hdrs)
             with urllib.request.urlopen(req, timeout=timeout or config.HTTP_TIMEOUT,
                                         context=ctx) as r:
@@ -140,22 +187,42 @@ def fetch(url: str, headers: Optional[Dict[str, str]] = None,
                 res.status = r.status
                 res.content_type = r.headers.get("Content-Type") or ""
                 res.final_url = r.geturl() or url
-                res.body = _decompress(r, raw)[:limit]
+                decoded = _decompress(r, raw)
+                res.truncated = len(decoded) > limit
+                res.body = decoded[:limit]
                 res.elapsed_ms = int((time.monotonic() - t0) * 1000)
-                res.error = None
-                res.error_kind = None
+                if res.truncated:
+                    res.error_kind = "ResponseTooLarge"
+                    res.error = (f"response exceeded the {limit}-byte safety cap; "
+                                 "the truncated body was not accepted as evidence")
+                else:
+                    res.error = None
+                    res.error_kind = None
                 return res
         except urllib.error.HTTPError as e:
             res.status = e.code
             res.error_kind = "HTTPError"
             res.error = f"HTTP {e.code} {e.reason}"
-            # 403/429 from GitHub mean "rate limited", not "broken"; do not hammer.
-            res.rate_limited = e.code in (403, 429)
+            # 429 has standard rate-limit semantics. A generic 403 is merely
+            # forbidden; call it rate-limited only when operator headers say so.
+            err_headers = e.headers or {}
+            res.rate_limited = (
+                e.code == 429 or
+                (e.code == 403 and
+                 (str(err_headers.get("X-RateLimit-Remaining", "")) == "0" or
+                  bool(err_headers.get("Retry-After"))))
+            )
             try:
                 res.body = e.read(limit)[:limit]
             except Exception:
                 res.body = b""
-            res.content_type = (e.headers or {}).get("Content-Type") or ""
+            res.content_type = err_headers.get("Content-Type") or ""
+            # Retrying a caller error cannot repair the request and rapidly
+            # retrying 403/429 is exactly what operators ask clients not to do.
+            # A later scheduled cycle is the safe retry for every HTTP 4xx.
+            if 400 <= e.code < 500:
+                res.elapsed_ms = int((time.monotonic() - t0) * 1000)
+                return res
         except urllib.error.URLError as e:
             reason = getattr(e, "reason", e)
             res.error_kind = type(reason).__name__ if not isinstance(reason, str) else "URLError"
