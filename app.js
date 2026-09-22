@@ -41,7 +41,10 @@
     return (v * 100).toFixed(digits === undefined ? 1 : digits) + "%";
   }
   function signed(v, digits) {
-    if (v === null || v === undefined) return "—";
+    // NaN must never reach the page.  A renamed or missing field used to render
+    // as the literal string "NaN" in the cycle-delta line; showing an em dash is
+    // honest, showing NaN is a bug the reader has to work around.
+    if (v === null || v === undefined || !Number.isFinite(Number(v))) return "—";
     var x = Number(v);
     return (x > 0 ? "+" : "") + x.toFixed(digits === undefined ? 2 : digits);
   }
@@ -75,7 +78,16 @@
   }
   function tr(cells) { return h("tr", {}, cells); }
   function td(x, cls) {
-    return h("td", { class: cls || null }, [x && x.nodeType ? x : document.createTextNode(x === null || x === undefined ? "—" : String(x))]);
+    // Accepts a value, one node, or an array of nodes.  An array used to fall
+    // through to String(x) and print "[object Object]" in the cell, which is a
+    // bug a reader cannot tell apart from real data.
+    var kids;
+    if (x && x.nodeType) kids = [x];
+    else if (Array.isArray(x)) kids = x.map(function (c) {
+      return c && c.nodeType ? c : document.createTextNode(String(c));
+    });
+    else kids = [document.createTextNode(x === null || x === undefined ? "—" : String(x))];
+    return h("td", { class: cls || null }, kids);
   }
   function tdn(v, digits) { return td(n(v, digits), "num"); }
   function section(id, title, count, body) {
@@ -207,11 +219,12 @@
       var a = hist[0], b = hist[1];
       delta = h("div", { class: "note" }, [
         h("b", { text: "Since the previous cycle (" + a.cycle + " → " + b.cycle + "): " }),
-        document.createTextNode("claims " + signed(b.claims - a.claims, 0) +
-          ", topics " + signed(b.topics - a.topics, 0) +
+        document.createTextNode("claims " + signed(b.claimsTotal - a.claimsTotal, 0) +
+          ", topics " + signed(b.topicsTotal - a.topicsTotal, 0) +
           ", ideas " + signed(b.ideas - a.ideas, 0) +
-          ", forecasts scored " + signed(b.scored - a.scored, 0) +
-          ", open flags " + signed(b.irregularities - a.irregularities, 0) + "."),
+          ", forecasts scored " + signed(b.forecastsScored - a.forecastsScored, 0) +
+          ", open flags " + signed(b.irregularitiesOpen - a.irregularitiesOpen, 0) +
+          ", reads " + signed(b.fetchOk - a.fetchOk, 0) + "."),
       ]);
     }
     if (delta) main.appendChild(delta);
@@ -741,7 +754,7 @@
           return prof.categories[b] - prof.categories[a];
         }).map(function (k) {
           return tr([td(k), td(prof.categories[k].toFixed(2), "num"),
-            td([h("span", { class: "small", text: ((prof.categoryKeywords || {})[k] || []).join(", ") || "—" })])]);
+            td(h("span", { class: "small", text: ((prof.categoryKeywords || {})[k] || []).join(", ") || "—" }))]);
         }), { nums: [1] }),
       ]) : h("div", { class: "note crit", text: "The interest profile could not be built: " + (prof.reason || "unknown reason") + ". No profile was invented." })));
   }

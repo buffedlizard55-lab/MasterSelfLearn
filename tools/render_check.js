@@ -15,6 +15,10 @@ var ROOT = path.resolve(__dirname, '..');
 
 function Node(tag) {
   this.tagName = (tag || '').toUpperCase();
+  // nodeType matters: td() branches on it to decide whether it was handed an
+  // element or a value.  Without it every link cell stringifies to
+  // "[object Object]" and the check reports a bug that the browser would not have.
+  this.nodeType = (tag === '#text') ? 3 : (tag === '#fragment') ? 11 : 1;
   this.children = []; this.attributes = {}; this._text = ''; this._html = '';
   this.parentNode = null; this.style = {}; this.className = ''; this.open = false;
 }
@@ -103,6 +107,14 @@ pages.forEach(function (p) {
   }
   if (main.children.length === 0) {
     bad++; console.log('BLANK  ' + p + ': #main has no children'); return;
+  }
+  var junk = txt.match(/\b(NaN|undefined|Infinity|\[object Object\])\b/g);
+  if (junk) {
+    bad++;
+    var seen = {}; junk.forEach(function (j) { seen[j] = (seen[j] || 0) + 1; });
+    console.log('BADVAL ' + p + ': ' + JSON.stringify(seen) + '  e.g. "' +
+                txt.slice(Math.max(0, txt.indexOf(junk[0]) - 60), txt.indexOf(junk[0]) + 60) + '"');
+    return;
   }
   console.log('ok     ' + p.padEnd(22) + String(main.children.length).padStart(4) + ' nodes ' +
               String(txt.length).padStart(8) + ' chars');
