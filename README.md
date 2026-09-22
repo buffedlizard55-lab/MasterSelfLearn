@@ -16,34 +16,34 @@ It requires **no manual input**. Every cycle is triggered by
 <!-- AUTO:COUNTS:BEGIN — regenerated every cycle, do not edit -->
 | Metric | Value |
 |---|---|
-| Cycle | **22** |
-| Accepted claims in the ledger | **18,737** |
-| — schema-v2 strict trace contract | 3,630 |
+| Cycle | **23** |
+| Accepted claims in the ledger | **19,851** |
+| — schema-v2 strict trace contract | 4,744 |
 | — legacy trace contract (reported, not upgraded) | 15,107 |
-| — captured from accepted source reads | 12,398 |
-| — derived by recorded arithmetic | 6,325 |
-| — negative (proof of absence) | 14 |
+| — captured from accepted source reads | 13,121 |
+| — derived by recorded arithmetic | 6,713 |
+| — negative (proof of absence) | 17 |
 | Claims rejected by the evidence gate | **0** |
-| Derived claims rechecked this cycle | 1,784 |
+| Derived claims rechecked this cycle | 1,953 |
 | Derived claims that no longer recompute | **0** |
-| Topics in the library | **145** (new this cycle: 6) |
-| Published insights | 406 |
-| Forecasts issued this cycle | 1,070 |
-| Forecasts scored against outcomes | 749 |
+| Topics in the library | **151** (new this cycle: 6) |
+| Published insights | 408 |
+| Forecasts issued this cycle | 1,116 |
+| Forecasts scored against outcomes | 684 |
 | Ideas in the competition | **28** (promoted: 0) |
-| Open irregularities | **29** (new: 0) |
+| Open irregularities | **27** (new: 0) |
 | Sources registered | 31 |
 | — verified by a recorded live read | 28 |
 | — currently blocked | 3 |
 | — never read (not broken, just unprobed) | 0 |
 | Reads this cycle (ok / failed) | 64 / 4 |
 | Reads planned / refused by the cap | 68 / 0 |
-| Forecasts waiting for an observation | 2,120 |
-| Forecasts that can never be scored | 8 |
-| Bytes read this cycle | 2,210,107 |
+| Forecasts waiting for an observation | 2,552 |
+| Forecasts that can never be scored | 0 |
+| Bytes read this cycle | 2,231,352 |
 | Manual inputs required | **0** |
 
-Generated `2026-09-22T20:52:29Z` by `msl/pipeline.py`. Quoting any figure outside this block
+Generated `2026-09-22T23:28:37Z` by `msl/pipeline.py`. Quoting any figure outside this block
 means quoting something the next cycle has already superseded.
 <!-- AUTO:COUNTS:END -->
 
@@ -114,14 +114,14 @@ nothing, and the table says so.
 
 | # | Persona | Name | Scored | Accuracy | Skill vs null |
 |---|---|---|---|---|---|
-| 1 | `S01_MomentumPersist` | Momentum persistence | 296 | 48.0% | +5.7 pts |
-| 2 | `S05_EvidenceDensity` | Evidence density | 302 | 47.4% | +4.3 pts |
-| 3 | `S07_ChangeHazard` | Change hazard | 64 | 96.9% | +0.0 pts |
-| 4 | `S10_Persistence` | Persistence (null model) | 2106 | 88.3% | +0.0 pts |
-| 5 | `S06_MemoryWeighted` | Skill-weighted memory | 561 | 31.6% | -28.5 pts |
-| 6 | `S03_Acceleration` | Acceleration | 436 | 23.6% | -32.8 pts |
-| 7 | `S04_ConsensusFade` | Consensus fade | 435 | 20.0% | -36.8 pts |
-| 8 | `S02_MeanRevert` | Mean reversion | 549 | 10.6% | -49.7 pts |
+| 1 | `S05_EvidenceDensity` | Evidence density | 286 | 52.1% | +11.5 pts |
+| 2 | `S01_MomentumPersist` | Momentum persistence | 253 | 50.6% | +9.5 pts |
+| 3 | `S07_ChangeHazard` | Change hazard | 69 | 97.1% | +0.0 pts |
+| 4 | `S10_Persistence` | Persistence (null model) | 2165 | 87.0% | +0.0 pts |
+| 5 | `S06_MemoryWeighted` | Skill-weighted memory | 612 | 32.4% | -25.3 pts |
+| 6 | `S04_ConsensusFade` | Consensus fade | 382 | 28.3% | -25.4 pts |
+| 7 | `S03_Acceleration` | Acceleration | 386 | 18.7% | -34.7 pts |
+| 8 | `S02_MeanRevert` | Mean reversion | 531 | 8.9% | -50.3 pts |
 
 ### Unranked
 
@@ -145,23 +145,24 @@ corroboration is promoted.
 | 1 | Track “repo:brayonpi/hexstellar” as a multi-source subject | 0.525 | convergence | 3 |
 | 2 | Track “repo:browser-use/jev-ultrafast” as a multi-source subject | 0.525 | convergence | 3 |
 | 3 | Track “repo:zai-org/zcode” as a multi-source subject | 0.525 | convergence | 3 |
-| 4 | Track “brayonpi/hexstellar” as a multi-source subject | 0.522 | convergence | 3 |
-| 5 | Track “browser-use/jev-ultrafast” as a multi-source subject | 0.522 | convergence | 3 |
+| 4 | Track “brayonpi/hexstellar” as a multi-source subject | 0.520 | convergence | 3 |
+| 5 | Track “browser-use/jev-ultrafast” as a multi-source subject | 0.520 | convergence | 3 |
 
 ## What the engine has learned about itself
 
 These are counted, not reflected. Each lesson carries the integers behind it.
 `data/memory.json → lessons` is the source of truth and is regenerated every
-cycle; the rows below were true as of cycle 22 and the next cycle supersedes
-them.
+cycle; the rows below were recomputed from the cycle 23 ledger and the next
+cycle supersedes them.
 
 | | Lesson |
 |---|---|
-| `L1` | Topics corroborated by two or more independent sources hold ~17× more accepted claim rows on average (738 vs 43) than single-source topics, but not more discovery signals (11.6 vs 13.4). Entity attribution is row-provable only from schema v2, and 10,170 accepted rows predate it. |
-| `L2` | The evidence gate has rejected 0 of 18737 attempted claims (0.00%). |
-| `L3` | 127 of 145 tracked topics (87.6%) have at least one accepted claim credit. |
-| `L4` | Of 4 idea kinds, “convergence” holds the highest mean robustness (0.492 over 8 ideas). |
-| `L5` | 27 of 31 registered sources are reading reliably (EMA ≥ 0.8); 3 are effectively unreadable (EMA < 0.2). |
+| `L1` | Topics corroborated by two or more independent sources hold 16.8× more accepted claim rows on average (778 vs 46) than single-source topics, but not more discovery signals (12.4 vs 14.0). Entity attribution is row-provable only from schema v2, and 10,234 accepted rows predate it. |
+| `L2` | The evidence gate has rejected 0 of 19851 attempted claims (0.00%). |
+| `L3` | 125 of 151 tracked topics (82.8%) have at least one accepted claim row that names them; 19 more carry only pre-schema-v2 claim credit (disclosed, not counted as verified). |
+| `L4` | Of 4 idea kinds, “convergence” holds the highest mean robustness (0.491 over 8 ideas). |
+| `L5` | 28 of 31 registered sources are reading reliably (EMA ≥ 0.8); 3 are effectively unreadable (EMA < 0.2). |
+
 
 ## Site
 
@@ -214,7 +215,7 @@ Python 3.9+, standard library only. No `pip install`, no build step, no keys.
 
 120 registered — 6 critical,
 70 warn, 44 info;
-29 open, 91 resolved,
+27 open, 93 resolved,
 21 standing (structural limits that do not auto-resolve).
 
 Full register: [`IRREGULARITIES.md`](IRREGULARITIES.md) or
