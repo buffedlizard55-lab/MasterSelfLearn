@@ -841,7 +841,7 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
                                       "items": [i.as_dict() for i in (rr.insights if 'rr' in dir() else [])]})
     _write_json(d / "leaderboard.json", {"generatedAt": now, "cycle": cycle, **lb})
     _write_json(d / "sources.json", {"generatedAt": now, "cycle": cycle,
-                                     "sources": [s.as_dict() for s in REGISTRY],
+                                     "sources": [s.as_dict(now=now) for s in REGISTRY],
                                      "keyedExcluded": _keyed_excluded(),
                                      "categoriesWithoutSource": _categories_without_source()})
     _write_json(d / "profile.json", profile)
@@ -1024,16 +1024,86 @@ def derive_lessons_and_record(memory, ledger, library, ideas, cycle, now, rep) -
 # --------------------------------------------------------------------------- #
 # discovery
 # --------------------------------------------------------------------------- #
+def unsupported_topic_report(ledger, library: Library, cycle: int) -> Dict[str, Any]:
+    """The two unsupported classes, computed the way the register computes them.
+
+    ``unsupported``   no claim row names the topic (neither ``topic`` nor
+                      ``subjects``) *and* the persisted credit accumulator is
+                      zero, the topic is not retired/blocked, and it is at
+                      least two cycles old.  These are the Library page's
+                      honest gaps.
+    ``creditOnly``    zero row-provable support but nonzero persisted credit:
+                      pre-schema-v2 history the rows can no longer prove.
+                      Disclosed, never called "unsupported".
+
+    The register block and ``python3 -m msl.cli unsupported-topics`` both call
+    this, so the published finding and its own reproduction command can no
+    longer disagree about the population — which they did, for twenty cycles.
+    """
+    counts = ledger.topics_with_claims()
+    unsupported = sorted(
+        (t for slug, t in library.topics.items()
+         if t.status not in (STATUS_RETIRED, STATUS_BLOCKED)
+         and counts.get(slug, 0) == 0 and t.claims == 0
+         and cycle - t.created_cycle >= 2),
+        key=lambda t: t.created_cycle)
+    credit_only = sorted(
+        (t for slug, t in library.topics.items()
+         if counts.get(slug, 0) == 0 and t.claims > 0),
+        key=lambda t: t.created_cycle)
+    return {
+        "cycle": cycle,
+        "unsupported": [{"slug": t.slug, "createdCycle": t.created_cycle,
+                         "status": t.status, "signals": t.signals}
+                        for t in unsupported],
+        "creditOnly": [{"slug": t.slug, "createdCycle": t.created_cycle,
+                        "creditedClaims": t.claims, "signals": t.signals}
+                       for t in credit_only],
+    }
+
+
 def _seed_library(library: Library, cycle: int, now: str, d: pathlib.Path,
                   register: Register) -> None:
-    """Create one topic per family, on the first cycle only."""
+    """Create one topic per family, on the first cycle only, and reconcile status.
+
+    A family is ``blocked-no-source`` only when *no* registered source can serve
+    it at all.  Travel & Korea used to be marked blocked because lodging and
+    airfare pricing have no keyless official API — but nominatim IS registered,
+    reading, and able to answer the geocoding half of the family's question, so
+    the family is honestly *active with a disclosed partial-coverage note*.
+    While it was marked blocked, its one content read was also being swallowed
+    by the probe (see ``msl/tasks.py``), so the Library page showed a blocked
+    family with zero claims while the same URL's facts were filed under the
+    maintenance topic every cycle.  Both halves of that contradiction are fixed
+    here and in the planner.
+    """
     for fam in FAMILIES:
-        if library.get(fam.slug) is None:
+        t = library.get(fam.slug)
+        if t is None:
             t = library.ensure(fam.slug, fam.title, fam.slug, now, cycle,
                                origin="family-seed", status=STATUS_ACTIVE,
                                notes=fam.question)
             t.claims = 0
-            if fam.blocked_reason:
+        served = any(sid in BY_ID for sid in fam.sources)
+        if fam.blocked_reason:
+            if served:
+                # Partial coverage: a source answers part of the question.  The
+                # note stays visible, but "blocked-no-source" would be a false
+                # statement about a family that is being read every cycle.
+                if t.status == STATUS_BLOCKED:
+                    t.status = STATUS_ACTIVE
+                t.notes = f"{fam.question}  Partial coverage: {fam.blocked_reason}"
+                # Pinned to the fingerprint this entry was minted with (IRR-001)
+                # so correcting the overreaching title does not strand the old
+                # row open forever while minting a duplicate beside it.
+                register.add(INFO,
+                             f"“{fam.title}” is only partially covered by its registered sources",
+                             fam.blocked_reason, cycle, now,
+                             repro=f"python3 -c \"from msl.topics import FAMILY_BY_SLUG; "
+                                   f"print(FAMILY_BY_SLUG['{fam.slug}'].blocked_reason)\"",
+                             topic=fam.slug, standing=True,
+                             fingerprint="94cf565596bf")
+            else:
                 t.status = STATUS_BLOCKED
                 t.notes = fam.blocked_reason
                 register.add(INFO, f"“{fam.title}” has no source that can answer its question",
@@ -1126,11 +1196,15 @@ def _auto_flags(register: Register, cycle: int, now: str, ledger: Ledger,
                      source_id=rej.get("sourceId", ""), topic=rej.get("topic", ""))
 
     counts = ledger.topics_with_claims()
-    unsupported = sorted(
-        (t for slug, t in library.topics.items()
-         if t.status not in (STATUS_RETIRED, STATUS_BLOCKED)
-         and counts.get(slug, 0) == 0 and cycle - t.created_cycle >= 2),
-        key=lambda t: t.created_cycle)
+    # "No verified claims" means BOTH populations are empty: no claim row names
+    # the topic (topic or subjects) AND the persisted credit accumulator is
+    # zero.  This used to test only the row-provable count while the register's
+    # own repro command tested only the credit — two different populations, so
+    # the register named topics as unsupported that the Library page credited
+    # with up to 62 claims in the same cycle.  A topic with legacy credit but
+    # no provable row is a *disclosure*, reported separately below.
+    report = unsupported_topic_report(ledger, library, cycle)
+    unsupported = [library.topics[s["slug"]] for s in report["unsupported"]]
     if unsupported:
         names = ", ".join(t.slug for t in unsupported[:12])
         more = "" if len(unsupported) <= 12 else f" (+{len(unsupported) - 12} more)"
@@ -1142,7 +1216,29 @@ def _auto_flags(register: Register, cycle: int, now: str, ledger: Ledger,
                      f"topic matters, the fix is to register a source that can answer it — "
                      f"not to write prose about it.",
                      cycle, now,
-                     repro="python3 -c \"import json;[print(t['slug']) for t in json.load(open('data/library.json'))['topics'] if t['claims']==0]\"",
+                     repro="python3 -m msl.cli unsupported-topics",
+                     topic="library")
+
+    # Legacy claim credit that the claim rows can no longer prove.  Entity
+    # attribution was only persisted from schema v2; before that, a fact was
+    # credited to its entity topics at accept time but the row kept only the
+    # broad family topic.  The credit is real history, so the topic is NOT
+    # called unsupported — but the site must not present it as row-provable
+    # either.  One aggregated disclosure, never N per-topic rows.
+    credit_only = [library.topics[s["slug"]] for s in report["creditOnly"]]
+    if credit_only:
+        names = ", ".join(t.slug for t in credit_only[:8])
+        more = "" if len(credit_only) <= 8 else f" (+{len(credit_only) - 8} more)"
+        register.add(INFO, "Claim credits the ledger rows can no longer prove",
+                     f"{len(credit_only)} tracked topic(s) carry persisted claim credit "
+                     f"from cycles before schema-v2 subjects existed, and no accepted "
+                     f"claim row still names them: {names}{more}.  The credit is kept as "
+                     f"history and shown separately on the Library page as "
+                     f"“credited claims”; it is not counted as verified support, and "
+                     f"row-provable support will grow as new cycles observe these "
+                     f"entities again.",
+                     cycle, now,
+                     repro="python3 -m msl.cli unsupported-topics   # prints both classes",
                      topic="library")
 
     for row in lb.get("unranked", []):

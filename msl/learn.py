@@ -98,34 +98,62 @@ def derive_lessons(memory: Dict[str, Any], ledger, library, ideas) -> List[Dict[
     if not claims:
         return out
 
-    # L1 — does multi-source corroboration predict persistence?
-    multi, single = [], []
+    # L1 — what does multi-source corroboration actually predict?
+    #
+    # This used to bucket topics by the sources seen in ``c.topic`` alone.  Only
+    # the family slugs ever appear there, every family has ``signals == 1``, and
+    # the lesson confidently published "1.00 signals against 1.00 signals — a
+    # ratio of 1.00×" as if it were a finding.  Entity attribution lives in
+    # ``c.subjects`` (schema v2), so the buckets must be built from
+    # topic+subjects, and derived claims are excluded because ``source_id ==
+    # "derived"`` is our own arithmetic, not a second witness.
     per_topic_srcs: Dict[str, set] = {}
-    per_topic_signals: Dict[str, int] = {}
+    per_topic_rows: Dict[str, int] = {}
+    legacy_rows_no_subjects = 0
     for c in claims:
-        per_topic_srcs.setdefault(c.topic, set()).add(c.source_id)
-    for t in library.topics.values():
-        n = len(per_topic_srcs.get(t.slug, set()))
-        if n >= 2:
-            multi.append(t.signals)
-        elif n == 1:
-            single.append(t.signals)
+        if c.source_id == "derived":
+            continue
+        if not c.subjects:
+            legacy_rows_no_subjects += 1
+        for slug in dict.fromkeys([c.topic] + list(c.subjects)):
+            if not slug:
+                continue
+            per_topic_srcs.setdefault(slug, set()).add(c.source_id)
+            per_topic_rows[slug] = per_topic_rows.get(slug, 0) + 1
+    multi = [t for t in library.topics.values()
+             if len(per_topic_srcs.get(t.slug, set())) >= 2]
+    single = [t for t in library.topics.values()
+              if len(per_topic_srcs.get(t.slug, set())) == 1]
     if multi and single:
-        am = sum(multi) / len(multi)
-        asg = sum(single) / len(single)
-        if asg > 0:
-            out.append({
-                "id": "L1",
-                "statement": (f"Topics backed by two or more independent sources have "
-                              f"averaged {am:.2f} signals against {asg:.2f} for "
-                              f"single-source topics — a ratio of {am / asg:.2f}×."),
-                "counts": {"multiSourceTopics": len(multi), "singleSourceTopics": len(single),
-                           "meanSignalsMulti": round(am, 4), "meanSignalsSingle": round(asg, 4)},
-                "implication": ("Corroboration is a better promotion signal than raw signal "
-                                "count, so the discovery stage requires "
-                                f"{config.MIN_SIGNALS_TO_PROPOSE_TOPIC} signals before a topic "
-                                "leaves candidate status."),
-            })
+        sig_m = sum(t.signals for t in multi) / len(multi)
+        sig_s = sum(t.signals for t in single) / len(single)
+        rows_m = sum(per_topic_rows.get(t.slug, 0) for t in multi) / len(multi)
+        rows_s = sum(per_topic_rows.get(t.slug, 0) for t in single) / len(single)
+        claims_phrase = (f"{rows_m / rows_s:.1f}× more accepted claim rows on average "
+                         f"({rows_m:.0f} vs {rows_s:.0f})" if rows_s > 0 else
+                         f"accepted claim rows ({rows_m:.0f} vs none)")
+        signals_phrase = (f"not more discovery signals ({sig_m:.1f} vs {sig_s:.1f})"
+                          if sig_m <= sig_s else
+                          f"and more discovery signals ({sig_m:.1f} vs {sig_s:.1f})")
+        out.append({
+            "id": "L1",
+            "statement": (f"Topics corroborated by two or more independent sources hold "
+                          f"{claims_phrase} than single-source topics, but {signals_phrase}. "
+                          f"Entity attribution is row-provable only from schema v2, and "
+                          f"{legacy_rows_no_subjects:,} accepted rows predate it, so "
+                          f"single-source buckets may understate older support."),
+            "counts": {"multiSourceTopics": len(multi), "singleSourceTopics": len(single),
+                       "meanClaimRowsMulti": round(rows_m, 2),
+                       "meanClaimRowsSingle": round(rows_s, 2),
+                       "meanSignalsMulti": round(sig_m, 2),
+                       "meanSignalsSingle": round(sig_s, 2),
+                       "legacyRowsWithoutSubjects": legacy_rows_no_subjects},
+            "implication": ("Corroboration predicts evidence depth, not signal frequency: "
+                            "the discovery stage still requires "
+                            f"{config.MIN_SIGNALS_TO_PROPOSE_TOPIC} signals before a topic "
+                            "leaves candidate status, and multi-source support is what "
+                            "deepens the reads that follow."),
+        })
 
     # L2 — how often does the evidence gate actually reject something?
     total = len(claims) + len(ledger.rejections)
@@ -142,22 +170,35 @@ def derive_lessons(memory: Dict[str, Any], ledger, library, ideas) -> List[Dict[
                             "with this many sources."),
         })
 
-    # L3 — use the library's persisted claim credits.  ``c.topic`` is the broad
-    # family for most facts; discovered entities are represented in ``subjects``
-    # only on schema-v2 rows, so counting raw claim topics either includes the
-    # non-library ``source-health`` topic or erases legacy entity support.
-    supported = sum(1 for t in library.topics.values() if t.claims > 0)
+    # L3 — library coverage, in the two populations that actually exist.
+    # ``topic.claims`` is an accumulator that predates schema-v2 subjects: it
+    # kept credits for entity topics whose claim rows never recorded the entity.
+    # A lesson that counts only that credit overstates what the ledger can
+    # re-prove; one that counts only row-provable support erases real legacy
+    # history.  Report both, labelled, and never blend them into one number.
+    row_counts = ledger.topics_with_claims()
+    row_provable = sum(1 for slug in library.topics if row_counts.get(slug, 0) > 0)
+    credit_only = sum(1 for slug, t in library.topics.items()
+                      if row_counts.get(slug, 0) == 0 and t.claims > 0)
     tracked = len(library.topics)
     if tracked:
-        pct = supported / tracked * 100
+        pct = row_provable / tracked * 100
+        extra = (f" {credit_only} more carry only pre-schema-v2 claim credit, which "
+                 f"the claim rows can no longer prove; they are disclosed on the "
+                 f"Library page, not counted as verified."
+                 if credit_only else "")
         out.append({
             "id": "L3",
-            "statement": (f"{supported} of {tracked} tracked topics "
-                          f"({pct:.1f}%) have at least one accepted claim credit."),
-            "counts": {"topicsWithClaims": supported, "topicsTracked": tracked,
-                       "percent": round(pct, 2)},
+            "statement": (f"{row_provable} of {tracked} tracked topics ({pct:.1f}%) "
+                          f"have at least one accepted claim row that names them."
+                          f"{extra}"),
+            "counts": {"topicsTracked": tracked, "topicsWithClaimRows": row_provable,
+                       "topicsWithCreditOnly": credit_only,
+                       "topicsWithNeither": tracked - row_provable - credit_only,
+                       "percentRowProvable": round(pct, 2)},
             "implication": ("Anything below 100% is a real coverage gap and is listed as such "
-                            "on the site rather than filled with prose."),
+                            "on the site rather than filled with prose. A topic counted "
+                            "only by legacy credit is a disclosure, not a verification."),
         })
 
     # L4 — which idea kinds survive?

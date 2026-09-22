@@ -49,6 +49,36 @@ class SourceRegistry(unittest.TestCase):
         for g in INTEREST_CATEGORIES_WITHOUT_A_SOURCE:
             self.assertTrue(g["gap"], f"{g['category']} gap with no explanation")
 
+    def test_date_windowed_probe_urls_render_against_the_clock(self):
+        """Three probe URLs carry a date window.  They used to be frozen
+        literals (``created:>=2026-09-14``, ``starttime=2026-09-14``,
+        ``date=2026-09-20``), so the probe re-read a stale window forever.
+        The template must render to the caller's clock, and a rendered probe
+        URL must never still contain a placeholder."""
+        from msl.sources import render_probe_url
+        for s in REGISTRY:
+            if "{" not in s.probe_url:
+                continue
+            a = render_probe_url(s.probe_url, "2026-09-22T21:00:00Z")
+            b = render_probe_url(s.probe_url, "2026-10-22T21:00:00Z")
+            self.assertNotIn("{", a, f"{s.id}: placeholder survived rendering")
+            self.assertNotIn("2026-09-14", a, f"{s.id}: the frozen date is back")
+            self.assertNotEqual(a, b, f"{s.id}: the window did not move with the clock")
+            for d in __import__("re").findall(r"2026-\d{2}-\d{2}", a):
+                self.assertIn(d, ("2026-09-15", "2026-09-22"),
+                              f"{s.id}: unexplained date {d} in rendered probe")
+
+    def test_owner_timezone_decides_the_mlb_probe_day(self):
+        """At 00:30 UTC it is still the previous day in San Francisco; the MLB
+        probe must ask for the owner's calendar day, not UTC's."""
+        from msl.sources import render_probe_url
+        self.assertIn("date=2026-09-22",
+                      render_probe_url("https://x/schedule?date={owner_today}",
+                                       "2026-09-23T00:30:00Z"))
+        self.assertIn("date=2026-09-23",
+                      render_probe_url("https://x/schedule?date={owner_today}",
+                                       "2026-09-23T07:30:00Z"))
+
     def test_undocumented_endpoints_carry_the_marker(self):
         """No official contract page was located for the league feeds; the registry
         must say so rather than implying one exists."""

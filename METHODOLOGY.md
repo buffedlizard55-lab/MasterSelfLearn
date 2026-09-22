@@ -137,9 +137,9 @@ supporting count is not written. Current lessons:
 
 | | Counts |
 |---|---|
-| `L1` | do multi-source topics persist longer than single-source ones |
+| `L1` | do multi-source topics hold more claim rows than single-source ones (bucketed by topic+subjects, derived claims excluded; also reports whether their *signal* counts differ, and says so plainly when they do not) |
 | `L2` | what fraction of attempted claims the gate rejects |
-| `L3` | what fraction of tracked topics actually have evidence |
+| `L3` | what fraction of tracked topics have a claim row naming them, how many more carry only pre-schema-v2 credit, and how many have neither |
 | `L4` | which idea kinds hold the highest mean robustness |
 | `L5` | how many sources are reading reliably |
 

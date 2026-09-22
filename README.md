@@ -184,7 +184,7 @@ python3 -m msl.cli probe              # live-read every registered source, repor
 python3 -m msl.cli publish            # re-render site + docs from committed state
 python3 -m msl.cli verify-claims      # read-only: recheck derived claims, report drift
 python3 -m msl.cli gate-report        # read-only: show what the evidence gate rejected
-python3 -m unittest discover -s tests # 334 tests in 13 modules, standard library only
+python3 -m unittest discover -s tests # 350 tests in 14 modules, standard library only
 node tools/render_check.js            # render all 10 pages headlessly
 ```
 

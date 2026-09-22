@@ -28,7 +28,7 @@ from typing import Any, Dict, Iterable, List, Optional
 
 from . import config
 from .http import FetchResult, fetch, health_inconclusive_reason
-from .sources import REGISTRY, Source
+from .sources import REGISTRY, Source, render_probe_url
 
 
 def _now() -> str:
@@ -152,15 +152,19 @@ def probe_registry(only: Optional[Iterable[str]] = None,
         if want and s.id not in want:
             continue
         at = _now()
+        # The probe URL template is rendered against this read's own clock, so a
+        # date-windowed probe (GitHub created:>=, USGS starttime, MLB date) always
+        # asks about the current window instead of the day the registry was edited.
+        url = render_probe_url(s.probe_url, at)
         try:
-            r = fetch(s.probe_url, accept=s.accepts, retries=retries)
+            r = fetch(url, accept=s.accepts, retries=retries)
         except Exception as e:  # noqa: BLE001 - one bad source must not abort 27
             # msl.http.fetch is documented never to raise, so reaching here means
             # something unexpected (a bad probe_url, a DNS failure inside the
             # resolver, a programming error).  Record it as a failed read and
             # carry on: a probe that stops at the first bad entry reports nothing
             # about the rest, which is exactly how the original TypeError bug hid.
-            r = FetchResult(url=s.probe_url, status=None, body=b"", attempts=1,
+            r = FetchResult(url=url, status=None, body=b"", attempts=1,
                             error_kind=type(e).__name__, error=str(e)[:300])
         # Runner egress, a caller-generated request error, and our own response
         # cap say nothing about source availability. Cycle and probe share this
@@ -171,7 +175,7 @@ def probe_registry(only: Optional[Iterable[str]] = None,
         apply_result(s, r, at, egress_blocked=no_verdict)
         rep.rows.append(ProbeRow(
             id=s.id, name=s.name, operator=s.operator, docsUrl=s.docs_url,
-            probeUrl=s.probe_url, httpStatus=r.status, ok=r.ok, bytes=r.size,
+            probeUrl=url, httpStatus=r.status, ok=r.ok, bytes=r.size,
             elapsedMs=r.elapsed_ms, attempts=r.attempts,
             error="" if r.ok else r.describe_error(),
             sha256=r.sha256[:16] if r.body else "", checkedAt=at,
