@@ -1,10 +1,10 @@
 # IRREGULARITIES
 
-Generated `2026-09-22T17:24:28Z` at cycle 17.
+Generated `2026-09-22T17:31:33Z` at cycle 18.
 
-114 registered — 6 critical,
-66 warn, 42 info.
-31 open, 83 resolved,
+116 registered — 6 critical,
+68 warn, 42 info.
+32 open, 84 resolved,
 19 standing.
 
 **Standing** entries are structural limits of this project, not transient
@@ -18,7 +18,7 @@ deleted, so the register keeps its history.
 
 ### `IRR-043` — clinicaltrials could not be read
 
-*CRITICAL* · first seen cycle 4 (2026-09-22T01:39:14Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 11 occurrence(s) · **open** · source `clinicaltrials` · topic `source-health`
+*CRITICAL* · first seen cycle 4 (2026-09-22T01:39:14Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 12 occurrence(s) · **open** · source `clinicaltrials` · topic `source-health`
 
 HTTPError: HTTP 403 Forbidden on GET https://clinicaltrials.gov/api/v2/studies?pageSize=1 after 3 attempt(s). No claim was produced and no substitute value was invented.
 
@@ -26,7 +26,7 @@ HTTPError: HTTP 403 Forbidden on GET https://clinicaltrials.gov/api/v2/studies?p
 
 ### `IRR-046` — sec_edgar could not be read
 
-*CRITICAL* · first seen cycle 4 (2026-09-22T01:39:14Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 11 occurrence(s) · **open** · source `sec_edgar` · topic `source-health`
+*CRITICAL* · first seen cycle 4 (2026-09-22T01:39:14Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 12 occurrence(s) · **open** · source `sec_edgar` · topic `source-health`
 
 HTTPError: HTTP 403 Forbidden on GET https://data.sec.gov/submissions/CIK0000320193.json after 3 attempt(s). No claim was produced and no substitute value was invented.
 
@@ -34,7 +34,7 @@ HTTPError: HTTP 403 Forbidden on GET https://data.sec.gov/submissions/CIK0000320
 
 ### `IRR-049` — nba_cdn could not be read
 
-*CRITICAL* · first seen cycle 4 (2026-09-22T01:39:14Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 11 occurrence(s) · **open** · source `nba_cdn` · topic `source-health`
+*CRITICAL* · first seen cycle 4 (2026-09-22T01:39:14Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 12 occurrence(s) · **open** · source `nba_cdn` · topic `source-health`
 
 HTTPError: HTTP 403 Forbidden on GET https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json after 3 attempt(s). No claim was produced and no substitute value was invented.
 
@@ -65,11 +65,11 @@ EgressBlocked: TLS/SSL connection has been closed (EOF) (_ssl.c:992) on GET http
 **Reproduce:** `curl -sS -o /dev/null -w '%{http_code}\n' 'https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=public%20health'`
 
 
-## WARN (66)
+## WARN (68)
 
 ### `IRR-033` — The owner's source document could not be read by a machine
 
-*WARN* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 17 occurrence(s) · **open** · standing · topic `owner-corpus`
+*WARN* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 18 occurrence(s) · **open** · standing · topic `owner-corpus`
 
 The brief points at a shared ChatGPT transcript (https://chatgpt.com/share/6ab1612a-2f14-83e8-9de6-808d21a48e53). A GET of that URL returns an HTML shell whose body is rendered client-side; the only server-supplied content is the <title>, “Design Autonomous Research System”. No requirement in this repository is sourced from that transcript. The design was derived instead from the written brief and from the owner's own published corpus, which is readable. If the transcript contains requirements that are missing here, they are missing.
 
@@ -77,7 +77,7 @@ The brief points at a shared ChatGPT transcript (https://chatgpt.com/share/6ab16
 
 ### `IRR-034` — GitHub publishes no trending API
 
-*WARN* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 17 occurrence(s) · **open** · standing · source `github_search` · topic `open-source-momentum`
+*WARN* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 18 occurrence(s) · **open** · standing · source `github_search` · topic `open-source-momentum`
 
 The obvious “trending repositories” signal has no official endpoint: https://github.com/trending returns HTML only, and GitHub's REST API exposes no trending route. The engine substitutes the official Search API sorted by stars over a created:>= window, which is reproducible and documented, and says so wherever the number appears. A trending *page* is a curated list with an undisclosed ranking; a search result is not, and the two are not equivalent.
 
@@ -85,7 +85,7 @@ The obvious “trending repositories” signal has no official endpoint: https:/
 
 ### `IRR-035` — npm's documented media type is rejected by its own dist-tags endpoint
 
-*WARN* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 17 occurrence(s) · **open** · standing · source `npm_registry` · topic `open-source-momentum`
+*WARN* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 18 occurrence(s) · **open** · standing · source `npm_registry` · topic `open-source-momentum`
 
 GET https://registry.npmjs.org/-/package/next/dist-tags answers 200 for Accept: application/json and HTTP 406 Not Acceptable for Accept: application/vnd.npm.install-v1+json — the media type the registry documents for package metadata. Observed 2026-09-21 from two independent hosts. The engine therefore sends Accept: application/json for this route. This is recorded rather than quietly worked around so the next reader does not rediscover it.
 
@@ -93,7 +93,7 @@ GET https://registry.npmjs.org/-/package/next/dist-tags answers 200 for Accept: 
 
 ### `IRR-036` — Three interest categories have no registered source that can serve them
 
-*WARN* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 17 occurrence(s) · **open** · standing · topic `travel-korea`
+*WARN* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 18 occurrence(s) · **open** · standing · topic `travel-korea`
 
 Travel & Korea Trip, Social & Creator Data, Elections & Civic Data, Gaming & Guides appear in the owner's verified corpus (https://buffedlizard55-lab.github.io/MasterSite/), but no official keyless API is registered that can answer their questions, so no claim is made about any of them. Per category: • Travel & Korea Trip: No official keyless API for hotel pricing or airfare is registered.  nominatim can place-geocode but cannot price anything. • Social & Creator Data: Every official creator API is keyed (see KEYED_SOURCES_EXCLUDED).  No verified signal exists, so no claim is made about this category. • Elections & Civic Data: federal_register covers federal rulemaking, but the FEC API needs a key for most endpoints and state results are per-jurisdiction.  Partial coverage only. • Gaming & Guides: The owner's master directory (https://buffedlizard55-lab.github.io/MasterSite/) publishes this category, but no source serving it is registered and no candidate endpoint has been confirmed by a recorded live read from this project.  Keyless game-metadata endpoints exist but are undocumented, and registering one without a recorded read would be an unverified claim.  No claim is made about this category. See KEYED_SOURCES_EXCLUDED and INTEREST_CATEGORIES_WITHOUT_A_SOURCE in msl/sources.py and ROADMAP.md.
 
@@ -101,15 +101,15 @@ Travel & Korea Trip, Social & Creator Data, Elections & Civic Data, Gaming & Gui
 
 ### `IRR-042` — Topics with no verified claims behind them
 
-*WARN* · first seen cycle 3 (2026-09-22T01:34:57Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 15 occurrence(s) · **open** · topic `library`
+*WARN* · first seen cycle 3 (2026-09-22T01:34:57Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 16 occurrence(s) · **open** · topic `library`
 
-91 tracked topic(s) were proposed at least two cycles ago and still have zero verified claims: agency:health-and-human-services-department, agency:securities-and-exchange-commission, agency:centers-for-disease-control-and-prevention, frdoc:2026-19271, repo:zai-org/zcode, frdoc:2026-19148, sf-local, repo:brayonpi/hexstellar, repo:hanyuanwang/livestream-agent-studio, repo:jtydhr88/screenwriting-skills, repo:nanako0129/sepia, repo:shadcn-ui/lint (+79 more).  They are listed as unsupported rather than described, and each will be retired after 96 cycles without a signal. If a topic matters, the fix is to register a source that can answer it — not to write prose about it.
+97 tracked topic(s) were proposed at least two cycles ago and still have zero verified claims: agency:health-and-human-services-department, agency:securities-and-exchange-commission, agency:centers-for-disease-control-and-prevention, frdoc:2026-19271, repo:zai-org/zcode, frdoc:2026-19148, sf-local, repo:brayonpi/hexstellar, repo:hanyuanwang/livestream-agent-studio, repo:jtydhr88/screenwriting-skills, repo:nanako0129/sepia, repo:shadcn-ui/lint (+85 more).  They are listed as unsupported rather than described, and each will be retired after 96 cycles without a signal. If a topic matters, the fix is to register a source that can answer it — not to write prose about it.
 
 **Reproduce:** `python3 -c "import json;[print(t['slug']) for t in json.load(open('data/library.json'))['topics'] if t['claims']==0]"`
 
 ### `IRR-045` — ecb_sdmx payload shape problem
 
-*WARN* · first seen cycle 4 (2026-09-22T01:39:14Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 10 occurrence(s) · **open** · source `ecb_sdmx` · topic `source-health`
+*WARN* · first seen cycle 4 (2026-09-22T01:39:14Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 11 occurrence(s) · **open** · source `ecb_sdmx` · topic `source-health`
 
 ecb_sdmx: unexpected jsondata shape (KeyError: 'data')  Zero facts were taken from the affected part of the payload.
 
@@ -117,7 +117,7 @@ ecb_sdmx: unexpected jsondata shape (KeyError: 'data')  Zero facts were taken fr
 
 ### `IRR-048` — nhl_web payload shape problem
 
-*WARN* · first seen cycle 4 (2026-09-22T01:39:14Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 10 occurrence(s) · **open** · source `nhl_web` · topic `source-health`
+*WARN* · first seen cycle 4 (2026-09-22T01:39:14Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 11 occurrence(s) · **open** · source `nhl_web` · topic `source-health`
 
 nhl_web: games is not a list  Zero facts were taken from the affected part of the payload.
 
@@ -125,7 +125,7 @@ nhl_web: games is not a list  Zero facts were taken from the affected part of th
 
 ### `IRR-051` — ecb_sdmx payload shape problem
 
-*WARN* · first seen cycle 4 (2026-09-22T01:39:14Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 10 occurrence(s) · **open** · source `ecb_sdmx` · topic `macro-signals`
+*WARN* · first seen cycle 4 (2026-09-22T01:39:14Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 11 occurrence(s) · **open** · source `ecb_sdmx` · topic `macro-signals`
 
 ecb_sdmx: unexpected jsondata shape (KeyError: 'data')  Zero facts were taken from the affected part of the payload.
 
@@ -133,7 +133,7 @@ ecb_sdmx: unexpected jsondata shape (KeyError: 'data')  Zero facts were taken fr
 
 ### `IRR-060` — Retracted: wiki[artificial_intelligence]
 
-*WARN* · first seen cycle 8 (2026-09-22T01:57:26Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 20 occurrence(s) · **open** · standing
+*WARN* · first seen cycle 8 (2026-09-22T01:57:26Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 22 occurrence(s) · **open** · standing
 
 3 claim(s) in the append-only ledger match this retracted field prefix and are no longer published or reasoned from. Derived from retracted pageview claims for the lowercased slug, so the trend describes the wrong page.  Recomputed from the canonical title instead. Superseded by `trend[wiki:Artificial_intelligence]`. The rows are kept, with their hashes, because the ledger is a record and not a view; deleting them would make the original error unauditable. First seen cycle 5, corrected in cycle 7.
 
@@ -141,7 +141,7 @@ ecb_sdmx: unexpected jsondata shape (KeyError: 'data')  Zero facts were taken fr
 
 ### `IRR-106` — clinicaltrials rate-limited this cycle
 
-*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 1 occurrence(s) · **open** · source `clinicaltrials`
+*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 2 occurrence(s) · **open** · source `clinicaltrials`
 
 HTTP 403 on https://clinicaltrials.gov/api/v2/studies?pageSize=1. The engine backs off rather than retrying, and produces no claim from this source this cycle.
 
@@ -149,7 +149,7 @@ HTTP 403 on https://clinicaltrials.gov/api/v2/studies?pageSize=1. The engine bac
 
 ### `IRR-107` — sec_edgar rate-limited this cycle
 
-*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 1 occurrence(s) · **open** · source `sec_edgar`
+*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 2 occurrence(s) · **open** · source `sec_edgar`
 
 HTTP 403 on https://data.sec.gov/submissions/CIK0000320193.json. The engine backs off rather than retrying, and produces no claim from this source this cycle.
 
@@ -157,7 +157,7 @@ HTTP 403 on https://data.sec.gov/submissions/CIK0000320193.json. The engine back
 
 ### `IRR-108` — nba_cdn rate-limited this cycle
 
-*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 1 occurrence(s) · **open** · source `nba_cdn`
+*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 2 occurrence(s) · **open** · source `nba_cdn`
 
 HTTP 403 on https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json. The engine backs off rather than retrying, and produces no claim from this source this cycle.
 
@@ -165,7 +165,7 @@ HTTP 403 on https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard
 
 ### `IRR-109` — Published sentences came from a template that is now fixed
 
-*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 1 occurrence(s) · **open** · standing · topic `ledger`
+*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 2 occurrence(s) · **open** · standing · topic `ledger`
 
 Defect SENT-DOUBLED-PHRASE — 102 row(s), published in cycles 1–16. The Federal Register template interpolated the API's own description — the phrase “Documents matching 'x'” — after the word “matching”, so the sentence read “holds 1,573 documents matching Documents matching 'artificial intelligence'”.  Fix in place: msl/adapters.federal_register builds the sentence from the term the project asked for and records the API's own phrasing in the row's tags instead of splicing it into a sentence it was not written for.  The ledger is append-only, so those rows keep the wording they were published with; no new claim can be written by that template, and the count in this message is recomputed from the ledger every cycle rather than remembered.
 
@@ -173,7 +173,7 @@ Defect SENT-DOUBLED-PHRASE — 102 row(s), published in cycles 1–16. The Feder
 
 ### `IRR-110` — Published sentences came from a template that is now fixed
 
-*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 1 occurrence(s) · **open** · standing · topic `ledger`
+*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 2 occurrence(s) · **open** · standing · topic `ledger`
 
 Defect SENT-EMPTY-SUBJECT — 20 row(s), published in cycles 4–16. The subject of the sentence was missing entirely, leaving “GitHub Search reports 3,667,127 repositories matching .” and “Nominatim returns 1 place result(s) for the query.”  Fix in place: every read now carries the identifying parameters of its own URL into its adapter context (msl/pipeline.url_context), and an adapter that cannot attribute its figure records a shape problem instead of publishing it.  The ledger is append-only, so those rows keep the wording they were published with; no new claim can be written by that template, and the count in this message is recomputed from the ledger every cycle rather than remembered.
 
@@ -181,23 +181,39 @@ Defect SENT-EMPTY-SUBJECT — 20 row(s), published in cycles 4–16. The subject
 
 ### `IRR-111` — Published sentences came from a template that is now fixed
 
-*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 1 occurrence(s) · **open** · standing · topic `ledger`
+*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 2 occurrence(s) · **open** · standing · topic `ledger`
 
-Defect SENT-PLACEHOLDER-ARGUMENT — 67 row(s), published in cycles 1–17. A template interpolated a parameter that comes from the task context, so a read whose context lacked it published a literal placeholder: “BLS reports series ? at 334.98”, “USGS counts 40 earthquakes the configured window”, “for the configured query”.  Fix in place: the adapters now take the identifier from the payload the read returned (seriesID, indicator.id, the article name, the URL's own query parameters) and refuse to record a figure they cannot name. A field whose name is a placeholder is also withdrawn from reasoning — see msl/retractions.py.  The ledger is append-only, so those rows keep the wording they were published with; no new claim can be written by that template, and the count in this message is recomputed from the ledger every cycle rather than remembered.
+Defect SENT-PLACEHOLDER-ARGUMENT — 71 row(s), published in cycles 1–18. A template interpolated a parameter that comes from the task context, so a read whose context lacked it published a literal placeholder: “BLS reports series ? at 334.98”, “USGS counts 40 earthquakes the configured window”, “for the configured query”.  Fix in place: the adapters now take the identifier from the payload the read returned (seriesID, indicator.id, the article name, the URL's own query parameters) and refuse to record a figure they cannot name. A field whose name is a placeholder is also withdrawn from reasoning — see msl/retractions.py.  The ledger is append-only, so those rows keep the wording they were published with; no new claim can be written by that template, and the count in this message is recomputed from the ledger every cycle rather than remembered.
 
 **Reproduce:** `python3 -c "from msl.evidence import Ledger; from msl.sentences import find_defects; print(len(find_defects(Ledger('data').claims).get('SENT-PLACEHOLDER-ARGUMENT', [])))"`
 
 ### `IRR-113` — Retracted: bls[?].latest
 
-*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 4 occurrence(s) · **open** · standing
+*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 8 occurrence(s) · **open** · standing
 
 106 claim(s) in the append-only ledger match this retracted field prefix and are no longer published or reasoned from. Same defect, and the worst of them: every GitHub search whose context did not carry the query collapsed into ONE field, so unrelated searches shared a series and the site published “GitHub Search reports 3,667,127 repositories matching .”  msl/adapters.gh_search now writes the query it was given and refuses a total it cannot attribute to one. Superseded by `github.total_count[<query>]`. The rows are kept, with their hashes, because the ledger is a record and not a view; deleting them would make the original error unauditable. First seen cycle 11, corrected in cycle 15.
 
 **Reproduce:** `grep -n 'bls[?].latest' data/claims.jsonl | head`
 
+### `IRR-115` — 3 of 69 planned reads failed
+
+*WARN* · first seen cycle 18 (2026-09-22T17:31:33Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 1 occurrence(s) · **open**
+
+3 read(s) failed while 66 succeeded. Each failure is listed separately with its HTTP status or transport error and a reproduction command. A partial cycle is still published, but every figure that would have come from a failed source is absent rather than carried forward silently.
+
+**Reproduce:** `python3 tools/probe_sources.py`
+
+### `IRR-116` — Forecasts can never be scored
+
+*WARN* · first seen cycle 18 (2026-09-22T17:31:33Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 1 occurrence(s) · **open** · topic `competition`
+
+5 forecast(s) have waited 6 cycles or more for a metric that has produced no observation since, so nothing will ever score them. They are dropped from the forecast log and counted here: a forecast that disappears without a word is a result that was never checked. The cause is usually a topic that stopped being read — the fix is a source that keeps observing it, not a longer wait.
+
+**Reproduce:** `python3 -c "import json;d=json.load(open('data/forecasts.json'));print(sum(1 for f in d['items'] if not f['scored']),'pending')"`
+
 ### `IRR-114` — 3 of 62 planned reads failed
 
-*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 1 occurrence(s) · **open**
+*WARN* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 1 occurrence(s) · **resolved**
 
 3 read(s) failed while 59 succeeded. Each failure is listed separately with its HTTP status or transport error and a reproduction command. A partial cycle is still published, but every figure that would have come from a failed source is absent rather than carried forward silently.
 
@@ -600,15 +616,15 @@ EgressBlocked: TLS/SSL connection has been closed (EOF) (_ssl.c:992) on GET http
 
 ### `IRR-002` — Some derived claims cannot be re-checked
 
-*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 17 occurrence(s) · **open** · standing · topic `derived`
+*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 18 occurrence(s) · **open** · standing · topic `derived`
 
-249 derived claim(s) use a formula whose value depends on the wall clock at read time — a repository's stars-per-day, for example, has 'now' in its denominator. They are counted as NOT RECHECKED rather than as passing, because a check that cannot be repeated is not a check.
+252 derived claim(s) use a formula whose value depends on the wall clock at read time — a repository's stars-per-day, for example, has 'now' in its denominator. They are counted as NOT RECHECKED rather than as passing, because a check that cannot be repeated is not a check.
 
 **Reproduce:** `python3 -m msl.cli verify-claims`
 
 ### `IRR-028` — mlb_statsapi is an undocumented public endpoint
 
-*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 17 occurrence(s) · **open** · standing · source `mlb_statsapi`
+*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 18 occurrence(s) · **open** · standing · source `mlb_statsapi`
 
 No official public documentation page has been located for this endpoint.  Registered as UNDOCUMENTED so the irregularity register keeps it visible rather than the site implying a contract exists.  Claims built from it carry the same marker.
 
@@ -616,7 +632,7 @@ No official public documentation page has been located for this endpoint.  Regis
 
 ### `IRR-030` — nhl_web is an undocumented public endpoint
 
-*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 17 occurrence(s) · **open** · standing · source `nhl_web`
+*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 18 occurrence(s) · **open** · standing · source `nhl_web`
 
 UNDOCUMENTED public endpoint; no official contract page located.  See IRR-009.  Claims built from it carry the same marker.
 
@@ -624,7 +640,7 @@ UNDOCUMENTED public endpoint; no official contract page located.  See IRR-009.  
 
 ### `IRR-032` — nba_cdn is an undocumented public endpoint
 
-*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 17 occurrence(s) · **open** · standing · source `nba_cdn`
+*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 18 occurrence(s) · **open** · standing · source `nba_cdn`
 
 UNDOCUMENTED public endpoint; no official contract page located.  See IRR-009.  Claims built from it carry the same marker.
 
@@ -632,7 +648,7 @@ UNDOCUMENTED public endpoint; no official contract page located.  See IRR-009.  
 
 ### `IRR-037` — Six useful sources are excluded because they need an API key
 
-*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 17 occurrence(s) · **open** · standing
+*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 18 occurrence(s) · **open** · standing
 
 FRED (St. Louis Fed) series observations, NFL Game API (api.nfl.com), Google Trends, X / Twitter API, YouTube Data API v3, TikTok / Instagram official APIs were all rejected. Obtaining a key is manual input, which the brief rules out. Each is listed with the reason in msl/sources.py → KEYED_SOURCES_EXCLUDED so the omission is a decision on the record, not a gap.
 
@@ -640,7 +656,7 @@ FRED (St. Louis Fed) series observations, NFL Game API (api.nfl.com), Google Tre
 
 ### `IRR-038` — Three sports feeds are undocumented public endpoints
 
-*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 17 occurrence(s) · **open** · standing · topic `sports-signals`
+*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 18 occurrence(s) · **open** · standing · topic `sports-signals`
 
 statsapi.mlb.com, api-web.nhle.com, cdn.nba.com are the leagues' own hosts and the same feeds the owner's sibling labs already read, but no official public documentation page was located for any of them. They are registered with an explicit UNDOCUMENTED marker, and any claim built from one carries that marker too, so nothing on the site implies a contract exists.
 
@@ -648,7 +664,7 @@ statsapi.mlb.com, api-web.nhle.com, cdn.nba.com are the leagues' own hosts and t
 
 ### `IRR-039` — Frankfurter is not an official ECB endpoint
 
-*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 17 occurrence(s) · **open** · standing · source `frankfurter` · topic `macro-signals`
+*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 18 occurrence(s) · **open** · standing · source `frankfurter` · topic `macro-signals`
 
 frankfurter.app republishes ECB euro reference rates but is a community service. It is registered as a redundancy check against the official ECB SDMX route, and every claim it produces is labelled third-party in the statement text itself, so it can never be quoted as an ECB figure.
 
@@ -656,7 +672,7 @@ frankfurter.app republishes ECB euro reference rates but is a community service.
 
 ### `IRR-040` — The reasoning stage contains no language model
 
-*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 17 occurrence(s) · **open** · standing
+*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 18 occurrence(s) · **open** · standing
 
 Every sentence published by this project is a template whose slots are filled from claim values, and every idea comes from a fixed rule set over the verified ledger. That is a deliberate limitation: it makes the output reproducible and auditable at the cost of novelty. A model with an API key would need a secret, and adding a secret is manual input. See METHODOLOGY.md §3.
 
@@ -664,7 +680,7 @@ Every sentence published by this project is a template whose slots are filled fr
 
 ### `IRR-041` — Seed captures taken by an interactive read are not wire-hash verifiable
 
-*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 17 occurrence(s) · **open** · standing
+*INFO* · first seen cycle 1 (2026-09-22T01:34:57Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 18 occurrence(s) · **open** · standing
 
 The first captures for wikimedia_pageviews, federal_register, usgs_fdsn and hn_firebase were read through an interactive agent fetch rather than by this process, so the stored SHA-256 covers the recorded body and not the bytes on the wire. Those evidence rows carry wireHashVerifiable=false, and the first automated probe re-reads each endpoint and reports whether the values still match.
 
@@ -672,9 +688,9 @@ The first captures for wikimedia_pageviews, federal_register, usgs_fdsn and hn_f
 
 ### `IRR-112` — Persona S07_ChangeHazard is UNRANKED
 
-*INFO* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 17 (2026-09-22T17:24:28Z) · 1 occurrence(s) · **open** · topic `competition`
+*INFO* · first seen cycle 17 (2026-09-22T17:24:28Z) · last seen cycle 18 (2026-09-22T17:31:33Z) · 2 occurrence(s) · **open** · topic `competition`
 
-Change hazard: 0 scored forecast(s); 3 required before a rank means anything.  It is excluded from the ranked table rather than shown at 0%, because a persona that has not been scored has not been beaten.
+Change hazard: 2 scored forecast(s); 3 required before a rank means anything.  It is excluded from the ranked table rather than shown at 0%, because a persona that has not been scored has not been beaten.
 
 **Reproduce:** `python3 -c "import json;print(json.load(open('data/leaderboard.json'))['qualification'])"`
 
