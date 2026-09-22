@@ -596,19 +596,28 @@
       var name = p.category || "Uncategorized";
       (categories[name] = categories[name] || []).push(p);
     });
-    var stale = projects.filter(function (p) { return p.proseStale; }).length;
+    function supersededHere(p) {
+      // The catalog snapshot described this repository before the application on
+      // this very page existed. Keep the historical row, but never call it current.
+      return p.repo === "MasterSelfLearn";
+    }
+    var stale = projects.filter(function (p) {
+      return p.proseStale || supersededHere(p);
+    }).length;
 
-    main.appendChild(h("h1", { text: "Verified project catalog" }));
+    main.appendChild(h("h1", { text: "MasterSite project catalog — point-in-time audit" }));
     main.appendChild(h("p", { class: "lede", text:
-      "The owner's MasterSite catalog, brought through the evidence gate. Descriptions " +
-      "remain first-party audited narrative; repository, commit, and Pages fields come " +
-      "from MasterSite's recorded GitHub API audit. Open any source or evidence link to review it." }));
+      "The owner's MasterSite catalog, brought through the evidence gate as a point-in-time " +
+      "artifact. This project verifies the catalog file and its Git blob hash; it does not " +
+      "re-query all 52 repositories every cycle. Descriptions, commits, and Pages states are " +
+      "therefore shown as MasterSite audit records, not guaranteed current facts." }));
     main.appendChild(h("div", { class: "stats" }, [
-      stat("Published projects", projects.length, "from the latest accepted catalog", "ok"),
+      stat("Catalog entries", projects.length, "latest accepted MasterSite artifact", "ok"),
       stat("Categories", Object.keys(categories).length, "owner interest map", ""),
-      stat("Built Pages sites", projects.filter(function (p) { return p.pagesStatus === "built"; }).length,
-           "status recorded by MasterSite", "ok"),
-      stat("Stale descriptions", stale, stale ? "flagged by MasterSite" : "none flagged", stale ? "warn" : "ok"),
+      stat("Pages marked built", projects.filter(function (p) { return p.pagesStatus === "built"; }).length,
+           "at each recorded catalog audit", ""),
+      stat("Stale / superseded", stale,
+           "upstream flags plus this repository's superseded row", stale ? "warn" : ""),
     ]));
     if (!projects.length) {
       main.appendChild(empty("No MasterSite catalog claim has passed the evidence gate yet. The next successful catalog read will populate this page."));
@@ -617,7 +626,7 @@
     main.appendChild(h("div", { class: "note" }, [
       document.createTextNode("Catalog source: "),
       link(catalog.masterSiteUrl || D.meta.masterSiteUrl, catalog.source || "MasterSite"),
-      document.createTextNode(". Project prose carries its own verified basis; a live Pages status does not turn narrative prose into a GitHub-authored fact."),
+      document.createTextNode(". Each row carries its audit date and basis. “Not flagged stale” means only that MasterSite did not flag it at that audit; it is not a live freshness verdict from MasterSelfLearn."),
     ]));
 
     Object.keys(categories).sort().forEach(function (category) {
@@ -629,11 +638,13 @@
           h("div", { class: "small", text: p.repo || "" }),
         ]);
         var description = h("div", {}, [
-          h("div", { text: p.description || "No verified description recorded." }),
+          supersededHere(p) ? h("div", { class: "note warn", text:
+            "Historical catalog description: superseded when this research system was implemented after the recorded audit." }) : null,
+          h("div", { text: p.description || "No audited description recorded." }),
           p.flags && p.flags.length ? h("div", { class: "small warn-text", text: "Flags: " + p.flags.join("; ") }) : null,
         ]);
         var audit = h("details", {}, [
-          h("summary", { text: p.lastVerified ? "verified " + p.lastVerified : "verification basis" }),
+          h("summary", { text: p.lastVerified ? "catalog audit " + p.lastVerified : "recorded audit basis" }),
           h("p", { class: "small", text: p.verifiedBasis || "No narrative verification basis recorded." }),
           h("p", { class: "small", text: "Head " + (p.headSha || "—") + " · " +
             n(p.commits) + " commits · retrieved " + (p.retrievedAt || "—") +
@@ -647,7 +658,8 @@
         ]), td(audit)]);
       });
       main.appendChild(section("project-" + category.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-        category, rows.length, table(["Project", "What it does", "Pages", "Audit"], rows)));
+        category, rows.length,
+        table(["Project", "Catalog description (as audited)", "Pages (as audited)", "Audit"], rows)));
     });
   }
 

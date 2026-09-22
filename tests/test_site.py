@@ -56,6 +56,13 @@ class StaticAssets(unittest.TestCase):
         for banned in ("fetch(", "XMLHttpRequest", "localhost", "127.0.0.1"):
             self.assertNotIn(banned, js, f"app.js uses {banned}")
 
+    def test_project_catalog_discloses_that_its_audit_is_point_in_time(self):
+        js = (config.ROOT / "app.js").read_text()
+        self.assertIn("point-in-time audit", js)
+        self.assertIn("re-query all 52 repositories every cycle", js)
+        self.assertIn("Historical catalog description: superseded", js)
+        self.assertNotIn('text: "Verified project catalog"', js)
+
     def test_claim_verifier_library_accounting_is_a_partition(self):
         run = subprocess.run(["python3", "tools/verify_claims.py"],
                              cwd=config.ROOT, text=True, capture_output=True)
