@@ -190,10 +190,14 @@ supporting count is not written. Current lessons:
     but GitHub documents that scheduled jobs can be delayed or dropped under load.
     The generated timestamp and cycle history make a gap visible; this repository
     cannot make GitHub's hosted scheduler provide a hard real-time SLA.
-12. **The MasterSite catalog has mixed provenance by design.** Repository, commit,
-    and Pages fields come from its recorded GitHub API audit; descriptions come from
-    MasterSite's first-party audited overlay and retain `verifiedBasis`. The Projects
-    page does not relabel those descriptions as GitHub-authored facts.
+12. **The MasterSite catalog is a point-in-time artifact with mixed provenance.**
+    Repository, commit, and Pages fields come from its recorded GitHub API audit;
+    descriptions come from MasterSite's first-party audited overlay and retain
+    `verifiedBasis`. MasterSelfLearn verifies the catalog file and Git blob SHA but
+    does not re-query all 52 repositories each cycle, so rows can become stale
+    between MasterSite audits. The Projects page labels audit dates, treats this
+    repository's pre-implementation “empty placeholder” row as superseded, and does
+    not relabel narrative descriptions as current GitHub-authored facts.
 
 ## 8. Reproduce any number on the site
 
