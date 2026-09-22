@@ -10,9 +10,10 @@ from typing import Any, Dict, List
 
 from . import config
 from .evidence import Ledger
-from .http import fetch
 from .irregularities import Register
-from .pipeline import run_cycle
+from .pipeline import republish, run_cycle
+from .probe import exit_code as probe_exit_code
+from .probe import probe_registry, summary_line, write_report
 from .reason import recheck_derived
 from .sources import REGISTRY
 from .topics import Library
@@ -44,43 +45,22 @@ def cmd_cycle(args: argparse.Namespace) -> int:
 
 
 def cmd_probe(args: argparse.Namespace) -> int:
-    """Live-read every registered source.  Writes data/source_health.json."""
-    out: List[Dict[str, Any]] = []
-    ok = failed = 0
-    for s in REGISTRY:
-        if args.only and s.id != args.only:
-            continue
-        r = fetch(s.probe_url, accepts=s.accepts, retries=1)
-        row = {"id": s.id, "name": s.name, "operator": s.operator,
-               "docsUrl": s.docs_url, "probeUrl": s.probe_url,
-               "status": r.status, "ok": r.ok, "bytes": r.size,
-               "elapsedMs": r.elapsed_ms, "error": r.describe_error() if not r.ok else "",
-               "sha256": r.sha256[:16] if r.body else "",
-               "checkedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
-        out.append(row)
-        if r.ok:
-            ok += 1
-            s.status = "verified-live-read"
-            s.live_reads += 1
-            s.consecutive_failures = 0
-            s.last_read_at = row["checkedAt"]
-            s.last_status = r.status
-            s.last_error = ""
-        else:
-            failed += 1
-            s.consecutive_failures += 1
-            s.status = "blocked"
-            s.last_error = r.describe_error()
-            s.last_read_at = row["checkedAt"]
-            s.last_status = r.status
-        print(f"{'OK ' if r.ok else 'ERR'} {r.status or '---'} {r.elapsed_ms:>5}ms "
-              f"{r.size:>8}B  {s.id:<22} {r.describe_error() if not r.ok else ''}")
-    payload = {"generatedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-               "ok": ok, "failed": failed, "results": out}
-    p = config.DATA / "source_health.json"
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(payload, indent=1) + "\n", encoding="utf-8")
-    print(f"\n{ok} ok / {failed} failed → {p}")
+    """Live-read every registered source.  Writes data/source_health.json.
+
+    The loop itself lives in ``msl.probe`` — this is a thin wrapper so that the
+    CLI and ``tools/probe_sources.py`` cannot drift into two different probes.
+    """
+    rep = probe_registry(only=[args.only] if args.only else None)
+    p = write_report(rep)
+    print(f"\n{summary_line(rep)} → {p}")
+    return probe_exit_code(rep)
+
+
+def cmd_publish(args: argparse.Namespace) -> int:
+    """Re-render site + docs from committed state.  No read, no new cycle."""
+    rep = republish(docs_dir=pathlib.Path(args.docs_dir) if args.docs_dir else None)
+    print(f"republished cycle {rep.cycle} @ {rep.at} (mode={rep.mode}) — "
+          f"no read performed, no claim added")
     return 0
 
 
@@ -177,6 +157,12 @@ def build_parser() -> argparse.ArgumentParser:
     pr = sub.add_parser("probe", help="live-read every registered source")
     pr.add_argument("--only", default=None)
     pr.set_defaults(fn=cmd_probe)
+
+    pub = sub.add_parser("publish",
+                         help="re-render site and docs from committed state (no read)")
+    pub.add_argument("--docs-dir", default=None,
+                     help="write the generated markdown here instead of the repo root")
+    pub.set_defaults(fn=cmd_publish)
 
     v = sub.add_parser("verify-claims", help="read-only derived-claim recheck")
     v.set_defaults(fn=cmd_verify_claims)

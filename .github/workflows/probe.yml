@@ -4,6 +4,13 @@ name: probe
 # This is the only job allowed to move a source between registered /
 # verified-live-read / blocked, so a source's status on the site is always a fact
 # about the last read rather than an assertion.
+#
+# NOTE ON `set -o pipefail`: this step originally ran
+# `python3 tools/probe_sources.py 2>&1 | tee data/probe.log` with no pipefail.
+# A pipeline's status is its LAST command's status, so `tee` succeeded and the
+# step went GREEN while the probe crashed on its first source with a TypeError
+# and read nothing at all.  The job looked healthy for days while publishing
+# nothing.  pipefail makes the real exit code reach the runner.
 
 on:
   schedule:
@@ -29,22 +36,29 @@ jobs:
           python-version: '3.12'
 
       - name: Probe every registered source
-        run: python3 tools/probe_sources.py 2>&1 | tee data/probe.log
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 tools/probe_sources.py 2>&1 | tee data/probe.log
 
       - name: Summary
         if: always()
+        shell: bash
         run: |
-          echo "### source health" >> "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
-          cat data/probe.log >> "$GITHUB_STEP_SUMMARY" || true
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "### source health"
+            echo '```'
+            cat data/probe.log 2>/dev/null || echo "(probe produced no log)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Commit the health ledger
         if: always()
+        shell: bash
         run: |
           git config user.name  "MasterSelfLearn"
           git config user.email "buffedlizard55@gmail.com"
-          git add data/source_health.json data/probe.log || true
+          git add data/source_health.json data/probe.log 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "no change in source health"
           else

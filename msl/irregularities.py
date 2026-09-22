@@ -18,10 +18,13 @@ from __future__ import annotations
 import hashlib
 import json
 import pathlib
+import urllib.parse
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
 from . import config
+from .sources import (INTEREST_CATEGORIES_WITHOUT_A_SOURCE, KEYED_SOURCES_EXCLUDED,
+                      REGISTRY)
 
 CRITICAL = "critical"
 WARN = "warn"
@@ -117,31 +120,68 @@ def standing_findings() -> List[Dict[str, Any]]:
                "https://registry.npmjs.org/-/package/next/dist-tags   # -> 406"),
         src="npm_registry", topic="open-source-momentum")
 
-    add(WARN, "Three interest categories have no registered source that can serve them",
-        "Travel & Korea Trip, Social & Creator Data, and Elections & Civic Data appear in "
-        "the owner's verified corpus, but no official keyless API is registered that can "
-        "answer their questions: hotel and airfare pricing has no keyless official API at "
-        "all; every creator platform API is keyed; the FEC API requires a key for most "
-        "routes and state results are per-jurisdiction. No claim is made about these "
-        "categories. See KEYED_SOURCES_EXCLUDED in msl/sources.py and ROADMAP.md.",
-        repro="python3 -c \"import msl.sources as s; print(s.INTEREST_CATEGORIES_WITHOUT_A_SOURCE)\"",
-        topic="travel-korea")
+    # The count and the list are derived from the registry, never typed here:
+    # this title used to read "Three interest categories..." and stayed at three
+    # after a fourth gap was found, so the register understated the gap it exists
+    # to report.  A pinned fingerprint keeps the existing IRR-036 identity while
+    # the wording is corrected — standing entries never auto-resolve, so a title
+    # change without a pinned fingerprint would strand the old entry open forever
+    # with a stale count and mint a duplicate alongside it.
+    _gaps = INTEREST_CATEGORIES_WITHOUT_A_SOURCE
+    _names = ", ".join(g["category"] for g in _gaps)
+    _detail = " ".join(f"• {g['category']}: {g['gap']}" for g in _gaps)
+    out.append({
+        "severity": WARN,
+        "title": (f"{len(_gaps)} interest categories have no registered source "
+                  f"that can serve them"),
+        "detail": (f"{_names} appear in the owner's verified corpus "
+                   f"({config.MASTER_SITE_URL}), but no official keyless API is "
+                   f"registered that can answer their questions, so no claim is made "
+                   f"about any of them. Per category: {_detail} "
+                   f"See KEYED_SOURCES_EXCLUDED and "
+                   f"INTEREST_CATEGORIES_WITHOUT_A_SOURCE in msl/sources.py and "
+                   f"ROADMAP.md."),
+        "repro": ("python3 -c \"import msl.sources as s; "
+                  "[print(g['category'], '::', g['gap']) for g in "
+                  "s.INTEREST_CATEGORIES_WITHOUT_A_SOURCE]\""),
+        "standing": True,
+        "topic": "travel-korea",
+        # Pinned to the fingerprint the entry was minted with (IRR-036).
+        "fingerprint": "db11cd28e56a",
+    })
 
-    add(INFO, "Six useful sources are excluded because they need an API key",
-        "FRED, the NFL Game API, Google Trends, the X API, the YouTube Data API and the "
-        "TikTok/Instagram APIs were all rejected. Obtaining a key is manual input, which "
-        "the brief rules out. Each is listed with the reason in msl/sources.py → "
-        "KEYED_SOURCES_EXCLUDED so the omission is a decision on the record, not a gap.",
-        repro="python3 -c \"import msl.sources as s; [print(x['id'], x['reason']) for x in s.KEYED_SOURCES_EXCLUDED]\"")
-
-    add(INFO, "Three sports feeds are undocumented public endpoints",
-        "statsapi.mlb.com, api-web.nhle.com and cdn.nba.com are the leagues' own hosts and "
-        "the same feeds the owner's sibling labs already read, but no official public "
-        "documentation page was located for any of them. They are registered with an "
-        "explicit UNDOCUMENTED marker, and any claim built from one carries that marker "
-        "too, so nothing on the site implies a contract exists.",
-        repro="grep -n 'UNDOCUMENTED' msl/sources.py",
-        topic="sports-signals")
+    # Both titles below used to hard-code their own counts ("Six", "Three"), which
+    # is the same staleness bug the category finding above had: the number is a
+    # function of a list defined elsewhere, so it has to be computed from it.
+    _keyed = KEYED_SOURCES_EXCLUDED
+    _undoc = [s for s in REGISTRY if "UNDOCUMENTED" in (s.notes or "")
+              or "UNDOCUMENTED" in (s.docs_note or "")]
+    out.append({
+        "severity": INFO,
+        "title": f"{len(_keyed)} useful sources are excluded because they need an API key",
+        "detail": (f"{', '.join(x['name'] for x in _keyed)} were all rejected. Obtaining a "
+                   f"key is manual input, which the brief rules out. Each is listed with "
+                   f"the reason in msl/sources.py → KEYED_SOURCES_EXCLUDED so the omission "
+                   f"is a decision on the record, not a gap."),
+        "repro": ("python3 -c \"import msl.sources as s; "
+                  "[print(x['id'], x['reason']) for x in s.KEYED_SOURCES_EXCLUDED]\""),
+        "standing": True,
+        "fingerprint": "cbaa30023f8d",
+    })
+    out.append({
+        "severity": INFO,
+        "title": f"{len(_undoc)} sports feeds are undocumented public endpoints",
+        "detail": (f"{', '.join(urllib.parse.urlsplit(s.probe_url).netloc for s in _undoc)} "
+                   f"are the leagues' own hosts and the same feeds the owner's sibling "
+                   f"labs already read, but no official public documentation page was "
+                   f"located for any of them. They are registered with an explicit "
+                   f"UNDOCUMENTED marker, and any claim built from one carries that "
+                   f"marker too, so nothing on the site implies a contract exists."),
+        "repro": "grep -n 'UNDOCUMENTED' msl/sources.py",
+        "standing": True,
+        "topic": "sports-signals",
+        "fingerprint": "90ae5e67e77d",
+    })
 
     add(INFO, "Frankfurter is not an official ECB endpoint",
         "frankfurter.app republishes ECB euro reference rates but is a community service. "
@@ -251,7 +291,10 @@ class Register:
         for f in standing_findings():
             self.add(f["severity"], f["title"], f["detail"], cycle, now,
                      repro=f.get("repro", ""), standing=True,
-                     source_id=f.get("source_id", ""), topic=f.get("topic", ""))
+                     source_id=f.get("source_id", ""), topic=f.get("topic", ""),
+                     # A finding may pin its fingerprint to keep its identity
+                     # (and so its IRR id) across a wording change.
+                     fingerprint=f.get("fingerprint"))
 
 
 def _num(iid: str) -> int:

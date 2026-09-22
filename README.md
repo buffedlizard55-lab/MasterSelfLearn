@@ -16,27 +16,28 @@ It requires **no manual input**. Every cycle is triggered by
 <!-- AUTO:COUNTS:BEGIN — regenerated every cycle, do not edit -->
 | Metric | Value |
 |---|---|
-| Cycle | **8** |
-| Verified claims in the ledger | **6,352** |
-| — captured from live payloads | 6,046 |
-| — derived by recorded arithmetic | 306 |
+| Cycle | **12** |
+| Verified claims in the ledger | **9,343** |
+| — captured from live payloads | 6,334 |
+| — derived by recorded arithmetic | 3,009 |
 | Claims rejected by the evidence gate | **0** |
 | Derived claims rechecked this cycle | 40 |
 | Derived claims that no longer recompute | **0** |
-| Topics in the library | **61** (new this cycle: 6) |
-| Published insights | 306 |
-| Forecasts issued this cycle | 760 |
-| Forecasts scored against outcomes | 416 |
+| Topics in the library | **85** (new this cycle: 6) |
+| Published insights | 305 |
+| Forecasts issued this cycle | 894 |
+| Forecasts scored against outcomes | 0 |
 | Ideas in the competition | **14** (promoted: 0) |
-| Open irregularities | **32** (new: 1) |
+| Open irregularities | **40** (new: 0) |
 | Sources registered | 28 |
-| — verified by a recorded live read | 23 |
-| — currently blocked | 4 |
-| Reads this cycle (ok / failed) | 64 / 6 |
-| Bytes read this cycle | 1,782,680 |
+| — verified by a recorded live read | 4 |
+| — currently blocked | 0 |
+| — never read (not broken, just unprobed) | 24 |
+| Reads this cycle (ok / failed) | 18 / 0 |
+| Bytes read this cycle | 0 |
 | Manual inputs required | **0** |
 
-Generated `2026-09-22T01:57:26Z` by `msl/pipeline.py`. Quoting any figure outside this block
+Generated `2026-09-22T04:12:37Z` by `msl/pipeline.py`. Quoting any figure outside this block
 means quoting something the next cycle has already superseded.
 <!-- AUTO:COUNTS:END -->
 
@@ -105,13 +106,13 @@ nothing, and the table says so.
 
 | # | Persona | Name | Scored | Accuracy | Skill vs null |
 |---|---|---|---|---|---|
-| 1 | `S10_Persistence` | Persistence (null model) | 1263 | 95.0% | +0.0 pts |
-| 2 | `S04_ConsensusFade` | Consensus fade | 65 | 35.4% | -59.6 pts |
-| 3 | `S01_MomentumPersist` | Momentum persistence | 81 | 24.7% | -70.3 pts |
-| 4 | `S05_EvidenceDensity` | Evidence density | 81 | 24.7% | -70.3 pts |
-| 5 | `S06_MemoryWeighted` | Skill-weighted memory | 91 | 16.5% | -78.5 pts |
-| 6 | `S03_Acceleration` | Acceleration | 65 | 10.8% | -84.2 pts |
-| 7 | `S02_MeanRevert` | Mean reversion | 131 | 0.8% | -94.2 pts |
+| 1 | `S10_Persistence` | Persistence (null model) | 1093 | 86.6% | +0.0 pts |
+| 2 | `S05_EvidenceDensity` | Evidence density | 100 | 49.0% | -37.6 pts |
+| 3 | `S01_MomentumPersist` | Momentum persistence | 88 | 48.9% | -37.8 pts |
+| 4 | `S03_Acceleration` | Acceleration | 115 | 28.7% | -58.0 pts |
+| 5 | `S04_ConsensusFade` | Consensus fade | 120 | 25.0% | -61.6 pts |
+| 6 | `S06_MemoryWeighted` | Skill-weighted memory | 157 | 24.8% | -61.8 pts |
+| 7 | `S02_MeanRevert` | Mean reversion | 127 | 0.0% | -86.6 pts |
 
 ### Unranked
 
@@ -132,11 +133,11 @@ corroboration is promoted.
 
 | # | Idea | Robustness | Kind | Verified claims behind it |
 |---|---|---|---|---|
-| 1 | Replicate what made zai-org/ZCode grow | 0.400 | velocity-outlier | 16 |
-| 2 | Replicate what made browser-use/jev-ultrafast grow | 0.400 | velocity-outlier | 16 |
-| 3 | Replicate what made NandhaKishorM/laya grow | 0.400 | velocity-outlier | 6 |
-| 4 | Watch for research lagging rulemaking on “artificial intelligence” | 0.250 | regulatory-lead | 6 |
-| 5 | Watch for research lagging rulemaking on “reasoning” | 0.225 | regulatory-lead | 5 |
+| 1 | Replicate what made zai-org/ZCode grow | 0.550 | velocity-outlier | 24 |
+| 2 | Replicate what made browser-use/jev-ultrafast grow | 0.550 | velocity-outlier | 24 |
+| 3 | Replicate what made NandhaKishorM/laya grow | 0.500 | velocity-outlier | 10 |
+| 4 | Watch for research lagging rulemaking on “artificial intelligence” | 0.450 | regulatory-lead | 8 |
+| 5 | Watch for research lagging rulemaking on “reasoning” | 0.375 | regulatory-lead | 5 |
 
 ## What the engine has learned about itself
 
@@ -145,10 +146,10 @@ These are counted, not reflected. Each lesson carries the integers behind it.
 | | Lesson |
 |---|---|
 | `L1` | Topics backed by two or more independent sources have averaged 1.00 signals against 1.00 for single-source topics — a ratio of 1.00×. |
-| `L2` | The evidence gate has rejected 0 of 6352 attempted claims (0.00%). |
-| `L3` | 12 of 61 tracked topics (19.7%) have at least one verified claim. |
-| `L4` | Of 2 idea kinds, “velocity-outlier” holds the highest mean robustness (0.400 over 3 ideas). |
-| `L5` | 23 of 28 registered sources are reading reliably (EMA ≥ 0.8); 4 are effectively unreadable (EMA < 0.2). |
+| `L2` | The evidence gate has rejected 0 of 9343 attempted claims (0.00%). |
+| `L3` | 12 of 85 tracked topics (14.1%) have at least one verified claim. |
+| `L4` | Of 2 idea kinds, “velocity-outlier” holds the highest mean robustness (0.533 over 3 ideas). |
+| `L5` | 4 of 28 registered sources are reading reliably (EMA ≥ 0.8); 4 are effectively unreadable (EMA < 0.2). |
 
 ## Site
 
@@ -170,9 +171,11 @@ These are counted, not reflected. Each lesson carries the integers behind it.
 python3 -m msl.cli cycle              # one full cycle, live network
 python3 -m msl.cli cycle --offline    # identical pipeline against data/seed/, no network
 python3 -m msl.cli probe              # live-read every registered source, report health
+python3 -m msl.cli publish            # re-render site + docs from committed state
 python3 -m msl.cli verify-claims      # read-only: recheck derived claims, report drift
 python3 -m msl.cli gate-report        # read-only: show what the evidence gate rejected
-python3 -m unittest discover -s tests # 9 tests, standard library only
+python3 -m unittest discover -s tests # 11 tests, standard library only
+node tools/render_check.js            # render all 9 pages headlessly
 ```
 
 Python 3.9+, standard library only. No `pip install`, no build step, no keys.
@@ -196,9 +199,9 @@ Python 3.9+, standard library only. No `pip install`, no build step, no keys.
 
 ## Current irregularities
 
-60 registered — 0 critical,
-23 warn, 37 info;
-32 open, 28 resolved,
+103 registered — 3 critical,
+59 warn, 41 info;
+40 open, 63 resolved,
 15 standing (structural limits that do not auto-resolve).
 
 Full register: [`IRREGULARITIES.md`](IRREGULARITIES.md) or
@@ -206,10 +209,17 @@ Full register: [`IRREGULARITIES.md`](IRREGULARITIES.md) or
 
 ## Sources
 
-28 registered, 23 verified by a recorded
-live read, 4 blocked. 6 excluded
-for requiring an API key, each with the reason recorded in `msl/sources.py`.
-3 interest categories have no registered
-source that can serve them, and no claim is made about them.
+28 registered, 4 verified by a recorded
+live read, 0 blocked, 24 never read.
+**"Never read" is not "broken"**: it means no recorded probe has reached the
+endpoint yet, which is a fact about this project, not a claim about the service.
+A source is promoted to `verified-live-read` only by `msl/probe.py`, which writes
+`data/source_health.json` and nothing else — the registry itself hard-codes no
+status.
 
-Full registry: [`sources.html`](sources.html).
+6 excluded for requiring an API key, each with the
+reason recorded in `msl/sources.py`. 4
+interest categories have no registered source that can serve them, and no claim
+is made about them.
+
+Full registry and the last recorded probe: [`sources.html`](sources.html).

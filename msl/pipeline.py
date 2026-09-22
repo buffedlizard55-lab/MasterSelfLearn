@@ -48,7 +48,12 @@ class CycleReport:
     claims_new: int = 0
     claims_total: int = 0
     claims_rejected: int = 0
+    #: derivations produced *this cycle* (a delta; goes in STATUS.md's
+    #: "Derived / rechecked / drifted" row)
     derived: int = 0
+    #: derived claims currently *in the ledger* (a total; it is one half of the
+    #: "captured vs derived" breakdown of `claims_total`, so it must be a total)
+    derived_total: int = 0
     rechecks: int = 0
     not_recheckable: int = 0
     drift: int = 0
@@ -72,6 +77,7 @@ class CycleReport:
             "cycle": self.cycle, "at": self.at, "ok": self.ok, "mode": self.mode,
             "claimsTotal": self.claims_total, "claimsNew": self.claims_new,
             "claimsRejected": self.claims_rejected, "derived": self.derived,
+            "derivedTotal": self.derived_total,
             "rechecks": self.rechecks, "notRecheckable": self.not_recheckable,
             "drift": self.drift,
             "topicsTotal": self.topics_total, "newTopics": self.new_topics,
@@ -92,7 +98,15 @@ class CycleReport:
             "claims": self.claims_total,
             "claimsNewThisCycle": self.claims_new,
             "claimsRejectedByGate": self.claims_rejected,
-            "derivedClaims": self.derived,
+            # A breakdown of `claims` into captured vs derived must use ledger
+            # TOTALS.  This used to be `self.derived` — the count produced this
+            # cycle — so the README published the cycle delta as if it were the
+            # ledger's derived total and silently mislabelled every older derived
+            # claim as "captured from live payloads".  With 8,618 claims it
+            # reported 8,312 captured / 306 derived when the ledger actually held
+            # 5,914 / 2,704.
+            "derivedClaims": self.derived_total,
+            "derivedThisCycle": self.derived,
             "derivedRechecks": self.rechecks,
             "derivedNotRecheckable": self.not_recheckable,
             "derivedDrifts": self.drift,
@@ -108,6 +122,10 @@ class CycleReport:
             "sourcesRegistered": len(REGISTRY),
             "sourcesVerified": sum(1 for s in REGISTRY if s.status == "verified-live-read"),
             "sourcesBlocked": sum(1 for s in REGISTRY if s.status == "blocked"),
+            # Reported separately because "not verified" and "broken" are
+            # different claims.  A source here has simply never been read by a
+            # recorded probe — which says nothing about whether it works.
+            "sourcesNeverRead": sum(1 for s in REGISTRY if s.status == "registered"),
             "fetches": self.fetches, "fetchOk": self.fetch_ok,
             "fetchFailed": self.fetch_failed, "bytesIn": self.net.get("bytesIn", 0),
         }
@@ -229,6 +247,12 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
     fetch_log: List[Dict[str, Any]] = []
     gh_totals: List[Tuple[int, str]] = []
     discovery_budget = [config.MAX_NEW_TOPICS_PER_CYCLE]   # shared across all tasks
+    # Sources this runner could not reach at the TLS layer.  That is a fact about
+    # the runner, not about the source, so they are collected and reported as ONE
+    # aggregated finding instead of blocking 22 healthy endpoints and minting 38
+    # near-identical irregularities — which is both a false claim about those
+    # services and the register spam AGENTS.md §7 warns against.
+    egress_failures: List[str] = []
 
     for task in plan:
         # An unattended loop cannot afford to die.  Anything unexpected on one
@@ -292,6 +316,16 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
 
             if payload is None:
                 if result is not None and not result.ok:
+                    if result.error_kind == "EgressBlocked":
+                        # This runner could not open a TLS session to the host, so
+                        # nothing was learned about the source.  Marking it blocked
+                        # would publish "this service is down" for a service that
+                        # may be perfectly healthy, and consecutive_failures feeds
+                        # the CRITICAL escalation, so an egress blip would
+                        # manufacture critical findings about other people's APIs.
+                        if task.source_id not in egress_failures:
+                            egress_failures.append(task.source_id)
+                        continue
                     register.add(CRITICAL if (src and src.consecutive_failures >=
                                               config.SOURCE_FAILS_BEFORE_CRITICAL) else WARN,
                                  f"{task.source_id} could not be read",
@@ -404,6 +438,31 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
         rep.fetch_failed = stats.failed
     rep.net = stats.as_dict()
 
+    # One aggregated finding for a wall of egress failures, never N per-source ones.
+    # The tell that it is an egress policy rather than 22 simultaneous outages is
+    # uniformity: every failure is the same TLS-layer error, and some other host
+    # in the same cycle was read successfully.
+    if egress_failures:
+        hosts = sorted({urllib.parse.urlsplit(BY_ID[s].probe_url).netloc
+                        for s in egress_failures if s in BY_ID})
+        tell = ("Some other host was read successfully in this same cycle, which is "
+                "what distinguishes an egress allowlist from an outage."
+                if stats.ok else
+                "Nothing at all was read this cycle, so the wall may be total.")
+        register.add(
+            WARN, "This runner could not egress to some sources",
+            f"{len(egress_failures)} source(s) could not be reached because the TLS "
+            f"session was closed before any HTTP status arrived: "
+            f"{', '.join(egress_failures)}. Hosts: {', '.join(hosts)}. "
+            f"This is a property of the machine running the cycle, not of those "
+            f"services, so NONE of them is marked blocked and no claim is made that "
+            f"any of them is down. No claim was produced from them and no substitute "
+            f"value was invented. {tell}",
+            cycle, now,
+            repro=(f"python3 tools/probe_sources.py {' '.join(egress_failures[:4])}"
+                   "   # from a runner with unrestricted egress"),
+            source_id=egress_failures[0])
+
     # GitHub's search index moves while you watch: two reads of the same query in one
     # cycle can legitimately disagree.  That is worth recording, not hiding.
     by_query: Dict[str, List[int]] = {}
@@ -513,6 +572,7 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
     rep.new_topics = sum(1 for t in library.topics.values() if t.created_cycle == cycle)
     rep.claims_total = len(ledger.claims)
     rep.claims_rejected = len(ledger.rejections)
+    rep.derived_total = sum(1 for c in ledger.claims if c.kind == "derived")
 
     # ---------------------------------------------------------------- irregularities
     _auto_flags(register, cycle, now, ledger, library, lb, rep, profile,
@@ -557,6 +617,108 @@ def run_cycle(offline: bool = False, max_tasks: Optional[int] = None,
             rep.ok = False
             traceback.print_exc()
     return rep
+
+
+def republish(data_dir: Optional[pathlib.Path] = None,
+              docs_dir: Optional[pathlib.Path] = None) -> CycleReport:
+    """Re-render the site and docs from the state already on disk.
+
+    No read, no new claim, no new cycle row.
+
+    Two different kinds of number appear on the site and they must be sourced
+    differently, which is where the first version of this function went wrong:
+
+    * **Cumulative state** (claims in the ledger, topics in the library, open
+      irregularities) is *recomputed* from the objects on disk.  Replaying a
+      recorded figure for these would let a stale number survive a corrected
+      ledger.
+    * **Per-cycle deltas** (claims new *this* cycle, forecasts scored, drift
+      found) cannot be recomputed after the fact, so they are *replayed* from
+      the recorded cycle row — explicitly mapped, key by key.
+
+    The mapping is explicit because ``CycleReport.summary()`` writes camelCase
+    (``claimsTotal``) while the dataclass fields are snake_case
+    (``claims_total``).  A first attempt used ``hasattr(rep, key)`` over the
+    recorded dict, which matched almost nothing, so every cumulative figure
+    silently fell back to its default and the regenerated README published
+    "0 verified claims" and a negative claim delta.  A republish that prints
+    confident wrong numbers is worse than no republish.
+    """
+    d = pathlib.Path(data_dir or config.DATA)
+    ledger = Ledger(d)
+    library = Library(d)
+    register = Register(d)
+    memory = load_memory(d)
+
+    cycles: List[Dict[str, Any]] = []
+    cp = d / "cycles.jsonl"
+    if cp.exists():
+        for line in cp.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line:
+                try:
+                    cycles.append(json.loads(line))
+                except json.JSONDecodeError:
+                    continue
+
+    last = cycles[-1] if cycles else {}
+    rep = CycleReport()
+    rep.cycle = int(last.get("cycle", memory.get("cyclesRun", 0)))
+    rep.at = last.get("at", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
+    rep.mode = last.get("mode", config.runtime_mode())
+    rep.duration_ms = 0            # a republish does no work of its own
+
+    # --- replayed per-cycle deltas: explicit, never reflective -----------------
+    _RECORDED = {
+        "claims_new": "claimsNew", "rechecks": "rechecks",
+        "not_recheckable": "notRecheckable", "drift": "drift",
+        "new_topics": "newTopics", "forecasts_issued": "forecastsIssued",
+        "forecasts_scored": "forecastsScored", "irregularities_new": "irregularitiesNew",
+        "fetches": "fetches", "fetch_ok": "fetchOk", "fetch_failed": "fetchFailed",
+    }
+    for attr, key in _RECORDED.items():
+        if key in last:
+            setattr(rep, attr, last[key])
+    if isinstance(last.get("net"), dict):
+        rep.net = last["net"]
+
+    # --- recomputed cumulative state: read from the objects on disk ------------
+    rep.claims_total = len(ledger.claims)
+    rep.claims_rejected = len(ledger.rejections)
+    rep.topics_total = len(library.topics)
+    rep.retired_topics = sum(1 for t in library.topics.values()
+                             if t.status == STATUS_RETIRED)
+    rep.derived_total = sum(1 for c in ledger.claims if c.kind == "derived")
+    counts = register.counts()
+    rep.irregularities_open = counts.get("open", 0)
+
+    for name, attr, key in (("insights.json", "insights", "items"),
+                            ("ideas.json", "ideas", "items")):
+        doc = {}
+        p = d / name
+        if p.exists():
+            try:
+                doc = json.loads(p.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                doc = {}
+        setattr(rep, attr, len(doc.get(key, [])))
+
+    from . import docs as docsgen
+    from . import sitegen
+    sitegen.render(d, rep.at, rep, ledger, library, memory, register)
+    docsgen.render_all(d, rep.at, rep, ledger, library, memory, register,
+                       _read_json_or_empty(d / "leaderboard.json"),
+                       docs_dir=docs_dir)
+    return rep
+
+
+def _read_json_or_empty(p: pathlib.Path) -> Dict[str, Any]:
+    if not p.exists():
+        return {}
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}
 
 
 def derive_lessons_and_record(memory, ledger, library, ideas, cycle, now, rep) -> Dict[str, Any]:

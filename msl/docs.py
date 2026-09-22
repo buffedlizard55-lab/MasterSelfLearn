@@ -63,6 +63,7 @@ def _counts_table(ac: Dict[str, Any]) -> str:
         ("Sources registered", f"{ac['sourcesRegistered']}"),
         ("— verified by a recorded live read", f"{ac['sourcesVerified']}"),
         ("— currently blocked", f"{ac['sourcesBlocked']}"),
+        ("— never read (not broken, just unprobed)", f"{ac['sourcesNeverRead']}"),
         ("Reads this cycle (ok / failed)", f"{ac['fetchOk']} / {ac['fetchFailed']}"),
         ("Bytes read this cycle", f"{ac['bytesIn']:,}"),
         ("Manual inputs required", "**0**"),
@@ -239,9 +240,11 @@ These are counted, not reflected. Each lesson carries the integers behind it.
 python3 -m msl.cli cycle              # one full cycle, live network
 python3 -m msl.cli cycle --offline    # identical pipeline against data/seed/, no network
 python3 -m msl.cli probe              # live-read every registered source, report health
+python3 -m msl.cli publish            # re-render site + docs from committed state
 python3 -m msl.cli verify-claims      # read-only: recheck derived claims, report drift
 python3 -m msl.cli gate-report        # read-only: show what the evidence gate rejected
 python3 -m unittest discover -s tests # {len(_test_names(d))} tests, standard library only
+node tools/render_check.js            # render all 9 pages headlessly
 ```
 
 Python 3.9+, standard library only. No `pip install`, no build step, no keys.
@@ -276,12 +279,19 @@ Full register: [`IRREGULARITIES.md`](IRREGULARITIES.md) or
 ## Sources
 
 {ac['sourcesRegistered']} registered, {ac['sourcesVerified']} verified by a recorded
-live read, {ac['sourcesBlocked']} blocked. {len(KEYED_SOURCES_EXCLUDED)} excluded
-for requiring an API key, each with the reason recorded in `msl/sources.py`.
-{len(INTEREST_CATEGORIES_WITHOUT_A_SOURCE)} interest categories have no registered
-source that can serve them, and no claim is made about them.
+live read, {ac['sourcesBlocked']} blocked, {ac['sourcesNeverRead']} never read.
+**"Never read" is not "broken"**: it means no recorded probe has reached the
+endpoint yet, which is a fact about this project, not a claim about the service.
+A source is promoted to `verified-live-read` only by `msl/probe.py`, which writes
+`data/source_health.json` and nothing else — the registry itself hard-codes no
+status.
 
-Full registry: [`sources.html`](sources.html).
+{len(KEYED_SOURCES_EXCLUDED)} excluded for requiring an API key, each with the
+reason recorded in `msl/sources.py`. {len(INTEREST_CATEGORIES_WITHOUT_A_SOURCE)}
+interest categories have no registered source that can serve them, and no claim
+is made about them.
+
+Full registry and the last recorded probe: [`sources.html`](sources.html).
 """
     (out / "README.md").write_text(readme, encoding="utf-8")
 

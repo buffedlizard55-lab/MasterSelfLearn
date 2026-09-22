@@ -236,3 +236,151 @@ class Workflows(unittest.TestCase):
         self.assertIn("git push", text)
         self.assertIn("permissions:", text)
         self.assertIn("contents: write", text)
+
+
+class SourceHealthSurface(TmpDirCase):
+    """The probe's evidence must reach the page, including its egress caveat.
+
+    Before this, the Sources page could say a source had "never been read" but
+    not why, so a reader could not distinguish an endpoint that is down from a
+    runner that was not allowed to leave the building.
+    """
+
+    def _site(self):
+        from msl import sitegen
+        from msl.evidence import Ledger
+        from msl.irregularities import Register
+        from msl.pipeline import CycleReport
+        from msl.topics import Library
+        sitegen.render(self.dir, NOW1, CycleReport(), Ledger(self.dir),
+                       Library(self.dir), {}, Register(self.dir))
+        text = (self.dir / "site.js").read_text(encoding="utf-8")
+        return json.loads(text[text.index("{"):text.rindex("}") + 1])
+
+    def test_a_missing_probe_is_reported_as_not_run_not_as_all_clear(self):
+        """An empty table would read as "every source is fine"."""
+        sh = self._site()["sourceHealth"]
+        self.assertFalse(sh["ran"])
+        self.assertIn("probe_sources.py", sh["reason"])
+
+    def test_a_recorded_probe_is_published_with_its_verdicts(self):
+        (self.dir / "source_health.json").write_text(json.dumps({
+            "generatedAt": NOW1, "mode": "local", "attempted": 2, "ok": 1,
+            "failed": 0, "inconclusive": 1, "egressBlocked": True,
+            "note": "n", "results": [
+                {"id": "github_search", "httpStatus": 200, "ok": True, "bytes": 100,
+                 "elapsedMs": 5, "error": "", "sha256": "ab" * 8, "checkedAt": NOW1,
+                 "statusAfter": "verified-live-read", "egressBlocked": False,
+                 "verdict": True, "probeUrl": "https://example.test/a"},
+                {"id": "arxiv", "httpStatus": None, "ok": False, "bytes": 0,
+                 "elapsedMs": 2, "error": "EgressBlocked: EOF", "sha256": "",
+                 "checkedAt": NOW1, "statusAfter": "registered",
+                 "egressBlocked": True, "verdict": False,
+                 "probeUrl": "https://example.test/b"},
+            ]}), encoding="utf-8")
+        sh = self._site()["sourceHealth"]
+        self.assertTrue(sh["ran"])
+        self.assertEqual((sh["ok"], sh["failed"], sh["inconclusive"]), (1, 0, 1))
+        self.assertTrue(sh["egressBlocked"])
+        self.assertEqual(len(sh["results"]), 2)
+        blocked = [r for r in sh["results"] if r["egressBlocked"]]
+        self.assertEqual(len(blocked), 1)
+        self.assertFalse(blocked[0]["verdict"])
+        self.assertEqual(blocked[0]["statusAfter"], "registered",
+                         "an egress failure must not surface as blocked")
+
+    def test_a_corrupt_probe_ledger_degrades_to_not_run(self):
+        (self.dir / "source_health.json").write_text("{not json", encoding="utf-8")
+        self.assertFalse(self._site()["sourceHealth"]["ran"])
+
+    def test_the_sources_page_renders_the_probe_section(self):
+        """Guards the front end, not just the data: the page must draw it."""
+        (self.dir / "source_health.json").write_text(json.dumps({
+            "generatedAt": NOW1, "mode": "local", "attempted": 1, "ok": 1,
+            "failed": 0, "inconclusive": 0, "egressBlocked": False, "note": "n",
+            "results": [{"id": "github_search", "httpStatus": 200, "ok": True,
+                         "bytes": 10, "elapsedMs": 3, "error": "", "sha256": "cd" * 8,
+                         "checkedAt": NOW1, "statusAfter": "verified-live-read",
+                         "egressBlocked": False, "verdict": True,
+                         "probeUrl": "https://example.test/a"}]}), encoding="utf-8")
+        self._site()
+        app = (config.ROOT / "app.js").read_text(encoding="utf-8")
+        self.assertIn("D.sourceHealth", app,
+                      "app.js never reads the probe ledger it is given")
+        self.assertIn("no verdict — egress", app,
+                      "the egress caveat is not rendered anywhere")
+
+
+class Republish(TmpDirCase):
+    """Rebuilding the site from committed state must not invent a cycle."""
+
+    def test_republish_adds_no_cycle_row_and_no_claim(self):
+        from msl.pipeline import republish, run_cycle
+
+        def lines(name):
+            f = self.dir / name
+            return len(f.read_text(encoding="utf-8").splitlines()) if f.exists() else 0
+
+        self.cycle(NOW1)
+        cycles_before, claims_before = lines("cycles.jsonl"), lines("claims.jsonl")
+
+        rep = republish(data_dir=self.dir, docs_dir=self.dir)
+
+        self.assertEqual(rep.cycle, 1)
+        self.assertEqual(lines("cycles.jsonl"), cycles_before,
+                         "republish must not append a cycle row")
+        self.assertEqual(lines("claims.jsonl"), claims_before,
+                         "republish must not add a claim")
+        self.assertTrue((self.dir / "site.js").exists())
+        self.assertTrue((self.dir / "README.md").exists())
+
+    def test_republish_reproduces_the_counts_the_cycle_published(self):
+        """Regression: the first version of `republish` printed confident zeros.
+
+        It replayed the recorded cycle row with `hasattr(rep, key)` over a dict
+        whose keys are camelCase while the dataclass fields are snake_case, so
+        almost nothing matched, every cumulative figure kept its default, and the
+        regenerated README claimed "0 verified claims" and a negative claim delta
+        for a ledger holding thousands of claims.  A republish that prints wrong
+        numbers with a clean exit code is the worst kind of bug in this project.
+        """
+        from msl.pipeline import republish
+
+        self.seed_into(self.dir)
+        rep = self.cycle(NOW1)
+        site = (self.dir / "site.js").read_text(encoding="utf-8")
+        before = json.loads(site[site.index("{"):site.rindex("}") + 1])["autoCounts"]
+
+        republish(data_dir=self.dir, docs_dir=self.dir)
+        site = (self.dir / "site.js").read_text(encoding="utf-8")
+        after = json.loads(site[site.index("{"):site.rindex("}") + 1])["autoCounts"]
+
+        for key in ("claims", "claimsRejectedByGate", "derivedClaims", "topics",
+                    "irregularitiesOpen", "sourcesRegistered", "sourcesVerified",
+                    "sourcesNeverRead"):
+            self.assertEqual(after[key], before[key],
+                             f"{key} changed across a republish: "
+                             f"{before[key]} -> {after[key]}")
+        self.assertGreater(after["claims"], 0,
+                           "a republish of a cycle that made claims must not report zero")
+
+    def test_republish_never_reports_a_negative_figure(self):
+        """The original defect surfaced as `-306` captured claims."""
+        from msl.pipeline import republish
+
+        self.seed_into(self.dir)
+        self.cycle(NOW1)
+        rep = republish(data_dir=self.dir, docs_dir=self.dir)
+        ac = rep.auto_counts()
+        negatives = {k: v for k, v in ac.items()
+                     if isinstance(v, (int, float)) and not isinstance(v, bool) and v < 0}
+        self.assertEqual(negatives, {}, f"negative figures published: {negatives}")
+
+    def test_republish_keeps_the_cycle_it_is_replaying(self):
+        from msl.pipeline import republish
+
+        self.cycle(NOW1)
+        rep = republish(data_dir=self.dir, docs_dir=self.dir)
+        site = (self.dir / "site.js").read_text(encoding="utf-8")
+        data = json.loads(site[site.index("{"):site.rindex("}") + 1])
+        self.assertEqual(data["meta"]["cycle"], rep.cycle)

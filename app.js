@@ -715,6 +715,51 @@
           ]);
         }), { nums: [3, 5] })));
 
+    var health = D.sourceHealth || {};
+    if (!health.ran) {
+      main.appendChild(h("div", { class: "note warn" }, [
+        h("b", { text: "No probe has recorded a read yet. " }),
+        document.createTextNode(health.reason ||
+          "Run `python3 tools/probe_sources.py`. Until a probe records a read, no " +
+          "source status on this page is backed by evidence."),
+      ]));
+    } else {
+      var hrows = health.results || [];
+      var nEgress = hrows.filter(function (r) { return r.egressBlocked; }).length;
+      main.appendChild(section("probe", "Last recorded probe", hrows.length,
+        h("div", {}, [
+          h("p", { class: "small", text:
+            "Run " + (health.generatedAt || "—") + " in mode `" + (health.mode || "?") +
+            "`. " + n(health.ok) + " read successfully, " + n(health.failed) +
+            " failed on the source's side, " + n(health.inconclusive) +
+            " reached no verdict. A source's status on this page comes from this " +
+            "table and from nothing else." }),
+          health.egressBlocked ? h("div", { class: "note warn" }, [
+            h("b", { text: "This probe could not reach the network for " + n(nEgress) +
+              " of " + n(hrows.length) + " sources. " }),
+            document.createTextNode("Every one of those failures was a TLS session " +
+              "closed before any HTTP status arrived, which is a property of the " +
+              "machine that ran the probe, not of those services. None of them is " +
+              "marked blocked, and nothing here claims any of them is down. " +
+              "Re-run the probe from a runner with unrestricted egress."),
+          ]) : null,
+          table(["Source", "Verdict", "HTTP", "Bytes", "ms", "SHA-256 (16)", "Checked", "Detail"],
+            hrows.map(function (r) {
+              var verdict = r.ok ? "read ok"
+                : (r.egressBlocked ? "no verdict — egress" : "FAILED");
+              return tr([
+                td(h("span", {}, [h("a", { href: "#" + r.id, text: r.id })])),
+                td(badge(verdict, r.ok ? "ok" : (r.egressBlocked ? "mute" : "crit"))),
+                td(r.httpStatus === null || r.httpStatus === undefined ? "—" : String(r.httpStatus), "num"),
+                tdn(r.bytes), tdn(r.elapsedMs),
+                td(h("span", { class: "hash", text: r.sha256 || "—" })),
+                td(r.checkedAt ? ago(r.checkedAt) : "—"),
+                td(h("span", { class: "small", text: r.error || (r.ok ? "—" : "") })),
+              ]);
+            }), { nums: [2, 3, 4] }),
+        ])));
+    }
+
     var notes = src.filter(function (s) { return s.notes || s.docsNote; });
     main.appendChild(section("notes", "Recorded endpoint notes and findings", notes.length,
       notes.length ? table(["Source", "Note"], notes.map(function (s) {
