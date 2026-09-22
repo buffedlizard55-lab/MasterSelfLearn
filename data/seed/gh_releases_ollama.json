@@ -1,0 +1,22 @@
+{
+ "captureMode": "sandbox-scripted-urllib",
+ "capturedAt": "2026-09-22T07:03:03Z",
+ "httpStatus": 200,
+ "payloadSha256": "b38342b732bc869aca456a54018450ee31591d930116f9eba0aba600bdec2064",
+ "projection": [
+  {
+   "created_at": "2026-09-19T00:15:35Z",
+   "draft": false,
+   "html_url": "https://github.com/ollama/ollama/releases/tag/v0.34.3-rc1",
+   "name": "v0.34.3",
+   "prerelease": true,
+   "published_at": "2026-09-19T00:02:57Z",
+   "tag_name": "v0.34.3-rc1"
+  }
+ ],
+ "projectionNote": "Projection keeps the RAW GitHub field names that the registered adapter reads. payloadSha256 covers the full wire response, not the projection, so this capture can be re-verified byte for byte.",
+ "rawBytes": 30637,
+ "source": "seed",
+ "url": "https://api.github.com/repos/ollama/ollama/releases?per_page=1",
+ "wireHashVerifiable": true
+}

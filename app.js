@@ -883,17 +883,26 @@
 
     var cycles = (D.cycles || []).slice().reverse();
     main.appendChild(section("history", "Cycles", D.cyclesTotal,
-      cycles.length ? table(["Cycle", "At (UTC)", "Mode", "Reads ok/fail", "Bytes", "New claims", "Rejected", "Topics", "Forecasts", "Scored", "Ideas", "Flags", "ms", "Result"],
+      cycles.length ? table(["Cycle", "At (UTC)", "Mode", "Reads ok/fail", "Planned/dropped", "Bytes", "New claims", "Rejected", "Topics", "Forecasts", "Scored", "Waiting", "Ideas", "Flags", "ms", "Result"],
         cycles.map(function (c) {
           return tr([
             tdn(c.cycle), td(c.at), td(h("code", { text: c.mode })),
-            td(c.fetchOk + " / " + c.fetchFailed, "num"), tdn((c.net || {}).bytesIn),
+            td(c.fetchOk + " / " + c.fetchFailed, "num"),
+            // A cycle row written before the plan was counted says so rather than
+            // showing a 0 the plan never reported.
+            td(n(c.tasksPlanned) + " / " + n(c.tasksDropped), "num"),
+            tdn((c.net || {}).bytesIn),
             tdn(c.claimsNew), tdn(c.claimsRejected), tdn(c.topicsTotal),
-            tdn(c.forecastsIssued), tdn(c.forecastsScored), tdn(c.ideas),
-            tdn(c.irregularitiesOpen), tdn(c.durationMs),
+            tdn(c.forecastsIssued), tdn(c.forecastsScored), tdn(c.forecastsPending),
+            tdn(c.ideas),
+            tdn(c.irregularitiesOpen),
+            // Cycles 1-14 recorded durationMs=0: the clock was read after the row
+            // was written. That ordering is fixed; a recorded 0 is not a measured
+            // duration, so it is shown as a dash rather than as a number.
+            td(c.durationMs ? String(c.durationMs) : "—", "num"),
             td(c.ok ? badge("ok", "ok") : badge("ERROR", "crit")),
           ]);
-        }), { nums: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }) : empty("No cycle has run yet.")));
+        }), { nums: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] }) : empty("No cycle has run yet.")));
 
     var rel = D.memory.sourceReliability || {};
     var keys = Object.keys(rel).sort();
@@ -950,21 +959,33 @@
           return tr([td(h("b", { text: r[0] })), td(h("code", { text: r[1] })), td(r[2])]);
         })),
       ]],
-      ["4. Why the competition is scored the way it is", [
+      ["4. What a persona can be asked to predict", [
+        h("p", { text: "Two kinds of target, scored by one rule. A magnitude — a star count, an index, an event count — is predicted up, down or flat. An identity — a release version, a release tag, a repository's primary language or its archived state — has no up or down, so the question is whether the next observation differs from this one, and “flat” means “unchanged”." }),
+        h("p", { text: "Both are knowable one cycle later from the same ledger, and both are scored the same way: the outcome is read from an observation recorded in a later cycle, never from the forecast's own reasoning. S07_ChangeHazard answers the identity question from the subject's own history — how often its version or tag has changed so far — with Laplace smoothing, because a subject that has never changed has not earned a probability of zero." }),
+        h("p", { text: "A forecast that waits for an observation that never arrives does not disappear quietly: pending forecasts are counted, and ones whose metric has stopped being observed are reported as unscoreable rather than kept as if something were still coming." }),
+      ]],
+      ["5. Why the competition is scored the way it is", [
         h("p", { text: "Skill, not accuracy, is the headline number: accuracy minus the accuracy of S10_Persistence, which always predicts “no change”. Most real-world daily series are dominated by no-change, so a persona can post a respectable accuracy while demonstrating nothing. Skill removes that." }),
         h("p", { text: "A persona needs " + (D.leaderboard.qualification || {}).minScoredForecasts + " scored forecasts and a scored null model before it is ranked. Below that it is reported UNRANKED with the reason. It is never shown at 0%, which would present an untested design as a losing one." }),
       ]],
-      ["5. Known limits", (D.keyedExcluded || []).length ? [
+      ["6. Known limits", (D.keyedExcluded || []).length ? [
         h("ul", {}, [
-          h("li", { text: "Six useful sources are excluded because they need an API key (FRED, the NFL Game API, Google Trends, the X API, YouTube Data, TikTok/Instagram). Each is listed on the Sources page with the reason." }),
-          h("li", { text: "Three interest categories — Travel & Korea Trip, Social & Creator Data, Elections & Civic Data — have no registered source that can answer their question. No claim is made about them." }),
-          h("li", { text: "Three sports feeds are undocumented public endpoints. Claims built from them carry that marker." }),
+          // Counts and names are read from the registry via site.js, never typed:
+          // this list said "Three interest categories" while the registry held four,
+          // and a limit that is out of date is a limit nobody can trust.
+          h("li", { text: (D.keyedExcluded || []).length + " useful sources are excluded because they need an API key (" +
+            (D.keyedExcluded || []).map(function (s) { return s.name; }).join(", ") +
+            "). Each is listed on the Sources page with the reason." }),
+          h("li", { text: (D.categoriesWithoutSource || []).length + " interest categories — " +
+            (D.categoriesWithoutSource || []).map(function (c) { return c.category; }).join(", ") +
+            " — have no registered source that can answer their question. No claim is made about them." }),
+          h("li", { text: "Some league feeds are undocumented public endpoints (no operator contract, no versioning promise). A claim built from one carries an “undocumented” tag, so the claim itself says what it rests on." }),
           h("li", { text: "GitHub has no trending API. The Search API sorted by stars over a created window is a reproducible substitute, not the same thing." }),
           h("li", { text: "Seed captures taken by an interactive read are not wire-hash verifiable; those rows are marked and re-read by the next probe." }),
         ]),
         h("p", {}, [document.createTextNode("Full list: "), h("a", { href: "ROADMAP.md", text: "ROADMAP.md" }), document.createTextNode(".")]),
       ] : [h("p", { text: "See ROADMAP.md." })]],
-      ["6. Reproduce any number", [
+      ["7. Reproduce any number", [
         h("pre", {}, [h("code", { text:
           "python3 -m msl.cli cycle --offline   # rebuild every artifact from data/seed/\n" +
           "python3 -m msl.cli verify-claims     # recheck every derived claim\n" +

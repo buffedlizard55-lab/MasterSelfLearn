@@ -44,6 +44,33 @@ class SourceRegistry(unittest.TestCase):
             if s.id in ("mlb_statsapi", "nhl_web", "nba_cdn"):
                 self.assertIn("UNDOCUMENTED", s.docs_note, f"{s.id} lost its marker")
 
+    def test_every_probe_url_maps_back_to_its_own_source(self):
+        """The URL router has to know the whole registry.
+
+        ``_source_for_url`` is what turns a stored capture into an offline task.  A
+        URL it does not recognise is a read that disappears with no message, and
+        twenty of these thirty probe URLs used to fall through it.
+        """
+        from msl.pipeline import _source_for_url
+        for s in REGISTRY:
+            self.assertEqual(_source_for_url(s.probe_url), s.id,
+                             f"{s.id}'s own probe URL maps to the wrong source")
+
+    def test_url_variants_still_find_their_source(self):
+        from msl.pipeline import _source_for_url
+        cases = [
+            ("https://pypi.org/pypi/pandas/json", "pypi_json"),
+            ("https://registry.npmjs.org/vite/latest", "npm_registry"),
+            ("https://api.github.com/repos/ollama/ollama", "github_repo"),
+            ("https://api.github.com/repos/ollama/ollama/releases?per_page=1",
+             "github_releases"),
+            ("https://api.github.com/search/repositories?q=x&per_page=1", "github_search"),
+            ("https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson"
+             "&starttime=2026-10-09&endtime=2026-10-15&minmagnitude=5.0", "usgs_fdsn"),
+        ]
+        for url, want in cases:
+            self.assertEqual(_source_for_url(url), want, url)
+
     def test_the_third_party_fx_mirror_is_labelled_as_such(self):
         s = BY_ID["frankfurter"]
         self.assertIn("NOT an official ECB endpoint", s.notes)

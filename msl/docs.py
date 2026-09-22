@@ -11,6 +11,7 @@ every cycle and is the only place a number should be quoted from.
 """
 from __future__ import annotations
 
+import ast
 import json
 import pathlib
 from typing import Any, Dict, List, Optional
@@ -45,12 +46,37 @@ def render_all(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
     _write_irregularities(out, now, rep, register)
 
 
+def _duration(ms: Any) -> str:
+    """A cycle duration, or the truth that the row does not carry one.
+
+    Cycles 1-14 recorded ``durationMs: 0`` because the clock was read after the row
+    was written.  That is not a measured duration, and printing "0 ms" invites the
+    reader to believe the engine runs instantly.
+    """
+    return f"{ms:,} ms" if ms else "not measured"
+
+
+def _recorded(v: Any) -> str:
+    """A count, or the plain statement that this cycle row did not record it.
+
+    Printing 0 for "not recorded" is how a report starts lying: 0 is a measurement
+    and `unrecorded` is not.  Cycle rows written before this field existed say so.
+    """
+    return f"{v:,}" if isinstance(v, int) else "not recorded"
+
+
 def _counts_table(ac: Dict[str, Any]) -> str:
     rows = [
         ("Cycle", f"**{ac['cycle']}**"),
         ("Verified claims in the ledger", f"**{ac['claims']:,}**"),
-        ("— captured from live payloads", f"{ac['claims'] - ac['derivedClaims']:,}"),
+        # The three kinds partition the ledger.  `negative` is proof of absence
+        # ("this endpoint returns no such record"), so counting it as a captured
+        # reading would overstate what was read.  The remainder is computed, not
+        # typed, so the rows always sum to the total.
+        ("— captured from live payloads",
+         f"{ac['claims'] - ac['derivedClaims'] - ac.get('negativeClaims', 0):,}"),
         ("— derived by recorded arithmetic", f"{ac['derivedClaims']:,}"),
+        ("— negative (proof of absence)", f"{ac.get('negativeClaims', 0):,}"),
         ("Claims rejected by the evidence gate", f"**{ac['claimsRejectedByGate']:,}**"),
         ("Derived claims rechecked this cycle", f"{ac['derivedRechecks']:,}"),
         ("Derived claims that no longer recompute", f"**{ac['derivedDrifts']}**"),
@@ -65,6 +91,10 @@ def _counts_table(ac: Dict[str, Any]) -> str:
         ("— currently blocked", f"{ac['sourcesBlocked']}"),
         ("— never read (not broken, just unprobed)", f"{ac['sourcesNeverRead']}"),
         ("Reads this cycle (ok / failed)", f"{ac['fetchOk']} / {ac['fetchFailed']}"),
+        ("Reads planned / refused by the cap",
+         f"{_recorded(ac.get('tasksPlanned'))} / {_recorded(ac.get('tasksDroppedByCap'))}"),
+        ("Forecasts waiting for an observation", _recorded(ac.get("forecastsPending"))),
+        ("Forecasts that can never be scored", _recorded(ac.get("forecastsAbandoned"))),
         ("Bytes read this cycle", f"{ac['bytesIn']:,}"),
         ("Manual inputs required", "**0**"),
     ]
@@ -243,7 +273,7 @@ python3 -m msl.cli probe              # live-read every registered source, repor
 python3 -m msl.cli publish            # re-render site + docs from committed state
 python3 -m msl.cli verify-claims      # read-only: recheck derived claims, report drift
 python3 -m msl.cli gate-report        # read-only: show what the evidence gate rejected
-python3 -m unittest discover -s tests # {len(_test_names(d))} tests, standard library only
+python3 -m unittest discover -s tests # {_test_count(d)} tests in {len(_test_names(d))} modules, standard library only
 node tools/render_check.js            # render all 9 pages headlessly
 ```
 
@@ -321,17 +351,17 @@ objects the site is built from.
 |---|---|
 | Cycle | {rep.cycle} |
 | Mode | `{rep.mode}` |
-| Duration | {rep.duration_ms} ms |
+| Duration | {_duration(rep.duration_ms)} |
 | Reads (ok / failed) | {rep.fetch_ok} / {rep.fetch_failed} |
 | Bytes read | {rep.net.get('bytesIn', 0):,} |
-| Facts extracted | {rep.facts:,} |
+| Facts extracted | {_recorded(rep.facts)} |
 | New claims | {rep.claims_new:,} |
 | Claims rejected by the gate | {rep.claims_rejected:,} |
-| Derived / rechecked / drifted | {rep.derived} / {rep.rechecks} / {rep.drift} |
+| Derived / rechecked / drifted | {_recorded(rep.derived)} / {_recorded(rep.rechecks)} / {_recorded(rep.drift)} |
 | Topics (new) | {rep.topics_total} ({rep.new_topics}) |
 | Insights published | {rep.insights} |
 | Forecasts issued / scored | {rep.forecasts_issued} / {rep.forecasts_scored} |
-| Ideas (promoted) | {rep.ideas} ({rep.ideas_promoted}) |
+| Ideas (promoted) | {rep.ideas} ({_recorded(rep.ideas_promoted)}) |
 | Irregularities open (new) | {rep.irregularities_open} ({rep.irregularities_new}) |
 | Pipeline errors | {len(rep.errors)} |
 
@@ -497,6 +527,33 @@ def _test_names(d: pathlib.Path) -> List[str]:
     for p in sorted(tests.glob("test_*.py")):
         out.append(p.stem)
     return out
+
+
+def _test_count(d: pathlib.Path) -> int:
+    """How many test *cases* the suite holds, counted from the source.
+
+    The README used to print ``{len(_test_names(d))} tests`` — the number of test
+    *files* — so a repository running 233 tests published "11 tests".  Count the
+    ``test_*`` functions with ``ast`` instead: no import side effects, and it stays
+    true as the suite grows.
+    """
+    total = 0
+    for p in sorted((config.ROOT / "tests").glob("test_*.py")):
+        try:
+            tree = ast.parse(p.read_text(encoding="utf-8"))
+        except (OSError, SyntaxError):
+            continue
+        # Top level only: ast.walk would visit the methods twice, once inside their
+        # class and once on their own, and report double the suite.
+        for node in ast.iter_child_nodes(tree):
+            if isinstance(node, ast.ClassDef):
+                total += sum(1 for f in node.body
+                             if isinstance(f, (ast.FunctionDef, ast.AsyncFunctionDef))
+                             and f.name.startswith("test_"))
+            elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) \
+                    and node.name.startswith("test_"):
+                total += 1
+    return total
 
 
 def _write(p: pathlib.Path, text: str) -> None:

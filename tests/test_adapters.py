@@ -3,12 +3,14 @@ whose shape has changed."""
 from __future__ import annotations
 
 import json
+import pathlib
 import unittest
 
 from msl import adapters
 from msl.adapters import ADAPTERS, adapter_for
 from msl.sources import BY_ID, REGISTRY
 
+SEED = pathlib.Path(__file__).resolve().parent.parent / "data" / "seed"
 CTX = {"topic": "open-source-momentum", "query": "agents", "query_label": "agents"}
 
 
@@ -176,6 +178,214 @@ class FederalRegister(unittest.TestCase):
         slugs = [e[0] for e in xr.entities]
         self.assertIn("frdoc:2026-19271", slugs)
         self.assertIn("agency:centers-for-disease-control-and-prevention", slugs)
+
+
+class RepoDetailAdapter(unittest.TestCase):
+    """``GET /repos/{owner}/{repo}`` — read against the real hashed capture."""
+
+    CTX = {"topic": "open-source-momentum", "repo": "browser-use/jev-ultrafast"}
+
+    def setUp(self):
+        rec = json.loads((SEED / "gh_repo_browser-use_jev-ultrafast.json").read_text())
+        self.payload = rec["projection"]
+
+    def test_counts_come_from_the_real_capture(self):
+        xr = adapters.gh_repo_detail(self.payload, dict(self.CTX))
+        vals = {f.field: f.value for f in xr.facts}
+        self.assertEqual(vals["github.repo[browser-use/jev-ultrafast].stars"],
+                         self.payload["stargazers_count"])
+        self.assertEqual(vals["github.repo[browser-use/jev-ultrafast].open_issues"],
+                         self.payload["open_issues_count"])
+        self.assertEqual(vals["github.repo[browser-use/jev-ultrafast].watchers"],
+                         self.payload["subscribers_count"])
+        self.assertEqual(vals["github.repo[browser-use/jev-ultrafast].language"], "Python")
+        self.assertEqual(vals["github.repo[browser-use/jev-ultrafast].state"], "active")
+
+    def test_the_statement_names_the_repository(self):
+        xr = adapters.gh_repo_detail(self.payload, dict(self.CTX))
+        stars = next(f for f in xr.facts if f.field.endswith(".stars"))
+        self.assertIn("browser-use/jev-ultrafast", stars.statement)
+        self.assertIn("browser-use/jev-ultrafast", stars.tags)
+
+    def test_a_missing_count_is_a_problem_and_never_a_zero(self):
+        """The regression this project keeps one shape change away from."""
+        payload = {k: v for k, v in self.payload.items() if k != "stargazers_count"}
+        xr = adapters.gh_repo_detail(payload, dict(self.CTX))
+        self.assertEqual([f for f in xr.facts if f.field.endswith(".stars")], [])
+        self.assertTrue(any("stargazers_count" in p for p in xr.problems))
+
+    def test_a_present_zero_is_recorded_as_the_zero_it_is(self):
+        payload = dict(self.payload, stargazers_count=0, forks_count=0)
+        xr = adapters.gh_repo_detail(payload, dict(self.CTX))
+        vals = {f.field: f.value for f in xr.facts}
+        self.assertEqual(vals["github.repo[browser-use/jev-ultrafast].stars"], 0)
+        self.assertEqual(vals["github.repo[browser-use/jev-ultrafast].forks"], 0)
+
+    def test_no_primary_language_is_an_observed_absence(self):
+        xr = adapters.gh_repo_detail(dict(self.payload, language=None), dict(self.CTX))
+        lang = next(f for f in xr.facts if f.field.endswith(".language"))
+        self.assertEqual(lang.value, "")
+        self.assertIn("no primary language", lang.statement)
+
+    def test_archived_is_a_state_not_a_boolean(self):
+        xr = adapters.gh_repo_detail(dict(self.payload, archived=True), dict(self.CTX))
+        state = next(f for f in xr.facts if f.field.endswith(".state"))
+        self.assertEqual(state.value, "archived")
+
+    def test_a_read_about_a_different_repository_is_refused(self):
+        """The subject is the payload's; a mismatch is never resolved silently."""
+        xr = adapters.gh_repo_detail(self.payload,
+                                     {"topic": "t", "repo": "zai-org/ZCode"})
+        self.assertEqual(xr.facts, [])
+        self.assertTrue(any("disagree" in p for p in xr.problems))
+
+    def test_payload_without_full_name_records_nothing(self):
+        payload = {k: v for k, v in self.payload.items() if k != "full_name"}
+        xr = adapters.gh_repo_detail(payload, dict(self.CTX))
+        self.assertEqual(xr.facts, [])
+        self.assertTrue(any("full_name" in p for p in xr.problems))
+
+
+class ReleasesAdapter(unittest.TestCase):
+    """``/releases?per_page=1`` — including the empty list, which is a fact."""
+
+    CTX = {"topic": "open-source-momentum", "repo": "ollama/ollama"}
+
+    def test_a_real_release_tag_is_read(self):
+        rec = json.loads((SEED / "gh_releases_ollama.json").read_text())
+        xr = adapters.gh_releases(rec["projection"], dict(self.CTX))
+        vals = {f.field: f.value for f in xr.facts}
+        self.assertEqual(vals["github.release[ollama/ollama].tag"], "v0.34.3-rc1")
+        self.assertEqual(vals["github.release[ollama/ollama].published"], "2026-09-19T00:02:57Z")
+        tag = next(f for f in xr.facts if f.field.endswith(".tag"))
+        self.assertIn("prerelease", tag.statement)
+
+    def test_no_release_is_a_negative_claim_not_a_silent_drop(self):
+        rec = json.loads((SEED / "gh_releases_browser-use_jev-ultrafast.json").read_text())
+        self.assertEqual(rec["projection"], [], "the capture is supposed to be empty")
+        xr = adapters.gh_releases(rec["projection"], dict(self.CTX))
+        self.assertEqual(len(xr.facts), 1)
+        f = xr.facts[0]
+        self.assertEqual(f.kind, "negative")
+        self.assertEqual(f.value, "")
+        self.assertIn("lists no release", f.statement)
+
+    def test_the_empty_and_non_empty_cases_share_one_field_name(self):
+        """One continuous series per repository, so a first release is a change."""
+        empty = adapters.gh_releases([], dict(self.CTX))
+        rec = json.loads((SEED / "gh_releases_ollama.json").read_text())
+        full = adapters.gh_releases(rec["projection"], dict(self.CTX))
+        self.assertEqual(empty.facts[0].field, "github.release[ollama/ollama].tag")
+        self.assertEqual(full.facts[0].field, "github.release[ollama/ollama].tag")
+
+    def test_a_release_that_cannot_be_attributed_is_refused(self):
+        rec = json.loads((SEED / "gh_releases_ollama.json").read_text())
+        xr = adapters.gh_releases(rec["projection"], {"topic": "t", "repo": "zai-org/ZCode"})
+        self.assertEqual(xr.facts, [])
+        self.assertTrue(any("disagree" in p for p in xr.problems))
+
+    def test_the_payload_can_identify_itself_when_the_task_does_not(self):
+        rec = json.loads((SEED / "gh_releases_ollama.json").read_text())
+        xr = adapters.gh_releases(rec["projection"], {"topic": "t"})
+        self.assertEqual(xr.facts[0].field, "github.release[ollama/ollama].tag")
+
+
+class SentenceTemplates(unittest.TestCase):
+    """Sentences that were published wrong once, checked against the fix.
+
+    Each of these matched a row that is still in the append-only ledger; the
+    detector that counts those rows lives in msl/sentences.py and is tested in
+    tests/test_sentences.py.
+    """
+
+    def test_federal_register_does_not_double_the_word_matching(self):
+        payload = {"count": 1573, "description": "Documents matching 'artificial intelligence'",
+                   "results": []}
+        xr = adapters.federal_register(payload, {"topic": "regulatory-flow",
+                                                 "term": "artificial intelligence"})
+        st = xr.facts[0].statement
+        self.assertIn("1,573 documents matching “artificial intelligence”", st)
+        self.assertNotIn("matching Documents matching", st)
+
+    def test_federal_register_without_a_term_says_it_counted_the_whole_register(self):
+        xr = adapters.federal_register({"count": 3667127, "results": []},
+                                       {"topic": "source-health"})
+        self.assertEqual(xr.facts[0].field, "fedreg.documents[newest]")
+        self.assertIn("in total", xr.facts[0].statement)
+
+    def test_usgs_statement_carries_the_window_the_query_actually_read(self):
+        ctx = {"topic": "geohazards", "window": "7d", "starttime": "2026-09-09",
+               "endtime": "2026-09-15", "minmagnitude": 5.0}
+        xr = adapters.usgs_count({"count": 41, "maxAllowed": 20000}, ctx)
+        st = xr.facts[0].statement
+        self.assertIn("between 2026-09-09 and 2026-09-15", st)
+        self.assertIn("magnitude 5.0", st)
+        self.assertNotIn("configured", st)
+
+    def test_the_open_ended_probe_count_is_a_different_field_from_the_rolling_one(self):
+        """Two windows are two measurements and must not share a series."""
+        rolling = adapters.usgs_count({"count": 41}, {"topic": "geohazards", "window": "7d"})
+        probe = adapters.usgs_count({"count": 41}, {"topic": "source-health",
+                                                    "starttime": "2026-09-14",
+                                                    "minmagnitude": 5.0})
+        self.assertEqual(rolling.facts[0].field, "usgs.events[7d]")
+        self.assertEqual(probe.facts[0].field, "usgs.events[from-2026-09-14]")
+        self.assertIn("to the time of this read", probe.facts[0].statement)
+
+    def test_bls_takes_the_series_id_from_the_payload(self):
+        payload = {"status": "REQUEST_SUCCEEDED",
+                   "Results": {"series": [{"seriesID": "CUUR0000SA0",
+                                           "data": [{"value": "334.98", "periodName": "August",
+                                                     "year": "2026"}]}]}}
+        xr = adapters.bls(payload, {"topic": "macro-signals"})
+        self.assertEqual(xr.facts[0].field, "bls[CUUR0000SA0].latest")
+        self.assertNotIn("?", xr.facts[0].statement)
+
+    def test_bls_refuses_a_series_it_cannot_name(self):
+        payload = {"status": "REQUEST_SUCCEEDED",
+                   "Results": {"series": [{"data": [{"value": "1.0"}]}]}}
+        xr = adapters.bls(payload, {"topic": "macro-signals"})
+        self.assertEqual(xr.facts, [])
+        self.assertTrue(any("names the series" in p for p in xr.problems))
+
+    def test_worldbank_takes_the_indicator_from_the_payload(self):
+        payload = [{"pages": 1}, [{"date": "2025", "value": 3.07e13,
+                                   "indicator": {"id": "NY.GDP.MKTP.CD",
+                                                 "value": "GDP (current US$)"}}]]
+        xr = adapters.worldbank(payload, {"topic": "macro-signals"})
+        self.assertEqual(xr.facts[0].field, "worldbank[NY.GDP.MKTP.CD].latest")
+
+    def test_worldbank_refuses_an_indicator_it_cannot_name(self):
+        payload = [{"pages": 1}, [{"date": "2025", "value": 3.07e13, "indicator": {}}]]
+        xr = adapters.worldbank(payload, {"topic": "macro-signals"})
+        self.assertEqual(xr.facts, [])
+        self.assertTrue(any("names the indicator" in p for p in xr.problems))
+
+    def test_nominatim_names_the_place_it_was_asked_about(self):
+        xr = adapters.nominatim([{"display_name": "Seoul, South Korea"}],
+                                {"topic": "travel-korea", "query": "Seoul"})
+        self.assertEqual(xr.facts[0].field, "nominatim.results[Seoul]")
+        self.assertIn("for “Seoul”", xr.facts[0].statement)
+
+    def test_nominatim_refuses_a_read_it_cannot_attribute_to_a_place(self):
+        xr = adapters.nominatim([{"display_name": "Somewhere"}], {"topic": "travel-korea"})
+        self.assertEqual(xr.facts, [])
+        self.assertTrue(any("which place" in p for p in xr.problems))
+
+    def test_a_search_total_without_a_query_is_refused(self):
+        """87 rows in the ledger read ``github.total_count[]``."""
+        payload = {"total_count": 3636291, "items": []}
+        xr = adapters.gh_search(payload, {"topic": "open-source-momentum"})
+        self.assertEqual([f for f in xr.facts if "total_count" in f.field], [])
+        self.assertTrue(any("names the query" in p for p in xr.problems))
+
+    def test_a_search_total_names_the_query_it_counted(self):
+        payload = {"total_count": 3636291, "items": []}
+        xr = adapters.gh_search(payload, {"topic": "open-source-momentum",
+                                          "query": "created:>=2026-09-14"})
+        f = xr.facts[0]
+        self.assertEqual(f.field, "github.total_count[created:>=2026-09-14]")
+        self.assertIn("created:>=2026-09-14", f.statement)
 
 
 class OtherAdapters(unittest.TestCase):

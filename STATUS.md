@@ -9,10 +9,10 @@ objects the site is built from.
 |---|---|
 | Cycle | 14 |
 | Mode | `github-actions` |
-| Duration | 52977 ms |
+| Duration | not measured |
 | Reads (ok / failed) | 66 / 4 |
 | Bytes read | 1,827,422 |
-| Facts extracted | 680 |
+| Facts extracted | not recorded |
 | New claims | 680 |
 | Claims rejected by the gate | 0 |
 | Derived / rechecked / drifted | 330 / 40 / 0 |

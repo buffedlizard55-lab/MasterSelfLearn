@@ -208,3 +208,130 @@ class RegistryIntegrity(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def change_series(l: Ledger, e, field: str, topic: str, values, cycles,
+                  source="pypi_json"):
+    """A categorical series: a version string is an identity, not a magnitude."""
+    out = []
+    for v, cyc in zip(values, cycles):
+        out.append(l.accept(topic, KIND_CAPTURED, f"{field} read", source, NOW1, cyc,
+                            value=str(v), unit="version", evidence=[e.id], field=field,
+                            tags=["pypi", "release"]))
+    return out
+
+
+class ChangeTargets(TmpDirCase):
+    """A version has no up or down; the question is whether it moved."""
+
+    FIELD = "pypi[requests].version"
+
+    def _ctx(self, l, cycle, now):
+        from msl.strategies import tracked_changes
+        c, topic_of, kind_of = tracked_changes(l)
+        return Context(ledger=l, cycle=cycle, now=now, memory={},
+                       metrics={}, topic_of={}, changes=c, change_topic_of=topic_of,
+                       change_kind=kind_of)
+
+    def test_a_one_observation_version_is_not_tracked(self):
+        from msl.strategies import tracked_changes
+        l = Ledger(self.dir)
+        e = ev(l)
+        change_series(l, e, self.FIELD, "t", ["2.34.2"], [1])
+        c, _, _ = tracked_changes(l)
+        self.assertEqual(c, {})
+
+    def test_a_version_that_changed_is_scored_as_a_change(self):
+        l = Ledger(self.dir)
+        e = ev(l)
+        change_series(l, e, self.FIELD, "t", ["2.34.2", "2.35.0"], [1, 2])
+        ctx = self._ctx(l, 2, NOW2)
+        f = Forecast("S10_Persistence", 1, "t", self.FIELD, "flat", 0.5,
+                     metric_kind="change")
+        score([f], ctx)
+        self.assertTrue(f.scored)
+        self.assertEqual(f.outcome, "up")
+        self.assertEqual(f.outcome_value, "2.35.0")
+        self.assertAlmostEqual(f.brier, 0.25)
+
+    def test_a_version_that_stayed_the_same_is_a_flat_outcome(self):
+        l = Ledger(self.dir)
+        e = ev(l)
+        change_series(l, e, self.FIELD, "t", ["2.34.2", "2.34.2"], [1, 2])
+        ctx = self._ctx(l, 2, NOW2)
+        f = Forecast("S10_Persistence", 1, "t", self.FIELD, "flat", 0.5,
+                     metric_kind="change")
+        score([f], ctx)
+        self.assertEqual(f.outcome, "flat")
+        self.assertAlmostEqual(f.brier, 0.25)
+
+    def test_change_hazard_is_laplace_smoothed_never_certain(self):
+        """A subject that has never changed has not earned a probability of zero."""
+        l = Ledger(self.dir)
+        e = ev(l)
+        change_series(l, e, self.FIELD, "t", ["1", "1", "1"], [1, 2, 3])
+        ctx = self._ctx(l, 3, NOW3)
+        f = next(x for x in STRATEGY_BY_ID["S07_ChangeHazard"].fn(ctx)
+                 if x.metric == self.FIELD)
+        self.assertGreater(f.probability, 0.0)
+        self.assertLess(f.probability, 0.5)          # "no change" is still the call
+        self.assertEqual(f.direction, "flat")
+        self.assertEqual(f.metric_kind, "change")
+
+    def test_change_hazard_leans_to_change_when_it_usually_changes(self):
+        l = Ledger(self.dir)
+        e = ev(l)
+        change_series(l, e, self.FIELD, "t", ["1", "2", "3", "4"], [1, 2, 3, 4])
+        ctx = self._ctx(l, 4, NOW3)
+        f = next(x for x in STRATEGY_BY_ID["S07_ChangeHazard"].fn(ctx)
+                 if x.metric == self.FIELD)
+        self.assertGreater(f.probability, 0.5)
+        self.assertEqual(f.direction, "up")
+
+    def test_the_null_model_covers_change_targets(self):
+        l = Ledger(self.dir)
+        e = ev(l)
+        change_series(l, e, self.FIELD, "t", ["1", "2"], [1, 2])
+        ctx = self._ctx(l, 2, NOW2)
+        f = next(x for x in STRATEGY_BY_ID["S10_Persistence"].fn(ctx)
+                 if x.metric == self.FIELD)
+        self.assertEqual(f.direction, "flat")
+        self.assertEqual(f.metric_kind, "change")
+
+    def test_numeric_personas_do_not_forecast_change_targets(self):
+        """A momentum persona reads magnitudes; a version is not one."""
+        l = Ledger(self.dir)
+        e = ev(l)
+        change_series(l, e, self.FIELD, "t", ["1", "2", "3"], [1, 2, 3])
+        ctx = self._ctx(l, 3, NOW3)
+        for sid in ("S01_MomentumPersist", "S02_MeanRevert", "S03_Acceleration"):
+            issued = STRATEGY_BY_ID[sid].fn(ctx)
+            self.assertEqual([f.metric for f in issued if f.metric == self.FIELD], [],
+                             f"{sid} issued a magnitude forecast on a version string")
+
+    def test_one_observation_per_cycle_is_what_gets_scored(self):
+        """Two reads of one field inside one cycle are one moment, not two."""
+        from msl.strategies import tracked_changes
+        l = Ledger(self.dir)
+        e = ev(l)
+        change_series(l, e, self.FIELD, "t", ["1", "1", "2"], [1, 1, 2])
+        c, _, _ = tracked_changes(l)
+        self.assertEqual([x.cycle for x in c[self.FIELD]], [1, 2],
+                         "a duplicate read inside cycle 1 must not become an observation")
+        self.assertEqual([x.value for x in c[self.FIELD]], ["1", "2"])
+
+    def test_a_retracted_field_is_not_forecast(self):
+        """Retraction must reach the competition, not only the site."""
+        from msl.strategies import tracked_changes
+        l = Ledger(self.dir)
+        e = ev(l)
+        field = "github.release[old/name].tag"
+        change_series(l, e, field, "t", ["v1", "v2"], [1, 2])
+        self.assertIn(field, tracked_changes(l)[0])
+        from msl import retractions
+        retractions.RETRACTIONS.append({"fieldPrefix": field, "reason": "test",
+                                        "firstSeenCycle": "1", "fixedInCycle": "2"})
+        try:
+            self.assertNotIn(field, tracked_changes(l)[0])
+        finally:
+            retractions.RETRACTIONS.pop()

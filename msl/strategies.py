@@ -21,10 +21,24 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from . import config
 from .evidence import Claim, Ledger
+from .retractions import is_retracted
 
 DIRECTION_UP = "up"
 DIRECTION_DOWN = "down"
 DIRECTION_FLAT = "flat"
+
+
+#: Two kinds of target, and they are scored by the same rule.
+#:
+#: ``numeric``  a magnitude: up, down, or unchanged.
+#: ``change``   an identity: a version string, a release tag, a primary language, a
+#:              repository state.  A version has no magnitude, so "up" there means
+#:              "different from the last observation" and "flat" means "the same".
+#:              That is the honest form of the question "will the next release land
+#:              before the next cycle?", and its outcome is knowable one cycle later
+#:              in exactly the same way.
+METRIC_NUMERIC = "numeric"
+METRIC_CHANGE = "change"
 
 
 @dataclass
@@ -34,7 +48,7 @@ class Forecast:
     topic: str
     metric: str                  # the claim field being predicted
     direction: str               # up | down | flat
-    probability: float           # P(up)
+    probability: float           # P(up); for a change target, P(the value differs)
     basis: List[str] = field(default_factory=list)
     reason: str = ""
     scored: bool = False
@@ -42,10 +56,12 @@ class Forecast:
     outcome_value: Any = None
     scored_at_cycle: int = 0
     brier: Optional[float] = None
+    metric_kind: str = METRIC_NUMERIC
 
     def as_dict(self) -> Dict[str, Any]:
         return {"strategyId": self.strategy_id, "cycle": self.cycle, "topic": self.topic,
                 "metric": self.metric, "direction": self.direction,
+                "metricKind": self.metric_kind,
                 "probability": round(self.probability, 4), "basis": self.basis,
                 "reason": self.reason, "scored": self.scored, "outcome": self.outcome,
                 "outcomeValue": self.outcome_value, "scoredAtCycle": self.scored_at_cycle,
@@ -58,7 +74,8 @@ class Forecast:
                    probability=d["probability"], basis=d.get("basis", []) or [],
                    reason=d.get("reason", ""), scored=bool(d.get("scored")),
                    outcome=d.get("outcome", ""), outcome_value=d.get("outcomeValue"),
-                   scored_at_cycle=d.get("scoredAtCycle", 0), brier=d.get("brier"))
+                   scored_at_cycle=d.get("scoredAtCycle", 0), brier=d.get("brier"),
+                   metric_kind=d.get("metricKind", METRIC_NUMERIC))
 
 
 @dataclass
@@ -106,8 +123,18 @@ class Context:
     cycle: int
     now: str
     memory: Dict[str, Any]
-    metrics: Dict[str, List[Claim]]     # metric field -> ordered claims
+    metrics: Dict[str, List[Claim]]     # numeric metric field -> ordered claims
     topic_of: Dict[str, str]            # metric field -> topic slug
+    #: Categorical series, same shape.  ``__post_init__`` fills them when a caller
+    #: does not, so nobody can construct a context that quietly sees only half of the
+    #: observable world and then report that the other half never moves.
+    changes: Dict[str, List[Claim]] = field(default_factory=dict)
+    change_topic_of: Dict[str, str] = field(default_factory=dict)
+    change_kind: Dict[str, str] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if not self.changes:
+            self.changes, self.change_topic_of, self.change_kind = tracked_changes(self.ledger)
 
 
 # --------------------------------------------------------------------------- #
@@ -117,29 +144,117 @@ _VIEWS = re.compile(r"^wiki\[[^\]]+\]\.views\.\d{4}-\d{2}-\d{2}$")
 # keyed by repository name, not by position — see msl/adapters.gh_search
 _STARS = re.compile(r"^github\.repo\[[^\]]+\]\.stars$")
 _FORKS = re.compile(r"^github\.repo\[[^\]]+\]\.forks$")
-_COUNTS = {"owner.public_repos", "owner.pages_repos", "hn.topstories.length"}
+_COUNTS = {"owner.public_repos", "owner.pages_repos", "owner.total_kb",
+           "hn.topstories.length"}
+#: Rates and counters that are re-read every cycle, so "where is this next cycle?"
+#: has a knowable answer rather than a rhetorical one.  Deliberately a curated list
+#: and not "any numeric field": a target that is constant by construction (the size
+#: of a page we asked for) would fill the forecast log with noise and flatter
+#: whichever persona happened to predict it.
+_NUMERIC_SERIES = (
+    re.compile(r"^fx\[[^\]]+\]\.vsUSD$"),
+    re.compile(r"^ecb\[[^\]]+\]\.latest$"),
+    re.compile(r"^bls\[[^\]]+\]\.latest$"),
+    re.compile(r"^worldbank\[[^\]]+\]\.latest$"),
+    re.compile(r"^usgs\.events\[[^\]]+\]$"),
+    re.compile(r"^nws\.alerts\[[^\]]+\]$"),
+    re.compile(r"^clinicaltrials\.totalCount$"),
+    re.compile(r"^pubmed\.hits\[[^\]]+\]$"),
+    re.compile(r"^crossref\.totalResults$"),
+    re.compile(r"^openalex\.count$"),
+    re.compile(r"^arxiv\.totalResults$"),
+    re.compile(r"^europepmc\.hitCount$"),
+    re.compile(r"^nhl\.games_today$"),
+    re.compile(r"^nba\.games_today$"),
+    re.compile(r"^sec\[[^\]]+\]\.recent_filings$"),
+)
+#: Categorical series: subjects whose *identity* is the observation.  A version
+#: string cannot be bigger or smaller than the last one, so the only question that
+#: means anything is whether it changed.  Every entry here names the kind of thing
+#: that changed, which is what the published reason says out loud.
+CHANGE_PATTERNS: List[Tuple[re.Pattern, str]] = [
+    (re.compile(r"^pypi\[[^\]]+\]\.version$"), "release version"),
+    (re.compile(r"^npm\[[^\]]+\]\.version$"), "release version"),
+    (re.compile(r"^github\.release\[[^\]]+\]\.tag$"), "release tag"),
+    (re.compile(r"^github\.repo\[[^\]]+\]\.language$"), "primary language"),
+    (re.compile(r"^github\.repo\[[^\]]+\]\.state$"), "repository state"),
+]
+
+
+def _by_cycle(claims: List[Claim]) -> List[Claim]:
+    """One observation per cycle, keeping the last read inside that cycle.
+
+    A cycle reads the same field more than once whenever two planned reads overlap
+    (a family survey and a follow-up query both describing one repository, a probe
+    and a survey reading one count).  Those are two reads of one moment, not two
+    moments: scored as a series they let a persona "forecast" the difference between
+    two readings taken minutes apart.  193 field/cycle pairs in the ledger have more
+    than one observation, one of them a star count that moved by 1 inside a single
+    cycle.  The comparison a forecast makes is *cycle to cycle*, so that is the
+    series it is given.
+    """
+    latest: Dict[int, Claim] = {}
+    for c in sorted(claims, key=lambda c: (c.retrieved_at, c.cycle)):
+        latest[c.cycle] = c
+    return [latest[k] for k in sorted(latest)]
 
 
 def tracked_metrics(ledger: Ledger) -> Tuple[Dict[str, List[Claim]], Dict[str, str]]:
-    """Every claim field that has at least two observations and is comparable."""
+    """Every numeric field that has at least two one-per-cycle observations."""
     buckets: Dict[str, List[Claim]] = {}
     for c in ledger.claims:
         if c.kind != "captured" or not isinstance(c.value, (int, float)):
             continue
+        # A retracted field is withdrawn from reasoning as well as from the site.
+        # It used to be withdrawn from msl/reason.py only, so the competition kept
+        # issuing forecasts on the retracted lowercased-Wikipedia series — forecasts
+        # that could never be scored, because nothing observes that series any more.
+        if is_retracted(c.field):
+            continue
         if (_VIEWS.match(c.field) or _STARS.match(c.field) or _FORKS.match(c.field)
                 or c.field in _COUNTS
                 or c.field.startswith("fedreg.documents[")
-                or c.field.startswith("github.total_count[")):
+                or c.field.startswith("github.total_count[")
+                or any(p.match(c.field) for p in _NUMERIC_SERIES)):
             buckets.setdefault(c.field, []).append(c)
     metrics: Dict[str, List[Claim]] = {}
     topic_of: Dict[str, str] = {}
     for k, v in buckets.items():
-        v.sort(key=lambda c: (c.retrieved_at, c.cycle))
-        if len(v) < 2:
+        series = _by_cycle(v)
+        if len(series) < 2:
             continue
-        metrics[k] = v
-        topic_of[k] = v[-1].topic
+        metrics[k] = series
+        topic_of[k] = series[-1].topic
     return metrics, topic_of
+
+
+def tracked_changes(ledger: Ledger) -> Tuple[Dict[str, List[Claim]], Dict[str, str], Dict[str, str]]:
+    """Every categorical field with at least two one-per-cycle observations.
+
+    Returns the series, the topic each belongs to, and what kind of thing it is
+    ("release version", "release tag", ...) so the published reason can name it.
+    """
+    buckets: Dict[str, List[Claim]] = {}
+    kind_of: Dict[str, str] = {}
+    for c in ledger.claims:
+        if c.kind != "captured" or not isinstance(c.value, str):
+            continue
+        if is_retracted(c.field):
+            continue
+        for pattern, label in CHANGE_PATTERNS:
+            if pattern.match(c.field):
+                buckets.setdefault(c.field, []).append(c)
+                kind_of.setdefault(c.field, label)
+                break
+    changes: Dict[str, List[Claim]] = {}
+    topic_of: Dict[str, str] = {}
+    for k, v in buckets.items():
+        series = _by_cycle(v)
+        if len(series) < 2:
+            continue
+        changes[k] = series
+        topic_of[k] = series[-1].topic
+    return changes, topic_of, kind_of
 
 
 def _direction(a: float, b: float) -> str:
@@ -158,12 +273,22 @@ def _clamp(p: float) -> float:
 # personas
 # --------------------------------------------------------------------------- #
 def _persist(ctx: Context) -> List[Forecast]:
-    """S10 — the null model.  Predicts the metric does not change."""
+    """S10 — the null model.  Predicts the next observation repeats this one.
+
+    It covers both kinds of target, which is what makes the null model a fair
+    baseline for both: on a numeric series "flat" means the same value, on a
+    categorical one it means the same version or tag.
+    """
     out = []
     for m, series in ctx.metrics.items():
         out.append(Forecast("S10_Persistence", ctx.cycle, ctx.topic_of[m], m,
                             DIRECTION_FLAT, 0.5, [series[-1].id],
                             "Null model: assume the last observation repeats."))
+    for m, series in ctx.changes.items():
+        out.append(Forecast("S10_Persistence", ctx.cycle, ctx.change_topic_of[m], m,
+                            DIRECTION_FLAT, 0.5, [series[-1].id],
+                            f"Null model: assume the {ctx.change_kind.get(m, 'value')} "
+                            f"does not change.", metric_kind=METRIC_CHANGE))
     return out
 
 
@@ -292,6 +417,38 @@ def _memory_weighted(ctx: Context) -> List[Forecast]:
     return out
 
 
+def _change_hazard(ctx: Context) -> List[Forecast]:
+    """S07 — how often does this subject change?  Straight from its own history.
+
+    A release version, a release tag, a primary language and a repository state all
+    share one property: their own recorded history contains the only base rate worth
+    using.  A package that shipped in three of the last ten cycles has an estimated
+    chance of shipping again this cycle, and that estimate is checkable against the
+    ledger the forecast is scored against.
+    """
+    out = []
+    for m, series in ctx.changes.items():
+        vals = [str(c.value) for c in series]
+        transitions = len(vals) - 1
+        if transitions < 1:
+            continue
+        changed = sum(1 for a, b in zip(vals, vals[1:]) if a != b)
+        # Laplace smoothing with the null model's prior: one imagined unchanged
+        # transition, one imagined change.  Without it a series that has never moved
+        # would be issued at p=0, which is a claim no finite history supports.
+        p = _clamp((changed + 1) / (transitions + 2))
+        direction = DIRECTION_UP if p > 0.5 else DIRECTION_FLAT
+        kind = ctx.change_kind.get(m, "value")
+        out.append(Forecast(
+            "S07_ChangeHazard", ctx.cycle, ctx.change_topic_of[m], m, direction, p,
+            [c.id for c in series[-3:]],
+            f"The {kind} changed in {changed} of the last {transitions} cycle-to-cycle "
+            f"observations, so it is forecast to "
+            f"{'change' if direction == DIRECTION_UP else 'stay the same'}.",
+            metric_kind=METRIC_CHANGE))
+    return out
+
+
 STRATEGIES: List[Strategy] = [
     Strategy("S01_MomentumPersist", "Momentum persistence",
              "A metric that moved last cycle moves the same way next cycle.", _momentum),
@@ -308,6 +465,10 @@ STRATEGIES: List[Strategy] = [
     Strategy("S06_MemoryWeighted", "Skill-weighted memory",
              "Combine the personas in proportion to the skill they have actually earned.",
              _memory_weighted, adaptive=True),
+    Strategy("S07_ChangeHazard", "Change hazard",
+             "How often a release version, tag, language or repository state has "
+             "changed in its own recorded history is the best available estimate of "
+             "whether it changes next cycle.", _change_hazard),
     Strategy("S10_Persistence", "Persistence (null model)",
              "Nothing changes.  Every other persona must beat this to be worth keeping.",
              _persist),
@@ -332,11 +493,25 @@ def issue(ctx: Context) -> List[Forecast]:
 
 
 def score(forecasts: List[Forecast], ctx: Context) -> List[Forecast]:
-    """Score every unscored forecast against the newest observation."""
+    """Score every unscored forecast against the newest observation.
+
+    Both kinds of target are realised here, and a forecast is only ever scored
+    against an observation from a *later* cycle.  For a numeric series the outcome is
+    the observed direction; for a categorical one it is "changed" or "unchanged",
+    which is what the persona was asked to call.
+    """
     for f in forecasts:
         if f.scored or not f.metric:
             continue
         series = ctx.metrics.get(f.metric)
+        kind = f.metric_kind or METRIC_NUMERIC
+        if series is None:
+            # A forecast issued before this cycle, or by a persona that named the
+            # other kind, still has to find its series rather than be silently
+            # skipped: unlike a numeric series, a categorical one never leaves the
+            # scoreable set.
+            series = ctx.changes.get(f.metric)
+            kind = METRIC_CHANGE if series is not None else kind
         if not series:
             continue
         newest = series[-1]
@@ -349,12 +524,18 @@ def score(forecasts: List[Forecast], ctx: Context) -> List[Forecast]:
                 break
         if prev is None:
             continue
-        a, b = float(prev.value), float(newest.value)
-        realized = _direction(a, b)
+        if kind == METRIC_CHANGE:
+            realized = (DIRECTION_FLAT if str(newest.value) == str(prev.value)
+                        else DIRECTION_UP)
+            f.outcome_value = newest.value
+        else:
+            a, b = float(prev.value), float(newest.value)
+            realized = _direction(a, b)
+            f.outcome_value = b
         f.outcome = realized
-        f.outcome_value = b
         f.scored = True
         f.scored_at_cycle = ctx.cycle
+        # P(up), whatever "up" means for this target: a rise, or a change.
         y = 1.0 if realized == DIRECTION_UP else 0.0
         f.brier = (f.probability - y) ** 2
     return forecasts
