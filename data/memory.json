@@ -1,6 +1,6 @@
 {
  "consecutiveCycleFailures": 0,
- "cyclesRun": 20,
+ "cyclesRun": 21,
  "history": [
   {
    "at": "2026-09-22T01:34:57Z",
@@ -301,9 +301,24 @@
    "readsOk": 22,
    "scored": 496,
    "topics": 133
+  },
+  {
+   "at": "2026-09-22T20:34:15Z",
+   "claims": 17640,
+   "cycle": 21,
+   "errors": 0,
+   "forecasts": 1137,
+   "ideas": 28,
+   "irregularities": 27,
+   "newTopics": 6,
+   "ok": true,
+   "readsFailed": 4,
+   "readsOk": 64,
+   "scored": 1856,
+   "topics": 139
   }
  ],
- "lastCycleAt": "2026-09-22T19:23:59Z",
+ "lastCycleAt": "2026-09-22T20:34:15Z",
  "lessons": [
   {
    "counts": {
@@ -318,46 +333,46 @@
   },
   {
    "counts": {
-    "accepted": 16532,
-    "attempted": 16532,
+    "accepted": 17640,
+    "attempted": 17640,
     "rejected": 0
    },
    "id": "L2",
    "implication": "A zero here would be suspicious, not reassuring: it would mean the gate never sees a claim without evidence, which is unlikely with this many sources.",
-   "statement": "The evidence gate has rejected 0 of 16532 attempted claims (0.00%)."
+   "statement": "The evidence gate has rejected 0 of 17640 attempted claims (0.00%)."
   },
   {
    "counts": {
-    "percent": 87.22,
-    "topicsTracked": 133,
-    "topicsWithClaims": 116
+    "percent": 87.05,
+    "topicsTracked": 139,
+    "topicsWithClaims": 121
    },
    "id": "L3",
    "implication": "Anything below 100% is a real coverage gap and is listed as such on the site rather than filled with prose.",
-   "statement": "116 of 133 tracked topics (87.2%) have at least one accepted claim credit."
+   "statement": "121 of 139 tracked topics (87.1%) have at least one accepted claim credit."
   },
   {
    "counts": {
     "contradiction": {
-     "meanRobustness": 0.3952,
+     "meanRobustness": 0.3951,
      "n": 6
     },
     "convergence": {
-     "meanRobustness": 0.4965,
-     "n": 5
+     "meanRobustness": 0.4924,
+     "n": 8
     },
     "regulatory-lead": {
-     "meanRobustness": 0.2718,
+     "meanRobustness": 0.275,
      "n": 11
     },
     "velocity-outlier": {
-     "meanRobustness": 0.3178,
+     "meanRobustness": 0.3604,
      "n": 3
     }
    },
    "id": "L4",
    "implication": "Idea generation spends its budget on the kinds that have actually held up, and reports the ones that have not.",
-   "statement": "Of 4 idea kinds, \u201cconvergence\u201d holds the highest mean robustness (0.496 over 5 ideas)."
+   "statement": "Of 4 idea kinds, \u201cconvergence\u201d holds the highest mean robustness (0.492 over 8 ideas)."
   },
   {
    "counts": {
@@ -376,845 +391,881 @@
   }
  ],
  "sourceReliability": {
-  "arxiv": 0.910256,
+  "arxiv": 0.932692,
   "bls": 0.910256,
-  "census_acs": 0.910256,
-  "clinicaltrials": 0.011879,
-  "crossref": 0.910256,
-  "ecb_sdmx": 0.910256,
-  "europepmc": 0.910256,
-  "federal_register": 0.964332,
-  "frankfurter": 0.910256,
-  "github_releases": 0.841797,
-  "github_repo": 0.841797,
-  "github_repos": 0.998414,
-  "github_search": 0.823134,
-  "hn_firebase": 0.964332,
-  "huggingface": 0.910256,
-  "kalshi_public": 0.910256,
-  "master_site_catalog": 0.71875,
-  "mlb_statsapi": 0.52848,
-  "nba_cdn": 0.011879,
-  "nhl_web": 0.910256,
-  "nominatim": 0.910256,
-  "npm_registry": 0.998414,
-  "nws_alerts": 0.910256,
-  "openalex": 0.910256,
-  "pubmed": 0.910256,
-  "pypi_json": 0.998414,
-  "sec_edgar": 0.011879,
-  "stackexchange": 0.910256,
-  "usgs_fdsn": 0.964332,
-  "wikimedia_pageviews": 0.964332,
-  "worldbank": 0.910256
+  "census_acs": 0.932692,
+  "clinicaltrials": 0.008909,
+  "crossref": 0.932692,
+  "ecb_sdmx": 0.932692,
+  "europepmc": 0.932692,
+  "federal_register": 0.973249,
+  "frankfurter": 0.932692,
+  "github_releases": 0.881348,
+  "github_repo": 0.881348,
+  "github_repos": 0.998811,
+  "github_search": 0.867351,
+  "hn_firebase": 0.973249,
+  "huggingface": 0.932692,
+  "kalshi_public": 0.932692,
+  "master_site_catalog": 0.789062,
+  "mlb_statsapi": 0.64636,
+  "nba_cdn": 0.008909,
+  "nhl_web": 0.932692,
+  "nominatim": 0.932692,
+  "npm_registry": 0.998811,
+  "nws_alerts": 0.932692,
+  "openalex": 0.932692,
+  "pubmed": 0.932692,
+  "pypi_json": 0.998811,
+  "sec_edgar": 0.008909,
+  "stackexchange": 0.932692,
+  "usgs_fdsn": 0.973249,
+  "wikimedia_pageviews": 0.973249,
+  "worldbank": 0.932692
  },
  "strategyWeights": {
-  "S01_MomentumPersist": 0.436253,
-  "S02_MeanRevert": 0.033825,
-  "S03_Acceleration": 0.15252,
-  "S04_ConsensusFade": 0.06731,
-  "S05_EvidenceDensity": 0.436506,
-  "S06_MemoryWeighted": 0.106181,
+  "S01_MomentumPersist": 0.51119,
+  "S02_MeanRevert": 0.041494,
+  "S03_Acceleration": 0.19059,
+  "S04_ConsensusFade": 0.091383,
+  "S05_EvidenceDensity": 0.510679,
+  "S06_MemoryWeighted": 0.156236,
   "S07_ChangeHazard": 0.5
  },
  "topicInterest": {
   "agency:agricultural-marketing-service": {
-   "ema": 1.1562,
-   "lastCycle": 20,
-   "peak": 1.1562,
-   "seen": 3
+   "ema": 1.8671,
+   "lastCycle": 21,
+   "peak": 1.8671,
+   "seen": 4
   },
   "agency:agriculture-department": {
-   "ema": 1.1562,
-   "lastCycle": 20,
-   "peak": 1.1562,
-   "seen": 3
+   "ema": 1.8671,
+   "lastCycle": 21,
+   "peak": 1.8671,
+   "seen": 4
   },
   "agency:centers-for-disease-control-and-prevention": {
-   "ema": 52.7221,
-   "lastCycle": 20,
-   "peak": 52.7221,
-   "seen": 20
+   "ema": 54.7916,
+   "lastCycle": 21,
+   "peak": 54.7916,
+   "seen": 21
   },
   "agency:commerce-department": {
-   "ema": 13.7905,
-   "lastCycle": 20,
-   "peak": 13.7905,
-   "seen": 6
+   "ema": 16.8429,
+   "lastCycle": 21,
+   "peak": 16.8429,
+   "seen": 7
   },
   "agency:commodity-futures-trading-commission": {
-   "ema": 5.5335,
-   "lastCycle": 20,
-   "peak": 5.5335,
-   "seen": 15
+   "ema": 5.6501,
+   "lastCycle": 21,
+   "peak": 5.6501,
+   "seen": 16
   },
   "agency:defense-department": {
-   "ema": 9.6379,
-   "lastCycle": 20,
-   "peak": 9.6379,
-   "seen": 13
+   "ema": 11.2284,
+   "lastCycle": 21,
+   "peak": 11.2284,
+   "seen": 14
   },
   "agency:energy-department": {
-   "ema": 18.6249,
-   "lastCycle": 20,
-   "peak": 18.6249,
-   "seen": 15
+   "ema": 19.4687,
+   "lastCycle": 21,
+   "peak": 19.4687,
+   "seen": 16
   },
   "agency:executive-office-of-the-president": {
-   "ema": 37.7895,
-   "lastCycle": 20,
-   "peak": 37.7895,
-   "seen": 15
+   "ema": 40.8421,
+   "lastCycle": 21,
+   "peak": 40.8421,
+   "seen": 16
   },
   "agency:federal-aviation-administration": {
-   "ema": 2.5234,
-   "lastCycle": 20,
-   "peak": 2.5234,
-   "seen": 4
+   "ema": 3.3925,
+   "lastCycle": 21,
+   "peak": 3.3925,
+   "seen": 5
   },
   "agency:federal-energy-regulatory-commission": {
-   "ema": 15.6649,
-   "lastCycle": 20,
-   "peak": 15.6649,
-   "seen": 14
+   "ema": 16.4987,
+   "lastCycle": 21,
+   "peak": 16.4987,
+   "seen": 15
   },
   "agency:federal-procurement-policy-office": {
-   "ema": 5.5891,
-   "lastCycle": 20,
-   "peak": 5.5891,
-   "seen": 13
+   "ema": 6.1918,
+   "lastCycle": 21,
+   "peak": 6.1918,
+   "seen": 14
   },
   "agency:food-and-drug-administration": {
-   "ema": 29.6918,
-   "lastCycle": 20,
-   "peak": 29.6918,
-   "seen": 15
+   "ema": 30.7689,
+   "lastCycle": 21,
+   "peak": 30.7689,
+   "seen": 16
   },
   "agency:foreign-trade-zones-board": {
-   "ema": 2.8464,
-   "lastCycle": 20,
-   "peak": 2.8464,
-   "seen": 6
+   "ema": 3.3848,
+   "lastCycle": 21,
+   "peak": 3.3848,
+   "seen": 7
   },
   "agency:general-services-administration": {
-   "ema": 5.5891,
-   "lastCycle": 20,
-   "peak": 5.5891,
-   "seen": 13
+   "ema": 6.1918,
+   "lastCycle": 21,
+   "peak": 6.1918,
+   "seen": 14
   },
   "agency:health-and-human-services-department": {
-   "ema": 81.3432,
-   "lastCycle": 20,
-   "peak": 81.3432,
-   "seen": 20
+   "ema": 85.2574,
+   "lastCycle": 21,
+   "peak": 85.2574,
+   "seen": 21
   },
   "agency:housing-and-urban-development-department": {
-   "ema": 0.5781,
-   "lastCycle": 20,
-   "peak": 0.5781,
-   "seen": 3
+   "ema": 0.9336,
+   "lastCycle": 21,
+   "peak": 0.9336,
+   "seen": 4
   },
   "agency:labor-department": {
-   "ema": 6.7542,
-   "lastCycle": 20,
-   "peak": 6.7542,
-   "seen": 7
+   "ema": 7.0656,
+   "lastCycle": 21,
+   "peak": 7.0656,
+   "seen": 8
   },
   "agency:management-and-budget-office": {
-   "ema": 5.5891,
-   "lastCycle": 20,
-   "peak": 5.5891,
-   "seen": 13
+   "ema": 6.1918,
+   "lastCycle": 21,
+   "peak": 6.1918,
+   "seen": 14
   },
   "agency:national-aeronautics-and-space-administration": {
-   "ema": 4.6128,
-   "lastCycle": 20,
-   "peak": 4.6128,
-   "seen": 8
+   "ema": 5.2096,
+   "lastCycle": 21,
+   "peak": 5.2096,
+   "seen": 9
   },
   "agency:national-highway-traffic-safety-administration": {
-   "ema": 7.7617,
-   "lastCycle": 20,
-   "peak": 7.7617,
-   "seen": 7
+   "ema": 9.3213,
+   "lastCycle": 21,
+   "peak": 9.3213,
+   "seen": 8
   },
   "agency:national-oceanic-and-atmospheric-administration": {
-   "ema": 0.5781,
-   "lastCycle": 20,
-   "peak": 0.5781,
-   "seen": 3
+   "ema": 0.9336,
+   "lastCycle": 21,
+   "peak": 0.9336,
+   "seen": 4
   },
   "agency:nuclear-regulatory-commission": {
-   "ema": 2.8906,
-   "lastCycle": 20,
-   "peak": 2.8906,
-   "seen": 3
+   "ema": 4.668,
+   "lastCycle": 21,
+   "peak": 4.668,
+   "seen": 4
   },
   "agency:occupational-safety-and-health-administration": {
-   "ema": 6.7542,
-   "lastCycle": 20,
-   "peak": 6.7542,
-   "seen": 7
+   "ema": 7.0656,
+   "lastCycle": 21,
+   "peak": 7.0656,
+   "seen": 8
   },
   "agency:pipeline-and-hazardous-materials-safety-administration": {
-   "ema": 7.7653,
-   "lastCycle": 20,
-   "peak": 7.7653,
-   "seen": 8
+   "ema": 8.074,
+   "lastCycle": 21,
+   "peak": 8.074,
+   "seen": 9
   },
   "agency:securities-and-exchange-commission": {
-   "ema": 68.3358,
-   "lastCycle": 20,
-   "peak": 68.3358,
-   "seen": 20
+   "ema": 72.5019,
+   "lastCycle": 21,
+   "peak": 72.5019,
+   "seen": 21
   },
   "agency:transportation-department": {
-   "ema": 19.9117,
-   "lastCycle": 20,
-   "peak": 19.9117,
-   "seen": 8
+   "ema": 23.1838,
+   "lastCycle": 21,
+   "peak": 23.1838,
+   "seen": 9
   },
   "ai-research-frontier": {
-   "ema": 0.9969,
-   "lastCycle": 20,
-   "peak": 0.9969,
-   "seen": 20
+   "ema": 0.9977,
+   "lastCycle": 21,
+   "peak": 0.9977,
+   "seen": 21
   },
   "clinical-evidence": {
-   "ema": 0.9969,
-   "lastCycle": 20,
-   "peak": 0.9969,
-   "seen": 20
+   "ema": 0.9977,
+   "lastCycle": 21,
+   "peak": 0.9977,
+   "seen": 21
   },
   "frdoc:2026-16905": {
-   "ema": 2.8464,
-   "lastCycle": 20,
-   "peak": 2.8464,
-   "seen": 6
+   "ema": 3.3848,
+   "lastCycle": 21,
+   "peak": 3.3848,
+   "seen": 7
   },
   "frdoc:2026-17241": {
-   "ema": 2.8464,
-   "lastCycle": 20,
-   "peak": 2.8464,
-   "seen": 6
+   "ema": 3.3848,
+   "lastCycle": 21,
+   "peak": 3.3848,
+   "seen": 7
   },
   "frdoc:2026-17843": {
-   "ema": 2.8464,
-   "lastCycle": 20,
-   "peak": 2.8464,
-   "seen": 6
+   "ema": 3.3848,
+   "lastCycle": 21,
+   "peak": 3.3848,
+   "seen": 7
   },
   "frdoc:2026-19127": {
-   "ema": 3.5647,
-   "lastCycle": 20,
-   "peak": 3.5647,
-   "seen": 13
+   "ema": 3.6735,
+   "lastCycle": 21,
+   "peak": 3.6735,
+   "seen": 14
   },
   "frdoc:2026-19133": {
-   "ema": 5.5891,
-   "lastCycle": 20,
-   "peak": 5.5891,
-   "seen": 13
+   "ema": 6.1918,
+   "lastCycle": 21,
+   "peak": 6.1918,
+   "seen": 14
   },
   "frdoc:2026-19134": {
-   "ema": 6.5713,
-   "lastCycle": 20,
-   "peak": 6.5713,
-   "seen": 14
+   "ema": 7.1785,
+   "lastCycle": 21,
+   "peak": 7.1785,
+   "seen": 15
   },
   "frdoc:2026-19148": {
-   "ema": 22.6583,
-   "lastCycle": 20,
-   "peak": 22.6583,
-   "seen": 20
+   "ema": 24.2437,
+   "lastCycle": 21,
+   "peak": 24.2437,
+   "seen": 21
   },
   "frdoc:2026-19160": {
-   "ema": 6.5713,
-   "lastCycle": 20,
-   "peak": 6.5713,
-   "seen": 14
+   "ema": 7.1785,
+   "lastCycle": 21,
+   "peak": 7.1785,
+   "seen": 15
   },
   "frdoc:2026-19180": {
-   "ema": 2.8464,
-   "lastCycle": 20,
-   "peak": 2.8464,
-   "seen": 6
+   "ema": 3.3848,
+   "lastCycle": 21,
+   "peak": 3.3848,
+   "seen": 7
   },
   "frdoc:2026-19241": {
-   "ema": 3.7129,
-   "lastCycle": 20,
-   "peak": 3.7129,
-   "seen": 7
+   "ema": 4.2847,
+   "lastCycle": 21,
+   "peak": 4.2847,
+   "seen": 8
   },
   "frdoc:2026-19256": {
-   "ema": 1.6885,
-   "lastCycle": 20,
-   "peak": 1.6885,
-   "seen": 7
+   "ema": 1.7664,
+   "lastCycle": 21,
+   "peak": 1.7664,
+   "seen": 8
   },
   "frdoc:2026-19260": {
-   "ema": 10.3537,
-   "lastCycle": 20,
-   "peak": 10.3537,
-   "seen": 8
+   "ema": 10.7653,
+   "lastCycle": 21,
+   "peak": 10.7653,
+   "seen": 9
   },
   "frdoc:2026-19267": {
-   "ema": 5.0656,
-   "lastCycle": 20,
-   "peak": 5.0656,
-   "seen": 7
+   "ema": 5.2992,
+   "lastCycle": 21,
+   "peak": 5.2992,
+   "seen": 8
   },
   "frdoc:2026-19271": {
-   "ema": 52.7221,
-   "lastCycle": 20,
-   "peak": 52.7221,
-   "seen": 20
+   "ema": 54.7916,
+   "lastCycle": 21,
+   "peak": 54.7916,
+   "seen": 21
   },
   "frdoc:2026-19276": {
-   "ema": 7.7653,
-   "lastCycle": 20,
-   "peak": 7.7653,
-   "seen": 8
+   "ema": 8.074,
+   "lastCycle": 21,
+   "peak": 8.074,
+   "seen": 9
   },
   "frdoc:2026-19280": {
-   "ema": 11.0669,
-   "lastCycle": 20,
-   "peak": 11.0669,
-   "seen": 15
+   "ema": 11.3002,
+   "lastCycle": 21,
+   "peak": 11.3002,
+   "seen": 16
   },
   "frdoc:2026-19281": {
-   "ema": 22.1339,
-   "lastCycle": 20,
-   "peak": 22.1339,
-   "seen": 15
+   "ema": 22.6004,
+   "lastCycle": 21,
+   "peak": 22.6004,
+   "seen": 16
   },
   "frdoc:2026-19282": {
-   "ema": 13.047,
-   "lastCycle": 20,
-   "peak": 13.047,
-   "seen": 16
+   "ema": 13.2853,
+   "lastCycle": 21,
+   "peak": 13.2853,
+   "seen": 17
   },
   "frdoc:2026-19283": {
-   "ema": 13.047,
-   "lastCycle": 20,
-   "peak": 13.047,
-   "seen": 16
+   "ema": 13.2853,
+   "lastCycle": 21,
+   "peak": 13.2853,
+   "seen": 17
   },
   "frdoc:2026-19284": {
-   "ema": 13.047,
-   "lastCycle": 20,
-   "peak": 13.047,
-   "seen": 16
+   "ema": 13.2853,
+   "lastCycle": 21,
+   "peak": 13.2853,
+   "seen": 17
   },
   "frdoc:2026-19290": {
-   "ema": 6.5235,
-   "lastCycle": 20,
-   "peak": 6.5235,
-   "seen": 16
+   "ema": 6.6426,
+   "lastCycle": 21,
+   "peak": 6.6426,
+   "seen": 17
   },
   "frdoc:2026-19308": {
-   "ema": 0.5781,
-   "lastCycle": 20,
-   "peak": 0.5781,
-   "seen": 3
+   "ema": 0.9336,
+   "lastCycle": 21,
+   "peak": 0.9336,
+   "seen": 4
   },
   "frdoc:2026-19333": {
-   "ema": 6.5235,
-   "lastCycle": 20,
-   "peak": 6.5235,
-   "seen": 16
+   "ema": 6.6426,
+   "lastCycle": 21,
+   "peak": 6.6426,
+   "seen": 17
   },
   "frdoc:2026-19334": {
-   "ema": 6.5235,
-   "lastCycle": 20,
-   "peak": 6.5235,
-   "seen": 16
+   "ema": 6.6426,
+   "lastCycle": 21,
+   "peak": 6.6426,
+   "seen": 17
   },
   "frdoc:2026-19335": {
-   "ema": 30.0638,
-   "lastCycle": 20,
-   "peak": 30.0638,
-   "seen": 17
+   "ema": 30.5479,
+   "lastCycle": 21,
+   "peak": 30.5479,
+   "seen": 18
   },
   "frdoc:2026-19336": {
-   "ema": 15.0319,
-   "lastCycle": 20,
-   "peak": 15.0319,
-   "seen": 17
+   "ema": 15.2739,
+   "lastCycle": 21,
+   "peak": 15.2739,
+   "seen": 18
   },
   "frdoc:2026-19384": {
-   "ema": 1.2617,
-   "lastCycle": 20,
-   "peak": 1.2617,
-   "seen": 4
+   "ema": 1.6963,
+   "lastCycle": 21,
+   "peak": 1.6963,
+   "seen": 5
   },
   "frdoc:2026-19385": {
-   "ema": 5.0469,
-   "lastCycle": 20,
-   "peak": 5.0469,
-   "seen": 4
+   "ema": 6.7852,
+   "lastCycle": 21,
+   "peak": 6.7852,
+   "seen": 5
   },
   "frdoc:2026-19386": {
-   "ema": 5.0469,
-   "lastCycle": 20,
-   "peak": 5.0469,
-   "seen": 4
+   "ema": 6.7852,
+   "lastCycle": 21,
+   "peak": 6.7852,
+   "seen": 5
   },
   "frdoc:2026-19387": {
-   "ema": 1.2617,
-   "lastCycle": 20,
-   "peak": 1.2617,
-   "seen": 4
+   "ema": 1.6963,
+   "lastCycle": 21,
+   "peak": 1.6963,
+   "seen": 5
   },
   "frdoc:2026-19388": {
-   "ema": 10.1221,
-   "lastCycle": 20,
-   "peak": 10.1221,
-   "seen": 5
+   "ema": 12.5916,
+   "lastCycle": 21,
+   "peak": 12.5916,
+   "seen": 6
   },
   "frdoc:2026-19389": {
-   "ema": 4.0488,
-   "lastCycle": 20,
-   "peak": 4.0488,
-   "seen": 5
+   "ema": 5.0366,
+   "lastCycle": 21,
+   "peak": 5.0366,
+   "seen": 6
   },
   "frdoc:2026-19390": {
-   "ema": 2.0244,
-   "lastCycle": 20,
-   "peak": 2.0244,
-   "seen": 5
+   "ema": 2.5183,
+   "lastCycle": 21,
+   "peak": 2.5183,
+   "seen": 6
   },
   "frdoc:2026-19391": {
-   "ema": 2.0244,
-   "lastCycle": 20,
-   "peak": 2.0244,
-   "seen": 5
+   "ema": 2.5183,
+   "lastCycle": 21,
+   "peak": 2.5183,
+   "seen": 6
   },
   "frdoc:2026-19416": {
-   "ema": 4.0488,
-   "lastCycle": 20,
-   "peak": 4.0488,
-   "seen": 5
+   "ema": 5.0366,
+   "lastCycle": 21,
+   "peak": 5.0366,
+   "seen": 6
   },
   "frdoc:2026-19417": {
-   "ema": 8.0977,
-   "lastCycle": 20,
-   "peak": 8.0977,
-   "seen": 5
+   "ema": 10.0733,
+   "lastCycle": 21,
+   "peak": 10.0733,
+   "seen": 6
   },
   "geohazards": {
-   "ema": 0.9969,
-   "lastCycle": 20,
-   "peak": 0.9969,
-   "seen": 20
+   "ema": 0.9977,
+   "lastCycle": 21,
+   "peak": 0.9977,
+   "seen": 21
   },
   "macro-signals": {
-   "ema": 0.9969,
-   "lastCycle": 20,
-   "peak": 0.9969,
-   "seen": 20
+   "ema": 0.9977,
+   "lastCycle": 21,
+   "peak": 0.9977,
+   "seen": 21
   },
   "market-lab-ecosystem": {
-   "ema": 0.9969,
-   "lastCycle": 20,
-   "peak": 0.9969,
-   "seen": 20
+   "ema": 0.9977,
+   "lastCycle": 21,
+   "peak": 0.9977,
+   "seen": 21
   },
   "model:convaiinnovations/laya": {
-   "ema": 13.1425,
-   "lastCycle": 20,
-   "peak": 13.1425,
-   "seen": 14
+   "ema": 14.3569,
+   "lastCycle": 21,
+   "peak": 14.3569,
+   "seen": 15
   },
   "open-source-momentum": {
-   "ema": 0.9969,
-   "lastCycle": 20,
-   "peak": 0.9969,
-   "seen": 20
+   "ema": 0.9977,
+   "lastCycle": 21,
+   "peak": 0.9977,
+   "seen": 21
   },
   "owner-corpus": {
-   "ema": 0.9969,
-   "lastCycle": 20,
-   "peak": 0.9969,
-   "seen": 20
+   "ema": 0.9977,
+   "lastCycle": 21,
+   "peak": 0.9977,
+   "seen": 21
   },
   "paper:blind-thermodynamic-ontology-discovery-from-anonymous-experiments": {
-   "ema": 3.9168,
-   "lastCycle": 20,
-   "peak": 3.9168,
-   "seen": 14
+   "ema": 3.9376,
+   "lastCycle": 21,
+   "peak": 3.9376,
+   "seen": 15
   },
   "paper:gamehorizon-suite-multi-horizon-data-and-evaluation-in-gameplay": {
-   "ema": 9.2257,
-   "lastCycle": 20,
-   "peak": 9.2257,
-   "seen": 8
+   "ema": 9.9193,
+   "lastCycle": 21,
+   "peak": 9.9193,
+   "seen": 9
   },
   "pkg:next": {
-   "ema": 14.0226,
-   "lastCycle": 20,
-   "peak": 14.0226,
-   "seen": 17
+   "ema": 15.017,
+   "lastCycle": 21,
+   "peak": 15.017,
+   "seen": 18
   },
   "pkg:requests": {
-   "ema": 14.0226,
-   "lastCycle": 20,
-   "peak": 14.0226,
-   "seen": 17
+   "ema": 15.017,
+   "lastCycle": 21,
+   "peak": 15.017,
+   "seen": 18
+  },
+  "project:gemsdoe": {
+   "ema": 0.25,
+   "lastCycle": 21,
+   "peak": 0.25,
+   "seen": 1
+  },
+  "project:nbainjuryreport": {
+   "ema": 0.25,
+   "lastCycle": 21,
+   "peak": 0.25,
+   "seen": 1
+  },
+  "project:nflinjuryreport": {
+   "ema": 0.25,
+   "lastCycle": 21,
+   "peak": 0.25,
+   "seen": 1
+  },
+  "project:sfweather": {
+   "ema": 0.25,
+   "lastCycle": 21,
+   "peak": 0.25,
+   "seen": 1
+  },
+  "project:sportspred": {
+   "ema": 0.25,
+   "lastCycle": 21,
+   "peak": 0.25,
+   "seen": 1
+  },
+  "project:tradingviewtheleap": {
+   "ema": 0.25,
+   "lastCycle": 21,
+   "peak": 0.25,
+   "seen": 1
   },
   "public-attention": {
-   "ema": 0.9969,
-   "lastCycle": 20,
-   "peak": 0.9969,
-   "seen": 20
+   "ema": 0.9977,
+   "lastCycle": 21,
+   "peak": 0.9977,
+   "seen": 21
   },
   "public-health-policy": {
-   "ema": 0.9969,
-   "lastCycle": 20,
-   "peak": 0.9969,
-   "seen": 20
+   "ema": 0.9977,
+   "lastCycle": 21,
+   "peak": 0.9977,
+   "seen": 21
   },
   "regulatory-flow": {
-   "ema": 0.9969,
-   "lastCycle": 20,
-   "peak": 0.9969,
-   "seen": 20
+   "ema": 0.9977,
+   "lastCycle": 21,
+   "peak": 0.9977,
+   "seen": 21
   },
   "repo:agentverse-os/agentverse-os": {
-   "ema": 13.7552,
-   "lastCycle": 20,
-   "peak": 13.7552,
-   "seen": 18
+   "ema": 14.3164,
+   "lastCycle": 21,
+   "peak": 14.3164,
+   "seen": 19
   },
   "repo:alchaincyf/huashu-excel": {
-   "ema": 0.25,
-   "lastCycle": 20,
-   "peak": 0.25,
-   "seen": 1
+   "ema": 0.4375,
+   "lastCycle": 21,
+   "peak": 0.4375,
+   "seen": 2
   },
   "repo:boardui/boardui": {
-   "ema": 0.6875,
-   "lastCycle": 20,
-   "peak": 0.6875,
-   "seen": 2
+   "ema": 1.0156,
+   "lastCycle": 21,
+   "peak": 1.0156,
+   "seen": 3
   },
   "repo:brayonpi/hexstellar": {
-   "ema": 17.2744,
-   "lastCycle": 20,
-   "peak": 17.2744,
-   "seen": 19
+   "ema": 18.7058,
+   "lastCycle": 21,
+   "peak": 18.7058,
+   "seen": 20
   },
   "repo:browser-use/jev-ultrafast": {
-   "ema": 35.9176,
-   "lastCycle": 20,
-   "peak": 35.9176,
-   "seen": 17
+   "ema": 38.4382,
+   "lastCycle": 21,
+   "peak": 38.4382,
+   "seen": 18
   },
   "repo:buffedlizard55-lab/masterselflearn": {
-   "ema": 1.2617,
-   "lastCycle": 20,
-   "peak": 1.2617,
-   "seen": 4
+   "ema": 1.6963,
+   "lastCycle": 21,
+   "peak": 1.6963,
+   "seen": 5
   },
   "repo:dataelement/dsh-desktop": {
-   "ema": 4.8729,
-   "lastCycle": 20,
-   "peak": 4.8729,
-   "seen": 10
+   "ema": 5.4047,
+   "lastCycle": 21,
+   "peak": 5.4047,
+   "seen": 11
   },
   "repo:elder-plinius/t3mp3st": {
-   "ema": 4.8729,
-   "lastCycle": 20,
-   "peak": 4.8729,
-   "seen": 10
+   "ema": 5.4047,
+   "lastCycle": 21,
+   "peak": 5.4047,
+   "seen": 11
   },
   "repo:genspark-ai/genoffice": {
-   "ema": 4.8729,
-   "lastCycle": 20,
-   "peak": 4.8729,
-   "seen": 10
+   "ema": 5.4047,
+   "lastCycle": 21,
+   "peak": 5.4047,
+   "seen": 11
   },
   "repo:halofyai/halofy": {
-   "ema": 0.25,
-   "lastCycle": 20,
-   "peak": 0.25,
-   "seen": 1
+   "ema": 0.4375,
+   "lastCycle": 21,
+   "peak": 0.4375,
+   "seen": 2
   },
   "repo:hanyuanwang/livestream-agent-studio": {
-   "ema": 13.7643,
-   "lastCycle": 20,
-   "peak": 13.7643,
-   "seen": 19
+   "ema": 14.3232,
+   "lastCycle": 21,
+   "peak": 14.3232,
+   "seen": 20
   },
   "repo:hkqr/my-free-code": {
-   "ema": 1.6124,
-   "lastCycle": 20,
-   "peak": 1.6124,
-   "seen": 9
+   "ema": 1.9593,
+   "lastCycle": 21,
+   "peak": 1.9593,
+   "seen": 10
   },
   "repo:hypit-ai/hypit": {
-   "ema": 7.5192,
-   "lastCycle": 20,
-   "peak": 7.5192,
-   "seen": 11
+   "ema": 8.1394,
+   "lastCycle": 21,
+   "peak": 8.1394,
+   "seen": 12
   },
   "repo:i-am-manware/manware-s-ai-learning-toolkit": {
-   "ema": 0.6875,
-   "lastCycle": 20,
-   "peak": 0.6875,
-   "seen": 2
+   "ema": 1.0156,
+   "lastCycle": 21,
+   "peak": 1.0156,
+   "seen": 3
   },
   "repo:jakubkrehel/skills": {
-   "ema": 4.8729,
-   "lastCycle": 20,
-   "peak": 4.8729,
-   "seen": 10
+   "ema": 5.4047,
+   "lastCycle": 21,
+   "peak": 5.4047,
+   "seen": 11
   },
   "repo:jtydhr88/screenwriting-skills": {
-   "ema": 13.7688,
-   "lastCycle": 20,
-   "peak": 13.7688,
-   "seen": 19
+   "ema": 14.3266,
+   "lastCycle": 21,
+   "peak": 14.3266,
+   "seen": 20
   },
   "repo:kgoedecke/doop": {
-   "ema": 5.4341,
-   "lastCycle": 20,
-   "peak": 5.4341,
-   "seen": 18
+   "ema": 5.8256,
+   "lastCycle": 21,
+   "peak": 5.8256,
+   "seen": 19
   },
   "repo:maxhu-xuan/task-state-guard": {
-   "ema": 0.6875,
-   "lastCycle": 20,
-   "peak": 0.6875,
-   "seen": 2
+   "ema": 1.0156,
+   "lastCycle": 21,
+   "peak": 1.0156,
+   "seen": 3
   },
   "repo:nanako0129/sepia": {
-   "ema": 13.7747,
-   "lastCycle": 20,
-   "peak": 13.7747,
-   "seen": 19
+   "ema": 14.331,
+   "lastCycle": 21,
+   "peak": 14.331,
+   "seen": 20
   },
   "repo:okf-memory/okf-agent-memory": {
-   "ema": 3.5751,
-   "lastCycle": 20,
-   "peak": 3.5751,
-   "seen": 18
+   "ema": 3.9313,
+   "lastCycle": 21,
+   "peak": 3.9313,
+   "seen": 19
   },
   "repo:oomol-lab/open-connector": {
-   "ema": 4.8729,
-   "lastCycle": 20,
-   "peak": 4.8729,
-   "seen": 10
+   "ema": 5.4047,
+   "lastCycle": 21,
+   "peak": 5.4047,
+   "seen": 11
   },
   "repo:s1n6h/pentest-harness": {
-   "ema": 0.25,
-   "lastCycle": 20,
-   "peak": 0.25,
-   "seen": 1
+   "ema": 0.4375,
+   "lastCycle": 21,
+   "peak": 0.4375,
+   "seen": 2
   },
   "repo:shadcn-ui/lint": {
-   "ema": 13.1218,
-   "lastCycle": 20,
-   "peak": 13.1218,
-   "seen": 19
+   "ema": 13.5914,
+   "lastCycle": 21,
+   "peak": 13.5914,
+   "seen": 20
   },
   "repo:station-sciences/bot-crossing": {
-   "ema": 2.5808,
-   "lastCycle": 20,
-   "peak": 2.5808,
-   "seen": 12
+   "ema": 2.9356,
+   "lastCycle": 21,
+   "peak": 2.9356,
+   "seen": 13
   },
   "repo:tigerless-labs/agent-memory": {
-   "ema": 3.5751,
-   "lastCycle": 20,
-   "peak": 3.5751,
-   "seen": 18
-  },
-  "repo:trailhq/graft": {
-   "ema": 5.8307,
-   "lastCycle": 20,
-   "peak": 5.8307,
-   "seen": 11
-  },
-  "repo:truefoundry/trueforge": {
-   "ema": 4.8729,
-   "lastCycle": 20,
-   "peak": 4.8729,
-   "seen": 10
-  },
-  "repo:trycompai/crm": {
-   "ema": 5.8307,
-   "lastCycle": 20,
-   "peak": 5.8307,
-   "seen": 11
-  },
-  "repo:unicity-aos/aos-ce": {
-   "ema": 5.8307,
-   "lastCycle": 20,
-   "peak": 5.8307,
-   "seen": 11
-  },
-  "repo:useagenthq/useagent": {
-   "ema": 0.25,
-   "lastCycle": 20,
-   "peak": 0.25,
-   "seen": 1
-  },
-  "repo:xai-org/grok-build": {
-   "ema": 5.8307,
-   "lastCycle": 20,
-   "peak": 5.8307,
-   "seen": 11
-  },
-  "repo:yc-software/qm": {
-   "ema": 5.8307,
-   "lastCycle": 20,
-   "peak": 5.8307,
-   "seen": 11
-  },
-  "repo:yean-sec/strikeagent_atkbrain-flash": {
-   "ema": 0.6875,
-   "lastCycle": 20,
-   "peak": 0.6875,
-   "seen": 2
-  },
-  "repo:youngyangyang04/llm-master": {
-   "ema": 3.5751,
-   "lastCycle": 20,
-   "peak": 3.5751,
-   "seen": 18
-  },
-  "repo:yvetteysy/creator-agent": {
-   "ema": 0.6875,
-   "lastCycle": 20,
-   "peak": 0.6875,
-   "seen": 2
-  },
-  "repo:zai-org/zcode": {
-   "ema": 33.3354,
-   "lastCycle": 20,
-   "peak": 33.3354,
-   "seen": 20
-  },
-  "repo:zju-real/easel": {
-   "ema": 13.0884,
-   "lastCycle": 20,
-   "peak": 13.0884,
+   "ema": 3.9313,
+   "lastCycle": 21,
+   "peak": 3.9313,
    "seen": 19
   },
-  "sf-local": {
-   "ema": 0.9969,
-   "lastCycle": 20,
-   "peak": 0.9969,
-   "seen": 20
-  },
-  "sports-signals": {
-   "ema": 0.9969,
-   "lastCycle": 20,
-   "peak": 0.9969,
-   "seen": 20
-  },
-  "tag:agent": {
-   "ema": 0.25,
-   "lastCycle": 20,
-   "peak": 0.25,
-   "seen": 1
-  },
-  "tag:agent-skills": {
-   "ema": 48.6287,
-   "lastCycle": 20,
-   "peak": 48.6287,
-   "seen": 18
-  },
-  "tag:agents": {
-   "ema": 12.8052,
-   "lastCycle": 20,
-   "peak": 12.8052,
-   "seen": 9
-  },
-  "tag:ai": {
-   "ema": 31.2451,
-   "lastCycle": 20,
-   "peak": 31.2451,
-   "seen": 9
-  },
-  "tag:ai-writing": {
-   "ema": 7.8332,
-   "lastCycle": 20,
-   "peak": 7.8332,
+  "repo:trailhq/graft": {
+   "ema": 6.373,
+   "lastCycle": 21,
+   "peak": 6.373,
    "seen": 12
   },
-  "tag:antigravity": {
-   "ema": 13.664,
-   "lastCycle": 20,
-   "peak": 13.664,
+  "repo:truefoundry/trueforge": {
+   "ema": 5.4047,
+   "lastCycle": 21,
+   "peak": 5.4047,
+   "seen": 11
+  },
+  "repo:trycompai/crm": {
+   "ema": 6.373,
+   "lastCycle": 21,
+   "peak": 6.373,
    "seen": 12
   },
-  "tag:claude-code": {
-   "ema": 32.0226,
-   "lastCycle": 20,
-   "peak": 32.0226,
+  "repo:unicity-aos/aos-ce": {
+   "ema": 6.373,
+   "lastCycle": 21,
+   "peak": 6.373,
    "seen": 12
   },
-  "tag:codex": {
-   "ema": 22.9419,
-   "lastCycle": 20,
-   "peak": 22.9419,
-   "seen": 12
-  },
-  "tag:design": {
-   "ema": 3.3343,
-   "lastCycle": 20,
-   "peak": 3.3343,
-   "seen": 9
-  },
-  "tag:design-system": {
-   "ema": 3.3343,
-   "lastCycle": 20,
-   "peak": 3.3343,
-   "seen": 9
-  },
-  "tag:design-tools": {
-   "ema": 3.3343,
-   "lastCycle": 20,
-   "peak": 3.3343,
-   "seen": 9
-  },
-  "tag:developer-tools": {
-   "ema": 7.8332,
-   "lastCycle": 20,
-   "peak": 7.8332,
-   "seen": 12
-  },
-  "tag:shadcn": {
-   "ema": 0.6875,
-   "lastCycle": 20,
-   "peak": 0.6875,
+  "repo:useagenthq/useagent": {
+   "ema": 0.4375,
+   "lastCycle": 21,
+   "peak": 0.4375,
    "seen": 2
   },
-  "tag:skills": {
-   "ema": 0.25,
-   "lastCycle": 20,
-   "peak": 0.25,
-   "seen": 1
+  "repo:xai-org/grok-build": {
+   "ema": 6.373,
+   "lastCycle": 21,
+   "peak": 6.373,
+   "seen": 12
   },
-  "travel-korea": {
-   "ema": 0.9969,
-   "lastCycle": 20,
-   "peak": 0.9969,
+  "repo:yc-software/qm": {
+   "ema": 6.373,
+   "lastCycle": 21,
+   "peak": 6.373,
+   "seen": 12
+  },
+  "repo:yean-sec/strikeagent_atkbrain-flash": {
+   "ema": 1.0156,
+   "lastCycle": 21,
+   "peak": 1.0156,
+   "seen": 3
+  },
+  "repo:youngyangyang04/llm-master": {
+   "ema": 3.9313,
+   "lastCycle": 21,
+   "peak": 3.9313,
+   "seen": 19
+  },
+  "repo:yvetteysy/creator-agent": {
+   "ema": 1.0156,
+   "lastCycle": 21,
+   "peak": 1.0156,
+   "seen": 3
+  },
+  "repo:zai-org/zcode": {
+   "ema": 35.2516,
+   "lastCycle": 21,
+   "peak": 35.2516,
+   "seen": 21
+  },
+  "repo:zju-real/easel": {
+   "ema": 13.5663,
+   "lastCycle": 21,
+   "peak": 13.5663,
    "seen": 20
   },
+  "sf-local": {
+   "ema": 0.9977,
+   "lastCycle": 21,
+   "peak": 0.9977,
+   "seen": 21
+  },
+  "sports-signals": {
+   "ema": 0.9977,
+   "lastCycle": 21,
+   "peak": 0.9977,
+   "seen": 21
+  },
+  "tag:agent": {
+   "ema": 1.1875,
+   "lastCycle": 21,
+   "peak": 1.1875,
+   "seen": 2
+  },
+  "tag:agent-skills": {
+   "ema": 51.2215,
+   "lastCycle": 21,
+   "peak": 51.2215,
+   "seen": 19
+  },
+  "tag:agents": {
+   "ema": 14.6039,
+   "lastCycle": 21,
+   "peak": 14.6039,
+   "seen": 10
+  },
+  "tag:ai": {
+   "ema": 35.1838,
+   "lastCycle": 21,
+   "peak": 35.1838,
+   "seen": 10
+  },
+  "tag:ai-writing": {
+   "ema": 8.3749,
+   "lastCycle": 21,
+   "peak": 8.3749,
+   "seen": 13
+  },
+  "tag:antigravity": {
+   "ema": 14.748,
+   "lastCycle": 21,
+   "peak": 14.748,
+   "seen": 13
+  },
+  "tag:claude-code": {
+   "ema": 34.7669,
+   "lastCycle": 21,
+   "peak": 34.7669,
+   "seen": 13
+  },
+  "tag:codex": {
+   "ema": 24.9564,
+   "lastCycle": 21,
+   "peak": 24.9564,
+   "seen": 13
+  },
+  "tag:design": {
+   "ema": 3.7507,
+   "lastCycle": 21,
+   "peak": 3.7507,
+   "seen": 10
+  },
+  "tag:design-system": {
+   "ema": 3.7507,
+   "lastCycle": 21,
+   "peak": 3.7507,
+   "seen": 10
+  },
+  "tag:design-tools": {
+   "ema": 3.7507,
+   "lastCycle": 21,
+   "peak": 3.7507,
+   "seen": 10
+  },
+  "tag:developer-tools": {
+   "ema": 8.3749,
+   "lastCycle": 21,
+   "peak": 8.3749,
+   "seen": 13
+  },
+  "tag:shadcn": {
+   "ema": 1.0156,
+   "lastCycle": 21,
+   "peak": 1.0156,
+   "seen": 3
+  },
+  "tag:skills": {
+   "ema": 0.4375,
+   "lastCycle": 21,
+   "peak": 0.4375,
+   "seen": 2
+  },
+  "travel-korea": {
+   "ema": 0.9977,
+   "lastCycle": 21,
+   "peak": 0.9977,
+   "seen": 21
+  },
   "wiki:artificial_intelligence": {
-   "ema": 23.5629,
-   "lastCycle": 20,
-   "peak": 23.5629,
-   "seen": 17
+   "ema": 24.9222,
+   "lastCycle": 21,
+   "peak": 24.9222,
+   "seen": 18
   },
   "work:hub-genes-in-a-pan-cancer-co-expression-network-show-potential-for-pre": {
-   "ema": 13.1425,
-   "lastCycle": 20,
-   "peak": 13.1425,
-   "seen": 14
+   "ema": 13.8569,
+   "lastCycle": 21,
+   "peak": 13.8569,
+   "seen": 15
   }
  }
 }

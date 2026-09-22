@@ -1,9 +1,9 @@
-cycle 18 @ 2026-09-22T17:31:33Z  mode=github-actions  40218ms
-  reads      ok=66 failed=3 bytes=1,823,642
-  claims     total=15,107 new=679 rejected=0 derived=5,115
-  recheck    44 checked, 0 drifted, 252 not recheckable
-  topics     121 (new 6)
-  compete    1153 issued, 1215 scored
-  ideas      24 (promoted 0)
-  flags      32 open (new 2)
-  sources    27/30 verified, 3 blocked
+cycle 21 @ 2026-09-22T20:34:15Z  mode=github-actions  25001ms
+  reads      ok=64 failed=4 bytes=2,214,606
+  claims     total=17,640 new=727 rejected=0 this cycle / 0 lifetime  derived=5,953
+  recheck    1615 checked, 0 drifted, 4338 not recheckable
+  topics     139 (new 6)
+  compete    1137 issued, 1856 scored
+  ideas      28 (promoted 0)
+  flags      27 open (new 1)
+  sources    28/31 verified, 3 blocked

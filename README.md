@@ -16,34 +16,34 @@ It requires **no manual input**. Every cycle is triggered by
 <!-- AUTO:COUNTS:BEGIN — regenerated every cycle, do not edit -->
 | Metric | Value |
 |---|---|
-| Cycle | **20** |
-| Accepted claims in the ledger | **16,532** |
-| — schema-v2 strict trace contract | 1,425 |
+| Cycle | **21** |
+| Accepted claims in the ledger | **17,640** |
+| — schema-v2 strict trace contract | 2,533 |
 | — legacy trace contract (reported, not upgraded) | 15,107 |
-| — captured from accepted source reads | 10,952 |
-| — derived by recorded arithmetic | 5,572 |
-| — negative (proof of absence) | 8 |
+| — captured from accepted source reads | 11,676 |
+| — derived by recorded arithmetic | 5,953 |
+| — negative (proof of absence) | 11 |
 | Claims rejected by the evidence gate | **0** |
-| Derived claims rechecked this cycle | 1,446 |
+| Derived claims rechecked this cycle | 1,615 |
 | Derived claims that no longer recompute | **0** |
-| Topics in the library | **133** (new this cycle: 6) |
-| Published insights | 271 |
-| Forecasts issued this cycle | 1,091 |
-| Forecasts scored against outcomes | 496 |
-| Ideas in the competition | **25** (promoted: 0) |
-| Open irregularities | **24** (new: 0) |
+| Topics in the library | **139** (new this cycle: 6) |
+| Published insights | 405 |
+| Forecasts issued this cycle | 1,137 |
+| Forecasts scored against outcomes | 1,856 |
+| Ideas in the competition | **28** (promoted: 0) |
+| Open irregularities | **27** (new: 1) |
 | Sources registered | 31 |
-| — verified by a recorded live read | 27 |
+| — verified by a recorded live read | 28 |
 | — currently blocked | 3 |
-| — never read (not broken, just unprobed) | 1 |
-| Reads this cycle (ok / failed) | 22 / 0 |
-| Reads planned / refused by the cap | 22 / 0 |
-| Forecasts waiting for an observation | 2,531 |
+| — never read (not broken, just unprobed) | 0 |
+| Reads this cycle (ok / failed) | 64 / 4 |
+| Reads planned / refused by the cap | 68 / 0 |
+| Forecasts waiting for an observation | 1,807 |
 | Forecasts that can never be scored | 5 |
-| Bytes read this cycle | 0 |
+| Bytes read this cycle | 2,214,606 |
 | Manual inputs required | **0** |
 
-Generated `2026-09-22T19:23:59Z` by `msl/pipeline.py`. Quoting any figure outside this block
+Generated `2026-09-22T20:34:15Z` by `msl/pipeline.py`. Quoting any figure outside this block
 means quoting something the next cycle has already superseded.
 <!-- AUTO:COUNTS:END -->
 
@@ -114,14 +114,14 @@ nothing, and the table says so.
 
 | # | Persona | Name | Scored | Accuracy | Skill vs null |
 |---|---|---|---|---|---|
-| 1 | `S05_EvidenceDensity` | Evidence density | 227 | 50.7% | +17.2 pts |
-| 2 | `S01_MomentumPersist` | Momentum persistence | 226 | 50.4% | +16.8 pts |
-| 3 | `S07_ChangeHazard` | Change hazard | 28 | 96.4% | +0.0 pts |
-| 4 | `S10_Persistence` | Persistence (null model) | 2271 | 88.2% | +0.0 pts |
-| 5 | `S03_Acceleration` | Acceleration | 373 | 32.2% | -18.8 pts |
-| 6 | `S06_MemoryWeighted` | Skill-weighted memory | 499 | 27.1% | -25.2 pts |
-| 7 | `S04_ConsensusFade` | Consensus fade | 373 | 16.9% | -34.1 pts |
-| 8 | `S02_MeanRevert` | Mean reversion | 499 | 11.0% | -41.3 pts |
+| 1 | `S01_MomentumPersist` | Momentum persistence | 339 | 56.6% | +23.6 pts |
+| 2 | `S05_EvidenceDensity` | Evidence density | 343 | 56.0% | +23.3 pts |
+| 3 | `S07_ChangeHazard` | Change hazard | 53 | 96.2% | +0.0 pts |
+| 4 | `S10_Persistence` | Persistence (null model) | 2717 | 87.5% | +0.0 pts |
+| 5 | `S06_MemoryWeighted` | Skill-weighted memory | 661 | 34.9% | -19.4 pts |
+| 6 | `S03_Acceleration` | Acceleration | 543 | 31.5% | -19.5 pts |
+| 7 | `S04_ConsensusFade` | Consensus fade | 541 | 17.6% | -33.6 pts |
+| 8 | `S02_MeanRevert` | Mean reversion | 659 | 10.8% | -43.5 pts |
 
 ### Unranked
 
@@ -142,11 +142,11 @@ corroboration is promoted.
 
 | # | Idea | Robustness | Kind | Accepted claims behind it |
 |---|---|---|---|---|
-| 1 | Track “brayonpi/hexstellar” as a multi-source subject | 0.523 | convergence | 3 |
-| 2 | Track “browser-use/jev-ultrafast” as a multi-source subject | 0.523 | convergence | 3 |
-| 3 | Track “zai-org/ZCode” as a multi-source subject | 0.523 | convergence | 3 |
-| 4 | Track “repo:browser-use/jev-ultrafast” as a multi-source subject | 0.514 | convergence | 3 |
-| 5 | Track “buffedlizard55-lab/MasterSelfLearn” as a multi-source subject | 0.398 | convergence | 2 |
+| 1 | Track “repo:brayonpi/hexstellar” as a multi-source subject | 0.525 | convergence | 3 |
+| 2 | Track “repo:browser-use/jev-ultrafast” as a multi-source subject | 0.525 | convergence | 3 |
+| 3 | Track “repo:zai-org/zcode” as a multi-source subject | 0.525 | convergence | 3 |
+| 4 | Track “brayonpi/hexstellar” as a multi-source subject | 0.522 | convergence | 3 |
+| 5 | Track “browser-use/jev-ultrafast” as a multi-source subject | 0.522 | convergence | 3 |
 
 ## What the engine has learned about itself
 
@@ -155,9 +155,9 @@ These are counted, not reflected. Each lesson carries the integers behind it.
 | | Lesson |
 |---|---|
 | `L1` | Topics backed by two or more independent sources have averaged 1.00 signals against 1.00 for single-source topics — a ratio of 1.00×. |
-| `L2` | The evidence gate has rejected 0 of 16532 attempted claims (0.00%). |
-| `L3` | 116 of 133 tracked topics (87.2%) have at least one accepted claim credit. |
-| `L4` | Of 4 idea kinds, “convergence” holds the highest mean robustness (0.496 over 5 ideas). |
+| `L2` | The evidence gate has rejected 0 of 17640 attempted claims (0.00%). |
+| `L3` | 121 of 139 tracked topics (87.1%) have at least one accepted claim credit. |
+| `L4` | Of 4 idea kinds, “convergence” holds the highest mean robustness (0.492 over 8 ideas). |
 | `L5` | 26 of 31 registered sources are reading reliably (EMA ≥ 0.8); 3 are effectively unreadable (EMA < 0.2). |
 
 ## Site
@@ -209,9 +209,9 @@ Python 3.9+, standard library only. No `pip install`, no build step, no keys.
 
 ## Current irregularities
 
-119 registered — 6 critical,
-69 warn, 44 info;
-24 open, 95 resolved,
+120 registered — 6 critical,
+70 warn, 44 info;
+27 open, 93 resolved,
 21 standing (structural limits that do not auto-resolve).
 
 Full register: [`IRREGULARITIES.md`](IRREGULARITIES.md) or
@@ -219,8 +219,8 @@ Full register: [`IRREGULARITIES.md`](IRREGULARITIES.md) or
 
 ## Sources
 
-31 registered, 27 verified by a recorded
-live read, 3 blocked, 1 never read.
+31 registered, 28 verified by a recorded
+live read, 3 blocked, 0 never read.
 **"Never read" is not "broken"**: it means no recorded probe has reached the
 endpoint yet, which is a fact about this project, not a claim about the service.
 A source is promoted to `verified-live-read` only by a conclusive complete read
