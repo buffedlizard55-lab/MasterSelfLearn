@@ -1,6 +1,6 @@
 {
  "consecutiveCycleFailures": 0,
- "cyclesRun": 3,
+ "cyclesRun": 4,
  "history": [
   {
    "at": "2026-09-22T01:34:57Z",
@@ -46,15 +46,30 @@
    "readsOk": 11,
    "scored": 357,
    "topics": 31
+  },
+  {
+   "at": "2026-09-22T01:39:14Z",
+   "claims": 2502,
+   "cycle": 4,
+   "errors": 0,
+   "forecasts": 463,
+   "ideas": 14,
+   "irregularities": 29,
+   "newTopics": 6,
+   "ok": true,
+   "readsFailed": 5,
+   "readsOk": 65,
+   "scored": 82,
+   "topics": 37
   }
  ],
- "lastCycleAt": "2026-09-22T01:34:57Z",
+ "lastCycleAt": "2026-09-22T01:39:14Z",
  "lessons": [
   {
    "counts": {
     "meanSignalsMulti": 1.0,
     "meanSignalsSingle": 1.0,
-    "multiSourceTopics": 2,
+    "multiSourceTopics": 8,
     "singleSourceTopics": 3
    },
    "id": "L1",
@@ -63,252 +78,310 @@
   },
   {
    "counts": {
-    "accepted": 1573,
-    "attempted": 1573,
+    "accepted": 2502,
+    "attempted": 2502,
     "rejected": 0
    },
    "id": "L2",
    "implication": "A zero here would be suspicious, not reassuring: it would mean the gate never sees a claim without evidence, which is unlikely with this many sources.",
-   "statement": "The evidence gate has rejected 0 of 1573 attempted claims (0.00%)."
+   "statement": "The evidence gate has rejected 0 of 2502 attempted claims (0.00%)."
   },
   {
    "counts": {
-    "percent": 16.13,
-    "topicsTracked": 31,
-    "topicsWithClaims": 5
+    "percent": 32.43,
+    "topicsTracked": 37,
+    "topicsWithClaims": 12
    },
    "id": "L3",
    "implication": "Anything below 100% is a real coverage gap and is listed as such on the site rather than filled with prose.",
-   "statement": "5 of 31 tracked topics (16.1%) have at least one verified claim."
+   "statement": "12 of 37 tracked topics (32.4%) have at least one verified claim."
   },
   {
    "counts": {
     "regulatory-lead": {
-     "meanRobustness": 0.2749,
-     "n": 1
+     "meanRobustness": 0.1273,
+     "n": 11
     },
     "velocity-outlier": {
-     "meanRobustness": 0.3999,
+     "meanRobustness": 0.3333,
      "n": 3
     }
    },
    "id": "L4",
    "implication": "Idea generation spends its budget on the kinds that have actually held up, and reports the ones that have not.",
-   "statement": "Of 2 idea kinds, \u201cvelocity-outlier\u201d holds the highest mean robustness (0.400 over 3 ideas)."
+   "statement": "Of 2 idea kinds, \u201cvelocity-outlier\u201d holds the highest mean robustness (0.333 over 3 ideas)."
   },
   {
    "counts": {
-    "healthy": 0,
-    "sources": 8,
+    "healthy": 4,
+    "sources": 28,
     "unreliable": 0,
     "unreliableIds": []
    },
    "id": "L5",
    "implication": "An unreadable source produces no claims and no substitute value. It stays on the site as a known gap.",
-   "statement": "0 of 8 registered sources are reading reliably (EMA \u2265 0.8); 0 are effectively unreadable (EMA < 0.2)."
+   "statement": "4 of 28 registered sources are reading reliably (EMA \u2265 0.8); 0 are effectively unreadable (EMA < 0.2)."
   }
  ],
  "sourceReliability": {
-  "federal_register": 0.625,
-  "github_repos": 0.789062,
-  "github_search": 0.789062,
-  "hn_firebase": 0.625,
-  "npm_registry": 0.789062,
-  "pypi_json": 0.789062,
-  "usgs_fdsn": 0.625,
-  "wikimedia_pageviews": 0.625
+  "arxiv": 0.625,
+  "bls": 0.625,
+  "census_acs": 0.625,
+  "clinicaltrials": 0.375,
+  "crossref": 0.625,
+  "ecb_sdmx": 0.625,
+  "europepmc": 0.625,
+  "federal_register": 0.71875,
+  "frankfurter": 0.625,
+  "github_repos": 0.841797,
+  "github_search": 0.841797,
+  "hn_firebase": 0.71875,
+  "huggingface": 0.625,
+  "kalshi_public": 0.625,
+  "mlb_statsapi": 0.375,
+  "nba_cdn": 0.375,
+  "nhl_web": 0.625,
+  "nominatim": 0.625,
+  "npm_registry": 0.841797,
+  "nws_alerts": 0.625,
+  "openalex": 0.625,
+  "pubmed": 0.625,
+  "pypi_json": 0.841797,
+  "sec_edgar": 0.375,
+  "stackexchange": 0.625,
+  "usgs_fdsn": 0.71875,
+  "wikimedia_pageviews": 0.71875,
+  "worldbank": 0.625
  },
  "strategyWeights": {
-  "S01_MomentumPersist": 0.375,
-  "S02_MeanRevert": 0.375,
-  "S05_EvidenceDensity": 0.375
+  "S01_MomentumPersist": 0.28125,
+  "S02_MeanRevert": 0.28125,
+  "S03_Acceleration": 0.375,
+  "S04_ConsensusFade": 0.46995,
+  "S05_EvidenceDensity": 0.28125
  },
  "topicInterest": {
   "agency:centers-for-disease-control-and-prevention": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
+   "ema": 2.1836,
+   "lastCycle": 4,
+   "peak": 2.1836,
+   "seen": 4
   },
   "agency:health-and-human-services-department": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
+   "ema": 2.9336,
+   "lastCycle": 4,
+   "peak": 2.9336,
+   "seen": 4
   },
   "agency:securities-and-exchange-commission": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
+   "ema": 2.4336,
+   "lastCycle": 4,
+   "peak": 2.4336,
+   "seen": 4
   },
   "ai-research-frontier": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
+   "ema": 0.6836,
+   "lastCycle": 4,
+   "peak": 0.6836,
+   "seen": 4
   },
   "clinical-evidence": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
+   "ema": 0.6836,
+   "lastCycle": 4,
+   "peak": 0.6836,
+   "seen": 4
   },
   "frdoc:2026-19148": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
+   "ema": 1.1836,
+   "lastCycle": 4,
+   "peak": 1.1836,
+   "seen": 4
   },
   "frdoc:2026-19271": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
+   "ema": 2.1836,
+   "lastCycle": 4,
+   "peak": 2.1836,
+   "seen": 4
   },
-  "geohazards": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
-  },
-  "macro-signals": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
-  },
-  "market-lab-ecosystem": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
-  },
-  "open-source-momentum": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
-  },
-  "owner-corpus": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
-  },
-  "public-attention": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
-  },
-  "public-health-policy": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
-  },
-  "regulatory-flow": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
-  },
-  "repo:agentverse-os/agentverse-os": {
-   "ema": 0.25,
-   "lastCycle": 3,
-   "peak": 0.25,
+  "frdoc:2026-19335": {
+   "ema": 1.0,
+   "lastCycle": 4,
+   "peak": 1.0,
    "seen": 1
   },
-  "repo:brayonpi/hexstellar": {
-   "ema": 0.6875,
-   "lastCycle": 3,
-   "peak": 0.6875,
-   "seen": 2
-  },
-  "repo:hanyuanwang/livestream-agent-studio": {
-   "ema": 0.6875,
-   "lastCycle": 3,
-   "peak": 0.6875,
-   "seen": 2
-  },
-  "repo:jtydhr88/screenwriting-skills": {
-   "ema": 0.6875,
-   "lastCycle": 3,
-   "peak": 0.6875,
-   "seen": 2
-  },
-  "repo:kgoedecke/doop": {
-   "ema": 0.25,
-   "lastCycle": 3,
-   "peak": 0.25,
-   "seen": 1
-  },
-  "repo:nanako0129/sepia": {
-   "ema": 0.6875,
-   "lastCycle": 3,
-   "peak": 0.6875,
-   "seen": 2
-  },
-  "repo:okf-memory/okf-agent-memory": {
-   "ema": 0.25,
-   "lastCycle": 3,
-   "peak": 0.25,
-   "seen": 1
-  },
-  "repo:shadcn-ui/lint": {
-   "ema": 0.6875,
-   "lastCycle": 3,
-   "peak": 0.6875,
-   "seen": 2
-  },
-  "repo:tigerless-labs/agent-memory": {
-   "ema": 0.25,
-   "lastCycle": 3,
-   "peak": 0.25,
-   "seen": 1
-  },
-  "repo:youngyangyang04/llm-master": {
-   "ema": 0.25,
-   "lastCycle": 3,
-   "peak": 0.25,
-   "seen": 1
-  },
-  "repo:zai-org/zcode": {
-   "ema": 2.5312,
-   "lastCycle": 3,
-   "peak": 2.5312,
-   "seen": 3
-  },
-  "repo:zju-real/easel": {
-   "ema": 0.6875,
-   "lastCycle": 3,
-   "peak": 0.6875,
-   "seen": 2
-  },
-  "sf-local": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
-  },
-  "sports-signals": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
-   "seen": 3
-  },
-  "tag:agent-skills": {
+  "frdoc:2026-19336": {
    "ema": 0.5,
-   "lastCycle": 3,
+   "lastCycle": 4,
    "peak": 0.5,
    "seen": 1
   },
-  "travel-korea": {
-   "ema": 0.5781,
-   "lastCycle": 3,
-   "peak": 0.5781,
+  "geohazards": {
+   "ema": 0.6836,
+   "lastCycle": 4,
+   "peak": 0.6836,
+   "seen": 4
+  },
+  "macro-signals": {
+   "ema": 0.6836,
+   "lastCycle": 4,
+   "peak": 0.6836,
+   "seen": 4
+  },
+  "market-lab-ecosystem": {
+   "ema": 0.6836,
+   "lastCycle": 4,
+   "peak": 0.6836,
+   "seen": 4
+  },
+  "open-source-momentum": {
+   "ema": 0.6836,
+   "lastCycle": 4,
+   "peak": 0.6836,
+   "seen": 4
+  },
+  "owner-corpus": {
+   "ema": 0.6836,
+   "lastCycle": 4,
+   "peak": 0.6836,
+   "seen": 4
+  },
+  "pkg:next": {
+   "ema": 0.25,
+   "lastCycle": 4,
+   "peak": 0.25,
+   "seen": 1
+  },
+  "pkg:requests": {
+   "ema": 0.25,
+   "lastCycle": 4,
+   "peak": 0.25,
+   "seen": 1
+  },
+  "public-attention": {
+   "ema": 0.6836,
+   "lastCycle": 4,
+   "peak": 0.6836,
+   "seen": 4
+  },
+  "public-health-policy": {
+   "ema": 0.6836,
+   "lastCycle": 4,
+   "peak": 0.6836,
+   "seen": 4
+  },
+  "regulatory-flow": {
+   "ema": 0.6836,
+   "lastCycle": 4,
+   "peak": 0.6836,
+   "seen": 4
+  },
+  "repo:agentverse-os/agentverse-os": {
+   "ema": 0.6875,
+   "lastCycle": 4,
+   "peak": 0.6875,
+   "seen": 2
+  },
+  "repo:brayonpi/hexstellar": {
+   "ema": 1.2656,
+   "lastCycle": 4,
+   "peak": 1.2656,
    "seen": 3
+  },
+  "repo:browser-use/jev-ultrafast": {
+   "ema": 0.5,
+   "lastCycle": 4,
+   "peak": 0.5,
+   "seen": 1
+  },
+  "repo:hanyuanwang/livestream-agent-studio": {
+   "ema": 1.2656,
+   "lastCycle": 4,
+   "peak": 1.2656,
+   "seen": 3
+  },
+  "repo:jtydhr88/screenwriting-skills": {
+   "ema": 1.2656,
+   "lastCycle": 4,
+   "peak": 1.2656,
+   "seen": 3
+  },
+  "repo:kgoedecke/doop": {
+   "ema": 0.6875,
+   "lastCycle": 4,
+   "peak": 0.6875,
+   "seen": 2
+  },
+  "repo:nanako0129/sepia": {
+   "ema": 1.2656,
+   "lastCycle": 4,
+   "peak": 1.2656,
+   "seen": 3
+  },
+  "repo:okf-memory/okf-agent-memory": {
+   "ema": 0.4375,
+   "lastCycle": 4,
+   "peak": 0.4375,
+   "seen": 2
+  },
+  "repo:shadcn-ui/lint": {
+   "ema": 1.2656,
+   "lastCycle": 4,
+   "peak": 1.2656,
+   "seen": 3
+  },
+  "repo:tigerless-labs/agent-memory": {
+   "ema": 0.4375,
+   "lastCycle": 4,
+   "peak": 0.4375,
+   "seen": 2
+  },
+  "repo:youngyangyang04/llm-master": {
+   "ema": 0.4375,
+   "lastCycle": 4,
+   "peak": 0.4375,
+   "seen": 2
+  },
+  "repo:zai-org/zcode": {
+   "ema": 3.8984,
+   "lastCycle": 4,
+   "peak": 3.8984,
+   "seen": 4
+  },
+  "repo:zju-real/easel": {
+   "ema": 1.2656,
+   "lastCycle": 4,
+   "peak": 1.2656,
+   "seen": 3
+  },
+  "sf-local": {
+   "ema": 0.6836,
+   "lastCycle": 4,
+   "peak": 0.6836,
+   "seen": 4
+  },
+  "sports-signals": {
+   "ema": 0.6836,
+   "lastCycle": 4,
+   "peak": 0.6836,
+   "seen": 4
+  },
+  "tag:agent-skills": {
+   "ema": 1.875,
+   "lastCycle": 4,
+   "peak": 1.875,
+   "seen": 2
+  },
+  "travel-korea": {
+   "ema": 0.6836,
+   "lastCycle": 4,
+   "peak": 0.6836,
+   "seen": 4
+  },
+  "wiki:artificial_intelligence": {
+   "ema": 0.5,
+   "lastCycle": 4,
+   "peak": 0.5,
+   "seen": 1
   }
  }
 }

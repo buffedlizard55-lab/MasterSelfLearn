@@ -1,0 +1,9 @@
+cycle 4 @ 2026-09-22T01:39:14Z  mode=github-actions  63829ms
+  reads      ok=65 failed=5 bytes=1,796,602
+  claims     total=2,502 new=677 rejected=0 derived=252
+  recheck    29 checked, 0 drifted, 244 not recheckable
+  topics     37 (new 6)
+  compete    463 issued, 82 scored
+  ideas      14 (promoted 0)
+  flags      29 open (new 12)
+  sources    23/28 verified, 4 blocked
