@@ -235,8 +235,21 @@ def build_plan(library: Library, now: str, start_day: str, end_day: str,
                       {"topic": fam_slug, "owner": config.REPO_OWNER}))
 
     # 3. attention survey — the tracked Wikipedia articles, always the same shape
-    arts = [t.slug[5:].replace("-", "_") for t in library.topics.values()
-            if t.slug.startswith("wiki:") and t.status != "retired"][:MAX_PAGEVIEW_ARTICLES]
+    # Wikipedia titles are case-sensitive past the first character, so the
+    # article must come from the topic's recorded title and never be rebuilt
+    # from its slug.  Slugs are lowercased for use as anchors; asking the API
+    # for "artificial_intelligence" returns a different, near-empty page and the
+    # engine then publishes a confident claim about the wrong subject.
+    arts = []
+    for t in library.topics.values():
+        if not t.slug.startswith("wiki:") or t.status == "retired":
+            continue
+        title = (t.title or "").strip()
+        if not title or title.lower() == t.slug[5:].replace("-", "_") and "_" not in t.slug:
+            continue
+        if title and title not in arts:
+            arts.append(title)
+    arts = arts[:MAX_PAGEVIEW_ARTICLES]
     for a in (arts or ["Artificial_intelligence"]):
         push(Task("wikimedia_pageviews", _wiki(a, start_day, end_day),
                   "wikimedia_pageviews", "public-attention", "survey",

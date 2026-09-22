@@ -8,9 +8,11 @@ from __future__ import annotations
 
 import json
 import pathlib
+import tempfile
 import unittest
 
 from msl import config
+from msl.topics import Library
 from msl.pipeline import load_seeds, run_cycle, seed_plan
 from msl.sources import BY_ID, KEYED_SOURCES_EXCLUDED, REGISTRY
 from tests.helpers import SEED, TmpDirCase, NOW1, NOW2, NOW3
@@ -262,6 +264,40 @@ class SeedIntegrity(unittest.TestCase):
         plan = seed_plan(load_seeds())
         self.assertGreater(len(plan), 0)
         self.assertTrue(all(t.kind == "seed" for t in plan))
+
+
+class PlanBuilding(unittest.TestCase):
+    def test_wikipedia_articles_keep_their_canonical_casing(self):
+        """Wikipedia titles are case-sensitive past the first character.
+
+        A live cycle once asked for "artificial_intelligence" because the article
+        was rebuilt from the lowercased topic slug.  That is a different,
+        near-empty page, and the engine published "moved from 2 views to 1, a
+        change of -50%" with full confidence about the wrong subject.  The
+        canonical title is already recorded on the topic; use it.
+        """
+        from msl.tasks import build_plan
+        lib = Library(pathlib.Path(tempfile.mkdtemp()))
+        lib.ensure("wiki:artificial_intelligence", "Artificial_intelligence",
+                   "public-attention", NOW1, 1)
+        lib.ensure("wiki:large_language_model", "Large_language_model",
+                   "public-attention", NOW1, 1)
+        urls = [t.url for t in build_plan(lib, NOW1, "20260909", "20260915", "last7")
+                if t.source_id == "wikimedia_pageviews"]
+        self.assertTrue(urls, "no pageview task was planned")
+        joined = " ".join(urls)
+        self.assertIn("/Artificial_intelligence/", joined)
+        self.assertIn("/Large_language_model/", joined)
+        self.assertNotIn("/artificial_intelligence/", joined)
+        self.assertNotIn("/large_language_model/", joined)
+
+    def test_the_fallback_article_is_used_when_no_wiki_topic_is_tracked(self):
+        from msl.tasks import build_plan
+        lib = Library(pathlib.Path(tempfile.mkdtemp()))
+        urls = [t.url for t in build_plan(lib, NOW1, "20260909", "20260915", "last7")
+                if t.source_id == "wikimedia_pageviews"]
+        self.assertTrue(urls, "the attention survey must run even with an empty library")
+        self.assertIn("/Artificial_intelligence/", " ".join(urls))
 
 
 if __name__ == "__main__":
