@@ -34,6 +34,43 @@ def _read_json(p: pathlib.Path) -> Dict[str, Any]:
         return {}
 
 
+def _source_health(d: pathlib.Path) -> Dict[str, Any]:
+    """The last recorded probe, or an explicit "no probe has run" marker.
+
+    Returning ``{}`` for a missing ledger would let the page render an empty
+    table that looks like "every source is fine".  ``ran: false`` is the honest
+    rendering: nobody has checked, and the page says so.
+    """
+    doc = _read_json(d / "source_health.json")
+    if not doc:
+        return {"ran": False,
+                "reason": ("No probe has recorded a read yet. Run "
+                           "`python3 tools/probe_sources.py`; until then no source "
+                           "status on this page is backed by a recorded read.")}
+    results = doc.get("results", [])
+    return {
+        "ran": True,
+        "generatedAt": doc.get("generatedAt", ""),
+        "mode": doc.get("mode", ""),
+        "attempted": doc.get("attempted", len(results)),
+        "ok": doc.get("ok", 0),
+        "failed": doc.get("failed", 0),
+        "inconclusive": doc.get("inconclusive", 0),
+        "egressBlocked": bool(doc.get("egressBlocked", False)),
+        "note": doc.get("note", ""),
+        "results": [{
+            "id": r.get("id", ""), "httpStatus": r.get("httpStatus"),
+            "ok": bool(r.get("ok")), "bytes": r.get("bytes", 0),
+            "elapsedMs": r.get("elapsedMs", 0), "error": r.get("error", ""),
+            "sha256": r.get("sha256", ""), "checkedAt": r.get("checkedAt", ""),
+            "statusAfter": r.get("statusAfter", ""),
+            "egressBlocked": bool(r.get("egressBlocked", False)),
+            "verdict": bool(r.get("verdict", True)),
+            "probeUrl": r.get("probeUrl", ""),
+        } for r in results],
+    }
+
+
 def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
            library: Library, memory: Dict[str, Any], register: Register) -> pathlib.Path:
     lb = _read_json(d / "leaderboard.json")
@@ -134,6 +171,11 @@ def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
         "leaderboard": lb,
         "forecasts": fc[-600:],
         "sources": sources_doc.get("sources", [s.as_dict() for s in REGISTRY]),
+        # The recorded probe.  Without this the Sources page can say a source was
+        # never read but not WHY, so a reader cannot tell an unreachable endpoint
+        # from a runner that was not allowed to leave the building.  The
+        # egressBlocked / verdict flags carry exactly that distinction.
+        "sourceHealth": _source_health(d),
         "keyedExcluded": KEYED_SOURCES_EXCLUDED,
         "categoriesWithoutSource": INTEREST_CATEGORIES_WITHOUT_A_SOURCE,
         "irregularities": [i.as_dict() for i in irr],

@@ -111,6 +111,43 @@ class OfflineCycle(TmpDirCase):
         self.assertEqual(data["autoCounts"]["claims"], len(claims))
         self.assertEqual(data["claimTotal"], len(claims))
 
+    def test_the_captured_derived_breakdown_uses_ledger_totals(self):
+        """Regression: the README published this cycle's derivation *delta* as if
+        it were the ledger's derived *total*.
+
+        The breakdown is rendered as `claims - derivedClaims` captured plus
+        `derivedClaims` derived, so feeding it a per-cycle delta silently
+        reclassified every older derived claim as "captured from live payloads" —
+        claiming evidence-backed reads for claims that were computed by
+        arithmetic.  At 8,618 claims it reported 8,312 / 306 when the ledger held
+        5,914 / 2,704.  Assert against the ledger's own kind counts.
+        """
+        site = (self.dir / "site.js").read_text()
+        data = json.loads(site.split("window.MSLDATA = ", 1)[1].rstrip().rstrip(";"))
+        rows = [json.loads(l)
+                for l in (self.dir / "claims.jsonl").read_text().splitlines() if l.strip()]
+        derived = sum(1 for r in rows if r.get("kind") == "derived")
+        captured = sum(1 for r in rows if r.get("kind") == "captured")
+        ac = data["autoCounts"]
+        self.assertEqual(ac["derivedClaims"], derived,
+                         "derivedClaims must be the ledger total, not this cycle's delta")
+        self.assertEqual(ac["claims"] - ac["derivedClaims"], captured,
+                         "the captured figure is the remainder and must match the ledger")
+        # The two halves are a partition of the whole; if they do not sum to the
+        # total the breakdown is not a breakdown.
+        self.assertEqual(ac["derivedClaims"] + (ac["claims"] - ac["derivedClaims"]),
+                         ac["claims"])
+        self.assertEqual(data["claimKindCounts"].get("derived"), derived)
+
+    def test_derived_this_cycle_is_reported_separately_from_the_total(self):
+        """The delta and the total are different numbers and both are published."""
+        site = (self.dir / "site.js").read_text()
+        data = json.loads(site.split("window.MSLDATA = ", 1)[1].rstrip().rstrip(";"))
+        ac = data["autoCounts"]
+        self.assertIn("derivedThisCycle", ac)
+        self.assertLessEqual(ac["derivedThisCycle"], ac["derivedClaims"],
+                             "a cycle cannot derive more than the ledger holds")
+
     def test_docs_are_generated(self):
         for name in ("README.md", "STATUS.md", "VERIFICATION.md", "IRREGULARITIES.md"):
             # docs are written to the repo root, not the temp data dir

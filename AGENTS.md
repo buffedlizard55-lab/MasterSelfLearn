@@ -42,6 +42,12 @@ a **new** row plus a drift irregularity; it is never edited in place, because
 regenerated in full each cycle. They may be deleted safely; the JSONL files may
 not.
 
+`data/source_health.json` is the exception among the regenerable files: it is
+written **only by the probe**, never by a cycle, and it is the sole record of
+which endpoints this project has actually read. `msl/sources.py` replays it at
+import, so deleting it does not lose a claim — it correctly demotes every source
+back to `registered` until the next probe run.
+
 ## 4. `data/seed/` is bootstrap evidence, not fixtures
 
 These are real captures with real SHA-256 hashes over real wire responses, taken
@@ -75,6 +81,23 @@ irregularity naming the substitution. That is a bootstrap, not a fresh read.
 
 A TLS/SSL EOF on *every* host is an egress policy, not broken data. Check that
 before treating a wall of failures as a finding.
+
+**`EgressBlocked` must never move a source's status.** `msl/http.fetch` tags a
+read `EgressBlocked` when the TLS session is torn down before any HTTP status
+arrives. That is a fact about the machine running the cycle, not about the
+service, so:
+
+- the probe records the row with `verdict: false` and leaves `statusAfter`
+  untouched;
+- the pipeline adds the source to one aggregated irregularity instead of marking
+  it `blocked`, and does **not** increment `consecutive_failures` (that counter
+  drives the CRITICAL escalation, so an egress blip would otherwise manufacture
+  critical findings about other people's APIs);
+- a genuine HTTP failure — 403, 404, 500 — still blocks the source and still
+  escalates. Do not widen the egress exception to cover those.
+
+Both behaviours are covered by `tests/test_egress.py`; break the guard and five
+of those tests fail.
 
 ## 6. The competition's honesty rules
 
@@ -128,9 +151,20 @@ why it works from `file://` as well as from Pages.
 python3 -m msl.cli selftest            # the gate must reject — this is not optional
 python3 -m unittest discover -s tests  # full suite, offline, deterministic
 python3 -m msl.cli cycle --offline     # rebuild every artifact with no network
+python3 -m msl.cli publish             # re-render site+docs from committed state
 python3 tools/verify_claims.py         # read-only: recheck derived claims
-python3 tools/probe_sources.py         # read-only: live-read every source
+python3 tools/probe_sources.py         # live-read every source (needs egress)
+node tools/render_check.js             # render all 9 pages headlessly
 ```
+
+`tools/probe_sources.py` exits non-zero when it could not do its job — nothing
+attempted, nothing reachable, or most of the registry inconclusive because the
+runner had no egress. Per-source failures are *results* and do not fail it.
+
+If you change a template, `publish` shows it without spending a cycle. It must
+reproduce the counts the cycle published; if a republish ever reports zero or a
+negative figure for a ledger that holds claims, it is the republish that is
+broken. `tests/test_site.py::Republish` asserts exactly that.
 
 A clean exit code is not a pass when the output is wrong. Read the counts. If
 `claims new` is 0 while reads succeeded, or every star count is 0, something is
@@ -147,3 +181,10 @@ reading nothing — find it before committing.
 | Local `room` counter in `_discover` | ~108 new topics per cycle instead of 6 | budget list shared across the cycle |
 | Unrounded recompute vs rounded stored value | false drift on every trend claim | `_recompute` rounds to 4 dp like `derive` |
 | npm dist-tags `Accept` header | HTTP 406 with the registry's own documented media type | `Accept: application/json`, recorded as IRR |
+| Two copies of the probe, both calling `fetch(accepts=…)` | `TypeError` on source #1; `probe.yml` still went green and nothing was ever probed | One loop in `msl/probe.py`; entry points delegate; `set -o pipefail` in both workflows |
+| `cmd \| tee log` in a workflow step | the step's status is `tee`'s, so a crash exits 0 and looks like a pass | `set -o pipefail` before any piped command |
+| Hand-typed `status="verified-live-read"` in the registry | the site advertised verified sources no code had ever read | registry hard-codes no status; `load_probe_results()` replays the probe ledger |
+| `EgressBlocked` treated as a source failure | 22 healthy services published as `blocked`, 3 CRITICAL findings invented | egress is a runner fact: no status change, no escalation, one aggregated finding |
+| A per-cycle delta used where a total belongs | README reported 8,312 captured / 306 derived for a ledger holding 5,914 / 2,704 | `derived_total` for the breakdown, `derivedThisCycle` for the delta |
+| Reflective `setattr` from a JSON row | camelCase keys vs snake_case fields matched nothing; every figure silently defaulted to 0 | map recorded keys explicitly; `republish` recomputes totals from the ledger |
+| A count typed into a title ("Three categories…") | the number went stale when the list grew | compute counts from the list; pin the fingerprint so the IRR id survives |

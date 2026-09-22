@@ -138,9 +138,15 @@ supporting count is not written. Current lessons:
 2. **No keyed sources.** FRED, the NFL Game API, Google Trends, the X API,
    YouTube Data and TikTok/Instagram are all excluded; each is listed in
    `msl/sources.py → KEYED_SOURCES_EXCLUDED` with the reason.
-3. **Three interest categories are unserved.** Travel & Korea Trip, Social &
-   Creator Data and Elections & Civic Data have no registered source that can
-   answer their question. No claim is made about them.
+3. **Four interest categories are unserved.** Travel & Korea Trip, Social &
+   Creator Data, Elections & Civic Data and Gaming & Guides have no registered
+   source that can answer their question. No claim is made about any of them.
+   The authoritative list is `msl/sources.py →
+   INTEREST_CATEGORIES_WITHOUT_A_SOURCE`; the count in this sentence was correct
+   when written and is the kind of figure that goes stale, so the list wins.
+   (Gaming & Guides was missing from this document entirely until 2026-09-22 —
+   an omission that is not written down is invisible, which is worse than a gap
+   that is.)
 4. **GitHub has no trending API.** The Search API sorted by stars over a
    `created:>=` window is a reproducible substitute, not the same thing. A
    trending *page* is a curated list with an undisclosed ranking.
@@ -160,6 +166,11 @@ supporting count is not written. Current lessons:
    points at a ChatGPT share URL whose body is rendered client-side; the only
    server-supplied content is its `<title>`, "Design Autonomous Research System".
    No requirement in this repository is sourced from that transcript.
+10. **"Never read" is not "broken".** A source in the `registered` state has
+    simply not been reached by a recorded probe. As of the 2026-09-22 session,
+    24 of 28 were in that state because the probe ran from a sandbox whose egress
+    allowlist reached only 4 hosts. That is a property of the runner; it is not
+    evidence about any of those services, and nothing here claims otherwise.
 
 ## 8. Reproduce any number on the site
 

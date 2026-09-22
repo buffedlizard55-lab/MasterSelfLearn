@@ -45,11 +45,24 @@ jobs:
 
       - name: Run one cycle
         id: cycle
+        # continue-on-error is deliberate: a cycle that reads nothing must still
+        # publish and say so.  But without pipefail the step's status came from
+        # `tee`, so even a hard crash exited 0 and the step looked green.  With
+        # pipefail the runner records the real failure (a visible warning) while
+        # continue-on-error still lets the later steps publish and commit.
         continue-on-error: true
-        run: python3 -m msl.cli cycle 2>&1 | tee data/cycle.log
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 -m msl.cli cycle 2>&1 | tee data/cycle.log
 
       - name: Re-check every derived claim
-        run: python3 tools/verify_claims.py || true
+        # `|| true` used to swallow this entirely.  Drift in a previously
+        # published derivation is exactly the finding somebody needs to see, so
+        # it is allowed to fail the step (a visible warning) without blocking the
+        # commit that publishes the corrected row.
+        continue-on-error: true
+        run: python3 tools/verify_claims.py
 
       - name: Report
         if: always()

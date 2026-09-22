@@ -19,19 +19,37 @@ labelled as an assumption. Nothing on this page is a plan presented as a result.
 | Site | 9 pages, zero dependencies, works from `file://` |
 | Test suite | standard library only, runs offline and deterministically |
 
+## Fixed in the 2026-09-22 session
+
+Each of these was found by running the project's own documented checks and
+reading what came back, not by inspection. Each has a test that fails when the
+defect is reintroduced.
+
+| Defect | How it hid | Fix |
+|---|---|---|
+| **The probe had never run.** Both copies called `fetch(..., accepts=...)` against a signature taking `accept=`, so both raised `TypeError` on the first source | `probe.yml` ran `... \| tee data/probe.log` with no `pipefail`; a pipeline's status is its last command's, so `tee` succeeded and the step went **green** while the probe read nothing | One shared loop in `msl/probe.py`; both entry points delegate. `set -o pipefail` in `probe.yml` and `think.yml`. 26 tests in `tests/test_probe.py` |
+| **Eight sources were advertised as `verified-live-read` from values typed into `msl/sources.py`**, contradicting that module's own "promoted only by the probe, never by hand" | The site rendered them as verified; nothing cross-checked the claim against a recorded read | The registry now hard-codes no probe state. `load_probe_results()` replays `data/source_health.json`, written only by the probe |
+| **An egress wall published 22 healthy sources as `blocked`** and minted 38 near-identical irregularities, including 3 CRITICAL escalations against `federal_register` | `EgressBlocked` was folded into the same branch as a real HTTP failure, and `consecutive_failures` (which drives CRITICAL) counted our own outage | Egress is now a *runner* fact: no status change, no escalation, one aggregated finding naming all affected hosts. 7 tests in `tests/test_egress.py` |
+| **The README's captured/derived breakdown was wrong**: it reported 8,312 / 306 when the ledger held 5,914 / 2,704 | `derivedClaims` was fed `rep.derived` — this cycle's derivation *delta* — while the template uses it as the ledger *total*, so ~2,400 arithmetic claims were labelled "captured from live payloads" | `derived_total` added and used for the breakdown; the delta is published separately as `derivedThisCycle` |
+| **A fourth interest category was missing entirely** | The owner's master directory publishes 10 categories; 9 were represented here, so "Gaming & Guides" was neither served nor reported as a gap — an omission that is not written down is invisible | Added to `INTEREST_CATEGORIES_WITHOUT_A_SOURCE`. All three count-bearing irregularity titles are now computed from their lists, not typed |
+
+`python3 -m msl.cli publish` was added so a template change can be seen without
+burning a cycle. Its first version replayed the recorded cycle row reflectively
+over camelCase keys against snake_case fields, matched almost nothing, and
+published "0 verified claims" with a clean exit code — caught and fixed before
+commit, and now guarded by a test that fails on it.
+
 ## Next session, in priority order
 
-### 1. Prove the pipeline works against the live internet, not just the seed corpus
+### 1. Probe every source from a runner with unrestricted egress — *still open*
 
-**This is the single most important open item.** The whole suite runs against
-`data/seed/`, which is one static snapshot. Every source in the registry that is
-still `registered` rather than `verified-live-read` has an endpoint and a
-documentation URL recorded, but **has not been read by this project**. Their
-adapters are written to the documented shape and are unit-tested against
-hand-built payloads — they have never met the real thing.
+The probe now runs (it did not before: see "Fixed this session" below), but this
+repository's own probe was executed from a sandbox whose egress allowlist reached
+only 4 of 28 hosts. The recorded ledger says so explicitly: `egressBlocked: true`,
+24 rows with `verdict: false`. **Those 24 sources are unproven, not broken.**
 
-The first scheduled run does this automatically, and anything that fails lands in
-the irregularity register with its HTTP status. Expect failures. The likely ones:
+The first `probe.yml` run on a GitHub runner does this automatically. Expect
+failures; the likely ones are unchanged from the previous revision of this file:
 
 - `ecb_sdmx` — the `jsondata` structure format nests observations differently
   from the flat shape `adapters.ecb_sdmx` expects. Budget time for this one.
@@ -43,7 +61,14 @@ the irregularity register with its HTTP status. Expect failures. The likely ones
 - `kalshi_public`, `mlb_statsapi`, `nhl_web`, `nba_cdn` — undocumented endpoints
   with no contract, so a shape change is silent until it is not.
 
-Do not mark a source `verified-live-read` by hand. Run the probe.
+Do not mark a source `verified-live-read` by hand, and do not "fix" the 24
+`registered` rows by editing `msl/sources.py` — the registry now hard-codes no
+status at all, and `load_probe_results()` replays `data/source_health.json` at
+import. The only way to move a status is to run the probe.
+
+**Adapters for the 24 unprobed sources have still never met a real payload.**
+They are unit-tested against hand-built payloads only. This is the single most
+important open item and it cannot be closed from a sandbox.
 
 ### 2. Give the competition something that actually moves
 

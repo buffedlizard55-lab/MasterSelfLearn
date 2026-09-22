@@ -13,8 +13,16 @@ Sources that need an API key are deliberately **not** registered — see
 """
 from __future__ import annotations
 
+import json
+import os
+import pathlib
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Dict, List, Optional
+
+#: Where ``msl.probe`` records what it actually read.  ``load_probe_results``
+#: replays it at import so a source's status is traceable to a recorded read.
+_HEALTH_LEDGER = pathlib.Path(__file__).resolve().parent.parent / "data" / "source_health.json"
 
 
 @dataclass
@@ -62,7 +70,12 @@ def _registry() -> List[Source]:
     def add(**kw: Any) -> None:
         S.append(Source(**kw))
 
-    # --- verified by live read on 2026-09-21 -------------------------------
+    # --- bootstrapped from hashed seed captures (data/seed/) ----------------
+    # NOTE: status/live_reads/last_read_at are NOT set here on purpose.  They
+    # are filled in only by msl.probe, which writes data/source_health.json;
+    # sources.py replays that file at import (see load_probe_results).
+    # Every source starts life as "registered" — an unread endpoint is not a
+    # verified one, no matter how many seed captures exist for it.
     add(id="github_search", name="GitHub Search API — repositories",
         operator="GitHub, Inc.",
         docs_url="https://docs.github.com/en/rest/search/search",
@@ -71,9 +84,9 @@ def _registry() -> List[Source]:
         notes=("Used as the trending-repository signal.  GitHub publishes no trending "
                "*API*; /trending is HTML only, so the official Search API sorted by "
                "stars over a created:>= window is the reproducible substitute."),
-        status="verified-live-read", live_reads=6, last_read_at="2026-09-21T22:50:50Z",
-        last_status=200,
-        docs_note="Live-read 2026-09-21T22:50:50Z; 5 payloads hashed into data/seed/.")
+        docs_note=("Seed captures taken 2026-09-21; 5 payloads hashed into data/seed/. "
+                   "A seed capture is bootstrap evidence, not a probe read, so status "
+                   "stays 'registered' until msl.probe reads the endpoint itself."))
 
     add(id="github_repos", name="GitHub Repos API — owner corpus",
         operator="GitHub, Inc.",
@@ -81,9 +94,8 @@ def _registry() -> List[Source]:
         probe_url="https://api.github.com/users/buffedlizard55-lab/repos?per_page=1",
         topics=["owner-corpus", "market-lab-ecosystem"],
         notes="Reads the owner's own published corpus so interest categories are derived from evidence, not assumed.",
-        status="verified-live-read", live_reads=2, last_read_at="2026-09-21T22:50:50Z",
-        last_status=200,
-        docs_note="Live-read 2026-09-21; payload hashed into data/seed/owner_repos.json.")
+        docs_note=("Seed capture 2026-09-21 hashed into data/seed/owner_repos.json. "
+                   "Status is set by the probe, not by this note."))
 
     add(id="pypi_json", name="PyPI JSON API",
         operator="Python Software Foundation",
@@ -91,9 +103,8 @@ def _registry() -> List[Source]:
         probe_url="https://pypi.org/pypi/requests/json",
         topics=["open-source-momentum"],
         notes="Full package document.  Large (numpy is ~3.7 MB); only a projection is stored.",
-        status="verified-live-read", live_reads=4, last_read_at="2026-09-21T22:52:00Z",
-        last_status=200,
-        docs_note="Live-read 2026-09-21 for requests/numpy/pandas/scikit-learn; full-payload hashes in data/seed/.")
+        docs_note=("Seed captures 2026-09-21 for requests/numpy/pandas/scikit-learn; "
+                   "full-payload hashes in data/seed/. Status is set by the probe."))
 
     add(id="npm_registry", name="npm Registry — package metadata",
         operator="GitHub, Inc. (npm)",
@@ -107,9 +118,8 @@ def _registry() -> List[Source]:
                "type the registry documents for package metadata.  Observed "
                "2026-09-21 from two hosts.  The probe therefore sends "
                "Accept: application/json and this is recorded, not papered over."),
-        status="verified-live-read", live_reads=2, last_read_at="2026-09-21T22:55:00Z",
-        last_status=200,
-        docs_note="Endpoint + Accept-header behaviour verified by direct read 2026-09-21.")
+        docs_note=("Endpoint + Accept-header behaviour observed by direct read "
+                   "2026-09-21 and recorded as IRR-002. Status set by the probe."))
 
     add(id="wikimedia_pageviews", name="Wikimedia Pageviews REST API",
         operator="Wikimedia Foundation",
@@ -117,9 +127,7 @@ def _registry() -> List[Source]:
         probe_url="https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Artificial_intelligence/daily/20260914/20260920",
         topics=["public-attention", "ai-research-frontier", "market-lab-ecosystem"],
         notes="The public-attention signal: real per-article daily view counts, agent=user.",
-        status="verified-live-read", live_reads=1, last_read_at="2026-09-21T22:58:00Z",
-        last_status=200,
-        docs_note=("Live-read 2026-09-21 for Artificial_intelligence, 7 daily points "
+        docs_note=("Captured 2026-09-21 for Artificial_intelligence, 7 daily points "
                    "2026-09-14..20.  Body recorded by an interactive agent read, so the "
                    "stored hash covers the recorded body and not the wire bytes "
                    "(wireHashVerifiable=false); the first automated probe re-reads it."),
@@ -131,9 +139,8 @@ def _registry() -> List[Source]:
         probe_url="https://www.federalregister.gov/api/v1/documents.json?per_page=1&order=newest",
         topics=["regulatory-flow", "ai-research-frontier", "public-health-policy"],
         notes="Full-text term search over the U.S. Federal Register.  No key, no account.",
-        status="verified-live-read", live_reads=1, last_read_at="2026-09-21T22:58:00Z",
-        last_status=200,
-        docs_note="Live-read 2026-09-21 (term=artificial intelligence); count and newest documents recorded.")
+        docs_note=("Seed capture 2026-09-21 (term=artificial intelligence); count and "
+                   "newest documents recorded. Status is set by the probe."))
 
     add(id="usgs_fdsn", name="USGS Earthquake Hazards — FDSN event service",
         operator="U.S. Geological Survey",
@@ -141,9 +148,8 @@ def _registry() -> List[Source]:
         probe_url="https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=2026-09-14&minmagnitude=5.0",
         topics=["geohazards"],
         notes="Count endpoint returns {count, maxAllowed}.  No key.",
-        status="verified-live-read", live_reads=1, last_read_at="2026-09-21T22:58:00Z",
-        last_status=200,
-        docs_note="Live-read 2026-09-21: count=40, maxAllowed=20000 (M>=5.0, 7-day window).")
+        docs_note=("Seed capture 2026-09-21: count=40, maxAllowed=20000 (M>=5.0, 7-day "
+                   "window). Status is set by the probe."))
 
     add(id="hn_firebase", name="Hacker News official Firebase API",
         operator="Hacker News / Y Combinator",
@@ -151,9 +157,8 @@ def _registry() -> List[Source]:
         probe_url="https://hacker-news.firebaseio.com/v0/topstories.json",
         topics=["public-attention", "open-source-momentum"],
         notes="topstories / beststories / newstories id lists plus /item/{id}.json.",
-        status="verified-live-read", live_reads=1, last_read_at="2026-09-21T22:48:00Z",
-        last_status=200,
-        docs_note="Live-read 2026-09-21; 500-item id array recorded.")
+        docs_note=("Seed capture 2026-09-21; 500-item id array recorded. Status is set "
+                   "by the probe."))
 
     # --- registered, first read pending the next probe ---------------------
     add(id="arxiv", name="arXiv API",
@@ -308,6 +313,42 @@ REGISTRY: List[Source] = _registry()
 BY_ID: Dict[str, Source] = {s.id: s for s in REGISTRY}
 
 
+def load_probe_results(path: Optional["os.PathLike"] = None) -> int:
+    """Replay the last recorded probe into ``REGISTRY``.  Returns rows applied.
+
+    ``status`` is a fact about a read, so the fact is stored rather than typed:
+    ``msl.probe`` writes ``data/source_health.json`` and this function is the
+    only way that fact reaches the registry.  Nothing in this module hard-codes
+    ``verified-live-read`` any more — eight entries used to, which meant the site
+    advertised verified sources that no code in this repository had ever read
+    (the probe was crashing; see the module docstring of ``msl/probe.py``).
+
+    Missing or unreadable ledger -> no rows applied, every source stays
+    ``registered``.  That is the honest default, never a fallback to "verified".
+    """
+    p = Path(path) if path is not None else _HEALTH_LEDGER
+    try:
+        rows = json.loads(p.read_text(encoding="utf-8")).get("results", [])
+    except (OSError, ValueError):
+        return 0
+    applied = 0
+    for row in rows:
+        s = BY_ID.get(row.get("id"))
+        if s is None:
+            continue                    # a retired source: ignore, do not invent
+        s.status = row.get("statusAfter") or "registered"
+        s.live_reads = int(row.get("liveReads") or 0)
+        s.last_read_at = row.get("checkedAt") or ""
+        s.last_status = row.get("httpStatus")
+        s.last_error = row.get("error") or ""
+        s.consecutive_failures = int(row.get("consecutiveFailures") or 0)
+        applied += 1
+    return applied
+
+
+load_probe_results()
+
+
 #: Sources deliberately NOT registered, with the reason.  Publishing this list is
 #: the point: an omission that is written down is a limitation, not a gap.
 KEYED_SOURCES_EXCLUDED: List[Dict[str, str]] = [
@@ -346,6 +387,17 @@ INTEREST_CATEGORIES_WITHOUT_A_SOURCE: List[Dict[str, str]] = [
     {"category": "Elections & Civic Data",
      "gap": "federal_register covers federal rulemaking, but the FEC API needs a key for most "
             "endpoints and state results are per-jurisdiction.  Partial coverage only."},
+    # Added 2026-09-22 after re-reading the owner's master directory, which
+    # publishes 10 interest categories; only 9 were represented here at all, so
+    # this one was neither served nor reported as a gap.  An omission that is
+    # not written down is invisible, which is worse than a gap that is.
+    {"category": "Gaming & Guides",
+     "gap": "The owner's master directory (https://buffedlizard55-lab.github.io/MasterSite/) "
+            "publishes this category, but no source serving it is registered and no "
+            "candidate endpoint has been confirmed by a recorded live read from this "
+            "project.  Keyless game-metadata endpoints exist but are undocumented, and "
+            "registering one without a recorded read would be an unverified claim.  "
+            "No claim is made about this category."},
 ]
 
 
