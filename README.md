@@ -16,34 +16,34 @@ It requires **no manual input**. Every cycle is triggered by
 <!-- AUTO:COUNTS:BEGIN — regenerated every cycle, do not edit -->
 | Metric | Value |
 |---|---|
-| Cycle | **21** |
-| Accepted claims in the ledger | **17,640** |
-| — schema-v2 strict trace contract | 2,533 |
+| Cycle | **22** |
+| Accepted claims in the ledger | **18,737** |
+| — schema-v2 strict trace contract | 3,630 |
 | — legacy trace contract (reported, not upgraded) | 15,107 |
-| — captured from accepted source reads | 11,676 |
-| — derived by recorded arithmetic | 5,953 |
-| — negative (proof of absence) | 11 |
+| — captured from accepted source reads | 12,398 |
+| — derived by recorded arithmetic | 6,325 |
+| — negative (proof of absence) | 14 |
 | Claims rejected by the evidence gate | **0** |
-| Derived claims rechecked this cycle | 1,615 |
+| Derived claims rechecked this cycle | 1,784 |
 | Derived claims that no longer recompute | **0** |
-| Topics in the library | **139** (new this cycle: 6) |
-| Published insights | 405 |
-| Forecasts issued this cycle | 1,137 |
-| Forecasts scored against outcomes | 1,856 |
+| Topics in the library | **145** (new this cycle: 6) |
+| Published insights | 406 |
+| Forecasts issued this cycle | 1,070 |
+| Forecasts scored against outcomes | 749 |
 | Ideas in the competition | **28** (promoted: 0) |
-| Open irregularities | **27** (new: 1) |
+| Open irregularities | **29** (new: 0) |
 | Sources registered | 31 |
 | — verified by a recorded live read | 28 |
 | — currently blocked | 3 |
 | — never read (not broken, just unprobed) | 0 |
 | Reads this cycle (ok / failed) | 64 / 4 |
 | Reads planned / refused by the cap | 68 / 0 |
-| Forecasts waiting for an observation | 1,807 |
-| Forecasts that can never be scored | 5 |
-| Bytes read this cycle | 2,214,606 |
+| Forecasts waiting for an observation | 2,120 |
+| Forecasts that can never be scored | 8 |
+| Bytes read this cycle | 2,210,107 |
 | Manual inputs required | **0** |
 
-Generated `2026-09-22T20:34:15Z` by `msl/pipeline.py`. Quoting any figure outside this block
+Generated `2026-09-22T20:52:29Z` by `msl/pipeline.py`. Quoting any figure outside this block
 means quoting something the next cycle has already superseded.
 <!-- AUTO:COUNTS:END -->
 
@@ -114,14 +114,14 @@ nothing, and the table says so.
 
 | # | Persona | Name | Scored | Accuracy | Skill vs null |
 |---|---|---|---|---|---|
-| 1 | `S01_MomentumPersist` | Momentum persistence | 339 | 56.6% | +23.6 pts |
-| 2 | `S05_EvidenceDensity` | Evidence density | 343 | 56.0% | +23.3 pts |
-| 3 | `S07_ChangeHazard` | Change hazard | 53 | 96.2% | +0.0 pts |
-| 4 | `S10_Persistence` | Persistence (null model) | 2717 | 87.5% | +0.0 pts |
-| 5 | `S06_MemoryWeighted` | Skill-weighted memory | 661 | 34.9% | -19.4 pts |
-| 6 | `S03_Acceleration` | Acceleration | 543 | 31.5% | -19.5 pts |
-| 7 | `S04_ConsensusFade` | Consensus fade | 541 | 17.6% | -33.6 pts |
-| 8 | `S02_MeanRevert` | Mean reversion | 659 | 10.8% | -43.5 pts |
+| 1 | `S01_MomentumPersist` | Momentum persistence | 296 | 48.0% | +5.7 pts |
+| 2 | `S05_EvidenceDensity` | Evidence density | 302 | 47.4% | +4.3 pts |
+| 3 | `S07_ChangeHazard` | Change hazard | 64 | 96.9% | +0.0 pts |
+| 4 | `S10_Persistence` | Persistence (null model) | 2106 | 88.3% | +0.0 pts |
+| 5 | `S06_MemoryWeighted` | Skill-weighted memory | 561 | 31.6% | -28.5 pts |
+| 6 | `S03_Acceleration` | Acceleration | 436 | 23.6% | -32.8 pts |
+| 7 | `S04_ConsensusFade` | Consensus fade | 435 | 20.0% | -36.8 pts |
+| 8 | `S02_MeanRevert` | Mean reversion | 549 | 10.6% | -49.7 pts |
 
 ### Unranked
 
@@ -155,10 +155,10 @@ These are counted, not reflected. Each lesson carries the integers behind it.
 | | Lesson |
 |---|---|
 | `L1` | Topics backed by two or more independent sources have averaged 1.00 signals against 1.00 for single-source topics — a ratio of 1.00×. |
-| `L2` | The evidence gate has rejected 0 of 17640 attempted claims (0.00%). |
-| `L3` | 121 of 139 tracked topics (87.1%) have at least one accepted claim credit. |
+| `L2` | The evidence gate has rejected 0 of 18737 attempted claims (0.00%). |
+| `L3` | 127 of 145 tracked topics (87.6%) have at least one accepted claim credit. |
 | `L4` | Of 4 idea kinds, “convergence” holds the highest mean robustness (0.492 over 8 ideas). |
-| `L5` | 26 of 31 registered sources are reading reliably (EMA ≥ 0.8); 3 are effectively unreadable (EMA < 0.2). |
+| `L5` | 27 of 31 registered sources are reading reliably (EMA ≥ 0.8); 3 are effectively unreadable (EMA < 0.2). |
 
 ## Site
 
@@ -184,7 +184,7 @@ python3 -m msl.cli probe              # live-read every registered source, repor
 python3 -m msl.cli publish            # re-render site + docs from committed state
 python3 -m msl.cli verify-claims      # read-only: recheck derived claims, report drift
 python3 -m msl.cli gate-report        # read-only: show what the evidence gate rejected
-python3 -m unittest discover -s tests # 333 tests in 13 modules, standard library only
+python3 -m unittest discover -s tests # 334 tests in 13 modules, standard library only
 node tools/render_check.js            # render all 10 pages headlessly
 ```
 
@@ -211,7 +211,7 @@ Python 3.9+, standard library only. No `pip install`, no build step, no keys.
 
 120 registered — 6 critical,
 70 warn, 44 info;
-27 open, 93 resolved,
+29 open, 91 resolved,
 21 standing (structural limits that do not auto-resolve).
 
 Full register: [`IRREGULARITIES.md`](IRREGULARITIES.md) or
