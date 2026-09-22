@@ -1,0 +1,15 @@
+{
+ "captureMode": "sandbox-scripted-urllib",
+ "capturedAt": "2026-09-21T23:18:27Z",
+ "httpStatus": 200,
+ "payloadSha256": "c9b7f5adeab67cd3146ffc69712aee7ddc37c23e656e41feaaa5624dff4e02aa",
+ "projection": {
+  "name": "react",
+  "version": "19.3.0"
+ },
+ "projectionNote": "Projection retains exactly the fields the registered adapter reads, so len()/field access in msl/adapters.py resolves against real values. payloadSha256 covers the full wire response, not the projection.",
+ "rawBytes": 2155,
+ "source": "seed",
+ "url": "https://registry.npmjs.org/react/latest",
+ "wireHashVerifiable": true
+}

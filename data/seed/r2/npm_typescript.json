@@ -1,0 +1,16 @@
+{
+ "captureMode": "sandbox-scripted-urllib",
+ "capturedAt": "2026-09-21T23:37:42Z",
+ "httpStatus": 200,
+ "payloadSha256": "28a8ef314c6bbc3fddb831088f80eb2fcac6351cb618c8ac029f7229f587b8aa",
+ "projection": {
+  "name": "typescript",
+  "version": "7.0.2"
+ },
+ "projectionNote": "Round-2 capture: a second real reading of the same endpoints, taken minutes after data/seed/. The two corpora together are a genuine two-point time series, which is what lets the forecast competition be scored against real movement rather than a static snapshot. Field names are the raw ones the adapters read. payloadSha256 covers the full wire response.",
+ "rawBytes": 4833,
+ "round": 2,
+ "source": "seed",
+ "url": "https://registry.npmjs.org/typescript/latest",
+ "wireHashVerifiable": true
+}

@@ -1,0 +1,15 @@
+{
+ "captureMode": "sandbox-scripted-urllib",
+ "capturedAt": "2026-09-21T23:18:27Z",
+ "httpStatus": 200,
+ "payloadSha256": "28a8ef314c6bbc3fddb831088f80eb2fcac6351cb618c8ac029f7229f587b8aa",
+ "projection": {
+  "name": "typescript",
+  "version": "7.0.2"
+ },
+ "projectionNote": "Projection retains exactly the fields the registered adapter reads, so len()/field access in msl/adapters.py resolves against real values. payloadSha256 covers the full wire response, not the projection.",
+ "rawBytes": 4833,
+ "source": "seed",
+ "url": "https://registry.npmjs.org/typescript/latest",
+ "wireHashVerifiable": true
+}

@@ -1,0 +1,437 @@
+{
+ "captureMode": "sandbox-scripted-urllib",
+ "capturedAt": "2026-09-21T23:18:26Z",
+ "httpStatus": 200,
+ "payloadSha256": "1586a4821b41ef9038207338f6b5efce96bbd933274e43ed12212db7f0eb13e2",
+ "projection": [
+  {
+   "created_at": "2026-09-21T22:41:15Z",
+   "description": null,
+   "has_pages": true,
+   "name": "SelfLearn",
+   "pushed_at": "2026-09-21T23:16:46Z",
+   "size": 0
+  },
+  {
+   "created_at": "2026-09-12T00:16:13Z",
+   "description": null,
+   "has_pages": true,
+   "name": "MasterSite",
+   "pushed_at": "2026-09-21T23:14:43Z",
+   "size": 428
+  },
+  {
+   "created_at": "2026-09-17T18:39:16Z",
+   "description": null,
+   "has_pages": true,
+   "name": "KalshiPaperSim",
+   "pushed_at": "2026-09-21T23:14:40Z",
+   "size": 49280
+  },
+  {
+   "created_at": "2026-09-21T02:00:24Z",
+   "description": null,
+   "has_pages": true,
+   "name": "MLBRainDelay",
+   "pushed_at": "2026-09-21T23:13:26Z",
+   "size": 156
+  },
+  {
+   "created_at": "2026-09-19T21:42:20Z",
+   "description": null,
+   "has_pages": true,
+   "name": "Commodities",
+   "pushed_at": "2026-09-21T23:04:29Z",
+   "size": 2671
+  },
+  {
+   "created_at": "2026-09-20T00:48:59Z",
+   "description": null,
+   "has_pages": true,
+   "name": "VacationSchedule",
+   "pushed_at": "2026-09-21T23:17:14Z",
+   "size": 559
+  },
+  {
+   "created_at": "2026-09-20T18:36:45Z",
+   "description": null,
+   "has_pages": true,
+   "name": "MLBComp",
+   "pushed_at": "2026-09-21T22:56:22Z",
+   "size": 568
+  },
+  {
+   "created_at": "2026-09-10T21:10:50Z",
+   "description": null,
+   "has_pages": true,
+   "name": "DrugAnalysis",
+   "pushed_at": "2026-09-21T22:51:26Z",
+   "size": 56674
+  },
+  {
+   "created_at": "2026-09-10T21:59:35Z",
+   "description": null,
+   "has_pages": true,
+   "name": "NFLInjuryReport",
+   "pushed_at": "2026-09-21T22:47:31Z",
+   "size": 18184
+  },
+  {
+   "created_at": "2026-09-20T18:37:22Z",
+   "description": null,
+   "has_pages": true,
+   "name": "NFLComp",
+   "pushed_at": "2026-09-21T22:44:46Z",
+   "size": 7083
+  },
+  {
+   "created_at": "2026-09-21T22:41:35Z",
+   "description": null,
+   "has_pages": true,
+   "name": "MasterSelfLearn",
+   "pushed_at": "2026-09-21T22:41:36Z",
+   "size": 0
+  },
+  {
+   "created_at": "2026-09-20T18:37:41Z",
+   "description": null,
+   "has_pages": true,
+   "name": "NHLComp",
+   "pushed_at": "2026-09-21T23:13:28Z",
+   "size": 20842
+  },
+  {
+   "created_at": "2026-09-16T01:36:38Z",
+   "description": null,
+   "has_pages": true,
+   "name": "TradingViewTheLeap",
+   "pushed_at": "2026-09-21T20:28:58Z",
+   "size": 6047
+  },
+  {
+   "created_at": "2026-09-20T18:37:59Z",
+   "description": null,
+   "has_pages": true,
+   "name": "NBAComp",
+   "pushed_at": "2026-09-21T23:17:51Z",
+   "size": 2646
+  },
+  {
+   "created_at": "2026-09-18T22:42:36Z",
+   "description": null,
+   "has_pages": true,
+   "name": "Elections",
+   "pushed_at": "2026-09-21T18:50:35Z",
+   "size": 24540
+  },
+  {
+   "created_at": "2026-09-17T02:22:32Z",
+   "description": null,
+   "has_pages": true,
+   "name": "NBAInjuryReport",
+   "pushed_at": "2026-09-21T15:53:37Z",
+   "size": 1888
+  },
+  {
+   "created_at": "2026-09-17T04:26:19Z",
+   "description": null,
+   "has_pages": true,
+   "name": "SFWeather",
+   "pushed_at": "2026-09-21T23:18:21Z",
+   "size": 13383
+  },
+  {
+   "created_at": "2026-09-18T20:11:30Z",
+   "description": null,
+   "has_pages": true,
+   "name": "WoWForever",
+   "pushed_at": "2026-09-21T13:47:16Z",
+   "size": 490
+  },
+  {
+   "created_at": "2026-09-19T18:11:58Z",
+   "description": null,
+   "has_pages": true,
+   "name": "OLBG-Competition",
+   "pushed_at": "2026-09-21T13:17:23Z",
+   "size": 963
+  },
+  {
+   "created_at": "2026-09-12T18:46:56Z",
+   "description": null,
+   "has_pages": true,
+   "name": "GEMSDOE",
+   "pushed_at": "2026-09-21T12:53:54Z",
+   "size": 399195
+  },
+  {
+   "created_at": "2026-09-17T18:39:45Z",
+   "description": null,
+   "has_pages": true,
+   "name": "StockPaperSim",
+   "pushed_at": "2026-09-21T04:50:16Z",
+   "size": 17609
+  },
+  {
+   "created_at": "2026-09-19T21:41:43Z",
+   "description": null,
+   "has_pages": true,
+   "name": "ShoulderPain",
+   "pushed_at": "2026-09-21T04:26:43Z",
+   "size": 471
+  },
+  {
+   "created_at": "2026-09-20T17:01:27Z",
+   "description": null,
+   "has_pages": true,
+   "name": "SocialMediaComp",
+   "pushed_at": "2026-09-21T04:12:18Z",
+   "size": 61
+  },
+  {
+   "created_at": "2026-08-27T20:17:13Z",
+   "description": null,
+   "has_pages": true,
+   "name": "ScheduleFreeTime",
+   "pushed_at": "2026-09-17T23:52:24Z",
+   "size": 914
+  },
+  {
+   "created_at": "2026-09-10T21:23:42Z",
+   "description": null,
+   "has_pages": true,
+   "name": "BathTubOverflowSF",
+   "pushed_at": "2026-09-17T21:00:16Z",
+   "size": 1497
+  },
+  {
+   "created_at": "2026-09-07T19:05:24Z",
+   "description": null,
+   "has_pages": true,
+   "name": "TinoLunchSpecial",
+   "pushed_at": "2026-09-17T16:58:02Z",
+   "size": 2076
+  },
+  {
+   "created_at": "2026-09-14T17:26:14Z",
+   "description": null,
+   "has_pages": true,
+   "name": "VapePods",
+   "pushed_at": "2026-09-15T22:43:19Z",
+   "size": 110
+  },
+  {
+   "created_at": "2026-09-11T19:07:00Z",
+   "description": null,
+   "has_pages": true,
+   "name": "AirPremia",
+   "pushed_at": "2026-09-11T21:01:59Z",
+   "size": 81
+  },
+  {
+   "created_at": "2026-08-21T08:42:57Z",
+   "description": null,
+   "has_pages": true,
+   "name": "NFL-scoreboard",
+   "pushed_at": "2026-09-10T17:41:32Z",
+   "size": 775
+  },
+  {
+   "created_at": "2026-09-06T00:31:14Z",
+   "description": null,
+   "has_pages": true,
+   "name": "ProjX",
+   "pushed_at": "2026-09-07T17:31:35Z",
+   "size": 8253
+  },
+  {
+   "created_at": "2026-09-05T20:58:20Z",
+   "description": null,
+   "has_pages": true,
+   "name": "SFLateNight",
+   "pushed_at": "2026-09-06T04:26:17Z",
+   "size": 450
+  },
+  {
+   "created_at": "2026-08-25T07:59:11Z",
+   "description": null,
+   "has_pages": true,
+   "name": "Ncaa-football-alerts",
+   "pushed_at": "2026-09-06T00:31:02Z",
+   "size": 302
+  },
+  {
+   "created_at": "2026-08-31T00:01:45Z",
+   "description": null,
+   "has_pages": true,
+   "name": "SportsPred",
+   "pushed_at": "2026-09-05T08:23:56Z",
+   "size": 16526
+  },
+  {
+   "created_at": "2026-08-07T00:18:05Z",
+   "description": null,
+   "has_pages": true,
+   "name": "MLB-Live-PBP",
+   "pushed_at": "2026-09-05T04:31:12Z",
+   "size": 1046
+  },
+  {
+   "created_at": "2026-09-03T23:18:30Z",
+   "description": null,
+   "has_pages": true,
+   "name": "PlumbingSF",
+   "pushed_at": "2026-09-04T20:12:24Z",
+   "size": 1176
+  },
+  {
+   "created_at": "2026-09-01T04:32:20Z",
+   "description": null,
+   "has_pages": true,
+   "name": "HongdaeStay",
+   "pushed_at": "2026-09-02T02:00:49Z",
+   "size": 211
+  },
+  {
+   "created_at": "2026-08-30T19:42:20Z",
+   "description": null,
+   "has_pages": true,
+   "name": "BusanL7HaeundaeLotteHotelStay",
+   "pushed_at": "2026-09-01T23:58:51Z",
+   "size": 252
+  },
+  {
+   "created_at": "2026-08-30T23:59:40Z",
+   "description": null,
+   "has_pages": true,
+   "name": "Leg3SeoulTrip",
+   "pushed_at": "2026-08-30T23:59:41Z",
+   "size": 0
+  },
+  {
+   "created_at": "2026-08-10T02:13:22Z",
+   "description": null,
+   "has_pages": true,
+   "name": "KoreaHotels",
+   "pushed_at": "2026-08-30T17:52:07Z",
+   "size": 3014
+  },
+  {
+   "created_at": "2026-08-26T18:59:54Z",
+   "description": null,
+   "has_pages": true,
+   "name": "CruiseDeals",
+   "pushed_at": "2026-08-30T02:00:30Z",
+   "size": 539
+  },
+  {
+   "created_at": "2026-08-03T18:16:02Z",
+   "description": "Freebies and deals korea",
+   "has_pages": true,
+   "name": "Korea",
+   "pushed_at": "2026-08-29T01:04:54Z",
+   "size": 558
+  },
+  {
+   "created_at": "2026-08-17T21:05:38Z",
+   "description": null,
+   "has_pages": true,
+   "name": "GOLD",
+   "pushed_at": "2026-08-28T20:50:03Z",
+   "size": 1195
+  },
+  {
+   "created_at": "2026-08-20T05:35:20Z",
+   "description": null,
+   "has_pages": true,
+   "name": "StanfordStay",
+   "pushed_at": "2026-08-22T08:46:47Z",
+   "size": 358
+  },
+  {
+   "created_at": "2026-08-05T17:04:39Z",
+   "description": null,
+   "has_pages": true,
+   "name": "Korea-emergency",
+   "pushed_at": "2026-08-21T22:41:38Z",
+   "size": 432
+  },
+  {
+   "created_at": "2026-08-17T21:27:55Z",
+   "description": null,
+   "has_pages": true,
+   "name": "PriceKalshiHistorical",
+   "pushed_at": "2026-08-19T17:06:24Z",
+   "size": 132
+  },
+  {
+   "created_at": "2026-08-07T00:24:35Z",
+   "description": null,
+   "has_pages": true,
+   "name": "Insider-trades",
+   "pushed_at": "2026-08-19T17:06:22Z",
+   "size": 3816
+  },
+  {
+   "created_at": "2026-08-08T18:27:58Z",
+   "description": null,
+   "has_pages": true,
+   "name": "Tradingview-pinescript-editor",
+   "pushed_at": "2026-08-10T01:43:17Z",
+   "size": 112
+  },
+  {
+   "created_at": "2026-08-10T01:58:52Z",
+   "description": null,
+   "has_pages": true,
+   "name": "Itinerary-Korea",
+   "pushed_at": "2026-08-18T20:40:06Z",
+   "size": 981
+  },
+  {
+   "created_at": "2026-08-10T03:27:08Z",
+   "description": null,
+   "has_pages": true,
+   "name": "HotelSeoulRoughdraft1",
+   "pushed_at": "2026-08-18T22:12:49Z",
+   "size": 1336
+  },
+  {
+   "created_at": "2026-08-17T07:21:43Z",
+   "description": null,
+   "has_pages": true,
+   "name": "MLB-Prediction-model-backtest",
+   "pushed_at": "2026-08-17T23:49:33Z",
+   "size": 1388
+  },
+  {
+   "created_at": "2026-08-17T21:26:42Z",
+   "description": null,
+   "has_pages": true,
+   "name": "NFLPRED",
+   "pushed_at": "2026-08-17T21:26:44Z",
+   "size": 0
+  },
+  {
+   "created_at": "2026-08-17T16:29:40Z",
+   "description": null,
+   "has_pages": true,
+   "name": "PFFNFL",
+   "pushed_at": "2026-08-17T21:12:44Z",
+   "size": 35
+  },
+  {
+   "created_at": "2026-08-11T08:36:07Z",
+   "description": null,
+   "has_pages": true,
+   "name": "MLB-PBP",
+   "pushed_at": "2026-08-11T17:13:16Z",
+   "size": 59
+  }
+ ],
+ "projectionNote": "Projection retains exactly the fields the registered adapter reads, so len()/field access in msl/adapters.py resolves against real values. payloadSha256 covers the full wire response, not the projection.",
+ "rawBytes": 305324,
+ "source": "seed",
+ "url": "https://api.github.com/users/buffedlizard55-lab/repos?per_page=100&sort=updated",
+ "wireHashVerifiable": true
+}

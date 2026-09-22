@@ -1,0 +1,198 @@
+{
+ "all": [
+  {
+   "accuracy": 0.0,
+   "correct": 0,
+   "issued": 33,
+   "meanBrier": 0.25143938696969687,
+   "name": "Momentum persistence",
+   "scored": 33,
+   "skill": -0.9961,
+   "status": "ranked",
+   "strategyId": "S01_MomentumPersist",
+   "thesis": "A metric that moved last cycle moves the same way next cycle.",
+   "unrankedReason": ""
+  },
+  {
+   "accuracy": 0.0,
+   "correct": 0,
+   "issued": 34,
+   "meanBrier": 0.24940104764705892,
+   "name": "Mean reversion",
+   "scored": 34,
+   "skill": -0.9961,
+   "status": "ranked",
+   "strategyId": "S02_MeanRevert",
+   "thesis": "A metric away from its own series mean moves back toward it.",
+   "unrankedReason": ""
+  },
+  {
+   "accuracy": 0.0,
+   "correct": 0,
+   "issued": 1,
+   "meanBrier": 0.24990001,
+   "name": "Acceleration",
+   "scored": 1,
+   "skill": null,
+   "status": "unranked",
+   "strategyId": "S03_Acceleration",
+   "thesis": "The second difference, not the first, predicts the next move.",
+   "unrankedReason": "1 scored forecast(s); 3 required before a rank means anything."
+  },
+  {
+   "accuracy": 0.0,
+   "correct": 0,
+   "issued": 1,
+   "meanBrier": 0.48999999999999994,
+   "name": "Consensus fade",
+   "scored": 1,
+   "skill": null,
+   "status": "unranked",
+   "strategyId": "S04_ConsensusFade",
+   "thesis": "When the other personas agree, the crowd is already positioned; fade it.",
+   "unrankedReason": "1 scored forecast(s); 3 required before a rank means anything."
+  },
+  {
+   "accuracy": 0.0,
+   "correct": 0,
+   "issued": 33,
+   "meanBrier": 0.38439999999999985,
+   "name": "Evidence density",
+   "scored": 33,
+   "skill": -0.9961,
+   "status": "ranked",
+   "strategyId": "S05_EvidenceDensity",
+   "thesis": "Metrics corroborated by more independent sources have more reliable trends.",
+   "unrankedReason": ""
+  },
+  {
+   "accuracy": null,
+   "correct": 0,
+   "issued": 0,
+   "meanBrier": null,
+   "name": "Skill-weighted memory",
+   "scored": 0,
+   "skill": null,
+   "status": "unranked",
+   "strategyId": "S06_MemoryWeighted",
+   "thesis": "Combine the personas in proportion to the skill they have actually earned.",
+   "unrankedReason": "0 scored forecast(s); 3 required before a rank means anything."
+  },
+  {
+   "accuracy": 0.9961089494163424,
+   "correct": 256,
+   "issued": 257,
+   "meanBrier": 0.25,
+   "name": "Persistence (null model)",
+   "scored": 257,
+   "skill": 0.0,
+   "status": "ranked",
+   "strategyId": "S10_Persistence",
+   "thesis": "Nothing changes.  Every other persona must beat this to be worth keeping.",
+   "unrankedReason": ""
+  }
+ ],
+ "cycle": 3,
+ "generatedAt": "2026-09-22T01:34:57Z",
+ "nullAccuracy": 0.9961089494163424,
+ "nullScored": 257,
+ "qualification": {
+  "minScoredForecasts": 3,
+  "rule": "A persona is ranked only when it has at least 3 scored forecasts AND the null model does too.  Skill = accuracy − null accuracy, so a persona must beat 'nothing changes' to appear in the ranked table at all."
+ },
+ "ranked": [
+  {
+   "accuracy": 0.9961089494163424,
+   "correct": 256,
+   "issued": 257,
+   "meanBrier": 0.25,
+   "name": "Persistence (null model)",
+   "scored": 257,
+   "skill": 0.0,
+   "status": "ranked",
+   "strategyId": "S10_Persistence",
+   "thesis": "Nothing changes.  Every other persona must beat this to be worth keeping.",
+   "unrankedReason": ""
+  },
+  {
+   "accuracy": 0.0,
+   "correct": 0,
+   "issued": 34,
+   "meanBrier": 0.24940104764705892,
+   "name": "Mean reversion",
+   "scored": 34,
+   "skill": -0.9961,
+   "status": "ranked",
+   "strategyId": "S02_MeanRevert",
+   "thesis": "A metric away from its own series mean moves back toward it.",
+   "unrankedReason": ""
+  },
+  {
+   "accuracy": 0.0,
+   "correct": 0,
+   "issued": 33,
+   "meanBrier": 0.25143938696969687,
+   "name": "Momentum persistence",
+   "scored": 33,
+   "skill": -0.9961,
+   "status": "ranked",
+   "strategyId": "S01_MomentumPersist",
+   "thesis": "A metric that moved last cycle moves the same way next cycle.",
+   "unrankedReason": ""
+  },
+  {
+   "accuracy": 0.0,
+   "correct": 0,
+   "issued": 33,
+   "meanBrier": 0.38439999999999985,
+   "name": "Evidence density",
+   "scored": 33,
+   "skill": -0.9961,
+   "status": "ranked",
+   "strategyId": "S05_EvidenceDensity",
+   "thesis": "Metrics corroborated by more independent sources have more reliable trends.",
+   "unrankedReason": ""
+  }
+ ],
+ "unranked": [
+  {
+   "accuracy": 0.0,
+   "correct": 0,
+   "issued": 1,
+   "meanBrier": 0.24990001,
+   "name": "Acceleration",
+   "scored": 1,
+   "skill": null,
+   "status": "unranked",
+   "strategyId": "S03_Acceleration",
+   "thesis": "The second difference, not the first, predicts the next move.",
+   "unrankedReason": "1 scored forecast(s); 3 required before a rank means anything."
+  },
+  {
+   "accuracy": 0.0,
+   "correct": 0,
+   "issued": 1,
+   "meanBrier": 0.48999999999999994,
+   "name": "Consensus fade",
+   "scored": 1,
+   "skill": null,
+   "status": "unranked",
+   "strategyId": "S04_ConsensusFade",
+   "thesis": "When the other personas agree, the crowd is already positioned; fade it.",
+   "unrankedReason": "1 scored forecast(s); 3 required before a rank means anything."
+  },
+  {
+   "accuracy": null,
+   "correct": 0,
+   "issued": 0,
+   "meanBrier": null,
+   "name": "Skill-weighted memory",
+   "scored": 0,
+   "skill": null,
+   "status": "unranked",
+   "strategyId": "S06_MemoryWeighted",
+   "thesis": "Combine the personas in proportion to the skill they have actually earned.",
+   "unrankedReason": "0 scored forecast(s); 3 required before a rank means anything."
+  }
+ ]
+}

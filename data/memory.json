@@ -1,0 +1,314 @@
+{
+ "consecutiveCycleFailures": 0,
+ "cyclesRun": 3,
+ "history": [
+  {
+   "at": "2026-09-22T01:34:57Z",
+   "claims": 545,
+   "cycle": 1,
+   "errors": 0,
+   "forecasts": 2,
+   "ideas": 4,
+   "irregularities": 41,
+   "newTopics": 19,
+   "ok": true,
+   "readsFailed": 0,
+   "readsOk": 18,
+   "scored": 0,
+   "topics": 19
+  },
+  {
+   "at": "2026-09-22T01:34:57Z",
+   "claims": 1059,
+   "cycle": 2,
+   "errors": 0,
+   "forecasts": 357,
+   "ideas": 4,
+   "irregularities": 41,
+   "newTopics": 6,
+   "ok": true,
+   "readsFailed": 0,
+   "readsOk": 11,
+   "scored": 2,
+   "topics": 25
+  },
+  {
+   "at": "2026-09-22T01:34:57Z",
+   "claims": 1573,
+   "cycle": 3,
+   "errors": 0,
+   "forecasts": 355,
+   "ideas": 4,
+   "irregularities": 38,
+   "newTopics": 6,
+   "ok": true,
+   "readsFailed": 0,
+   "readsOk": 11,
+   "scored": 357,
+   "topics": 31
+  }
+ ],
+ "lastCycleAt": "2026-09-22T01:34:57Z",
+ "lessons": [
+  {
+   "counts": {
+    "meanSignalsMulti": 1.0,
+    "meanSignalsSingle": 1.0,
+    "multiSourceTopics": 2,
+    "singleSourceTopics": 3
+   },
+   "id": "L1",
+   "implication": "Corroboration is a better promotion signal than raw signal count, so the discovery stage requires 2 signals before a topic leaves candidate status.",
+   "statement": "Topics backed by two or more independent sources have averaged 1.00 signals against 1.00 for single-source topics \u2014 a ratio of 1.00\u00d7."
+  },
+  {
+   "counts": {
+    "accepted": 1573,
+    "attempted": 1573,
+    "rejected": 0
+   },
+   "id": "L2",
+   "implication": "A zero here would be suspicious, not reassuring: it would mean the gate never sees a claim without evidence, which is unlikely with this many sources.",
+   "statement": "The evidence gate has rejected 0 of 1573 attempted claims (0.00%)."
+  },
+  {
+   "counts": {
+    "percent": 16.13,
+    "topicsTracked": 31,
+    "topicsWithClaims": 5
+   },
+   "id": "L3",
+   "implication": "Anything below 100% is a real coverage gap and is listed as such on the site rather than filled with prose.",
+   "statement": "5 of 31 tracked topics (16.1%) have at least one verified claim."
+  },
+  {
+   "counts": {
+    "regulatory-lead": {
+     "meanRobustness": 0.2749,
+     "n": 1
+    },
+    "velocity-outlier": {
+     "meanRobustness": 0.3999,
+     "n": 3
+    }
+   },
+   "id": "L4",
+   "implication": "Idea generation spends its budget on the kinds that have actually held up, and reports the ones that have not.",
+   "statement": "Of 2 idea kinds, \u201cvelocity-outlier\u201d holds the highest mean robustness (0.400 over 3 ideas)."
+  },
+  {
+   "counts": {
+    "healthy": 0,
+    "sources": 8,
+    "unreliable": 0,
+    "unreliableIds": []
+   },
+   "id": "L5",
+   "implication": "An unreadable source produces no claims and no substitute value. It stays on the site as a known gap.",
+   "statement": "0 of 8 registered sources are reading reliably (EMA \u2265 0.8); 0 are effectively unreadable (EMA < 0.2)."
+  }
+ ],
+ "sourceReliability": {
+  "federal_register": 0.625,
+  "github_repos": 0.789062,
+  "github_search": 0.789062,
+  "hn_firebase": 0.625,
+  "npm_registry": 0.789062,
+  "pypi_json": 0.789062,
+  "usgs_fdsn": 0.625,
+  "wikimedia_pageviews": 0.625
+ },
+ "strategyWeights": {
+  "S01_MomentumPersist": 0.375,
+  "S02_MeanRevert": 0.375,
+  "S05_EvidenceDensity": 0.375
+ },
+ "topicInterest": {
+  "agency:centers-for-disease-control-and-prevention": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "agency:health-and-human-services-department": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "agency:securities-and-exchange-commission": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "ai-research-frontier": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "clinical-evidence": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "frdoc:2026-19148": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "frdoc:2026-19271": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "geohazards": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "macro-signals": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "market-lab-ecosystem": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "open-source-momentum": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "owner-corpus": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "public-attention": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "public-health-policy": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "regulatory-flow": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "repo:agentverse-os/agentverse-os": {
+   "ema": 0.25,
+   "lastCycle": 3,
+   "peak": 0.25,
+   "seen": 1
+  },
+  "repo:brayonpi/hexstellar": {
+   "ema": 0.6875,
+   "lastCycle": 3,
+   "peak": 0.6875,
+   "seen": 2
+  },
+  "repo:hanyuanwang/livestream-agent-studio": {
+   "ema": 0.6875,
+   "lastCycle": 3,
+   "peak": 0.6875,
+   "seen": 2
+  },
+  "repo:jtydhr88/screenwriting-skills": {
+   "ema": 0.6875,
+   "lastCycle": 3,
+   "peak": 0.6875,
+   "seen": 2
+  },
+  "repo:kgoedecke/doop": {
+   "ema": 0.25,
+   "lastCycle": 3,
+   "peak": 0.25,
+   "seen": 1
+  },
+  "repo:nanako0129/sepia": {
+   "ema": 0.6875,
+   "lastCycle": 3,
+   "peak": 0.6875,
+   "seen": 2
+  },
+  "repo:okf-memory/okf-agent-memory": {
+   "ema": 0.25,
+   "lastCycle": 3,
+   "peak": 0.25,
+   "seen": 1
+  },
+  "repo:shadcn-ui/lint": {
+   "ema": 0.6875,
+   "lastCycle": 3,
+   "peak": 0.6875,
+   "seen": 2
+  },
+  "repo:tigerless-labs/agent-memory": {
+   "ema": 0.25,
+   "lastCycle": 3,
+   "peak": 0.25,
+   "seen": 1
+  },
+  "repo:youngyangyang04/llm-master": {
+   "ema": 0.25,
+   "lastCycle": 3,
+   "peak": 0.25,
+   "seen": 1
+  },
+  "repo:zai-org/zcode": {
+   "ema": 2.5312,
+   "lastCycle": 3,
+   "peak": 2.5312,
+   "seen": 3
+  },
+  "repo:zju-real/easel": {
+   "ema": 0.6875,
+   "lastCycle": 3,
+   "peak": 0.6875,
+   "seen": 2
+  },
+  "sf-local": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "sports-signals": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  },
+  "tag:agent-skills": {
+   "ema": 0.5,
+   "lastCycle": 3,
+   "peak": 0.5,
+   "seen": 1
+  },
+  "travel-korea": {
+   "ema": 0.5781,
+   "lastCycle": 3,
+   "peak": 0.5781,
+   "seen": 3
+  }
+ }
+}

@@ -1,0 +1,53 @@
+name: probe
+
+# Live-reads every registered source once a day and publishes the health ledger.
+# This is the only job allowed to move a source between registered /
+# verified-live-read / blocked, so a source's status on the site is always a fact
+# about the last read rather than an assertion.
+
+on:
+  schedule:
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: source-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Probe every registered source
+        run: python3 tools/probe_sources.py 2>&1 | tee data/probe.log
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "### source health" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat data/probe.log >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit the health ledger
+        if: always()
+        run: |
+          git config user.name  "MasterSelfLearn"
+          git config user.email "buffedlizard55@gmail.com"
+          git add data/source_health.json data/probe.log || true
+          if git diff --cached --quiet; then
+            echo "no change in source health"
+          else
+            git commit -m "probe: source health ledger"
+            git push
+          fi

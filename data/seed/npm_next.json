@@ -1,0 +1,15 @@
+{
+ "captureMode": "sandbox-scripted-urllib",
+ "capturedAt": "2026-09-21T23:18:26Z",
+ "httpStatus": 200,
+ "payloadSha256": "61d700bb41bbf69780758bc0b27b78603fcae5b150fcb18c89c7a1cea2a3b714",
+ "projection": {
+  "name": "next",
+  "version": "16.3.5"
+ },
+ "projectionNote": "Projection retains exactly the fields the registered adapter reads, so len()/field access in msl/adapters.py resolves against real values. payloadSha256 covers the full wire response, not the projection.",
+ "rawBytes": 3070,
+ "source": "seed",
+ "url": "https://registry.npmjs.org/next/latest",
+ "wireHashVerifiable": true
+}

@@ -1,0 +1,215 @@
+{
+ "items": [
+  {
+   "appearances": 3,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.5,
+    "freshness": 0.9995,
+    "reproducibility": 1.0
+   },
+   "cycle": 3,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "c8045aa29586ab63",
+   "firstSeenCycle": 1,
+   "history": [
+    {
+     "cycle": 1,
+     "lineageSize": 2,
+     "robustness": 0.2999186714616402
+    },
+    {
+     "cycle": 2,
+     "lineageSize": 4,
+     "robustness": 0.34992724867724867
+    },
+    {
+     "cycle": 3,
+     "lineageSize": 6,
+     "robustness": 0.3999272486772487
+    }
+   ],
+   "id": "ID0001-001",
+   "kind": "velocity-outlier",
+   "lastSeenCycle": 3,
+   "lineage": [
+    "C000168",
+    "C000170",
+    "C000708",
+    "C000710",
+    "C001222",
+    "C001224"
+   ],
+   "robustness": 0.3999,
+   "sources": [
+    "github_search"
+   ],
+   "statement": "zai-org/ZCode reached 5,548 stars in 1.6 days (3,544.9/day), against a median of 0.7/day across the 124 tracked repositories.  Testable claim: its growth is explained by something in its first-week release, not by its topic.",
+   "status": "carried",
+   "title": "Replicate what made zai-org/ZCode grow",
+   "urls": [
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25"
+   ]
+  },
+  {
+   "appearances": 3,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.5,
+    "freshness": 0.9995,
+    "reproducibility": 1.0
+   },
+   "cycle": 3,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "cf9234e38f4aed9a",
+   "firstSeenCycle": 1,
+   "history": [
+    {
+     "cycle": 1,
+     "lineageSize": 2,
+     "robustness": 0.2999186714616402
+    },
+    {
+     "cycle": 2,
+     "lineageSize": 4,
+     "robustness": 0.34992724867724867
+    },
+    {
+     "cycle": 3,
+     "lineageSize": 6,
+     "robustness": 0.3999272486772487
+    }
+   ],
+   "id": "ID0001-002",
+   "kind": "velocity-outlier",
+   "lastSeenCycle": 3,
+   "lineage": [
+    "C000159",
+    "C000161",
+    "C000699",
+    "C000701",
+    "C001213",
+    "C001215"
+   ],
+   "robustness": 0.3999,
+   "sources": [
+    "github_search"
+   ],
+   "statement": "browser-use/jev-ultrafast reached 15,573 stars in 5.2 days (3,012.2/day), against a median of 0.7/day across the 124 tracked repositories.  Testable claim: its growth is explained by something in its first-week release, not by its topic.",
+   "status": "carried",
+   "title": "Replicate what made browser-use/jev-ultrafast grow",
+   "urls": [
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25"
+   ]
+  },
+  {
+   "appearances": 3,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.5,
+    "freshness": 0.9995,
+    "reproducibility": 1.0
+   },
+   "cycle": 3,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "d845768af18a5e81",
+   "firstSeenCycle": 1,
+   "history": [
+    {
+     "cycle": 1,
+     "lineageSize": 2,
+     "robustness": 0.2999186714616402
+    },
+    {
+     "cycle": 2,
+     "lineageSize": 4,
+     "robustness": 0.34992724867724867
+    },
+    {
+     "cycle": 3,
+     "lineageSize": 6,
+     "robustness": 0.3999272486772487
+    }
+   ],
+   "id": "ID0001-003",
+   "kind": "velocity-outlier",
+   "lastSeenCycle": 3,
+   "lineage": [
+    "C000162",
+    "C000164",
+    "C000702",
+    "C000704",
+    "C001216",
+    "C001218"
+   ],
+   "robustness": 0.3999,
+   "sources": [
+    "github_search"
+   ],
+   "statement": "NandhaKishorM/laya reached 9,988 stars in 3.9 days (2,582.9/day), against a median of 0.7/day across the 124 tracked repositories.  Testable claim: its growth is explained by something in its first-week release, not by its topic.",
+   "status": "carried",
+   "title": "Replicate what made NandhaKishorM/laya grow",
+   "urls": [
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25"
+   ]
+  },
+  {
+   "appearances": 3,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.0833,
+    "freshness": 0.9994,
+    "reproducibility": 1.0
+   },
+   "cycle": 3,
+   "families": [
+    "regulatory-flow"
+   ],
+   "fingerprint": "f30e5dd4a9965c3a",
+   "firstSeenCycle": 1,
+   "history": [
+    {
+     "cycle": 1,
+     "lineageSize": 1,
+     "robustness": 0.2749026847718254
+    },
+    {
+     "cycle": 2,
+     "lineageSize": 1,
+     "robustness": 0.2749026847718254
+    },
+    {
+     "cycle": 3,
+     "lineageSize": 1,
+     "robustness": 0.2749026847718254
+    }
+   ],
+   "id": "ID0001-004",
+   "kind": "regulatory-lead",
+   "lastSeenCycle": 3,
+   "lineage": [
+    "C000001"
+   ],
+   "robustness": 0.2749,
+   "sources": [
+    "federal_register"
+   ],
+   "statement": "The Federal Register holds 1,573 documents matching “artificial intelligence”. If published-research attention on the same term stays flat while that count rises, rulemaking is leading and the literature will follow.",
+   "status": "carried",
+   "title": "Watch for research lagging rulemaking on “artificial intelligence”",
+   "urls": [
+    "https://www.federalregister.gov/api/v1/documents.json?per_page=2&order=newest&conditions%5Bterm%5D=artificial+intelligence"
+   ]
+  }
+ ]
+}
