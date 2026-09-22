@@ -10,7 +10,7 @@ on:
     - cron: '*/30 * * * *'
   workflow_dispatch:
   push:
-    branches: [main, arena/01a0c624-masterselflearn]
+    branches: [main]
     paths:
       - 'msl/**'
       - 'tools/**'
