@@ -29,6 +29,7 @@ from .irregularities import CRITICAL, INFO, WARN, Register
 from .learn import (derive_lessons, empty_memory, load as load_memory, record_cycle,
                     save as save_memory, update_source_reliability, update_topic_interest)
 from .reason import derive, recheck_derived
+from .retractions import RETRACTIONS
 from .sources import BY_ID, REGISTRY
 from .strategies import Context, Forecast, issue, leaderboard, score, tracked_metrics, update_weights
 from .topics import (FAMILIES, FAMILY_BY_SLUG, STATUS_ACTIVE, STATUS_BLOCKED,
@@ -693,6 +694,20 @@ def _auto_flags(register: Register, cycle: int, now: str, ledger: Ledger,
                      f"profile was invented.", cycle, now,
                      repro="ls -l data/seed/owner_repos.json", topic="owner-corpus")
 
+    for rt in RETRACTIONS:
+        hits = sum(1 for c in ledger.claims if c.field.startswith(rt["fieldPrefix"]))
+        if not hits:
+            continue
+        register.add(WARN, f"Retracted: {rt['fieldPrefix']}",
+                     f"{hits} claim(s) in the append-only ledger match this retracted "
+                     f"field prefix and are no longer published or reasoned from. "
+                     f"{rt['reason']} Superseded by `{rt['supersededBy']}`. The rows are "
+                     f"kept, with their hashes, because the ledger is a record and not a "
+                     f"view; deleting them would make the original error unauditable. "
+                     f"First seen cycle {rt['firstSeenCycle']}, corrected in cycle "
+                     f"{rt['fixedInCycle']}.", cycle, now,
+                     repro="grep -n '" + rt["fieldPrefix"] + "' data/claims.jsonl | head",
+                     standing=True, fingerprint=rt["irregularity"])
     if rep.fetch_failed and rep.fetch_ok:
         register.add(WARN, f"{rep.fetch_failed} of {plan_size} planned reads failed",
                      f"{rep.fetch_failed} read(s) failed while {rep.fetch_ok} succeeded. Each "

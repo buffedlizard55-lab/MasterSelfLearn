@@ -16,6 +16,7 @@ from typing import Any, Dict, List, Optional
 
 from . import config
 from .evidence import Ledger
+from .retractions import reason_for as retraction_reason_for
 from .ideas import Idea
 from .irregularities import ORDER, Register
 from .pipeline import CycleReport, load_seeds
@@ -88,9 +89,16 @@ def render(d: pathlib.Path, now: str, rep: CycleReport, ledger: Ledger,
     # unloadable within a fortnight.  The append-only JSONL on disk stays the record;
     # the page says plainly that it is showing a window.
     window = 1500
-    claim_rows = [{**c.as_dict(),
-                   "evidenceIds": [i for i in c.evidence if i in ev_ids]}
-                  for c in ledger.claims[-window:]]
+    claim_rows = []
+    for c in ledger.claims[-window:]:
+        row = {**c.as_dict(),
+               "evidenceIds": [i for i in c.evidence if i in ev_ids]}
+        rr = retraction_reason_for(c.field)
+        if rr:
+            # Shown, struck through, with the reason.  Hiding it would leave the
+            # old number circulating with nothing to correct it.
+            row["retracted"] = rr
+        claim_rows.append(row)
 
     forecasts_doc = _read_json(d / "forecasts.json")
     fc = forecasts_doc.get("items", [])
