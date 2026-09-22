@@ -1,26 +1,26 @@
-# STATUS — cycle 4
+# STATUS — cycle 5
 
-Generated `2026-09-22T01:39:14Z` by `msl/docs.py`. Every figure here is read from the same
+Generated `2026-09-22T01:41:22Z` by `msl/docs.py`. Every figure here is read from the same
 objects the site is built from.
 
 ## Last cycle
 
 | | |
 |---|---|
-| Cycle | 4 |
+| Cycle | 5 |
 | Mode | `github-actions` |
-| Duration | 63829 ms |
+| Duration | 56909 ms |
 | Reads (ok / failed) | 65 / 5 |
-| Bytes read | 1,796,602 |
-| Facts extracted | 677 |
-| New claims | 677 |
+| Bytes read | 1,786,632 |
+| Facts extracted | 673 |
+| New claims | 673 |
 | Claims rejected by the gate | 0 |
-| Derived / rechecked / drifted | 252 / 29 / 0 |
-| Topics (new) | 37 (6) |
-| Insights published | 252 |
-| Forecasts issued / scored | 463 / 82 |
+| Derived / rechecked / drifted | 274 / 40 / 0 |
+| Topics (new) | 43 (6) |
+| Insights published | 274 |
+| Forecasts issued / scored | 688 / 148 |
 | Ideas (promoted) | 14 (0) |
-| Irregularities open (new) | 29 (12) |
+| Irregularities open (new) | 30 (2) |
 | Pipeline errors | 0 |
 
 No pipeline stage raised.
@@ -33,9 +33,9 @@ No pipeline stage raised.
 
 ## Register totals
 
-54 registered — 0 critical,
-17 warn, 37 info;
-29 open, 25 resolved,
+56 registered — 0 critical,
+19 warn, 37 info;
+30 open, 26 resolved,
 14 standing.
 
 ## Recent cycles
@@ -46,6 +46,7 @@ No pipeline stage raised.
 | 2 | 2026-09-22T01:34:57Z | 1,059 | 25 | 6 | 357 | 2 | 4 | 41 | ok |
 | 3 | 2026-09-22T01:34:57Z | 1,573 | 31 | 6 | 355 | 357 | 4 | 38 | ok |
 | 4 | 2026-09-22T01:39:14Z | 2,502 | 37 | 6 | 463 | 82 | 14 | 29 | ok |
+| 5 | 2026-09-22T01:41:22Z | 3,449 | 43 | 6 | 688 | 148 | 14 | 30 | ok |
 
 ## What runs next
 
