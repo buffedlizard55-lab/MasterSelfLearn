@@ -1,18 +1,92 @@
 {
  "items": [
   {
-   "appearances": 8,
+   "appearances": 7,
    "components": {
-    "breadth": 0.3333,
+    "breadth": 0.0,
     "corroboration": 0.6667,
     "evidence": 0.25,
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
-    "open-source-momentum",
-    "source-health"
+    "open-source-momentum"
+   ],
+   "fingerprint": "53963f13409baa9c",
+   "firstSeenCycle": 21,
+   "history": [
+    {
+     "cycle": 21,
+     "lineageSize": 3,
+     "robustness": 0.525
+    },
+    {
+     "cycle": 22,
+     "lineageSize": 3,
+     "robustness": 0.525
+    },
+    {
+     "cycle": 23,
+     "lineageSize": 3,
+     "robustness": 0.525
+    },
+    {
+     "cycle": 24,
+     "lineageSize": 3,
+     "robustness": 0.525
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 3,
+     "robustness": 0.525
+    },
+    {
+     "cycle": 26,
+     "lineageSize": 3,
+     "robustness": 0.525
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 3,
+     "robustness": 0.525
+    }
+   ],
+   "id": "ID0021-004",
+   "kind": "convergence",
+   "lastSeenCycle": 27,
+   "lineage": [
+    "C015844",
+    "C023822",
+    "C023824"
+   ],
+   "robustness": 0.525,
+   "sources": [
+    "github_releases",
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "“repo:brayonpi/hexstellar” is independently reported by 3 sources (github_releases, github_repo, github_search).  A monitor built on all of them can be cross-checked; one built on any single one cannot.",
+   "status": "carried",
+   "title": "Track “repo:brayonpi/hexstellar” as a multi-source subject",
+   "urls": [
+    "https://api.github.com/search/repositories?q=AI%20agents%20created%3A%3E%3D2026-08-22&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/repos/brayonpi/hexstellar",
+    "https://api.github.com/repos/brayonpi/hexstellar/releases?per_page=1"
+   ]
+  },
+  {
+   "appearances": 9,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.6667,
+    "evidence": 0.25,
+    "freshness": 1.0,
+    "reproducibility": 1.0
+   },
+   "cycle": 27,
+   "families": [
+    "open-source-momentum"
    ],
    "fingerprint": "2d6a70cabd9b411c",
    "firstSeenCycle": 19,
@@ -56,85 +130,20 @@
      "cycle": 26,
      "lineageSize": 3,
      "robustness": 0.575
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 3,
+     "robustness": 0.525
     }
    ],
    "id": "ID0019-004",
    "kind": "convergence",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
-    "C022678",
-    "C022655",
-    "C022654"
-   ],
-   "robustness": 0.575,
-   "sources": [
-    "github_releases",
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "“repo:browser-use/jev-ultrafast” is independently reported by 3 sources (github_releases, github_repo, github_search).  A monitor built on all of them can be cross-checked; one built on any single one cannot.",
-   "status": "promoted",
-   "title": "Track “repo:browser-use/jev-ultrafast” as a multi-source subject",
-   "urls": [
-    "https://api.github.com/search/repositories?q=created:%3E=2026-09-16&sort=stars&order=desc&per_page=1",
-    "https://api.github.com/repos/browser-use/jev-ultrafast/releases?per_page=1",
-    "https://api.github.com/repos/browser-use/jev-ultrafast"
-   ]
-  },
-  {
-   "appearances": 6,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.6667,
-    "evidence": 0.25,
-    "freshness": 1.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 26,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "53963f13409baa9c",
-   "firstSeenCycle": 21,
-   "history": [
-    {
-     "cycle": 21,
-     "lineageSize": 3,
-     "robustness": 0.525
-    },
-    {
-     "cycle": 22,
-     "lineageSize": 3,
-     "robustness": 0.525
-    },
-    {
-     "cycle": 23,
-     "lineageSize": 3,
-     "robustness": 0.525
-    },
-    {
-     "cycle": 24,
-     "lineageSize": 3,
-     "robustness": 0.525
-    },
-    {
-     "cycle": 25,
-     "lineageSize": 3,
-     "robustness": 0.525
-    },
-    {
-     "cycle": 26,
-     "lineageSize": 3,
-     "robustness": 0.525
-    }
-   ],
-   "id": "ID0021-004",
-   "kind": "convergence",
-   "lastSeenCycle": 26,
-   "lineage": [
-    "C015844",
-    "C022672",
-    "C022674"
+    "C023299",
+    "C023805",
+    "C023804"
    ],
    "robustness": 0.525,
    "sources": [
@@ -142,17 +151,17 @@
     "github_repo",
     "github_search"
    ],
-   "statement": "“repo:brayonpi/hexstellar” is independently reported by 3 sources (github_releases, github_repo, github_search).  A monitor built on all of them can be cross-checked; one built on any single one cannot.",
+   "statement": "“repo:browser-use/jev-ultrafast” is independently reported by 3 sources (github_releases, github_repo, github_search).  A monitor built on all of them can be cross-checked; one built on any single one cannot.",
    "status": "carried",
-   "title": "Track “repo:brayonpi/hexstellar” as a multi-source subject",
+   "title": "Track “repo:browser-use/jev-ultrafast” as a multi-source subject",
    "urls": [
-    "https://api.github.com/search/repositories?q=AI%20agents%20created%3A%3E%3D2026-08-22&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/repos/brayonpi/hexstellar",
-    "https://api.github.com/repos/brayonpi/hexstellar/releases?per_page=1"
+    "https://api.github.com/search/repositories?q=agent%20created%3A%3E%3D2026-06-25&sort=stars&order=desc&per_page=20",
+    "https://api.github.com/repos/browser-use/jev-ultrafast/releases?per_page=1",
+    "https://api.github.com/repos/browser-use/jev-ultrafast"
    ]
   },
   {
-   "appearances": 6,
+   "appearances": 7,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.6667,
@@ -160,7 +169,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "open-source-momentum"
    ],
@@ -196,15 +205,20 @@
      "cycle": 26,
      "lineageSize": 3,
      "robustness": 0.525
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 3,
+     "robustness": 0.525
     }
    ],
    "id": "ID0021-007",
    "kind": "convergence",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
-    "C022176",
-    "C022663",
-    "C022664"
+    "C023326",
+    "C023813",
+    "C023814"
    ],
    "robustness": 0.525,
    "sources": [
@@ -222,15 +236,15 @@
    ]
   },
   {
-   "appearances": 10,
+   "appearances": 11,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.6667,
     "evidence": 0.25,
-    "freshness": 0.9179,
+    "freshness": 0.8847,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "open-source-momentum"
    ],
@@ -286,17 +300,22 @@
      "cycle": 26,
      "lineageSize": 3,
      "robustness": 0.5126785714285714
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 3,
+     "robustness": 0.5076986607142857
     }
    ],
    "id": "ID0017-001",
    "kind": "convergence",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
     "C013015",
     "C014719",
     "C014721"
    ],
-   "robustness": 0.5127,
+   "robustness": 0.5077,
    "sources": [
     "github_releases",
     "github_repo",
@@ -312,15 +331,15 @@
    ]
   },
   {
-   "appearances": 10,
+   "appearances": 11,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.6667,
     "evidence": 0.25,
-    "freshness": 0.9179,
+    "freshness": 0.8847,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "open-source-momentum"
    ],
@@ -376,17 +395,22 @@
      "cycle": 26,
      "lineageSize": 3,
      "robustness": 0.5126785714285714
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 3,
+     "robustness": 0.5076986607142857
     }
    ],
    "id": "ID0017-002",
    "kind": "convergence",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
     "C014201",
     "C014701",
     "C014702"
    ],
-   "robustness": 0.5127,
+   "robustness": 0.5077,
    "sources": [
     "github_releases",
     "github_repo",
@@ -402,15 +426,15 @@
    ]
   },
   {
-   "appearances": 10,
+   "appearances": 11,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.6667,
     "evidence": 0.25,
-    "freshness": 0.9179,
+    "freshness": 0.8847,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "open-source-momentum"
    ],
@@ -466,17 +490,22 @@
      "cycle": 26,
      "lineageSize": 3,
      "robustness": 0.5126785714285714
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 3,
+     "robustness": 0.5076986607142857
     }
    ],
    "id": "ID0017-004",
    "kind": "convergence",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
     "C014228",
     "C014710",
     "C014711"
    ],
-   "robustness": 0.5127,
+   "robustness": 0.5077,
    "sources": [
     "github_releases",
     "github_repo",
@@ -492,7 +521,7 @@
    ]
   },
   {
-   "appearances": 6,
+   "appearances": 7,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.3333,
@@ -500,7 +529,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "source-health"
    ],
@@ -536,14 +565,19 @@
      "cycle": 26,
      "lineageSize": 2,
      "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
     }
    ],
    "id": "ID0021-006",
    "kind": "convergence",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
-    "C022689",
-    "C022690"
+    "C023839",
+    "C023840"
    ],
    "robustness": 0.4,
    "sources": [
@@ -559,7 +593,7 @@
    ]
   },
   {
-   "appearances": 26,
+   "appearances": 27,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.3333,
@@ -567,783 +601,13 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "open-source-momentum"
-   ],
-   "fingerprint": "c8045aa29586ab63",
-   "firstSeenCycle": 1,
-   "history": [
-    {
-     "cycle": 3,
-     "lineageSize": 6,
-     "robustness": 0.3999272486772487
-    },
-    {
-     "cycle": 4,
-     "lineageSize": 8,
-     "robustness": 0.3
-    },
-    {
-     "cycle": 5,
-     "lineageSize": 10,
-     "robustness": 0.35
-    },
-    {
-     "cycle": 6,
-     "lineageSize": 12,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 7,
-     "lineageSize": 14,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 8,
-     "lineageSize": 16,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 9,
-     "lineageSize": 18,
-     "robustness": 0.5499302868716931
-    },
-    {
-     "cycle": 10,
-     "lineageSize": 20,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 11,
-     "lineageSize": 22,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 12,
-     "lineageSize": 24,
-     "robustness": 0.5499915054563492
-    },
-    {
-     "cycle": 13,
-     "lineageSize": 26,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 14,
-     "lineageSize": 28,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 15,
-     "lineageSize": 30,
-     "robustness": 0.4
-    },
-    {
-     "cycle": 16,
-     "lineageSize": 32,
-     "robustness": 0.3
-    },
-    {
-     "cycle": 17,
-     "lineageSize": 33,
-     "robustness": 0.5
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 35,
-     "robustness": 0.5
-    },
-    {
-     "cycle": 19,
-     "lineageSize": 2,
-     "robustness": 0.2823633432539682
-    },
-    {
-     "cycle": 20,
-     "lineageSize": 2,
-     "robustness": 0.28213988095238096
-    },
-    {
-     "cycle": 21,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    },
-    {
-     "cycle": 22,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    },
-    {
-     "cycle": 23,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    },
-    {
-     "cycle": 24,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    },
-    {
-     "cycle": 25,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    },
-    {
-     "cycle": 26,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    }
-   ],
-   "id": "ID0001-001",
-   "kind": "velocity-outlier",
-   "lastSeenCycle": 26,
-   "lineage": [
-    "C022656",
-    "C022176"
-   ],
-   "robustness": 0.4,
-   "sources": [
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "zai-org/ZCode reached 5,548 stars in 1.6 days (3,544.9/day), against a median of 0.7/day across the 124 tracked repositories.  Testable claim: its growth is explained by something in its first-week release, not by its topic.",
-   "status": "carried",
-   "title": "Replicate what made zai-org/ZCode grow",
-   "urls": [
-    "https://api.github.com/repos/zai-org/ZCode"
-   ]
-  },
-  {
-   "appearances": 10,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.3333,
-    "evidence": 0.1667,
-    "freshness": 1.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 26,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "fbd7178760a71dc1",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 2,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 2,
-     "robustness": 0.39999560805224865
-    },
-    {
-     "cycle": 19,
-     "lineageSize": 2,
-     "robustness": 0.39855034722222216
-    },
-    {
-     "cycle": 20,
-     "lineageSize": 2,
-     "robustness": 0.39832688492063495
-    },
-    {
-     "cycle": 21,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    },
-    {
-     "cycle": 22,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    },
-    {
-     "cycle": 23,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    },
-    {
-     "cycle": 24,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    },
-    {
-     "cycle": 25,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    },
-    {
-     "cycle": 26,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    }
-   ],
-   "id": "ID0017-019",
-   "kind": "contradiction",
-   "lastSeenCycle": 26,
-   "lineage": [
-    "C015843",
-    "C022666"
-   ],
-   "robustness": 0.4,
-   "sources": [
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "2 sources report different values for github.repo[brayonpi/hexstellar].forks (github_repo=98, github_search=97). Until that is explained, neither number should be quoted alone.",
-   "status": "carried",
-   "title": "Reconcile the disagreement on github.repo[brayonpi/hexstellar].forks",
-   "urls": [
-    "https://api.github.com/search/repositories?q=AI%20agents%20created%3A%3E%3D2026-08-22&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/repos/brayonpi/hexstellar"
-   ]
-  },
-  {
-   "appearances": 10,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.3333,
-    "evidence": 0.1667,
-    "freshness": 1.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 26,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "fcc4805db4e592b9",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 2,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 2,
-     "robustness": 0.39999560805224865
-    },
-    {
-     "cycle": 19,
-     "lineageSize": 2,
-     "robustness": 0.39855034722222216
-    },
-    {
-     "cycle": 20,
-     "lineageSize": 2,
-     "robustness": 0.39832688492063495
-    },
-    {
-     "cycle": 21,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    },
-    {
-     "cycle": 22,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    },
-    {
-     "cycle": 23,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    },
-    {
-     "cycle": 24,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    },
-    {
-     "cycle": 25,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    },
-    {
-     "cycle": 26,
-     "lineageSize": 2,
-     "robustness": 0.39999999999999997
-    }
-   ],
-   "id": "ID0017-020",
-   "kind": "contradiction",
-   "lastSeenCycle": 26,
-   "lineage": [
-    "C015842",
-    "C022665"
-   ],
-   "robustness": 0.4,
-   "sources": [
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "2 sources report different values for github.repo[brayonpi/hexstellar].stars (github_repo=1257, github_search=1240). Until that is explained, neither number should be quoted alone.",
-   "status": "carried",
-   "title": "Reconcile the disagreement on github.repo[brayonpi/hexstellar].stars",
-   "urls": [
-    "https://api.github.com/search/repositories?q=AI%20agents%20created%3A%3E%3D2026-08-22&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/repos/brayonpi/hexstellar"
-   ]
-  },
-  {
-   "appearances": 10,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.3333,
-    "evidence": 0.1667,
-    "freshness": 0.9179,
-    "reproducibility": 1.0
-   },
-   "cycle": 26,
-   "families": [
-    "source-health"
-   ],
-   "fingerprint": "9eb946c054928da4",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 2,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 4,
-     "robustness": 0.3
-    },
-    {
-     "cycle": 19,
-     "lineageSize": 2,
-     "robustness": 0.39855034722222216
-    },
-    {
-     "cycle": 20,
-     "lineageSize": 2,
-     "robustness": 0.39832688492063495
-    },
-    {
-     "cycle": 21,
-     "lineageSize": 2,
-     "robustness": 0.39728125
-    },
-    {
-     "cycle": 22,
-     "lineageSize": 2,
-     "robustness": 0.39700992063492063
-    },
-    {
-     "cycle": 23,
-     "lineageSize": 2,
-     "robustness": 0.3946865079365079
-    },
-    {
-     "cycle": 24,
-     "lineageSize": 2,
-     "robustness": 0.39446527777777773
-    },
-    {
-     "cycle": 25,
-     "lineageSize": 2,
-     "robustness": 0.3926951884920635
-    },
-    {
-     "cycle": 26,
-     "lineageSize": 2,
-     "robustness": 0.38767857142857143
-    }
-   ],
-   "id": "ID0017-003",
-   "kind": "convergence",
-   "lastSeenCycle": 26,
-   "lineage": [
-    "C014057",
-    "C014058"
-   ],
-   "robustness": 0.3877,
-   "sources": [
-    "github_releases",
-    "github_repo"
-   ],
-   "statement": "“buffedlizard55-lab/MasterSelfLearn” is independently reported by 2 sources (github_releases, github_repo).  A monitor built on all of them can be cross-checked; one built on any single one cannot.",
-   "status": "carried",
-   "title": "Track “buffedlizard55-lab/MasterSelfLearn” as a multi-source subject",
-   "urls": [
-    "https://api.github.com/repos/buffedlizard55-lab/MasterSelfLearn",
-    "https://api.github.com/repos/buffedlizard55-lab/MasterSelfLearn/releases?per_page=1"
-   ]
-  },
-  {
-   "appearances": 4,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.3333,
-    "evidence": 0.1667,
-    "freshness": 0.9179,
-    "reproducibility": 1.0
-   },
-   "cycle": 20,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "69fca8d9d4a7d949",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 2,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 2,
-     "robustness": 0.39999560805224865
-    },
-    {
-     "cycle": 19,
-     "lineageSize": 2,
-     "robustness": 0.39855034722222216
-    },
-    {
-     "cycle": 20,
-     "lineageSize": 2,
-     "robustness": 0.39832688492063495
-    },
-    {
-     "cycle": 21,
-     "lineageSize": 2,
-     "robustness": 0.39728125
-    },
-    {
-     "cycle": 22,
-     "lineageSize": 2,
-     "robustness": 0.39700992063492063
-    },
-    {
-     "cycle": 23,
-     "lineageSize": 2,
-     "robustness": 0.3946865079365079
-    },
-    {
-     "cycle": 24,
-     "lineageSize": 2,
-     "robustness": 0.39446527777777773
-    },
-    {
-     "cycle": 25,
-     "lineageSize": 2,
-     "robustness": 0.3926951884920635
-    },
-    {
-     "cycle": 26,
-     "lineageSize": 2,
-     "robustness": 0.38767857142857143
-    }
-   ],
-   "id": "ID0017-023",
-   "kind": "contradiction",
-   "lastSeenCycle": 20,
-   "lineage": [
-    "C015989",
-    "C014704"
-   ],
-   "robustness": 0.3877,
-   "sources": [
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "2 sources report different values for github.repo[zai-org/zcode].forks (github_repo=1808, github_search=1579). Until that is explained, neither number should be quoted alone.",
-   "status": "carried",
-   "title": "Reconcile the disagreement on github.repo[zai-org/zcode].forks",
-   "urls": [
-    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/repos/zai-org/ZCode"
-   ]
-  },
-  {
-   "appearances": 4,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.3333,
-    "evidence": 0.1667,
-    "freshness": 0.9179,
-    "reproducibility": 1.0
-   },
-   "cycle": 20,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "58097c89b8a7356a",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 2,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 2,
-     "robustness": 0.39999560805224865
-    },
-    {
-     "cycle": 19,
-     "lineageSize": 2,
-     "robustness": 0.39855034722222216
-    },
-    {
-     "cycle": 20,
-     "lineageSize": 2,
-     "robustness": 0.39832688492063495
-    },
-    {
-     "cycle": 21,
-     "lineageSize": 2,
-     "robustness": 0.39728125
-    },
-    {
-     "cycle": 22,
-     "lineageSize": 2,
-     "robustness": 0.39700992063492063
-    },
-    {
-     "cycle": 23,
-     "lineageSize": 2,
-     "robustness": 0.3946865079365079
-    },
-    {
-     "cycle": 24,
-     "lineageSize": 2,
-     "robustness": 0.39446527777777773
-    },
-    {
-     "cycle": 25,
-     "lineageSize": 2,
-     "robustness": 0.3926951884920635
-    },
-    {
-     "cycle": 26,
-     "lineageSize": 2,
-     "robustness": 0.38767857142857143
-    }
-   ],
-   "id": "ID0017-024",
-   "kind": "contradiction",
-   "lastSeenCycle": 20,
-   "lineage": [
-    "C015988",
-    "C014703"
-   ],
-   "robustness": 0.3877,
-   "sources": [
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "2 sources report different values for github.repo[zai-org/zcode].stars (github_repo=6235, github_search=5548). Until that is explained, neither number should be quoted alone.",
-   "status": "carried",
-   "title": "Reconcile the disagreement on github.repo[zai-org/zcode].stars",
-   "urls": [
-    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/repos/zai-org/ZCode"
-   ]
-  },
-  {
-   "appearances": 4,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.3333,
-    "evidence": 0.1667,
-    "freshness": 0.8555,
-    "reproducibility": 1.0
-   },
-   "cycle": 20,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "c269b6ede6946689",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 2,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 2,
-     "robustness": 0.39999560805224865
-    },
-    {
-     "cycle": 19,
-     "lineageSize": 2,
-     "robustness": 0.3891974206349206
-    },
-    {
-     "cycle": 20,
-     "lineageSize": 2,
-     "robustness": 0.38897395833333326
-    },
-    {
-     "cycle": 21,
-     "lineageSize": 2,
-     "robustness": 0.3879283234126984
-    },
-    {
-     "cycle": 22,
-     "lineageSize": 2,
-     "robustness": 0.38765699404761905
-    },
-    {
-     "cycle": 23,
-     "lineageSize": 2,
-     "robustness": 0.3853335813492063
-    },
-    {
-     "cycle": 24,
-     "lineageSize": 2,
-     "robustness": 0.38511235119047615
-    },
-    {
-     "cycle": 25,
-     "lineageSize": 2,
-     "robustness": 0.3833422619047619
-    },
-    {
-     "cycle": 26,
-     "lineageSize": 2,
-     "robustness": 0.3783256448412698
-    }
-   ],
-   "id": "ID0017-021",
-   "kind": "contradiction",
-   "lastSeenCycle": 20,
-   "lineage": [
-    "C015980",
-    "C016134"
-   ],
-   "robustness": 0.3783,
-   "sources": [
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "2 sources report different values for github.repo[browser-use/jev-ultrafast].forks (github_repo=1140, github_search=970). Until that is explained, neither number should be quoted alone.",
-   "status": "carried",
-   "title": "Reconcile the disagreement on github.repo[browser-use/jev-ultrafast].forks",
-   "urls": [
-    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/repos/browser-use/jev-ultrafast"
-   ]
-  },
-  {
-   "appearances": 4,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.3333,
-    "evidence": 0.1667,
-    "freshness": 0.8555,
-    "reproducibility": 1.0
-   },
-   "cycle": 20,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "77d8bd6e4707c330",
-   "firstSeenCycle": 17,
-   "history": [
-    {
-     "cycle": 17,
-     "lineageSize": 2,
-     "robustness": 0.25
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 2,
-     "robustness": 0.39999560805224865
-    },
-    {
-     "cycle": 19,
-     "lineageSize": 2,
-     "robustness": 0.3891974206349206
-    },
-    {
-     "cycle": 20,
-     "lineageSize": 2,
-     "robustness": 0.38897395833333326
-    },
-    {
-     "cycle": 21,
-     "lineageSize": 2,
-     "robustness": 0.3879283234126984
-    },
-    {
-     "cycle": 22,
-     "lineageSize": 2,
-     "robustness": 0.38765699404761905
-    },
-    {
-     "cycle": 23,
-     "lineageSize": 2,
-     "robustness": 0.3853335813492063
-    },
-    {
-     "cycle": 24,
-     "lineageSize": 2,
-     "robustness": 0.38511235119047615
-    },
-    {
-     "cycle": 25,
-     "lineageSize": 2,
-     "robustness": 0.3833422619047619
-    },
-    {
-     "cycle": 26,
-     "lineageSize": 2,
-     "robustness": 0.3783256448412698
-    }
-   ],
-   "id": "ID0017-022",
-   "kind": "contradiction",
-   "lastSeenCycle": 20,
-   "lineage": [
-    "C015979",
-    "C016133"
-   ],
-   "robustness": 0.3783,
-   "sources": [
-    "github_repo",
-    "github_search"
-   ],
-   "statement": "2 sources report different values for github.repo[browser-use/jev-ultrafast].stars (github_repo=17799, github_search=15573). Until that is explained, neither number should be quoted alone.",
-   "status": "carried",
-   "title": "Reconcile the disagreement on github.repo[browser-use/jev-ultrafast].stars",
-   "urls": [
-    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
-    "https://api.github.com/repos/browser-use/jev-ultrafast"
-   ]
-  },
-  {
-   "appearances": 26,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.0,
-    "evidence": 0.1667,
-    "freshness": 1.0,
-    "reproducibility": 1.0
-   },
-   "cycle": 26,
-   "families": [
-    "source-health"
    ],
    "fingerprint": "cf9234e38f4aed9a",
    "firstSeenCycle": 1,
    "history": [
-    {
-     "cycle": 3,
-     "lineageSize": 6,
-     "robustness": 0.3999272486772487
-    },
     {
      "cycle": 4,
      "lineageSize": 8,
@@ -1458,28 +722,989 @@
      "cycle": 26,
      "lineageSize": 2,
      "robustness": 0.3
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
     }
    ],
    "id": "ID0001-002",
    "kind": "velocity-outlier",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
-    "C022676",
-    "C022678"
+    "C023797",
+    "C023299"
    ],
-   "robustness": 0.3,
+   "robustness": 0.4,
    "sources": [
+    "github_repo",
     "github_search"
    ],
    "statement": "browser-use/jev-ultrafast reached 15,573 stars in 5.2 days (3,012.2/day), against a median of 0.7/day across the 124 tracked repositories.  Testable claim: its growth is explained by something in its first-week release, not by its topic.",
    "status": "carried",
    "title": "Replicate what made browser-use/jev-ultrafast grow",
    "urls": [
+    "https://api.github.com/repos/browser-use/jev-ultrafast"
+   ]
+  },
+  {
+   "appearances": 27,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.3333,
+    "evidence": 0.1667,
+    "freshness": 1.0,
+    "reproducibility": 1.0
+   },
+   "cycle": 27,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "c8045aa29586ab63",
+   "firstSeenCycle": 1,
+   "history": [
+    {
+     "cycle": 4,
+     "lineageSize": 8,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 5,
+     "lineageSize": 10,
+     "robustness": 0.35
+    },
+    {
+     "cycle": 6,
+     "lineageSize": 12,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 7,
+     "lineageSize": 14,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 8,
+     "lineageSize": 16,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 9,
+     "lineageSize": 18,
+     "robustness": 0.5499302868716931
+    },
+    {
+     "cycle": 10,
+     "lineageSize": 20,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 11,
+     "lineageSize": 22,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 12,
+     "lineageSize": 24,
+     "robustness": 0.5499915054563492
+    },
+    {
+     "cycle": 13,
+     "lineageSize": 26,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 28,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 30,
+     "robustness": 0.4
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 32,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 17,
+     "lineageSize": 33,
+     "robustness": 0.5
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 35,
+     "robustness": 0.5
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.2823633432539682
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.28213988095238096
+    },
+    {
+     "cycle": 21,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 22,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 23,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 24,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 26,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    }
+   ],
+   "id": "ID0001-001",
+   "kind": "velocity-outlier",
+   "lastSeenCycle": 27,
+   "lineage": [
+    "C023806",
+    "C023326"
+   ],
+   "robustness": 0.4,
+   "sources": [
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "zai-org/ZCode reached 5,548 stars in 1.6 days (3,544.9/day), against a median of 0.7/day across the 124 tracked repositories.  Testable claim: its growth is explained by something in its first-week release, not by its topic.",
+   "status": "carried",
+   "title": "Replicate what made zai-org/ZCode grow",
+   "urls": [
+    "https://api.github.com/repos/zai-org/ZCode"
+   ]
+  },
+  {
+   "appearances": 11,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.3333,
+    "evidence": 0.1667,
+    "freshness": 1.0,
+    "reproducibility": 1.0
+   },
+   "cycle": 27,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "fbd7178760a71dc1",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 2,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 2,
+     "robustness": 0.39999560805224865
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.39855034722222216
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.39832688492063495
+    },
+    {
+     "cycle": 21,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 22,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 23,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 24,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 26,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    }
+   ],
+   "id": "ID0017-019",
+   "kind": "contradiction",
+   "lastSeenCycle": 27,
+   "lineage": [
+    "C015843",
+    "C023816"
+   ],
+   "robustness": 0.4,
+   "sources": [
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "2 sources report different values for github.repo[brayonpi/hexstellar].forks (github_repo=98, github_search=97). Until that is explained, neither number should be quoted alone.",
+   "status": "carried",
+   "title": "Reconcile the disagreement on github.repo[brayonpi/hexstellar].forks",
+   "urls": [
+    "https://api.github.com/search/repositories?q=AI%20agents%20created%3A%3E%3D2026-08-22&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/repos/brayonpi/hexstellar"
+   ]
+  },
+  {
+   "appearances": 11,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.3333,
+    "evidence": 0.1667,
+    "freshness": 1.0,
+    "reproducibility": 1.0
+   },
+   "cycle": 27,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "fcc4805db4e592b9",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 2,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 2,
+     "robustness": 0.39999560805224865
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.39855034722222216
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.39832688492063495
+    },
+    {
+     "cycle": 21,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 22,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 23,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 24,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 26,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
+    }
+   ],
+   "id": "ID0017-020",
+   "kind": "contradiction",
+   "lastSeenCycle": 27,
+   "lineage": [
+    "C015842",
+    "C023815"
+   ],
+   "robustness": 0.4,
+   "sources": [
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "2 sources report different values for github.repo[brayonpi/hexstellar].stars (github_repo=1257, github_search=1240). Until that is explained, neither number should be quoted alone.",
+   "status": "carried",
+   "title": "Reconcile the disagreement on github.repo[brayonpi/hexstellar].stars",
+   "urls": [
+    "https://api.github.com/search/repositories?q=AI%20agents%20created%3A%3E%3D2026-08-22&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/repos/brayonpi/hexstellar"
+   ]
+  },
+  {
+   "appearances": 11,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.3333,
+    "evidence": 0.1667,
+    "freshness": 0.8847,
+    "reproducibility": 1.0
+   },
+   "cycle": 27,
+   "families": [
+    "source-health"
+   ],
+   "fingerprint": "9eb946c054928da4",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 2,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 4,
+     "robustness": 0.3
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.39855034722222216
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.39832688492063495
+    },
+    {
+     "cycle": 21,
+     "lineageSize": 2,
+     "robustness": 0.39728125
+    },
+    {
+     "cycle": 22,
+     "lineageSize": 2,
+     "robustness": 0.39700992063492063
+    },
+    {
+     "cycle": 23,
+     "lineageSize": 2,
+     "robustness": 0.3946865079365079
+    },
+    {
+     "cycle": 24,
+     "lineageSize": 2,
+     "robustness": 0.39446527777777773
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.3926951884920635
+    },
+    {
+     "cycle": 26,
+     "lineageSize": 2,
+     "robustness": 0.38767857142857143
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 2,
+     "robustness": 0.3826986607142857
+    }
+   ],
+   "id": "ID0017-003",
+   "kind": "convergence",
+   "lastSeenCycle": 27,
+   "lineage": [
+    "C014057",
+    "C014058"
+   ],
+   "robustness": 0.3827,
+   "sources": [
+    "github_releases",
+    "github_repo"
+   ],
+   "statement": "“buffedlizard55-lab/MasterSelfLearn” is independently reported by 2 sources (github_releases, github_repo).  A monitor built on all of them can be cross-checked; one built on any single one cannot.",
+   "status": "carried",
+   "title": "Track “buffedlizard55-lab/MasterSelfLearn” as a multi-source subject",
+   "urls": [
+    "https://api.github.com/repos/buffedlizard55-lab/MasterSelfLearn",
+    "https://api.github.com/repos/buffedlizard55-lab/MasterSelfLearn/releases?per_page=1"
+   ]
+  },
+  {
+   "appearances": 4,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.3333,
+    "evidence": 0.1667,
+    "freshness": 0.8847,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "69fca8d9d4a7d949",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 2,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 2,
+     "robustness": 0.39999560805224865
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.39855034722222216
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.39832688492063495
+    },
+    {
+     "cycle": 21,
+     "lineageSize": 2,
+     "robustness": 0.39728125
+    },
+    {
+     "cycle": 22,
+     "lineageSize": 2,
+     "robustness": 0.39700992063492063
+    },
+    {
+     "cycle": 23,
+     "lineageSize": 2,
+     "robustness": 0.3946865079365079
+    },
+    {
+     "cycle": 24,
+     "lineageSize": 2,
+     "robustness": 0.39446527777777773
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.3926951884920635
+    },
+    {
+     "cycle": 26,
+     "lineageSize": 2,
+     "robustness": 0.38767857142857143
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 2,
+     "robustness": 0.3826986607142857
+    }
+   ],
+   "id": "ID0017-023",
+   "kind": "contradiction",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C015989",
+    "C014704"
+   ],
+   "robustness": 0.3827,
+   "sources": [
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "2 sources report different values for github.repo[zai-org/zcode].forks (github_repo=1808, github_search=1579). Until that is explained, neither number should be quoted alone.",
+   "status": "carried",
+   "title": "Reconcile the disagreement on github.repo[zai-org/zcode].forks",
+   "urls": [
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/repos/zai-org/ZCode"
+   ]
+  },
+  {
+   "appearances": 4,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.3333,
+    "evidence": 0.1667,
+    "freshness": 0.8847,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "58097c89b8a7356a",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 2,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 2,
+     "robustness": 0.39999560805224865
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.39855034722222216
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.39832688492063495
+    },
+    {
+     "cycle": 21,
+     "lineageSize": 2,
+     "robustness": 0.39728125
+    },
+    {
+     "cycle": 22,
+     "lineageSize": 2,
+     "robustness": 0.39700992063492063
+    },
+    {
+     "cycle": 23,
+     "lineageSize": 2,
+     "robustness": 0.3946865079365079
+    },
+    {
+     "cycle": 24,
+     "lineageSize": 2,
+     "robustness": 0.39446527777777773
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.3926951884920635
+    },
+    {
+     "cycle": 26,
+     "lineageSize": 2,
+     "robustness": 0.38767857142857143
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 2,
+     "robustness": 0.3826986607142857
+    }
+   ],
+   "id": "ID0017-024",
+   "kind": "contradiction",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C015988",
+    "C014703"
+   ],
+   "robustness": 0.3827,
+   "sources": [
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "2 sources report different values for github.repo[zai-org/zcode].stars (github_repo=6235, github_search=5548). Until that is explained, neither number should be quoted alone.",
+   "status": "carried",
+   "title": "Reconcile the disagreement on github.repo[zai-org/zcode].stars",
+   "urls": [
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/repos/zai-org/ZCode"
+   ]
+  },
+  {
+   "appearances": 4,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.3333,
+    "evidence": 0.1667,
+    "freshness": 0.8223,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "c269b6ede6946689",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 2,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 2,
+     "robustness": 0.39999560805224865
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.3891974206349206
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.38897395833333326
+    },
+    {
+     "cycle": 21,
+     "lineageSize": 2,
+     "robustness": 0.3879283234126984
+    },
+    {
+     "cycle": 22,
+     "lineageSize": 2,
+     "robustness": 0.38765699404761905
+    },
+    {
+     "cycle": 23,
+     "lineageSize": 2,
+     "robustness": 0.3853335813492063
+    },
+    {
+     "cycle": 24,
+     "lineageSize": 2,
+     "robustness": 0.38511235119047615
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.3833422619047619
+    },
+    {
+     "cycle": 26,
+     "lineageSize": 2,
+     "robustness": 0.3783256448412698
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 2,
+     "robustness": 0.37334573412698413
+    }
+   ],
+   "id": "ID0017-021",
+   "kind": "contradiction",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C015980",
+    "C016134"
+   ],
+   "robustness": 0.3733,
+   "sources": [
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "2 sources report different values for github.repo[browser-use/jev-ultrafast].forks (github_repo=1140, github_search=970). Until that is explained, neither number should be quoted alone.",
+   "status": "carried",
+   "title": "Reconcile the disagreement on github.repo[browser-use/jev-ultrafast].forks",
+   "urls": [
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/repos/browser-use/jev-ultrafast"
+   ]
+  },
+  {
+   "appearances": 4,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.3333,
+    "evidence": 0.1667,
+    "freshness": 0.8223,
+    "reproducibility": 1.0
+   },
+   "cycle": 20,
+   "families": [
+    "open-source-momentum"
+   ],
+   "fingerprint": "77d8bd6e4707c330",
+   "firstSeenCycle": 17,
+   "history": [
+    {
+     "cycle": 17,
+     "lineageSize": 2,
+     "robustness": 0.25
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 2,
+     "robustness": 0.39999560805224865
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.3891974206349206
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.38897395833333326
+    },
+    {
+     "cycle": 21,
+     "lineageSize": 2,
+     "robustness": 0.3879283234126984
+    },
+    {
+     "cycle": 22,
+     "lineageSize": 2,
+     "robustness": 0.38765699404761905
+    },
+    {
+     "cycle": 23,
+     "lineageSize": 2,
+     "robustness": 0.3853335813492063
+    },
+    {
+     "cycle": 24,
+     "lineageSize": 2,
+     "robustness": 0.38511235119047615
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.3833422619047619
+    },
+    {
+     "cycle": 26,
+     "lineageSize": 2,
+     "robustness": 0.3783256448412698
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 2,
+     "robustness": 0.37334573412698413
+    }
+   ],
+   "id": "ID0017-022",
+   "kind": "contradiction",
+   "lastSeenCycle": 20,
+   "lineage": [
+    "C015979",
+    "C016133"
+   ],
+   "robustness": 0.3733,
+   "sources": [
+    "github_repo",
+    "github_search"
+   ],
+   "statement": "2 sources report different values for github.repo[browser-use/jev-ultrafast].stars (github_repo=17799, github_search=15573). Until that is explained, neither number should be quoted alone.",
+   "status": "carried",
+   "title": "Reconcile the disagreement on github.repo[browser-use/jev-ultrafast].stars",
+   "urls": [
+    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25",
+    "https://api.github.com/repos/browser-use/jev-ultrafast"
+   ]
+  },
+  {
+   "appearances": 27,
+   "components": {
+    "breadth": 0.0,
+    "corroboration": 0.0,
+    "evidence": 0.1667,
+    "freshness": 1.0,
+    "reproducibility": 1.0
+   },
+   "cycle": 27,
+   "families": [
+    "source-health"
+   ],
+   "fingerprint": "d845768af18a5e81",
+   "firstSeenCycle": 1,
+   "history": [
+    {
+     "cycle": 4,
+     "lineageSize": 6,
+     "robustness": 0.39992459284060844
+    },
+    {
+     "cycle": 5,
+     "lineageSize": 6,
+     "robustness": 0.39992327008928574
+    },
+    {
+     "cycle": 6,
+     "lineageSize": 6,
+     "robustness": 0.3999196945271164
+    },
+    {
+     "cycle": 7,
+     "lineageSize": 6,
+     "robustness": 0.3999169560185185
+    },
+    {
+     "cycle": 8,
+     "lineageSize": 6,
+     "robustness": 0.3999133081183862
+    },
+    {
+     "cycle": 9,
+     "lineageSize": 8,
+     "robustness": 0.4498435949900793
+    },
+    {
+     "cycle": 10,
+     "lineageSize": 8,
+     "robustness": 0.44984328497023807
+    },
+    {
+     "cycle": 11,
+     "lineageSize": 8,
+     "robustness": 0.4498379836309524
+    },
+    {
+     "cycle": 12,
+     "lineageSize": 10,
+     "robustness": 0.4998294890873016
+    },
+    {
+     "cycle": 13,
+     "lineageSize": 10,
+     "robustness": 0.49982783564814814
+    },
+    {
+     "cycle": 14,
+     "lineageSize": 10,
+     "robustness": 0.4998182043650794
+    },
+    {
+     "cycle": 15,
+     "lineageSize": 10,
+     "robustness": 0.4997156291335979
+    },
+    {
+     "cycle": 16,
+     "lineageSize": 10,
+     "robustness": 0.3995116050760582
+    },
+    {
+     "cycle": 17,
+     "lineageSize": 10,
+     "robustness": 0.49933851066468254
+    },
+    {
+     "cycle": 18,
+     "lineageSize": 10,
+     "robustness": 0.49933411871693123
+    },
+    {
+     "cycle": 19,
+     "lineageSize": 2,
+     "robustness": 0.2823633432539682
+    },
+    {
+     "cycle": 20,
+     "lineageSize": 2,
+     "robustness": 0.28213988095238096
+    },
+    {
+     "cycle": 21,
+     "lineageSize": 2,
+     "robustness": 0.28109424603174604
+    },
+    {
+     "cycle": 22,
+     "lineageSize": 2,
+     "robustness": 0.28082291666666664
+    },
+    {
+     "cycle": 23,
+     "lineageSize": 2,
+     "robustness": 0.27849950396825396
+    },
+    {
+     "cycle": 24,
+     "lineageSize": 2,
+     "robustness": 0.2782782738095238
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.27650818452380954
+    },
+    {
+     "cycle": 26,
+     "lineageSize": 2,
+     "robustness": 0.27149156746031744
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 2,
+     "robustness": 0.3
+    }
+   ],
+   "id": "ID0001-003",
+   "kind": "velocity-outlier",
+   "lastSeenCycle": 27,
+   "lineage": [
+    "C023826",
+    "C023828"
+   ],
+   "robustness": 0.3,
+   "sources": [
+    "github_search"
+   ],
+   "statement": "NandhaKishorM/laya reached 9,988 stars in 3.9 days (2,582.9/day), against a median of 0.7/day across the 124 tracked repositories.  Testable claim: its growth is explained by something in its first-week release, not by its topic.",
+   "status": "carried",
+   "title": "Replicate what made NandhaKishorM/laya grow",
+   "urls": [
     "https://api.github.com/search/repositories?q=created:%3E=2026-09-16&sort=stars&order=desc&per_page=1"
    ]
   },
   {
-   "appearances": 23,
+   "appearances": 24,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -1487,7 +1712,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "ai-research-frontier"
    ],
@@ -1608,13 +1833,18 @@
      "cycle": 26,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-006",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
-    "C022082"
+    "C023232"
    ],
    "robustness": 0.275,
    "sources": [
@@ -1628,7 +1858,7 @@
    ]
   },
   {
-   "appearances": 26,
+   "appearances": 27,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -1636,18 +1866,13 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "regulatory-flow"
    ],
    "fingerprint": "f30e5dd4a9965c3a",
    "firstSeenCycle": 1,
    "history": [
-    {
-     "cycle": 3,
-     "lineageSize": 1,
-     "robustness": 0.2749026847718254
-    },
     {
      "cycle": 4,
      "lineageSize": 2,
@@ -1762,13 +1987,18 @@
      "cycle": 26,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0001-004",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
-    "C022347"
+    "C023497"
    ],
    "robustness": 0.275,
    "sources": [
@@ -1782,7 +2012,7 @@
    ]
   },
   {
-   "appearances": 23,
+   "appearances": 24,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -1790,7 +2020,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "public-health-policy"
    ],
@@ -1911,13 +2141,18 @@
      "cycle": 26,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-014",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
-    "C022422"
+    "C023572"
    ],
    "robustness": 0.275,
    "sources": [
@@ -1931,7 +2166,7 @@
    ]
   },
   {
-   "appearances": 23,
+   "appearances": 24,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -1939,7 +2174,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "regulatory-flow"
    ],
@@ -2060,13 +2295,18 @@
      "cycle": 26,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-010",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
-    "C022369"
+    "C023519"
    ],
    "robustness": 0.275,
    "sources": [
@@ -2080,7 +2320,7 @@
    ]
   },
   {
-   "appearances": 23,
+   "appearances": 24,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -2088,7 +2328,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "regulatory-flow"
    ],
@@ -2209,13 +2449,18 @@
      "cycle": 26,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-009",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
-    "C022358"
+    "C023508"
    ],
    "robustness": 0.275,
    "sources": [
@@ -2229,7 +2474,7 @@
    ]
   },
   {
-   "appearances": 23,
+   "appearances": 24,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -2237,7 +2482,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "ai-research-frontier"
    ],
@@ -2358,13 +2603,18 @@
      "cycle": 26,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-007",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
-    "C022093"
+    "C023243"
    ],
    "robustness": 0.275,
    "sources": [
@@ -2378,7 +2628,7 @@
    ]
   },
   {
-   "appearances": 23,
+   "appearances": 24,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -2386,7 +2636,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "public-health-policy"
    ],
@@ -2507,13 +2757,18 @@
      "cycle": 26,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-012",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
-    "C022400"
+    "C023550"
    ],
    "robustness": 0.275,
    "sources": [
@@ -2527,7 +2782,7 @@
    ]
   },
   {
-   "appearances": 23,
+   "appearances": 24,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -2535,7 +2790,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "ai-research-frontier"
    ],
@@ -2656,13 +2911,18 @@
      "cycle": 26,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-005",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
-    "C022071"
+    "C023221"
    ],
    "robustness": 0.275,
    "sources": [
@@ -2676,7 +2936,7 @@
    ]
   },
   {
-   "appearances": 23,
+   "appearances": 24,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -2684,7 +2944,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "regulatory-flow"
    ],
@@ -2805,13 +3065,18 @@
      "cycle": 26,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-011",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
-    "C022380"
+    "C023530"
    ],
    "robustness": 0.275,
    "sources": [
@@ -2825,7 +3090,7 @@
    ]
   },
   {
-   "appearances": 23,
+   "appearances": 24,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -2833,7 +3098,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "public-health-policy"
    ],
@@ -2954,13 +3219,18 @@
      "cycle": 26,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-013",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
-    "C022411"
+    "C023561"
    ],
    "robustness": 0.275,
    "sources": [
@@ -2974,7 +3244,7 @@
    ]
   },
   {
-   "appearances": 23,
+   "appearances": 24,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -2982,7 +3252,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 26,
+   "cycle": 27,
    "families": [
     "ai-research-frontier"
    ],
@@ -3103,13 +3373,18 @@
      "cycle": 26,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 27,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-008",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 26,
+   "lastSeenCycle": 27,
    "lineage": [
-    "C022104"
+    "C023254"
    ],
    "robustness": 0.275,
    "sources": [
@@ -3120,161 +3395,6 @@
    "title": "Watch for research lagging rulemaking on “transformer”",
    "urls": [
     "https://www.federalregister.gov/api/v1/documents.json?per_page=5&order=newest&conditions%5Bterm%5D=transformer"
-   ]
-  },
-  {
-   "appearances": 26,
-   "components": {
-    "breadth": 0.0,
-    "corroboration": 0.0,
-    "evidence": 0.1667,
-    "freshness": 0.8099,
-    "reproducibility": 1.0
-   },
-   "cycle": 26,
-   "families": [
-    "open-source-momentum"
-   ],
-   "fingerprint": "d845768af18a5e81",
-   "firstSeenCycle": 1,
-   "history": [
-    {
-     "cycle": 3,
-     "lineageSize": 6,
-     "robustness": 0.3999272486772487
-    },
-    {
-     "cycle": 4,
-     "lineageSize": 6,
-     "robustness": 0.39992459284060844
-    },
-    {
-     "cycle": 5,
-     "lineageSize": 6,
-     "robustness": 0.39992327008928574
-    },
-    {
-     "cycle": 6,
-     "lineageSize": 6,
-     "robustness": 0.3999196945271164
-    },
-    {
-     "cycle": 7,
-     "lineageSize": 6,
-     "robustness": 0.3999169560185185
-    },
-    {
-     "cycle": 8,
-     "lineageSize": 6,
-     "robustness": 0.3999133081183862
-    },
-    {
-     "cycle": 9,
-     "lineageSize": 8,
-     "robustness": 0.4498435949900793
-    },
-    {
-     "cycle": 10,
-     "lineageSize": 8,
-     "robustness": 0.44984328497023807
-    },
-    {
-     "cycle": 11,
-     "lineageSize": 8,
-     "robustness": 0.4498379836309524
-    },
-    {
-     "cycle": 12,
-     "lineageSize": 10,
-     "robustness": 0.4998294890873016
-    },
-    {
-     "cycle": 13,
-     "lineageSize": 10,
-     "robustness": 0.49982783564814814
-    },
-    {
-     "cycle": 14,
-     "lineageSize": 10,
-     "robustness": 0.4998182043650794
-    },
-    {
-     "cycle": 15,
-     "lineageSize": 10,
-     "robustness": 0.4997156291335979
-    },
-    {
-     "cycle": 16,
-     "lineageSize": 10,
-     "robustness": 0.3995116050760582
-    },
-    {
-     "cycle": 17,
-     "lineageSize": 10,
-     "robustness": 0.49933851066468254
-    },
-    {
-     "cycle": 18,
-     "lineageSize": 10,
-     "robustness": 0.49933411871693123
-    },
-    {
-     "cycle": 19,
-     "lineageSize": 2,
-     "robustness": 0.2823633432539682
-    },
-    {
-     "cycle": 20,
-     "lineageSize": 2,
-     "robustness": 0.28213988095238096
-    },
-    {
-     "cycle": 21,
-     "lineageSize": 2,
-     "robustness": 0.28109424603174604
-    },
-    {
-     "cycle": 22,
-     "lineageSize": 2,
-     "robustness": 0.28082291666666664
-    },
-    {
-     "cycle": 23,
-     "lineageSize": 2,
-     "robustness": 0.27849950396825396
-    },
-    {
-     "cycle": 24,
-     "lineageSize": 2,
-     "robustness": 0.2782782738095238
-    },
-    {
-     "cycle": 25,
-     "lineageSize": 2,
-     "robustness": 0.27650818452380954
-    },
-    {
-     "cycle": 26,
-     "lineageSize": 2,
-     "robustness": 0.27149156746031744
-    }
-   ],
-   "id": "ID0001-003",
-   "kind": "velocity-outlier",
-   "lastSeenCycle": 26,
-   "lineage": [
-    "C015982",
-    "C015984"
-   ],
-   "robustness": 0.2715,
-   "sources": [
-    "github_search"
-   ],
-   "statement": "NandhaKishorM/laya reached 9,988 stars in 3.9 days (2,582.9/day), against a median of 0.7/day across the 124 tracked repositories.  Testable claim: its growth is explained by something in its first-week release, not by its topic.",
-   "status": "carried",
-   "title": "Replicate what made NandhaKishorM/laya grow",
-   "urls": [
-    "https://api.github.com/search/repositories?q=created%3A%3E%3D2026-09-14&sort=stars&order=desc&per_page=25"
    ]
   }
  ]

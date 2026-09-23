@@ -1,26 +1,26 @@
-# STATUS — cycle 26
+# STATUS — cycle 27
 
-Generated `2026-09-23T07:19:33Z` by `msl/docs.py`. Every figure here is read from the same
+Generated `2026-09-23T12:54:12Z` by `msl/docs.py`. Every figure here is read from the same
 objects the site is built from.
 
 ## Last cycle
 
 | | |
 |---|---|
-| Cycle | 26 |
+| Cycle | 27 |
 | Mode | `github-actions` |
-| Duration | 30,645 ms |
+| Duration | 34,079 ms |
 | Reads (ok / failed) | 63 / 4 |
-| Bytes read | 2,413,508 |
+| Bytes read | 2,439,495 |
 | Facts extracted | 742 |
 | New claims | 742 |
 | Claims rejected by the gate this cycle | 0 |
 | Gate rejections in append-only history | 0 |
-| Derived / rechecked / drifted | 408 / 2,469 / 0 |
-| Topics (new) | 169 (6) |
-| Insights published | 423 |
-| Forecasts issued / scored | 1224 / 653 |
-| Ideas (promoted) | 28 (1) |
+| Derived / rechecked / drifted | 431 / 2,664 / 0 |
+| Topics (new) | 175 (6) |
+| Insights published | 449 |
+| Forecasts issued / scored | 1269 / 799 |
+| Ideas (promoted) | 28 (0) |
 | Irregularities open (new) | 27 (0) |
 | Pipeline errors | 0 |
 
@@ -45,7 +45,6 @@ No pipeline stage raised.
 
 | Cycle | At (UTC) | Claims | Topics | New | Forecasts | Scored | Ideas | Irr open | Result |
 |---|---|---|---|---|---|---|---|---|---|
-| 17 | 2026-09-22T17:24:28Z | 14,042 | 115 | 6 | 1138 | 105 | 24 | 31 | ok |
 | 18 | 2026-09-22T17:31:33Z | 15,107 | 121 | 6 | 1153 | 1215 | 24 | 32 | ok |
 | 19 | 2026-09-22T19:08:58Z | 15,820 | 127 | 6 | 1143 | 2256 | 25 | 24 | ok |
 | 20 | 2026-09-22T19:23:59Z | 16,532 | 133 | 6 | 1091 | 496 | 25 | 24 | ok |
@@ -55,6 +54,7 @@ No pipeline stage raised.
 | 24 | 2026-09-22T23:43:29Z | 20,947 | 157 | 6 | 1056 | 717 | 28 | 27 | ok |
 | 25 | 2026-09-23T01:42:26Z | 22,070 | 163 | 6 | 1110 | 655 | 28 | 27 | ok |
 | 26 | 2026-09-23T07:19:33Z | 23,220 | 169 | 6 | 1224 | 653 | 28 | 27 | ok |
+| 27 | 2026-09-23T12:54:12Z | 24,393 | 175 | 6 | 1269 | 799 | 28 | 27 | ok |
 
 ## What runs next
 

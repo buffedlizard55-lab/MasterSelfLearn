@@ -16,21 +16,21 @@ It requires **no manual input**. Every cycle is triggered by
 <!-- AUTO:COUNTS:BEGIN — regenerated every cycle, do not edit -->
 | Metric | Value |
 |---|---|
-| Cycle | **26** |
-| Accepted claims in the ledger | **23,220** |
-| — schema-v2 strict trace contract | 8,113 |
+| Cycle | **27** |
+| Accepted claims in the ledger | **24,393** |
+| — schema-v2 strict trace contract | 9,286 |
 | — legacy trace contract (reported, not upgraded) | 15,107 |
-| — captured from accepted source reads | 15,309 |
-| — derived by recorded arithmetic | 7,885 |
-| — negative (proof of absence) | 26 |
+| — captured from accepted source reads | 16,048 |
+| — derived by recorded arithmetic | 8,316 |
+| — negative (proof of absence) | 29 |
 | Claims rejected by the evidence gate | **0** |
-| Derived claims rechecked this cycle | 2,469 |
+| Derived claims rechecked this cycle | 2,664 |
 | Derived claims that no longer recompute | **0** |
-| Topics in the library | **169** (new this cycle: 6) |
-| Published insights | 423 |
-| Forecasts issued this cycle | 1,224 |
-| Forecasts scored against outcomes | 653 |
-| Ideas in the competition | **28** (promoted: 1) |
+| Topics in the library | **175** (new this cycle: 6) |
+| Published insights | 449 |
+| Forecasts issued this cycle | 1,269 |
+| Forecasts scored against outcomes | 799 |
+| Ideas in the competition | **28** (promoted: 0) |
 | Open irregularities | **27** (new: 0) |
 | Sources registered | 31 |
 | — verified by a recorded live read | 28 |
@@ -38,12 +38,12 @@ It requires **no manual input**. Every cycle is triggered by
 | — never read (not broken, just unprobed) | 0 |
 | Reads this cycle (ok / failed) | 63 / 4 |
 | Reads planned / refused by the cap | 67 / 0 |
-| Forecasts waiting for an observation | 3,917 |
+| Forecasts waiting for an observation | 4,387 |
 | Forecasts that can never be scored | 0 |
-| Bytes read this cycle | 2,413,508 |
+| Bytes read this cycle | 2,439,495 |
 | Manual inputs required | **0** |
 
-Generated `2026-09-23T07:19:33Z` by `msl/pipeline.py`. Quoting any figure outside this block
+Generated `2026-09-23T12:54:12Z` by `msl/pipeline.py`. Quoting any figure outside this block
 means quoting something the next cycle has already superseded.
 <!-- AUTO:COUNTS:END -->
 
@@ -114,14 +114,14 @@ nothing, and the table says so.
 
 | # | Persona | Name | Scored | Accuracy | Skill vs null |
 |---|---|---|---|---|---|
-| 1 | `S05_EvidenceDensity` | Evidence density | 267 | 51.7% | +7.1 pts |
-| 2 | `S01_MomentumPersist` | Momentum persistence | 267 | 51.7% | +7.1 pts |
-| 3 | `S07_ChangeHazard` | Change hazard | 76 | 98.7% | +0.0 pts |
-| 4 | `S10_Persistence` | Persistence (null model) | 2075 | 87.7% | +0.0 pts |
-| 5 | `S04_ConsensusFade` | Consensus fade | 367 | 27.8% | -20.4 pts |
-| 6 | `S03_Acceleration` | Acceleration | 371 | 24.5% | -23.4 pts |
-| 7 | `S06_MemoryWeighted` | Skill-weighted memory | 615 | 26.2% | -35.0 pts |
-| 8 | `S02_MeanRevert` | Mean reversion | 615 | 4.4% | -56.8 pts |
+| 1 | `S05_EvidenceDensity` | Evidence density | 307 | 61.2% | +26.7 pts |
+| 2 | `S01_MomentumPersist` | Momentum persistence | 265 | 60.4% | +25.3 pts |
+| 3 | `S07_ChangeHazard` | Change hazard | 77 | 98.7% | +0.0 pts |
+| 4 | `S10_Persistence` | Persistence (null model) | 2084 | 84.0% | +0.0 pts |
+| 5 | `S03_Acceleration` | Acceleration | 392 | 31.4% | -10.7 pts |
+| 6 | `S04_ConsensusFade` | Consensus fade | 399 | 26.1% | -15.0 pts |
+| 7 | `S06_MemoryWeighted` | Skill-weighted memory | 681 | 33.3% | -20.1 pts |
+| 8 | `S02_MeanRevert` | Mean reversion | 594 | 5.1% | -49.8 pts |
 
 ### Unranked
 
@@ -142,11 +142,11 @@ corroboration is promoted.
 
 | # | Idea | Robustness | Kind | Accepted claims behind it |
 |---|---|---|---|---|
-| 1 | Track “repo:browser-use/jev-ultrafast” as a multi-source subject | 0.575 | convergence | 3 |
-| 2 | Track “repo:brayonpi/hexstellar” as a multi-source subject | 0.525 | convergence | 3 |
+| 1 | Track “repo:brayonpi/hexstellar” as a multi-source subject | 0.525 | convergence | 3 |
+| 2 | Track “repo:browser-use/jev-ultrafast” as a multi-source subject | 0.525 | convergence | 3 |
 | 3 | Track “repo:zai-org/zcode” as a multi-source subject | 0.525 | convergence | 3 |
-| 4 | Track “brayonpi/hexstellar” as a multi-source subject | 0.513 | convergence | 3 |
-| 5 | Track “browser-use/jev-ultrafast” as a multi-source subject | 0.513 | convergence | 3 |
+| 4 | Track “brayonpi/hexstellar” as a multi-source subject | 0.508 | convergence | 3 |
+| 5 | Track “browser-use/jev-ultrafast” as a multi-source subject | 0.508 | convergence | 3 |
 
 ## What the engine has learned about itself
 
@@ -154,10 +154,10 @@ These are counted, not reflected. Each lesson carries the integers behind it.
 
 | | Lesson |
 |---|---|
-| `L1` | Topics corroborated by two or more independent sources hold 16.3× more accepted claim rows on average (903 vs 56) than single-source topics, but not more discovery signals (14.5 vs 15.5). Entity attribution is row-provable only from schema v2, and 10,420 accepted rows predate it, so single-source buckets may understate older support. |
-| `L2` | The evidence gate has rejected 0 of 23220 attempted claims (0.00%). |
-| `L3` | 145 of 169 tracked topics (85.8%) have at least one accepted claim row that names them. 19 more carry only pre-schema-v2 claim credit, which the claim rows can no longer prove; they are disclosed on the Library page, not counted as verified. |
-| `L4` | Of 4 idea kinds, “convergence” holds the highest mean robustness (0.494 over 8 ideas). |
+| `L1` | Topics corroborated by two or more independent sources hold 16.3× more accepted claim rows on average (945 vs 58) than single-source topics, but not more discovery signals (15.2 vs 15.9). Entity attribution is row-provable only from schema v2, and 10,482 accepted rows predate it, so single-source buckets may understate older support. |
+| `L2` | The evidence gate has rejected 0 of 24393 attempted claims (0.00%). |
+| `L3` | 151 of 175 tracked topics (86.3%) have at least one accepted claim row that names them. 19 more carry only pre-schema-v2 claim credit, which the claim rows can no longer prove; they are disclosed on the Library page, not counted as verified. |
+| `L4` | Of 4 idea kinds, “convergence” holds the highest mean robustness (0.485 over 8 ideas). |
 | `L5` | 28 of 31 registered sources are reading reliably (EMA ≥ 0.8); 3 are effectively unreadable (EMA < 0.2). |
 
 ## Site
