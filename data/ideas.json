@@ -1,7 +1,7 @@
 {
  "items": [
   {
-   "appearances": 6,
+   "appearances": 7,
    "components": {
     "breadth": 0.3333,
     "corroboration": 0.6667,
@@ -9,7 +9,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "open-source-momentum",
     "source-health"
@@ -46,15 +46,20 @@
      "cycle": 24,
      "lineageSize": 3,
      "robustness": 0.575
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 3,
+     "robustness": 0.575
     }
    ],
    "id": "ID0019-004",
    "kind": "convergence",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C020459",
-    "C020436",
-    "C020435"
+    "C021555",
+    "C021532",
+    "C021531"
    ],
    "robustness": 0.575,
    "sources": [
@@ -66,13 +71,13 @@
    "status": "promoted",
    "title": "Track “repo:browser-use/jev-ultrafast” as a multi-source subject",
    "urls": [
-    "https://api.github.com/search/repositories?q=created:%3E=2026-09-15&sort=stars&order=desc&per_page=1",
+    "https://api.github.com/search/repositories?q=created:%3E=2026-09-16&sort=stars&order=desc&per_page=1",
     "https://api.github.com/repos/browser-use/jev-ultrafast/releases?per_page=1",
     "https://api.github.com/repos/browser-use/jev-ultrafast"
    ]
   },
   {
-   "appearances": 4,
+   "appearances": 5,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.6667,
@@ -80,7 +85,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "open-source-momentum"
    ],
@@ -106,15 +111,20 @@
      "cycle": 24,
      "lineageSize": 3,
      "robustness": 0.525
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 3,
+     "robustness": 0.525
     }
    ],
    "id": "ID0021-004",
    "kind": "convergence",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
     "C015844",
-    "C020453",
-    "C020455"
+    "C021549",
+    "C021551"
    ],
    "robustness": 0.525,
    "sources": [
@@ -132,7 +142,7 @@
    ]
   },
   {
-   "appearances": 4,
+   "appearances": 5,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.6667,
@@ -140,7 +150,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "open-source-momentum"
    ],
@@ -166,15 +176,20 @@
      "cycle": 24,
      "lineageSize": 3,
      "robustness": 0.525
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 3,
+     "robustness": 0.525
     }
    ],
    "id": "ID0021-007",
    "kind": "convergence",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C019957",
-    "C020444",
-    "C020445"
+    "C021053",
+    "C021540",
+    "C021541"
    ],
    "robustness": 0.525,
    "sources": [
@@ -186,21 +201,21 @@
    "status": "carried",
    "title": "Track “repo:zai-org/zcode” as a multi-source subject",
    "urls": [
-    "https://api.github.com/search/repositories?q=agent%20created%3A%3E%3D2026-06-24&sort=stars&order=desc&per_page=20",
+    "https://api.github.com/search/repositories?q=agent%20created%3A%3E%3D2026-06-25&sort=stars&order=desc&per_page=20",
     "https://api.github.com/repos/zai-org/ZCode",
     "https://api.github.com/repos/zai-org/ZCode/releases?per_page=1"
    ]
   },
   {
-   "appearances": 8,
+   "appearances": 9,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.6667,
     "evidence": 0.25,
-    "freshness": 0.9631,
+    "freshness": 0.9513,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "open-source-momentum"
    ],
@@ -246,17 +261,22 @@
      "cycle": 24,
      "lineageSize": 3,
      "robustness": 0.5194652777777777
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 3,
+     "robustness": 0.5176951884920635
     }
    ],
    "id": "ID0017-001",
    "kind": "convergence",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
     "C013015",
     "C014719",
     "C014721"
    ],
-   "robustness": 0.5195,
+   "robustness": 0.5177,
    "sources": [
     "github_releases",
     "github_repo",
@@ -272,15 +292,15 @@
    ]
   },
   {
-   "appearances": 8,
+   "appearances": 9,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.6667,
     "evidence": 0.25,
-    "freshness": 0.9631,
+    "freshness": 0.9513,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "open-source-momentum"
    ],
@@ -326,17 +346,22 @@
      "cycle": 24,
      "lineageSize": 3,
      "robustness": 0.5194652777777777
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 3,
+     "robustness": 0.5176951884920635
     }
    ],
    "id": "ID0017-002",
    "kind": "convergence",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
     "C014201",
     "C014701",
     "C014702"
    ],
-   "robustness": 0.5195,
+   "robustness": 0.5177,
    "sources": [
     "github_releases",
     "github_repo",
@@ -352,15 +377,15 @@
    ]
   },
   {
-   "appearances": 8,
+   "appearances": 9,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.6667,
     "evidence": 0.25,
-    "freshness": 0.9631,
+    "freshness": 0.9513,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "open-source-momentum"
    ],
@@ -406,17 +431,22 @@
      "cycle": 24,
      "lineageSize": 3,
      "robustness": 0.5194652777777777
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 3,
+     "robustness": 0.5176951884920635
     }
    ],
    "id": "ID0017-004",
    "kind": "convergence",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
     "C014228",
     "C014710",
     "C014711"
    ],
-   "robustness": 0.5195,
+   "robustness": 0.5177,
    "sources": [
     "github_releases",
     "github_repo",
@@ -432,7 +462,7 @@
    ]
   },
   {
-   "appearances": 4,
+   "appearances": 5,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.3333,
@@ -440,7 +470,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "source-health"
    ],
@@ -466,14 +496,19 @@
      "cycle": 24,
      "lineageSize": 2,
      "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
     }
    ],
    "id": "ID0021-006",
    "kind": "convergence",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C020470",
-    "C020471"
+    "C021566",
+    "C021567"
    ],
    "robustness": 0.4,
    "sources": [
@@ -489,7 +524,7 @@
    ]
   },
   {
-   "appearances": 24,
+   "appearances": 25,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.3333,
@@ -497,18 +532,13 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "open-source-momentum"
    ],
    "fingerprint": "c8045aa29586ab63",
    "firstSeenCycle": 1,
    "history": [
-    {
-     "cycle": 1,
-     "lineageSize": 2,
-     "robustness": 0.2999186714616402
-    },
     {
      "cycle": 2,
      "lineageSize": 4,
@@ -623,14 +653,19 @@
      "cycle": 24,
      "lineageSize": 2,
      "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
     }
    ],
    "id": "ID0001-001",
    "kind": "velocity-outlier",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C020437",
-    "C019957"
+    "C021533",
+    "C021053"
    ],
    "robustness": 0.4,
    "sources": [
@@ -645,7 +680,7 @@
    ]
   },
   {
-   "appearances": 8,
+   "appearances": 9,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.3333,
@@ -653,7 +688,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "open-source-momentum"
    ],
@@ -699,14 +734,19 @@
      "cycle": 24,
      "lineageSize": 2,
      "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
     }
    ],
    "id": "ID0017-019",
    "kind": "contradiction",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
     "C015843",
-    "C020447"
+    "C021543"
    ],
    "robustness": 0.4,
    "sources": [
@@ -722,7 +762,7 @@
    ]
   },
   {
-   "appearances": 8,
+   "appearances": 9,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.3333,
@@ -730,7 +770,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "open-source-momentum"
    ],
@@ -776,14 +816,19 @@
      "cycle": 24,
      "lineageSize": 2,
      "robustness": 0.39999999999999997
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.39999999999999997
     }
    ],
    "id": "ID0017-020",
    "kind": "contradiction",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
     "C015842",
-    "C020446"
+    "C021542"
    ],
    "robustness": 0.4,
    "sources": [
@@ -799,15 +844,15 @@
    ]
   },
   {
-   "appearances": 8,
+   "appearances": 9,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.3333,
     "evidence": 0.1667,
-    "freshness": 0.9631,
+    "freshness": 0.9513,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "source-health"
    ],
@@ -853,16 +898,21 @@
      "cycle": 24,
      "lineageSize": 2,
      "robustness": 0.39446527777777773
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.3926951884920635
     }
    ],
    "id": "ID0017-003",
    "kind": "convergence",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
     "C014057",
     "C014058"
    ],
-   "robustness": 0.3945,
+   "robustness": 0.3927,
    "sources": [
     "github_releases",
     "github_repo"
@@ -881,7 +931,7 @@
     "breadth": 0.0,
     "corroboration": 0.3333,
     "evidence": 0.1667,
-    "freshness": 0.9631,
+    "freshness": 0.9513,
     "reproducibility": 1.0
    },
    "cycle": 20,
@@ -930,6 +980,11 @@
      "cycle": 24,
      "lineageSize": 2,
      "robustness": 0.39446527777777773
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.3926951884920635
     }
    ],
    "id": "ID0017-023",
@@ -939,7 +994,7 @@
     "C015989",
     "C014704"
    ],
-   "robustness": 0.3945,
+   "robustness": 0.3927,
    "sources": [
     "github_repo",
     "github_search"
@@ -958,7 +1013,7 @@
     "breadth": 0.0,
     "corroboration": 0.3333,
     "evidence": 0.1667,
-    "freshness": 0.9631,
+    "freshness": 0.9513,
     "reproducibility": 1.0
    },
    "cycle": 20,
@@ -1007,6 +1062,11 @@
      "cycle": 24,
      "lineageSize": 2,
      "robustness": 0.39446527777777773
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.3926951884920635
     }
    ],
    "id": "ID0017-024",
@@ -1016,7 +1076,7 @@
     "C015988",
     "C014703"
    ],
-   "robustness": 0.3945,
+   "robustness": 0.3927,
    "sources": [
     "github_repo",
     "github_search"
@@ -1035,7 +1095,7 @@
     "breadth": 0.0,
     "corroboration": 0.3333,
     "evidence": 0.1667,
-    "freshness": 0.9007,
+    "freshness": 0.8889,
     "reproducibility": 1.0
    },
    "cycle": 20,
@@ -1084,6 +1144,11 @@
      "cycle": 24,
      "lineageSize": 2,
      "robustness": 0.38511235119047615
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.3833422619047619
     }
    ],
    "id": "ID0017-021",
@@ -1093,7 +1158,7 @@
     "C015980",
     "C016134"
    ],
-   "robustness": 0.3851,
+   "robustness": 0.3833,
    "sources": [
     "github_repo",
     "github_search"
@@ -1112,7 +1177,7 @@
     "breadth": 0.0,
     "corroboration": 0.3333,
     "evidence": 0.1667,
-    "freshness": 0.9007,
+    "freshness": 0.8889,
     "reproducibility": 1.0
    },
    "cycle": 20,
@@ -1161,6 +1226,11 @@
      "cycle": 24,
      "lineageSize": 2,
      "robustness": 0.38511235119047615
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.3833422619047619
     }
    ],
    "id": "ID0017-022",
@@ -1170,7 +1240,7 @@
     "C015979",
     "C016133"
    ],
-   "robustness": 0.3851,
+   "robustness": 0.3833,
    "sources": [
     "github_repo",
     "github_search"
@@ -1184,7 +1254,7 @@
    ]
   },
   {
-   "appearances": 24,
+   "appearances": 25,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -1192,18 +1262,13 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "source-health"
    ],
    "fingerprint": "cf9234e38f4aed9a",
    "firstSeenCycle": 1,
    "history": [
-    {
-     "cycle": 1,
-     "lineageSize": 2,
-     "robustness": 0.2999186714616402
-    },
     {
      "cycle": 2,
      "lineageSize": 4,
@@ -1318,14 +1383,19 @@
      "cycle": 24,
      "lineageSize": 2,
      "robustness": 0.3
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.3
     }
    ],
    "id": "ID0001-002",
    "kind": "velocity-outlier",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C020457",
-    "C020459"
+    "C021553",
+    "C021555"
    ],
    "robustness": 0.3,
    "sources": [
@@ -1335,30 +1405,25 @@
    "status": "carried",
    "title": "Replicate what made browser-use/jev-ultrafast grow",
    "urls": [
-    "https://api.github.com/search/repositories?q=created:%3E=2026-09-15&sort=stars&order=desc&per_page=1"
+    "https://api.github.com/search/repositories?q=created:%3E=2026-09-16&sort=stars&order=desc&per_page=1"
    ]
   },
   {
-   "appearances": 24,
+   "appearances": 25,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
     "evidence": 0.1667,
-    "freshness": 0.8552,
+    "freshness": 0.8434,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "open-source-momentum"
    ],
    "fingerprint": "d845768af18a5e81",
    "firstSeenCycle": 1,
    "history": [
-    {
-     "cycle": 1,
-     "lineageSize": 2,
-     "robustness": 0.2999186714616402
-    },
     {
      "cycle": 2,
      "lineageSize": 4,
@@ -1473,16 +1538,21 @@
      "cycle": 24,
      "lineageSize": 2,
      "robustness": 0.2782782738095238
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 2,
+     "robustness": 0.27650818452380954
     }
    ],
    "id": "ID0001-003",
    "kind": "velocity-outlier",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
     "C015982",
     "C015984"
    ],
-   "robustness": 0.2783,
+   "robustness": 0.2765,
    "sources": [
     "github_search"
    ],
@@ -1494,7 +1564,7 @@
    ]
   },
   {
-   "appearances": 21,
+   "appearances": 22,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -1502,7 +1572,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "ai-research-frontier"
    ],
@@ -1613,13 +1683,18 @@
      "cycle": 24,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-006",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C019863"
+    "C020959"
    ],
    "robustness": 0.275,
    "sources": [
@@ -1633,7 +1708,7 @@
    ]
   },
   {
-   "appearances": 24,
+   "appearances": 25,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -1641,18 +1716,13 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "regulatory-flow"
    ],
    "fingerprint": "f30e5dd4a9965c3a",
    "firstSeenCycle": 1,
    "history": [
-    {
-     "cycle": 1,
-     "lineageSize": 1,
-     "robustness": 0.2749026847718254
-    },
     {
      "cycle": 2,
      "lineageSize": 1,
@@ -1767,13 +1837,18 @@
      "cycle": 24,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0001-004",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C020128"
+    "C021224"
    ],
    "robustness": 0.275,
    "sources": [
@@ -1787,7 +1862,7 @@
    ]
   },
   {
-   "appearances": 21,
+   "appearances": 22,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -1795,7 +1870,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "public-health-policy"
    ],
@@ -1906,13 +1981,18 @@
      "cycle": 24,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-014",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C020203"
+    "C021299"
    ],
    "robustness": 0.275,
    "sources": [
@@ -1926,7 +2006,7 @@
    ]
   },
   {
-   "appearances": 21,
+   "appearances": 22,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -1934,7 +2014,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "regulatory-flow"
    ],
@@ -2045,13 +2125,18 @@
      "cycle": 24,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-010",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C020150"
+    "C021246"
    ],
    "robustness": 0.275,
    "sources": [
@@ -2065,7 +2150,7 @@
    ]
   },
   {
-   "appearances": 21,
+   "appearances": 22,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -2073,7 +2158,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "regulatory-flow"
    ],
@@ -2184,13 +2269,18 @@
      "cycle": 24,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-009",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C020139"
+    "C021235"
    ],
    "robustness": 0.275,
    "sources": [
@@ -2204,7 +2294,7 @@
    ]
   },
   {
-   "appearances": 21,
+   "appearances": 22,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -2212,7 +2302,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "ai-research-frontier"
    ],
@@ -2323,13 +2413,18 @@
      "cycle": 24,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-007",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C019874"
+    "C020970"
    ],
    "robustness": 0.275,
    "sources": [
@@ -2343,7 +2438,7 @@
    ]
   },
   {
-   "appearances": 21,
+   "appearances": 22,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -2351,7 +2446,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "public-health-policy"
    ],
@@ -2462,13 +2557,18 @@
      "cycle": 24,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-012",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C020181"
+    "C021277"
    ],
    "robustness": 0.275,
    "sources": [
@@ -2482,7 +2582,7 @@
    ]
   },
   {
-   "appearances": 21,
+   "appearances": 22,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -2490,7 +2590,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "ai-research-frontier"
    ],
@@ -2601,13 +2701,18 @@
      "cycle": 24,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-005",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C019852"
+    "C020948"
    ],
    "robustness": 0.275,
    "sources": [
@@ -2621,7 +2726,7 @@
    ]
   },
   {
-   "appearances": 21,
+   "appearances": 22,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -2629,7 +2734,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "regulatory-flow"
    ],
@@ -2740,13 +2845,18 @@
      "cycle": 24,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-011",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C020161"
+    "C021257"
    ],
    "robustness": 0.275,
    "sources": [
@@ -2760,7 +2870,7 @@
    ]
   },
   {
-   "appearances": 21,
+   "appearances": 22,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -2768,7 +2878,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "public-health-policy"
    ],
@@ -2879,13 +2989,18 @@
      "cycle": 24,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-013",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C020192"
+    "C021288"
    ],
    "robustness": 0.275,
    "sources": [
@@ -2899,7 +3014,7 @@
    ]
   },
   {
-   "appearances": 21,
+   "appearances": 22,
    "components": {
     "breadth": 0.0,
     "corroboration": 0.0,
@@ -2907,7 +3022,7 @@
     "freshness": 1.0,
     "reproducibility": 1.0
    },
-   "cycle": 24,
+   "cycle": 25,
    "families": [
     "ai-research-frontier"
    ],
@@ -3018,13 +3133,18 @@
      "cycle": 24,
      "lineageSize": 1,
      "robustness": 0.275
+    },
+    {
+     "cycle": 25,
+     "lineageSize": 1,
+     "robustness": 0.275
     }
    ],
    "id": "ID0004-008",
    "kind": "regulatory-lead",
-   "lastSeenCycle": 24,
+   "lastSeenCycle": 25,
    "lineage": [
-    "C019885"
+    "C020981"
    ],
    "robustness": 0.275,
    "sources": [
