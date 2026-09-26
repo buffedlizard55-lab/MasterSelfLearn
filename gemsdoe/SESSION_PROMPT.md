@@ -4,7 +4,14 @@ Finding F6 (session 1): the recurring session prompt was never stored in the
 repository, so every session had to re-derive its mandate from a transient
 message. The canonical home is the ratified repo's `README.md`; until
 ratification (still outstanding — see `SESSION_LOG.md` session 3 §9.1) it lives
-here. **Session 4's prompt, verbatim** (the first to carry the full standing
+here.
+
+**Session 5's prompt is the same standing brief, verbatim** — byte-identical
+to session 4's below except for the leading "previous session's next steps"
+pointer; no text changed between the two. Session 5 executed it against
+session 4's carry-forward (§9 of that entry) first, as instructed.
+
+**Session 4's prompt, verbatim** (the first to carry the full standing
 brief; earlier sessions' prompts are summarised in `SESSION_LOG.md`):
 
 ---
