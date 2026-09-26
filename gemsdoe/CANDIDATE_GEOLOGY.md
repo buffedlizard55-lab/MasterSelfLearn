@@ -459,6 +459,19 @@ vs `curv_profile` cross-sections decide).
 
 ### Class-level finding (INTERPRETATION over §5 + §6 measurements)
 
+> **Session-5 status correction (see §7): this finding is DOWNGRADED to a
+> physical prior.** The E12 baseline test (`e12_stripe_removal.py`, session 5)
+> showed that test (a)'s threshold (E–W power share ≥ 0.25) is exceeded by
+> 3/4 *non*-N–S written-up windows as well (raw shares 0.445–0.691), i.e. the
+> "3/3 near-N–S flagged" contrast does not exist in the measurement — the flag
+> reduces to the azimuth gate alone (instrument defect **D-9**, §7). Two
+> levelling passes (global column median; y-aware 256-row block medians)
+> changed the statistic but left flags at 4/4 while the baseline shares stayed
+> equal or higher. What survives: the *physical* concern that N–S is the
+> standard aeromagnetic flight-line direction (a prior, not a measurement
+> about these traces). What does not: any claim that the (a) test *detected*
+> striping under these particular traces.
+
 **Every near-N–S trace tested with the striping probe has now flagged (3/3) or
 sat at the threshold (C-2, 0.233).** The azimuth ≈ 0–17° emission class is
 artefact-suspect as a class, not case by case. Practical consequence for the
@@ -467,3 +480,130 @@ carry a prior discount (or a detrended/levelled magnetic stack should replace
 those channels) until a stripe-removal pass exists. Gravity, strain, seismicity
 and conductivity evidence is unaffected by this class risk and is what the
 demoted candidates are re-stated on.
+
+---
+
+## 7. Session-5 measurements: the chain test, the cond cross-sections, and the E12 instrument (2026-09-26)
+
+**MEASURED** this session by `gemsdoe/probes/followup_chain_cond.py` and
+`gemsdoe/probes/e12_stripe_removal.py` against the pinned official raster and
+the D-1/D-5-fixed derived stack (same provenance as §5). Raw outputs: the
+probes' `--out` JSON (reproduction commands in `probes/README.md`). These are
+the two highest-value open measurements carry-forward 6 named.
+
+### 7.1 The C-1 ↔ C-6 ↔ C-5 chain test — **REFUTED at trace resolution**
+
+| link | facing endpoint gap | min lateral line offset | continuous (≤5 px)? |
+|---|---|---|---|
+| C-6 → C-1 | **53,363 m** | **34.91 px = 3,491 m** | **no** |
+| C-1 → C-5 | 9,774 m | **56.08 px = 5,608 m** | **no** |
+
+The three Humboldt candidates' extended centrelines pass kilometres apart, not
+pixels: 35–56 px of lateral offset against a 3 px scoring kernel, and a 53 km
+facing gap on the critical C-6→C-1 link. Gravity cross-sections along the legs
+(a narrow central ridge vs a broad ramp, C-6's own stated kill-if):
+
+| leg | narrow-ridge fraction (`iso_grav_anom_hg`) | (`grav_hgm_computed`) | verdict |
+|---|---|---|---|
+| C-6–C-1 | 0.241 | 0.414 | broad/ramp-like — **kill-if fires** |
+| C-1–C-5 | 0.286 (median prominence −0.28 MAD) | 0.571 | mixed; raw band says ramp |
+
+Intermediate candidates within 2 km of the legs: 3 on C-6–C-1 (ids 1758, 1794,
+970), 0 on C-1–C-5.
+
+**INTERPRETATION.** C-6's write-up condition — "if the three connect at trace
+resolution, the Humboldt structure becomes one ~17 km system, the strongest
+single claim in the set" — is **killed by its own pre-registered test**. The
+three remain separate candidates; C-6 loses the chain-extension claim and
+keeps only its own case (gravity + magnetics + the sourced unnamed <130,000
+segment in its window). The §3 C-5 "confirm with: is the 35° trend continuous
+with C-1's 34° trend over the 13 km between them?" is answered **no** — the
+trends are sub-parallel but laterally offset by kilometres. The three
+candidates' individual evidence profiles are unchanged; only the "one system"
+story is gone. Flagged, not smoothed: this reverses the strongest claim
+session 4's write-up set contained.
+
+### 7.2 `cond_surf` cross-sections for id 872 (C-8) and id 1618 (C-4) — **both kill-ifs supported**
+
+Single perpendicular profile (±25 px) through the bbox centre, plus the global
+percentile ranks of both `cond`-family members computed from
+`rank_tables.json` (the family is `max(rank(cond_surf),
+rank(depth_to_base_surf))` — verified in `build_features.py`):
+
+| candidate | famrank_cond cited | cond_surf global rank at trace | depth_to_base rank | cond_surf trace vs window | shape |
+|---|---|---|---|---|---|
+| **C-8** (id 872) | 0.984 | **0.984** | 0.111 | 4.316 vs 4.321 = **−0.044σ**; profile flat at its minimum across the centre, max at the window edge | **no conductor at the trace** |
+| **C-4** (id 1618) | 0.884 | **0.886** | 0.758 | 3.504 vs 3.528 = **−0.108σ**; monotone decline across the trace | **no conductor at the trace** |
+| C-9 (id 4209) | 0.930 | 0.930 | 0.156 | (rank check only) | same regional pattern |
+
+**INTERPRETATION.** The 0.98/0.88 cond ranks are *real global ranks of
+`cond_surf` itself* (not the depth member doing the lifting), but they are
+**regional**, not trace-local: the whole ±2.5 km window sits in the globally
+high regime and the trace itself is not a local maximum — for C-8 it is the
+flat floor of the profile (4.316 vs an edge max of 4.608). That is exactly the
+kill-if both write-ups named: C-8's "the conductivity high is the Granite
+Springs Valley fill itself" and C-4's "the conductivity high is the basin
+centre and the trace is just the basin edge". The cond evidence supports
+*"this is a basin with conductive fill"* and does **not** support *"fluids are
+along this fault"*. C-4's and C-8's cases therefore rest on their remaining
+families (C-4: grav 0.90 / seis 0.93; C-8: seis 0.93 + strain earned-local
++ the sourced Holocene neighbour), with the cond pillar demoted from
+"confirmation pending" to **measured-not-localised**.
+
+*Caveat, stated:* one profile per candidate through the bbox centre; a hooked
+or offset trace could hide a local high off the centreline. The ranks are
+computed along the same centreline approximation §5 uses.
+
+### 7.3 E12 executed — stripe levelling does **not** clear test (a), and test (a) has no baseline
+
+`e12_stripe_removal.py`: levelling the six raw magnetic bands by (1) the
+per-column nanmedian (global flight-line offset) and (2) y-aware 256-row-block
+column medians (along-line drift), then re-running E10's test (a) on the same
+windows, same 0.25 threshold:
+
+| window | raw share (flag) | col-lev (flag) | block-lev (flag) |
+|---|---|---|---|
+| C-2 (N–S) | 0.233 (no) | 0.260 (**yes**) | 0.345 (**yes**) |
+| C-4 (N–S) | 0.463 (yes) | 0.474 (yes) | 0.354 (yes) |
+| C-8 (N–S) | 0.526 (yes) | 0.303 (yes) | 0.371 (yes) |
+| C-10 (N–S) | 0.456 (yes) | 0.480 (yes) | 0.498 (yes) |
+| **C-1/C-3/C-5/C-7 (non-N–S baseline)** | **0.691 / 0.246 / 0.596 / 0.445** | 0.678 / 0.180 / 0.609 / 0.426 | 0.581 / 0.183 / 0.486 / 0.347 |
+
+- **Criterion (pre-registered: flag rate falls below the non-N–S baseline):
+  NOT MET.** Flags 3/4 → 4/4 (both methods); near-N–S mean share 0.419 →
+  0.379 → 0.392 against baseline means 0.494 → 0.473 → 0.399. The near-N–S
+  class is never *more* periodic than the baseline — it is usually less.
+- **The x-only stripe field s(x) itself carries no flight-line-scale
+  periodicity**: its dominant E–W period is 823 px for `tmi_hg` (470 px for
+  `tmi`; shares 0.10–0.16), not the 10–18 px E10 measured in windows. A
+  column-constant component at flight-line spacing is therefore absent from
+  these bands; what the window statistic sees is within-window structure
+  (real E–W-wavelength geology, trace geometry, or along-line-varying noise
+  that no global subtraction can remove).
+- **Instrument defect D-9:** test (a)'s threshold does not discriminate:
+  3/4 non-N–S windows exceed 0.25 too (up to 0.691). The class finding in §6
+  was computed without this baseline and is therefore not identified by the
+  instrument. The physical flight-line prior stands; the detection claim does
+  not.
+- Signal preservation: r(raw, levelled) 0.976–0.9997 (col) and 0.897–0.9984
+  (block); block-levelling eats 42–47% of the trace-vs-window contrast at
+  C-4/C-8 (0.547→0.291, −0.491→−0.284), col-levelling barely changes it
+  (0.547→0.530; C-8 even gains, −0.491→−0.52) — so the y-aware pass is the
+  more destructive one and still fails the criterion.
+
+**What would settle it (proposal, next session):** an *alignment* test, not a
+presence test — band-pass the x-only field at 5–30 px in the window and
+measure whether each near-N–S trace's x-positions sit on its crests more often
+than oblique/random traces do; plus the official GeoDAWN flight-line metadata
+(orientation and line spacing) from the data documentation, which would turn
+the physical prior into a sourced fact.
+
+### Status changes this section forces
+
+| candidate | before (session 4) | after (session 5) |
+|---|---|---|
+| **C-4** | demoted by test (a) | **demotion basis invalidated** (D-9): test (a) cannot detect what it was applied for. C-4 returns to *unresolved on magnetics* — neither proven contaminated nor proven clean — and its cond pillar is now measured-not-localised (§7.2). Grav/seis case unchanged. |
+| **C-6** | "central segment of a ~17 km system" | chain **refuted** (§7.1); standalone candidate; kill-if fired on the critical leg. |
+| **C-8** | cond 0.98 = confirmation pending | cond **measured regional, not trace-local** (§7.2) — kill-if supported; case restated on seis/strain/sourced-Holocene. |
+| **C-2** | "survived (a) marginally, re-test after levelled tmi_hg" | re-test **executed and uninformative** (§7.3): levelling does not change the instrument; (a) cannot answer the question either way. Survival status vacuous; physical prior remains. |
+| **C-1 / C-3 / C-5 / C-7 / C-9 / C-10** | as §5–§6 | unchanged; C-1/C-5 lose the chain narrative only (§7.1), C-4's sibling C-10 unaffected. |

@@ -1,0 +1,366 @@
+diff --git a/scripts/build_e11_union.py b/scripts/build_e11_union.py
+new file mode 100644
+index 0000000..eb1f94e
+--- /dev/null
++++ b/scripts/build_e11_union.py
+@@ -0,0 +1,157 @@
++#!/usr/bin/env python3
++"""E11 — build the masking-aware candidate file (a LOCAL artefact, NOT an upload).
++
++HYPOTHESES.md E11, from D7 (FIELD_AND_METRIC.md §1b): under the staff-confirmed
++mask (DrivenData forum 11516, chrisk-dd 2026-09-16 — known USGS/INGENIOUS
++fault pixels "are masked / excluded from evaluation, so they do not count
++towards penalty terms"), emission ON the supplied catalogue is free, so the
++score-safe file is
++
++    shipped field (88 ch, topk_hard@0.03)      — the catalogue-proxy winner
++  ∪ supplied catalogue label pixels            — the S5-A hedge form (free)
++  ∪ 105-ch surface, top 2% by probability      — the E9 gap-population winner
++
++Two files are written so the contribution of each part is separable:
++
++  A  gems6_hgb88topk03_hedge.tif          = shipped ∪ catalogue
++  B  gems6_hgb88topk03_hedge105topk02.tif = A ∪ 105-ch topk@0.02   (E11)
++
++Both go through raster.check_submission (the same 13-check hard gate
++validate_submission.py runs). Neither is uploaded: that needs the ratified
++account and an explicit human go-ahead (session-log carry-forward), and the
++weekly-submission state of the confirmed account is not knowable from here
++(F5).
++
++Usage:
++    python scripts/build_e11_union.py [--skip-train]   # --skip-train reuses
++    data/evidence/prob_hgb105-e11.f32.npy if present
++"""
++from __future__ import annotations
++
++import argparse
++import json
++import sys
++import time
++from pathlib import Path
++
++import numpy as np
++import rasterio
++
++REPO_ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(REPO_ROOT / "src"))
++
++from gems import placement, raster  # noqa: E402
++
++LABELS = REPO_ROOT / "data" / "labels.tif"
++SAMPLE = REPO_ROOT / "data" / "sample_submission.tif"
++EV = REPO_ROOT / "data" / "evidence"
++DOWNLOADS = REPO_ROOT / "downloads"
++SHIPPED = DOWNLOADS / "gems6_hgb88-topk03_33cec71ff0.tif"
++TOPK_FRAC = 0.02  # E9 winner placement on the gap population
++
++
++def main() -> int:
++    ap = argparse.ArgumentParser()
++    ap.add_argument("--max-neg", type=int, default=400_000)
++    ap.add_argument("--iters", type=int, default=300)
++    ap.add_argument("--skip-train", action="store_true")
++    ap.add_argument("--out-tag", default="e11")
++    args = ap.parse_args()
++
++    t0 = time.time()
++    from build_submission import load_truth, train_model, predict_full
++
++    gt, footprint = load_truth()
++    n_fp = int(footprint.sum())
++    print(f"footprint {n_fp:,} px · catalogue {int((gt & footprint).sum()):,} px",
++          flush=True)
++
++    # --- component 1: the shipped field -------------------------------
++    with rasterio.open(SHIPPED) as src:
++        shipped = np.isfinite(src.read(1)) & (src.read(1) > 0)
++    shipped &= footprint
++    print(f"shipped field: {int(shipped.sum()):,} px", flush=True)
++
++    # --- component 3: the 105-ch surface at topk@0.02 ------------------
++    prob_path = EV / f"prob_hgb105-{args.out_tag}.f32.npy"
++    if args.skip_train and prob_path.exists():
++        prob = np.load(prob_path)
++        print(f"reusing {prob_path}", flush=True)
++    else:
++        model, info = train_model(EV / "features.f32.npy", 105, gt, footprint,
++                                  args.max_neg, iters=args.iters)
++        print(f"trained 105-ch model: {info} [{time.time()-t0:.0f}s]", flush=True)
++        prob = predict_full(EV / "features.f32.npy", model, footprint, 105)
++        EV.mkdir(parents=True, exist_ok=True)
++        np.save(prob_path, prob.astype(np.float32))
++        print(f"saved {prob_path} [{time.time()-t0:.0f}s]", flush=True)
++    gap = placement.topk_mask(prob, footprint, TOPK_FRAC)
++    print(f"105-ch topk@{TOPK_FRAC:g}: {int(gap.sum()):,} px", flush=True)
++    del prob
++
++    # --- unions --------------------------------------------------------
++    base = shipped | (gt & footprint)
++    full = base | gap
++
++    stats: dict = {
++        "footprint_px": n_fp,
++        "catalogue_px": int((gt & footprint).sum()),
++        "shipped_px": int(shipped.sum()),
++        "gap105_px": int(gap.sum()),
++        "shipped_covers_catalogue_px": int((shipped & gt).sum()),
++        "catalogue_added_px": int(((gt & footprint) & ~shipped).sum()),
++        "gap_added_px": int((gap & ~base).sum()),
++        "overlap_gap_in_shipped": int((gap & shipped).sum()),
++        "overlap_gap_in_catalogue": int((gap & gt).sum()),
++        "unionA_px": int(base.sum()),
++        "unionB_px": int(full.sum()),
++        "unionA_pct_of_footprint": 100.0 * float(base.sum()) / n_fp,
++        "unionB_pct_of_footprint": 100.0 * float(full.sum()) / n_fp,
++        "mask_width0_free_px": None,  # filled below (on-catalogue emission)
++        "generated_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
++        "note": ("E11 candidate file(s). NOT submitted: needs the ratified "
++                 "account + human go-ahead. Free-under-mask = pixels exactly "
++                 "on the 60,988 supplied label px (staff mask width is "
++                 "unspecified; corridor pixels are a labelled bet)."),
++    }
++
++    # write + gate both files
++    results = {}
++    for tag, arr in ((f"hgb88topk03_hedge", base),
++                     (f"hgb88topk03_hedge105topk02", full)):
++        arr = np.where(footprint, arr, 0).astype(np.float32)
++        tmp = DOWNLOADS / f"_{tag}.tif"
++        raster.write_submission(arr, tmp, SAMPLE, footprint=footprint)
++        digest = raster.sha256_file(tmp)[:10]
++        final = DOWNLOADS / f"gems6_{tag}_{digest}.tif"
++        tmp.replace(final)
++        rep = raster.check_submission(final)
++        results[tag] = {
++            "file": final.name,
++            "sha256": raster.sha256_file(final),
++            "bytes": final.stat().st_size,
++            "positive_px": int((arr > 0).sum()),
++            "gate_ok": rep.ok,
++            "gate": rep.as_dict(),
++        }
++        print(f"\n{final.name}: {results[tag]['positive_px']:,} px · "
++              f"gate {'PASS' if rep.ok else 'FAIL'}", flush=True)
++        if not rep.ok:
++            print(rep.text())
++            return 1
++
++    stats["files"] = results
++    # free-under-mask accounting for the E11 (B) file
++    bmask = full.astype(bool)
++    stats["mask_width0_free_px"] = int((bmask & gt & footprint).sum())
++    stats["mask_width0_off_mask_px"] = int((bmask & ~(gt & footprint)).sum())
++    (EV / "e11_union_report.json").write_text(
++        json.dumps(stats, indent=2, default=float) + "\n")
++    print(json.dumps({k: v for k, v in stats.items() if k != "files"},
++                     indent=2), flush=True)
++    print(f"[{time.time()-t0:.0f}s] wrote {EV / 'e11_union_report.json'}")
++    return 0
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+diff --git a/scripts/experiment.py b/scripts/experiment.py
+index e058695..6a0ce9e 100644
+--- a/scripts/experiment.py
++++ b/scripts/experiment.py
+@@ -216,7 +216,8 @@ def run_fold(mm, channels: list[str], n_channels: int, gt: np.ndarray,
+              folds: gcv.Folds, k: int, max_train_px: int, iters: int,
+              seed: int, pos_weight: np.ndarray | None = None,
+              trace_excl: np.ndarray | None = None,
+-             gates: dict[str, np.ndarray] | None = None) -> dict:
++             gates: dict[str, np.ndarray] | None = None,
++             fp_free: np.ndarray | None = None) -> dict:
+     """One blocked fold.
+ 
+     pos_weight   per-pixel training weight (PU-style: long "already well
+@@ -225,6 +226,11 @@ def run_fold(mm, channels: list[str], n_channels: int, gt: np.ndarray,
+                  every fold (whole fault traces held out from the model, the
+                  rediscovery diagnostic, see --trace-holdout)
+     gates        {label: bool grid} for gated top-k placements (agreement)
++    fp_free      bool grid of official-scorer-masked pixels (forum 11516,
++                 known USGS/INGENIOUS fault pixels). Where given, every
++                 placement is scored a SECOND time with those pixels
++                 contributing nothing to FP_w, written to the
++                 `*_masked` subtrees (D8: report masked AND unmasked).
+     """
+     from sklearn.ensemble import HistGradientBoostingClassifier
+     from gems.placement import gated_topk
+@@ -327,6 +333,16 @@ def run_fold(mm, channels: list[str], n_channels: int, gt: np.ndarray,
+             "fn_w": comp.fn_w, "n_pos_pred": comp.n_pos_pred,
+         }
+ 
++    fp_sl = fp_free[sl] if fp_free is not None else None
++    if fp_sl is not None:
++        rec["gt_full_masked"] = {}
++        for name, arr in cands.items():
++            comp = metric.components(arr, crop_gt_full, fp_free_mask=fp_sl)
++            rec["gt_full_masked"][name] = {
++                "dti": comp.dti, "tp_w": comp.tp_w, "fp_w": comp.fp_w,
++                "fn_w": comp.fn_w, "n_pos_pred": comp.n_pos_pred,
++            }
++
+     crop_trace = trace_id[sl]
+     for keep in TRACE_KEEP:
+         if keep >= 1.0:
+@@ -366,6 +382,22 @@ def run_fold(mm, channels: list[str], n_channels: int, gt: np.ndarray,
+                 "dti": comp.dti, "tp_w": comp.tp_w, "fp_w": comp.fp_w,
+                 "fn_w": comp.fn_w, "n_pos_pred": comp.n_pos_pred,
+             }
++        if fp_sl is not None:
++            rec["trace_gap_masked"] = {"n_gt": int(gap_gt.sum())}
++            rec["trace_seen_masked"] = {"n_gt": int(seen_gt.sum())}
++            for name in TRACE_PLACEMENTS:
++                if name not in cands:
++                    continue
++                comp = metric.components(cands[name], gap_gt, fp_free_mask=fp_sl)
++                rec["trace_gap_masked"][name] = {
++                    "dti": comp.dti, "tp_w": comp.tp_w, "fp_w": comp.fp_w,
++                    "fn_w": comp.fn_w, "n_pos_pred": comp.n_pos_pred,
++                }
++                comp = metric.components(cands[name], seen_gt, fp_free_mask=fp_sl)
++                rec["trace_seen_masked"][name] = {
++                    "dti": comp.dti, "tp_w": comp.tp_w, "fp_w": comp.fp_w,
++                    "fn_w": comp.fn_w, "n_pos_pred": comp.n_pos_pred,
++                }
+ 
+     del crop_pred, cands, crop_gt_full
+     return rec
+@@ -420,6 +452,15 @@ def main() -> int:
+                     help="diagnostic: fraction of whole fault traces excluded "
+                          "from training in EVERY fold (rediscovery test — the "
+                          "model has never seen those faults)")
++    ap.add_argument("--fp-mask-px", type=int, default=-1,
++                    help="D8/§1b: also score every placement with the official "
++                         "known-fault mask (forum 11516) applied to FP_w. -1 = "
++                         "off; 0 = the 60,988 catalogue label pixels exactly "
++                         "(the conservative pin — staff did not specify a "
++                         "width); N>0 = label pixels dilated by an N px "
++                         "Euclidean corridor (a measured bet, labelled "
++                         "separately). Masked results are written to the "
++                         "*_masked subtrees next to the unmasked ones.")
+     ap.add_argument("--out", default=str(EV / "experiments.json"))
+     args = ap.parse_args()
+ 
+@@ -467,6 +508,19 @@ def main() -> int:
+               f"excluded from ALL training "
+               f"({int(trace_excl.sum()):,} gt px)", flush=True)
+ 
++    fp_free = None
++    if args.fp_mask_px >= 0:
++        if args.fp_mask_px == 0:
++            fp_free = gt.copy()
++        else:
++            d = ndimage.distance_transform_edt(~gt)
++            fp_free = d <= float(args.fp_mask_px)
++            del d
++        print(f"fp_mask: width {args.fp_mask_px} px around the "
++              f"{int(gt.sum()):,} catalogue label px -> "
++              f"{int(fp_free.sum()):,} FP-free px (forum-11516 mask, "
++              f"FP side only; see metric.components docstring)", flush=True)
++
+     gates = None
+     if len(channels) > 88:
+         i25 = channels.index("n_agree_top25")
+@@ -507,6 +561,12 @@ def main() -> int:
+             "pos_weight": args.pos_weight,
+             "trace_holdout": args.trace_holdout,
+             "trace_holdout_traces": n_held_traces,
++            "fp_mask_px": args.fp_mask_px,
++            "fp_mask_note": (
++                None if args.fp_mask_px < 0 else
++                "FP-side only of the forum-11516 known-fault mask; TP/FN left "
++                "on the surrogate truth because every local gt pixel is a "
++                "known fault (see metric.components docstring)"),
+             "gates": sorted(gates) if gates else [],
+             "feature_meta": {k: v for k, v in meta.items() if k != "channels"},
+             "note": ("scores are against the PUBLIC CATALOGUE on held-out "
+@@ -524,7 +584,7 @@ def main() -> int:
+             rec = run_fold(mm, channels, n_ch, gt, footprint, trace_id, n_trace,
+                            folds, k, args.max_train_px, args.iters, args.seed,
+                            pos_weight=pos_weight, trace_excl=trace_excl,
+-                           gates=gates)
++                           gates=gates, fp_free=fp_free)
+             best = max(v["dti"] for v in rec["gt_full"].values())
+             best_name = max(rec["gt_full"].items(), key=lambda kv: kv[1]["dti"])[0]
+             print(f"  fold {k}: n_score={rec['n_score_px']} n_gt={rec['n_gt']} "
+@@ -545,6 +605,12 @@ def main() -> int:
+             top = list(out["configs"][name][f"aggregate_keep{keep:g}"].items())[:3]
+             print(f"  keep{keep:g}: " + ", ".join(
+                 f"{n}={v['mean_dti']:.4f}" for n, v in top), flush=True)
++        if args.fp_mask_px >= 0:
++            out["configs"][name]["aggregate_gt_full_masked"] = aggregate(
++                folds_rec, ("gt_full_masked",))
++            top = list(out["configs"][name]["aggregate_gt_full_masked"].items())[:3]
++            print("  gt_full_masked best: " + ", ".join(
++                f"{n}={v['mean_dti']:.4f}" for n, v in top), flush=True)
+         if args.trace_holdout > 0.0:
+             out["configs"][name]["aggregate_trace_gap"] = aggregate(
+                 folds_rec, ("trace_gap",))
+@@ -556,6 +622,15 @@ def main() -> int:
+             top = list(out["configs"][name]["aggregate_trace_seen"].items())[:5]
+             print("  trace_seen best: " + ", ".join(
+                 f"{n}={v['mean_dti']:.4f}" for n, v in top), flush=True)
++            if args.fp_mask_px >= 0:
++                out["configs"][name]["aggregate_trace_gap_masked"] = aggregate(
++                    folds_rec, ("trace_gap_masked",))
++                out["configs"][name]["aggregate_trace_seen_masked"] = aggregate(
++                    folds_rec, ("trace_seen_masked",))
++                top = list(
++                    out["configs"][name]["aggregate_trace_gap_masked"].items())[:5]
++                print("  trace_gap_masked best: " + ", ".join(
++                    f"{n}={v['mean_dti']:.4f}" for n, v in top), flush=True)
+         top = list(out["configs"][name]["aggregate_gt_full"].items())[:6]
+         print(f"  gt_full best: " + ", ".join(
+             f"{n}={v['mean_dti']:.4f}" for n, v in top), flush=True)
+diff --git a/src/gems/metric.py b/src/gems/metric.py
+index c2023be..41eaf35 100644
+--- a/src/gems/metric.py
++++ b/src/gems/metric.py
+@@ -133,17 +133,36 @@ def components(
+     beta: float = BETA,
+     radius_px: float = RADIUS_PX,
+     eps: float = 0.0,
++    fp_free_mask: np.ndarray | None = None,
+ ) -> Components:
+     """Compute TP_w, FP_w, FN_w and DTI exactly as published.
+ 
+     `pred`   — float array in [0, 1] (values outside are not clipped silently;
+                they are clipped for scoring and the caller should have validated).
+     `target` — boolean/0-1 array of ground truth (1 = fault).
++    `fp_free_mask` — optional boolean array; True marks pixels that the official
++               scorer masks from evaluation (DrivenData staff, forum thread 11516:
++               "Pixels corresponding to known USGS/INGENIOUS faults are masked /
++               excluded from evaluation, so they do not count towards penalty
++               terms"). Predicted pixels on the mask contribute NOTHING to FP_w.
++               This pins only the FP side of the staff statement: the local
++               ground truth IS the known catalogue, so applying the mask to the
++               TP/FN side as well would zero every local instrument — the
++               asymmetry is deliberate and must be stated whenever a masked
++               number is reported. Mask width is unspecified by staff; callers
++               pass at least the 60,988 label pixels (the conservative pin) and
++               any corridor width as a separately-labelled measured bet.
++
++    `n_pos_pred` in the returned Components still counts every positive
++    prediction pixel (it is a file statistic, not a penalty term).
+     """
+     pred = np.asarray(pred, dtype=np.float64)
+     target = np.asarray(target)
+     if pred.shape != target.shape:
+         raise ValueError(f"shape mismatch: pred {pred.shape} vs target {target.shape}")
++    if fp_free_mask is not None and fp_free_mask.shape != target.shape:
++        raise ValueError(
++            f"shape mismatch: fp_free_mask {fp_free_mask.shape} vs target {target.shape}")
+ 
+     p = np.clip(pred, 0.0, 1.0)
+     g = target.astype(bool)
+@@ -152,6 +171,8 @@ def components(
+     # ---- FP_w -----------------------------------------------------------------
+     pos = p > 0.0
+     n_pos_pred = int(pos.sum())
++    if fp_free_mask is not None:
++        pos = pos & ~np.asarray(fp_free_mask, dtype=bool)
+     if n_gt == 0:
+         k_nearest = np.zeros_like(p)
+     else:

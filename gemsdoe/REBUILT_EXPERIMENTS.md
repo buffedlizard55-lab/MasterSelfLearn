@@ -172,3 +172,113 @@ python3 scripts/experiment.py --configs extended,agreement --trace-holdout 0.3 \
     --max-train-px 400000 --iters 300 --out data/evidence/experiments_e9_gap.json
 python3 scripts/validate_submission.py downloads/gems6_hgb88-topk03_33cec71ff0.tif
 ```
+
+---
+
+# Session 5 (2026-09-26): D8 masked metric, E11 build, E9 re-run under the mask
+
+Same scratch discipline as above: `6GEMSDOE@e2fe3f41` + the session-4 patch,
+rebuilt feature stack (rank tables 110.3 s; features 949.2 s; valid mask
+5,165,840 — identical to session 4's rebuild), nothing written to any GEMSDOE
+repo. Session 5's own code additions are delivered as
+[`patches/session5_d8_e11_e13.patch`](patches/session5_d8_e11_e13.patch)
+(`metric.components(fp_free_mask=…)`, `experiment.py --fp-mask-px`,
+`scripts/build_e11_union.py`) — **not applied upstream**, same rule as before.
+
+## 5.1 D8 — the §1b mask, implemented and pinned
+
+`metric.components(..., fp_free_mask=)` zeroes the FP contribution of masked
+pixels; TP/FN are deliberately left on the surrogate truth (every local gt
+pixel *is* a known fault, so the strict board mask would zero the instrument —
+the asymmetry is stated in the docstring and in every number below).
+Conservative pin: the 60,988 label pixels exactly (staff specify no width;
+corridors are a labelled bet). Unmasked calls are bit-identical to before
+(asserted in the sanity check; 46/46 pipeline tests still pass).
+
+## 5.2 E11 — the masking-aware file, built and gated (NOT submitted)
+
+`scripts/build_e11_union.py` (full-data train, 105 ch, 400k neg / 300 iters,
+seed 7 — same recipe as the shipped build; 94 s train, 272 s end-to-end):
+
+| file | form | px | % of footprint | gate |
+|---|---|---|---|---|
+| `gems6_hgb88topk03_hedge_dada4435cd.tif` | shipped 88-ch topk@0.03 ∪ catalogue | 192,404 | 3.72% | **13/13 PASS** |
+| `gems6_hgb88topk03_hedge105topk02_984e11e4d7.tif` (E11) | A ∪ 105-ch topk@0.02 | 202,951 | 3.93% | **13/13 PASS** |
+
+Component accounting (`data/evidence/e11_union_report.json` in the scratch
+checkout; reproduced here):
+
+- shipped field 155,021 px covers only **23,605** of the 60,988 catalogue px →
+  the hedge adds **37,383** free px;
+- 105-ch topk@0.02 = 103,347 px, of which **91,321 (88%) already sit in the
+  shipped field** and 18,078 on the catalogue → the agreement layer's marginal
+  addition is **10,547 px** — the two surfaces agree far more than the E9
+  sign-flip suggested;
+- file B on-mask (width-0) = 60,988 px (free), off-mask = 141,963 px =
+  **2.75%** of the footprint — inside the 3% minimax budget *on the taxable
+  side*, while covering the entire catalogue.
+
+Weekly-submission state (E11's precondition): **unverifiable from this
+sandbox** (F5) — the one-entry record in `6GEMSDOE/SUBMISSION_GUIDE.md`
+remains blank; no upload was made or sanctioned.
+
+## 5.3 E9 re-run with the masked metric (E13)
+
+Run: `experiment.py --configs extended,agreement --trace-holdout 0.3
+--max-train-px 400000 --iters 300 --fp-mask-px 0 --out
+experiments_e13_masked.json`. Same folds, seeds and settings as session 4's
+E9 (960 held traces / 18,116 gt px — reproduced exactly), with every
+placement scored twice: unmasked (reproduction of session 4's numbers) and
+masked (FP side of the forum-11516 rule).
+
+**Reproduction check first:** the unmasked aggregates match session 4's E9
+table to four decimals on every cell (gap 88→105: 0.0712→0.0750,
+0.0744→0.0780, 0.0713→0.0736, 0.0659→0.0663, 0.0717→0.0702, 0.0646→0.0708) —
+so this run *is* E9 plus the mask, not a new experiment.
+
+Mean blocked-CV DTI — **88 ch vs 105 ch, gap ground truth** (`trace_gap`),
+unmasked and FP-masked (mask = the 60,988 label px exactly):
+
+| placement | gap 88 | gap 105 | Δ | **gap masked 88** | **gap masked 105** | **Δ masked** |
+|---|---|---|---|---|---|---|
+| topk_hard@0.01 | 0.0712 | 0.0750 | +0.0038 | 0.0731 | 0.0770 | **+0.0038** |
+| topk_hard@0.02 | 0.0744 | 0.0780 | +0.0036 | 0.0765 | 0.0801 | **+0.0037** |
+| topk_hard@0.03 | 0.0713 | 0.0736 | +0.0023 | 0.0732 | 0.0755 | **+0.0023** |
+| topk_hard@0.05 | 0.0659 | 0.0663 | +0.0004 | 0.0675 | 0.0679 | +0.0004 |
+| hard@0.2 | 0.0717 | 0.0702 | −0.0014 | 0.0735 | 0.0720 | −0.0015 |
+| hard@0.3 | 0.0646 | 0.0708 | +0.0062 | 0.0661 | 0.0725 | **+0.0064** |
+
+**Verdicts:**
+
+1. **The E9 sign flip survives the masked metric unchanged.** 105 ch still
+   wins 5 of 6 gap placements under the mask, with deltas within ±0.0002 of
+   the unmasked ones. The recommendation (re-enable the agreement layer in
+   gap-oriented builds — and the 105-ch component of the E11 file) stands on
+   the more board-like instrument.
+2. **The mask is worth ≈ +0.002 on the gap instrument, for both configs** —
+   this *measures* the "restricted-GT FP wash" E9 listed as a caveat: the FP
+   charged locally for predictions on the other catalogue population, which
+   the board never charges. It is a parallel lift, not a discriminator
+   between configs.
+3. **On `gt_full` the mask is a no-op (every cell identical to 4 dp).** That
+   is expected and is a validation of the implementation: with the catalogue
+   as ground truth, a prediction sitting on a catalogue pixel already pays
+   zero FP through the proximity discount k(d=0)=1, so excluding it changes
+   nothing. The mask only bites where ground truth is restricted — i.e. on
+   the instrument that resembles the board.
+4. **Robustness carries over:** at gap-masking topk@0.02 the 105-ch worst
+   fold (0.0653) beats the 88-ch worst fold (0.0564), mirroring the unmasked
+   pattern (0.0640 vs 0.0557).
+5. `trace_seen` ordering is unchanged (105 still loses on seen-truth, masked
+   or not) — the population split, not the mask, decides the sign, exactly as
+   E9 pre-registered.
+
+Caveats carried from E9 (unchanged): catalogue-character gap population;
+restricted-GT charges FP on predictions near *held-out* truth only where they
+are not on catalogue pixels (the mask fixes the catalogue side, not the
+hidden-set side); the D8 asymmetry (TP/FN not masked) is deliberate and
+documented; n = 4 folds. The rank-table content question is now settled
+in-environment (session-5 log §6.8: two builds, identical content hash sans
+`built_utc`), so no table drift rides on these rows beyond session 4's
+original cross-environment question, which remains untestable from here.
+
