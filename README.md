@@ -174,6 +174,7 @@ These are counted, not reflected. Each lesson carries the integers behind it.
 | [`irregularities.html`](irregularities.html) | The flagged-irregularity register |
 | [`cycles.html`](cycles.html) | Cycle history and network accounting |
 | [`methodology.html`](methodology.html) | How it reasons, and the limits of that |
+| [`gemsdoe/index.html`](gemsdoe/index.html) | GEMS Prize knowledge base: research library, hypothesis backlog, session log, AI-usage log, governance, source index |
 
 ## Running it
 
