@@ -322,3 +322,76 @@ registration-ownership kept separate; (3) re-checked against the brief (stop
 condition honored; nothing created, edited, or submitted) and the official rules
 (§1.1 single entry, §3.2 3/week + AI disclosure, page 967 single blind choice,
 §1.3 eligibility).*
+
+---
+
+# ADDENDUM — session 2 re-audit, 2026-09-26 UTC (~00:40–01:10)
+
+Branch `arena/01a0db24-masterselflearn`. This addendum is the brief-mandated
+re-verification ("verify that assumption still holds"), performed fresh; the
+findings above (F1–F6) are unchanged unless amended here. Full session log:
+[`gemsdoe/SESSION_LOG.md`](gemsdoe/SESSION_LOG.md).
+
+## F7 — no NEW duplicates created since session 1; the standing 11 remain
+
+- Repo inventory (`gh api users/buffedlizard55-lab/repos?sort=created`):
+  **still exactly the same 11 GEMSDOE repos**, none created after session 1's
+  inventory; Pages **built** on all 11 (re-checked ×11).
+- Global search `q=GEMSDOE`: `total_count: 11`, all ours; no third-party
+  GEMSDOE repos anywhere on GitHub.
+- Secondary account `kanlerxz87-cyber`: still 0 public repos.
+- Fresh leaderboard pull: the five tracked accounts are **all still at 1
+  submission, scores unchanged** (0.1563/0.1560/0.1193/0.1152/0.0830); no new
+  attributable registration visible. Zero-submission registrations remain not
+  publicly enumerable (§6.2 of the main flag stands).
+
+**Verdict:** the brief's literal stop trigger — a duplicate *created* since
+the last session — is **not** re-tripped. The underlying one-repo violation
+(F1) is unresolved and is not being treated as normal.
+
+## F8 — ⛔ parallel arms were ACTIVELY WORKED after this flag was posted
+
+- `GEMSDOE4` commits after the flag merged (00:19:13Z): `858bcb6e` 00:16:14Z
+  *"adopt k=2-of-5 new-fault union … close the session-30 queue"*, PR #5
+  merged 00:18:49Z ("session 31"), failing-CI logs 00:21Z, PR #6 merged
+  00:36:16Z. `pushed_at = 2026-09-26T00:36:16Z`.
+- `6GEMSDOE.pushed_at = 2026-09-26T00:39:45Z`, then **again 00:41:09Z** —
+  pushes landing **during this audit**, ~1–2 min apart.
+
+Interpretation: separate agent sessions continue to operate two of the
+deprecated copies as live experiment arms, despite this flag. This session
+cannot stop other runners. Per the brief they are **not** adopted as parallel
+arms here and their surrogate numbers (e.g. the "+0.0150" union claim, which
+is commit-message text, not a leaderboard fact) are **not** folded in.
+**This is the item most urgently needing the account holder's intervention.**
+
+## F9 — account activity without new submissions
+
+The leaderboard's "last activity" fields show `smashi34`, `smrtdoog5`,
+`SDCF9`, `wbg1` all active ≈2026-09-26T01:2xZ (~6½ h before the pull) — with
+submission counts unchanged. Activity ≠ submission; recorded so the next
+session can tell whether it becomes uploads.
+
+## F10 — rules document now fully verified (closes session 1 §11.4)
+
+All 7 chunks of the rules PDF were read verbatim this session. Previously
+unverified sections now captured in `gemsdoe/FIELD_AND_METRIC.md` §4, incl.
+§3.4 (*"Each participating entity … is allowed to have one final
+submission"*), A.2 (registration disputes resolve to the email's authorized
+account holder), A.3 (single dollar amount to the designated primary
+submitter), A.12 (due-diligence / fraud), A.16 (return of funds).
+
+## F11 — mission decision this session, and what was done
+
+Because no new duplicate was *created* (F7), the session executed the brief's
+steps that are safe under every reading: fresh leaderboard + rules
+verification, reference-site study (GEMSDOE and GEMSDOE3 docs sites fetched
+this session; ownership of all six already established in §4), a fully linked
+research pass, and the creation of the repo's GEMSDOE knowledge library under
+`gemsdoe/` (session log, field & metric analysis, research library,
+hypothesis register). **Still deliberately not done** (unchanged from §9):
+consolidation of the ten non-chosen repos, designation of the canonical
+repo/site, resolution of the one-account posture, any submission, any
+cross-repo change. These remain blocked on human ratification; the brief's
+"work autonomously" clause cannot substitute for an eligibility decision that
+rules §1.3/A.2/A.16 place under perjury and clawback exposure.
