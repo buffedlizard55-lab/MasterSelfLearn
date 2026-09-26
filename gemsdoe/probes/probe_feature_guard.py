@@ -40,7 +40,7 @@ def main() -> int:
         holed[C, C] = np.nan
         out = features.nan_gaussian(holed, sigma)
 
-        r_guard = int(np.ceil(3 * sigma))          # what the code uses
+        r_guard = int(np.ceil(3 * sigma))          # the LEGACY guard (pre-fix)
         r_true = int(4.0 * sigma + 0.5)            # what scipy actually uses
         diff = ~np.isclose(np.nan_to_num(clean, nan=-9e9),
                            np.nan_to_num(out, nan=-9e9))
@@ -50,7 +50,7 @@ def main() -> int:
                   if (abs(a) + abs(b)) > r_guard and np.isfinite(out[C + a, C + b])]
         worst_any = max(worst_any, len(leaked))
 
-        print(f"sigma={sigma}: guard r=ceil(3*sigma)={r_guard} (L1 diamond); "
+        print(f"sigma={sigma}: legacy guard r=ceil(3*sigma)={r_guard} (L1 diamond); "
               f"scipy stencil r=int(4*sigma+0.5)={r_true} (square)")
         print(f"   pixels affected by the single NaN: {len(affected)}")
         print(f"   affected but NOT invalidated (still finite): {len(leaked)}")

@@ -37,6 +37,41 @@ expert-labelled faults absent from the USGS catalogue; Phase 2 the expanded
 label set after experts review every team's predictions (rules §1.1; page
 967). One submission, chosen blind, scores in both rounds.
 
+### 1b. Official staff clarification: known-fault pixels are MASKED from scoring (verified 2026-09-26)
+
+Source: DrivenData community forum, thread 11516, reply by **chrisk-dd
+(DrivenData Staff)** on Sep 16 —
+<https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516>
+(fetched 2026-09-26, session 4; the question was asked by entrant `exposed`):
+
+> 1. Pixels corresponding to known USGS/INGENIOUS faults are masked / excluded
+>    from evaluation, so they do not count towards penalty terms.
+> 2. Re-evaluation will also mask/exclude the existing USGS/INGENIOUS faults.
+>
+> We'll consider changing the description, but for scoring purposes it should
+> not matter whether these known faults are included with predictions or not.
+
+This is an official, on-platform statement by the prize administrator and it
+**outranks any inference from the metric formula alone**:
+
+- `TP_w`, `FP_w` and `FN_w` are computed on the **masked** grid: pixels at
+  known USGS/INGENIOUS faults contribute to *no* term, in *either* round.
+- Emitting predictions on (or, subject to the mask's unknown width, near) the
+  supplied catalogue is therefore **free** — no penalty, no credit.
+- **Irregularity, flagged not smoothed:** the mask's spatial extent is not
+  specified ("pixels corresponding to known faults" — the 60,988 label pixels
+  themselves? a buffer?). Staff wrote "it should not matter whether these known
+  faults are included with predictions or not", which is consistent with a
+  mask at least as wide as the label pixels. The conservative free move is
+  emission *on* catalogue pixels; corridor widths beyond that are a measured
+  bet, not a rule.
+- **Our local metric does not implement the mask.** `6GEMSDOE/src/gems/metric.py`
+  scores against `labels.tif` as ground truth with no exclusion zone, so every
+  local DTI in the evidence files charges FP_w for catalogue-adjacent emission
+  the real scorer never sees. Local numbers remain valid as *relative* monitors
+  on the catalogue population, and are wrong as absolute predictors of board
+  values in a second way (in addition to the wrong-population problem below).
+
 ## 2. What the reference baseline does (verified, official)
 
 Source: <https://github.com/drivendataorg/gems-prize-reference-solution>
@@ -59,19 +94,26 @@ catalogue labels. Every score above it on the hidden new faults must come
 from generalisation **beyond** the catalogue (new geometries, new locations,
 better recall), since the test set is by construction not in the catalogue.
 
-## 3. Field state — fresh pull 2026-09-26T00:41Z
+## 3. Field state — fresh pull 2026-09-26T≈18:55Z (session 4)
 
 Source: <https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/>
-(full table in `SESSION_LOG.md` §3). Summary:
+(full table in `SESSION_LOG.md` session 4 §4). Summary:
 
-- Field high **0.3049** (DARD, #1, 10 subs). Phase-1 pay line (top five,
-  $10K each) sits at **0.2589** (#5 joeyfezster) at pull time.
-- The top of the board is active: #5 submitted within 7 h, #8 within 37 min;
-  #8 `exposed` improved 0.2262 → 0.2340 since the session-1 snapshot.
-- Our five tracked rows (attribution per the brief; registration ownership
-  still unverified — see flag F5): best **0.1563** (#22), then 0.1560 (#23),
-  0.1193 (#39), 0.1152 (#40), 0.0830 (#49). All 1 submission; no drift.
-- Gap to the pay line from our best: **+0.1026**. From our best to field high:
+- Field high **0.3049** (DARD, #1, 10 subs) — unchanged across all four
+  sessions. Phase-1 pay line (top five, $10K each) sits at **0.2589**
+  (#5 joeyfezster) — also unchanged.
+- The board is dense and active through #50 (50 rows visible; new entrants
+  `GrigorSargsyan` #6 0.2504 and `hiii12345` #9 0.2262 appeared near the top
+  since session 3).
+- The five tracked rows (attribution per the brief; registration ownership
+  still unverifiable from public data — flag F5): **0.1563** (#24 extradr19,
+  2 subs), **0.1563** (#25 SDCF9, **2 subs, activity 35 min before the pull**),
+  0.1560 (#26 smashi34), 0.1193 (#41 smrtdoog5), 0.0830 (#50 wbg1).
+- **Movement flagged:** `SDCF9` (one of the three GEMSDOE3-site rows) moved
+  0.1152 → **0.1563** with a second submission *during session 4*. Per the
+  brief these registrations are not treated as our data or as experiment arms
+  of ours; recorded as field movement only.
+- Gap from the best tracked row to the pay line: **+0.1026**; to field high:
   +0.1486.
 
 ## 4. Rules text that constrains us (verbatim, read 2026-09-26)
@@ -149,6 +191,25 @@ From the metric in §1. Labelled D1–D6; each states its assumption.
   so the rational posture is: high recall over candidates with *geologically
   defensible* evidence, and no mass spent on indefensible noise (it pays FP
   tax in Phase 1 and earns nothing in Phase 2).
+- **D7 (session 4, from §1b) — the catalogue is a free emission zone, and the
+  budget calculus changes with it.** The 3%-vs-5% minimax-regret analysis
+  assumed every off-truth pixel pays α·p. Under the staff-confirmed mask,
+  catalogue pixels pay nothing, so the optimal file is (catalogue ∪ confident
+  candidates): the union can only help where expert "new" labels coincide with
+  the catalogue (corrections/registrations) and cannot hurt on the masked
+  pixels. The 5GEMSDOE "S5-A catalogue hedge" (field + the 54,533 missing
+  catalogue px) and GEMSDOE2's "extension arm" (union + 300 m corridor) are
+  the concrete forms of this; the hedge is safe under either reading of the
+  mask width, the corridor is a measured bet on extensions. Assumption: the
+  mask covers at least the label pixels themselves.
+- **D8 (session 4) — our surrogate instruments double-count FP near the
+  catalogue.** Because `metric.py` has no mask, a candidate whose pixels ride
+  next to known faults is under-ranked locally relative to its board value,
+  and the gap between our 0.17-class CV numbers and board-class numbers is
+  not only the wrong-population gap (D5) but also the unmasked-FP gap. Any
+  future local experiment claiming board relevance should implement the
+  §1b mask as far as it can be pinned (mask ≥ the 60,988 label px) and report
+  both masked and unmasked numbers.
 
 ### What a higher-scoring approach must therefore be doing differently
 

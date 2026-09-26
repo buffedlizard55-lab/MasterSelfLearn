@@ -1,0 +1,285 @@
+diff --git a/data/evidence/features_meta.json b/data/evidence/features_meta.json
+index 23eb3e3..5f9b5ab 100644
+--- a/data/evidence/features_meta.json
++++ b/data/evidence/features_meta.json
+@@ -1,5 +1,5 @@
+ {
+-  "path": "/home/user/6GEMSDOE/data/evidence/features.f32.npy",
++  "path": "/home/user/.cache/gemsdoe-scratch/pipeline/data/evidence/features.f32.npy",
+   "shape": [
+     3730,
+     3292,
+@@ -116,8 +116,8 @@
+   "valid_all_band_pixels": 5165840,
+   "tile_rows": 512,
+   "halo": 40,
+-  "rank_tables_sha256": "64a62c3b3e9925ba19a43276af1d931863d81906d26f0b06c8fb74f3fe53c0ae",
++  "rank_tables_sha256": "9368d6a91f16f58a95c2c1039343d59461c5d3d9bb35a457307a4a5aa51aa2dc",
+   "features_sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+-  "built_utc": "2026-09-25T23:20:50Z",
+-  "build_seconds": 917.1
++  "built_utc": "2026-09-26T19:05:36Z",
++  "build_seconds": 956.7
+ }
+diff --git a/scripts/build_submission.py b/scripts/build_submission.py
+index 52a7393..ad0fb95 100644
+--- a/scripts/build_submission.py
++++ b/scripts/build_submission.py
+@@ -133,9 +133,12 @@ def main() -> int:
+     ap.add_argument("--iters", type=int, default=300)
+     ap.add_argument("--n-channels", type=int, default=0,
+                     help="use only the first N channels of the stack "
+-                         "(0 = all). The blocked-CV comparison found the extra "
+-                         "multi-scale channels did not improve the score, so the "
+-                         "shipped model uses the validated subset.")
++                         "(0 = all). The blocked-CV comparison found the "
++                         "cross-family agreement channels (indices 88-104: "
++                         "famrank_*, n_agree_*, agree_*) did not improve the "
++                         "score on the catalogue proxy, so the shipped model "
++                         "uses the 88-channel subset (the multi-scale channels "
++                         "ARE included and DID improve it: 0.1628 -> 0.1698).")
+     ap.add_argument("--threshold", type=float, default=0.10)
+     ap.add_argument("--strategy", default="densified",
+                     help="any name from src/gems/placement.py; the gated variant "
+diff --git a/scripts/experiment.py b/scripts/experiment.py
+index 7a931bc..e058695 100644
+--- a/scripts/experiment.py
++++ b/scripts/experiment.py
+@@ -341,6 +341,32 @@ def run_fold(mm, channels: list[str], n_channels: int, gt: np.ndarray,
+             sub[name] = {"dti": comp.dti}
+         rec["trace_subsample"][f"keep{keep:g}"] = sub
+ 
++    if trace_excl is not None:
++        # E9 catalogue-gap instrument. With --trace-holdout, whole traces are
++        # excluded from TRAINING in every fold, so scoring those traces alone is
++        # the closest honest proxy for "faults missing from the catalogue" that
++        # carries ground truth: the model has never seen them as positives.
++        # `trace_seen` scores the complement for reference. Caveat (fixed
++        # across configs, so comparisons within this instrument are valid):
++        # GT is restricted, so a prediction on the *other* population pays FP.
++        gap_gt = crop_gt_full & trace_excl[sl]
++        seen_gt = crop_gt_full & ~trace_excl[sl]
++        rec["trace_gap"] = {"n_gt": int(gap_gt.sum())}
++        rec["trace_seen"] = {"n_gt": int(seen_gt.sum())}
++        for name in TRACE_PLACEMENTS:
++            if name not in cands:
++                continue
++            comp = metric.components(cands[name], gap_gt)
++            rec["trace_gap"][name] = {
++                "dti": comp.dti, "tp_w": comp.tp_w, "fp_w": comp.fp_w,
++                "fn_w": comp.fn_w, "n_pos_pred": comp.n_pos_pred,
++            }
++            comp = metric.components(cands[name], seen_gt)
++            rec["trace_seen"][name] = {
++                "dti": comp.dti, "tp_w": comp.tp_w, "fp_w": comp.fp_w,
++                "fn_w": comp.fn_w, "n_pos_pred": comp.n_pos_pred,
++            }
++
+     del crop_pred, cands, crop_gt_full
+     return rec
+ 
+@@ -519,6 +545,17 @@ def main() -> int:
+             top = list(out["configs"][name][f"aggregate_keep{keep:g}"].items())[:3]
+             print(f"  keep{keep:g}: " + ", ".join(
+                 f"{n}={v['mean_dti']:.4f}" for n, v in top), flush=True)
++        if args.trace_holdout > 0.0:
++            out["configs"][name]["aggregate_trace_gap"] = aggregate(
++                folds_rec, ("trace_gap",))
++            out["configs"][name]["aggregate_trace_seen"] = aggregate(
++                folds_rec, ("trace_seen",))
++            top = list(out["configs"][name]["aggregate_trace_gap"].items())[:5]
++            print("  trace_gap best: " + ", ".join(
++                f"{n}={v['mean_dti']:.4f}" for n, v in top), flush=True)
++            top = list(out["configs"][name]["aggregate_trace_seen"].items())[:5]
++            print("  trace_seen best: " + ", ".join(
++                f"{n}={v['mean_dti']:.4f}" for n, v in top), flush=True)
+         top = list(out["configs"][name]["aggregate_gt_full"].items())[:6]
+         print(f"  gt_full best: " + ", ".join(
+             f"{n}={v['mean_dti']:.4f}" for n, v in top), flush=True)
+diff --git a/src/gems/cv.py b/src/gems/cv.py
+index 41a6eca..b1e7a15 100644
+--- a/src/gems/cv.py
++++ b/src/gems/cv.py
+@@ -26,6 +26,14 @@ from __future__ import annotations
+ from dataclasses import dataclass
+ 
+ import numpy as np
++from scipy import ndimage
++
++# 8-connectivity square: the metric kernel is an L2 disk of radius 3 px, and an
++# L1 diamond of radius 3 does NOT contain it (defect D-2 — the four diagonal
++# offsets at d=2.83 px fell outside the old 4-connected dilation). An L-infinity
++# square of radius `buffer_px` is a strict superset of the disk, so this buffer
++# can never be too small for any kernel with d <= buffer_px.
++_SQ8 = np.ones((3, 3), dtype=bool)
+ 
+ 
+ @dataclass
+@@ -60,17 +68,10 @@ class Folds:
+ 
+ 
+ def _dilate(mask: np.ndarray, iterations: int) -> np.ndarray:
++    """Grow `mask` by `iterations` px with 8-connectivity (L-infinity square)."""
+     if iterations <= 0:
+         return mask
+-    out = mask.copy()
+-    for _ in range(iterations):
+-        shifted = out.copy()
+-        shifted[1:, :] |= out[:-1, :]
+-        shifted[:-1, :] |= out[1:, :]
+-        shifted[:, 1:] |= out[:, :-1]
+-        shifted[:, :-1] |= out[:, 1:]
+-        out = shifted
+-    return out
++    return ndimage.binary_dilation(mask, structure=_SQ8, iterations=iterations)
+ 
+ 
+ def make_folds(n_blocks: int = 4, n_folds: int = 4, buffer_px: int = 3) -> Folds:
+diff --git a/src/gems/features.py b/src/gems/features.py
+index 9d5522e..5f1d23e 100644
+--- a/src/gems/features.py
++++ b/src/gems/features.py
+@@ -52,6 +52,22 @@ from scipy import ndimage
+ 
+ B = spec.BAND_INDEX  # band-name -> 1-based TIFF band index
+ 
++# 8-connectivity (Chebyshev / L-infinity square) structuring element. The
++# supported stencils here are square or reach diagonal neighbours (the mixed
++# second derivative), so a 4-connected (L1 diamond) dilation is not a correct
++# guard — see defect D-1/D-5 in the session-4 pipeline audit.
++_SQ8 = np.ones((3, 3), dtype=bool)
++
++
++def _filter_reach(sigma: float, truncate: float = 4.0) -> int:
++    """`scipy.ndimage.gaussian_filter`'s own stencil half-width (in pixels).
++
++    The Gaussian kernel is truncated at `truncate` sigmas, so its 2-D support
++    is a square of radius `int(truncate * sigma + 0.5)`. The NaN guard must
++    invalidate exactly that square around every NaN — no more, no less.
++    """
++    return int(truncate * sigma + 0.5)
++
+ 
+ # --------------------------------------------------------------------------- IO
+ 
+@@ -80,15 +96,16 @@ def load_bands(path: str, names: list[str], window=None) -> tuple[dict[str, np.n
+ def _guarded_filter(arr: np.ndarray, func, radius: int) -> np.ndarray:
+     """Apply `func` to `arr` (NaN->0) and re-invalidate the affected halo.
+ 
+-    A pixel is marked NaN if any pixel within `radius` of it (the stencil reach)
+-    was NaN on input. Without this, an edge filter next to the data boundary
+-    invents structure out of the sentinel / fill value.
++    A pixel is marked NaN if any pixel within `radius` of it (the stencil reach,
++    dilated with 8-connectivity so the guard covers square and diagonal
++    stencils alike) was NaN on input. Without this, an edge filter next to the
++    data boundary invents structure out of the sentinel / fill value.
+     """
+     bad = ~np.isfinite(arr)
+     filled = np.where(bad, 0.0, arr)
+     res = func(filled)
+     if radius > 0 and bad.any():
+-        grown = ndimage.binary_dilation(bad, iterations=radius)
++        grown = ndimage.binary_dilation(bad, structure=_SQ8, iterations=radius)
+         res = np.where(grown, np.nan, res)
+     else:
+         res = np.where(bad, np.nan, res)
+@@ -96,11 +113,12 @@ def _guarded_filter(arr: np.ndarray, func, radius: int) -> np.ndarray:
+ 
+ 
+ def nan_gaussian(arr: np.ndarray, sigma: float) -> np.ndarray:
+-    r = int(np.ceil(3 * sigma))
++    r = _filter_reach(sigma)   # the filter's own reach, not ceil(3*sigma)
+     return _guarded_filter(arr, lambda a: ndimage.gaussian_filter(a, sigma), r)
+ 
+ 
+ def nan_uniform(arr: np.ndarray, size: int) -> np.ndarray:
++    # uniform_filter is a square stencil of radius size//2
+     r = size // 2
+     return _guarded_filter(arr, lambda a: ndimage.uniform_filter(a, size), r)
+ 
+@@ -112,7 +130,7 @@ def local_std(arr: np.ndarray, sigma: float) -> np.ndarray:
+     zones show up as locally rougher potential fields / rougher ground than the
+     surrounding block, independently of the sign of the anomaly.
+     """
+-    r = int(np.ceil(3 * sigma))
++    r = _filter_reach(sigma)
+     m1 = nan_gaussian(arr, sigma)
+     m2 = nan_gaussian(np.where(np.isfinite(arr), arr * arr, np.nan), sigma)
+     with np.errstate(invalid="ignore"):
+@@ -120,7 +138,8 @@ def local_std(arr: np.ndarray, sigma: float) -> np.ndarray:
+     out = np.sqrt(np.where(var > 0.0, var, 0.0))
+     bad = ~np.isfinite(arr)
+     if bad.any():
+-        out = np.where(ndimage.binary_dilation(bad, iterations=r), np.nan, out)
++        out = np.where(ndimage.binary_dilation(bad, structure=_SQ8,
++                                               iterations=r), np.nan, out)
+     return out
+ 
+ 
+@@ -155,7 +174,12 @@ def derivatives(arr: np.ndarray, spacing: float = spec.PIXEL_SIZE_M
+ 
+ 
+ def second_derivatives(arr: np.ndarray, spacing: float = spec.PIXEL_SIZE_M):
+-    """r = d2/dx2, t = d2/dy2, s = d2/dxdy (NaN-propagating, radius-1 stencil)."""
++    """r = d2/dx2, t = d2/dy2, s = d2/dxdy (NaN-propagating, radius-1 stencil).
++
++    The mixed derivative s taps the four DIAGONAL neighbours, so the NaN halo
++    must be 8-connected: a 4-connected radius-1 dilation leaves s finite (and
++    zero-fill-contaminated) next to a diagonal NaN (defect D-5).
++    """
+     bad = ~np.isfinite(arr)
+     a = np.where(bad, 0.0, arr)
+     r = np.zeros_like(a)
+@@ -165,7 +189,8 @@ def second_derivatives(arr: np.ndarray, spacing: float = spec.PIXEL_SIZE_M):
+     r[:, 1:-1] = (a[:, 2:] - 2 * a[:, 1:-1] + a[:, :-2]) / h
+     t[1:-1, :] = (a[2:, :] - 2 * a[1:-1, :] + a[:-2, :]) / h
+     s[1:-1, 1:-1] = (a[2:, 2:] - a[2:, :-2] - a[:-2, 2:] + a[:-2, :-2]) / (4.0 * h)
+-    halo = ndimage.binary_dilation(bad, iterations=1) if bad.any() else bad
++    halo = ndimage.binary_dilation(bad, structure=_SQ8,
++                                   iterations=1) if bad.any() else bad
+     return (np.where(halo, np.nan, r), np.where(halo, np.nan, t),
+             np.where(halo, np.nan, s))
+ 
+diff --git a/tests/test_spec_and_cv.py b/tests/test_spec_and_cv.py
+index 0632048..4bc9cbf 100644
+--- a/tests/test_spec_and_cv.py
++++ b/tests/test_spec_and_cv.py
+@@ -51,14 +51,30 @@ def test_blocked_folds_have_a_buffer_between_train_and_score():
+     shape = (80, 80)
+     train, score = f.train_test_masks(shape, 0)
+     assert score.any() and (~score).any()
+-    # every scored pixel is at least buffer_px+1 away from any training pixel
+-    rows = np.flatnonzero(score.any(axis=1))
+-    for r in rows:
+-        assert not train[r].any() or True
+-    # specifically: train mask must be a strict subset of the complement of the
+-    # dilated score mask
+-    dilated = cv._dilate(score, 3)
+-    assert not (train & dilated).any()
++    # The invariant the METRIC needs: no training pixel may lie inside the
++    # scoring kernel of any scored pixel. Asserted against the metric's own
++    # kernel support (metric.kernel_offsets), NOT against cv._dilate — a test
++    # built from the same helper the implementation uses cannot catch a helper
++    # that is itself too small (defects D-2 / D-4).
++    from gems import metric
++    reach = np.zeros((7, 7), dtype=bool)  # covers every offset with |dy|,|dx| <= 3
++    dy, dx, k = metric.kernel_offsets()
++    for a, b, kk in zip(dy, dx, k):
++        if kk > 0.0:
++            reach[3 + int(a), 3 + int(b)] = True
++    assert reach.any()
++    from scipy import ndimage
++    near_score = ndimage.binary_dilation(score, structure=reach)
++    assert not (train & near_score).any(), (
++        "training pixels inside the metric kernel of scored pixels")
++    # and the guard must hold at other block layouts too (D-2b: folds are
++    # contiguous slabs when n_blocks == n_folds)
++    for nb, nf in ((4, 4), (5, 5), (6, 4), (8, 4), (3, 3), (4, 2)):
++        ff = cv.make_folds(n_blocks=nb, n_folds=nf, buffer_px=3)
++        for kk in range(nf):
++            tr, sc = ff.train_test_masks(shape, kk)
++            assert not (tr & ndimage.binary_dilation(sc, structure=reach)).any(), (
++                f"leak at n_blocks={nb}, n_folds={nf}, fold={kk}")
+ 
+ 
+ def test_folds_partition_the_grid():

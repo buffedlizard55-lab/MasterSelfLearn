@@ -29,6 +29,13 @@ a status change gets a new line with the date.
 (Ranking rationale = our D-analysis in `FIELD_AND_METRIC.md` §5; each entry
 names the test that would decide it and what blocks that test here.)
 
+**Queue revision 2026-09-26 (session 4):** the DrivenData staff clarification
+that known-fault pixels are **masked from scoring** (`FIELD_AND_METRIC.md` §1b,
+forum 11516) reorders this queue. Catalogue emission is free, so hedges and
+corridors along known traces (E11) jump to the top of the cheap experiments,
+and every surrogate number below must be re-read with the unmasked-FP caveat
+(D8).
+
 | Id | Hypothesis | Why it could move the score | Test | Blocked on |
 |---|---|---|---|---|
 | E1 | Mining the 1 m DEM for scarp-template matches **outside** the catalogue adds true hidden-fault recall | D5: scarps are the richest young-fault evidence; C1 gives a published per-pixel method; the GEMSDOE inventory already confirmed 716 1 m tiles over the footprint | Run Sare-et-al.-style curvature-template matching per tile; emit candidates with distance-to-catalogue > 300 m; score surrogate overlap + public-board A/B | competition data + DEM tiles (confirmed account), a GPU-class runner |
@@ -38,8 +45,8 @@ names the test that would decide it and what blocks that test here.)
 | E5 | Emission budget should be raised above 3% of valid area — recall-priced metric tolerates more candidates | D1: FP tax is 0.2 per far miss vs 0.8 per recovered truth; break-even P(capture) ≈ 0.2 | Budget sweep on surrogate, then the smallest board-confirming step | both populations |
 | E6 | Stress-loaded candidates (slip/dilation tendency of Great Basin Q-faults, USGS official shapefile) prioritise which unmapped structures to emit | A5: official, region-specific, free; complements the provided dilatation-rate band | Join tendency shapefile to catalogue-gap candidates; use as ranking prior | data tab access to emit |
 | E7 | Phase-2 upside: defensible-only candidates outscore recall-maxed noise once experts expand labels | D6: Phase 2 rescoring uses experts' review of every submission | Not directly testable before Phase 1 closes; adopted as a design principle (no indefensible mass) | n/a — principle |
-| **E8** | **Rebuild the feature stack with the NaN-guard defect (D-1) fixed and re-run the whole experiment table** | Session 3 measured 32,461 footprint px (0.63%) at σ=1.5 and 78,319 (1.52%) at σ=3.0 sitting in the filter stencil's reach of a NaN yet reported as valid — 0.5×–1.3× the size of the entire 60,988-px label set. Every number in `data/evidence/experiments*.json` was computed on those channels, so **the current feature ranking is unknown, not merely suboptimal** | Apply the verified patch (`PIPELINE_AUDIT.md` §5), re-run `build_features.py` (917 s last time), re-run the experiment table, diff the ordering | a runner with the 419 MB feature bridge; ~1 h of compute |
-| **E9** | **Re-test the agreement layer on a catalogue-*gap* instrument, not the catalogue proxy** | HF lost by 0.0019–0.0027 on the catalogue. Those 17 channels are the only ones whose information is independent of mapping history, so the catalogue proxy is the one instrument that cannot see their value. They are also what makes the top candidates geologically legible (`CANDIDATE_GEOLOGY.md` §4) | Blocked folds scoring only catalogue-gap pixels; or the `cross-catalogue` instrument. Compare 88 ch vs 88+agreement at identical budget | E8 first, else the comparison inherits D-1 |
+| **E8** | **Rebuild the feature stack with the NaN-guard defect (D-1) fixed and re-run the whole experiment table** | Session 3 measured 32,461 footprint px (0.63%) at σ=1.5 and 78,319 (1.52%) at σ=3.0 sitting in the filter stencil's reach of a NaN yet reported as valid — 0.5×–1.3× the size of the entire 60,988-px label set. Every number in `data/evidence/experiments*.json` was computed on those channels, so **the current feature ranking is unknown, not merely suboptimal** | Apply the verified patch (`PIPELINE_AUDIT.md` §5), re-run `build_features.py` (917 s last time), re-run the experiment table, diff the ordering | a runner with the 419 MB feature bridge; ~1 h of compute — **UNBLOCKED and executed session 4 in a scratch checkout; results in `REBUILT_EXPERIMENTS.md`** |
+| **E9** | **Re-test the agreement layer on a catalogue-*gap* instrument, not the catalogue proxy** | HF lost by 0.0019–0.0027 on the catalogue. Those 17 channels are the only ones whose information is independent of mapping history, so the catalogue proxy is the one instrument that cannot see their value. They are also what makes the top candidates geologically legible (`CANDIDATE_GEOLOGY.md` §4) | Blocked folds scoring only catalogue-gap pixels; or the `cross-catalogue` instrument. Compare 88 ch vs 88+agreement at identical budget | E8 first, else the comparison inherits D-1 — **sequenced after E8 and executed session 4 as `--trace-holdout 0.3` + `trace_gap` scoring (the cross-catalogue instrument); results in `REBUILT_EXPERIMENTS.md`** |
 | **E10** | **Kill the three falsification risks that dominate the top candidates** | `CANDIDATE_GEOLOGY.md` §4: (a) N–S aeromagnetic flight-line striping in `tmi_hg` threatens every azimuth ≈ 0–13° candidate; (b) smoothed regional gradient inherited by `geod_shearrate` threatens the highest-strain candidate C-7; (c) gravity *sign* (basement high vs basin fill) threatens C-1/C-5, whose ranks are 1.00/0.99. None is answerable from magnitude-ranked `famrank` | Read raw band values along each of the six written-up traces; check striping periodicity, strain-band gradient, and gravity sign | the feature stack (same access as E8) |
 
 ## What killed (or would kill) each open entry
@@ -50,7 +57,9 @@ names the test that would decide it and what blocks that test here.)
   noise (~±0.005, our rough read of sibling-score spreads — labelled as such).
 - E3 dies if edge layers merely re-express catalogue structure (high overlap,
   low gap-density).
-- E5 dies if the board punishes the raised budget (FP tax realised).
+- E5 dies if the board punishes the raised budget (FP tax realised). **Re-opened
+  in part by the masking rule (D7):** budget spent *on/near the catalogue* is
+  tax-free, so the 3% ceiling applies only to off-mask emission.
 - E8 cannot die, only cost: if the rebuilt table reproduces the current ordering,
   the contamination was immaterial and that is itself a result worth recording.
 - E9 dies if the agreement channels also lose on the gap population — at which
@@ -58,3 +67,12 @@ names the test that would decide it and what blocks that test here.)
   rather than with an assumption.
 - E10 dies the candidates, not the hypothesis: a candidate killed by (a), (b) or
   (c) is removed from the written-up set and the reason is recorded here.
+
+## Session-4 additions and status changes (2026-09-26)
+
+| Id | Hypothesis | Status | Evidence |
+|---|---|---|---|
+| **E10** | The three artefact risks that dominate the top candidates can be killed with raw-band tests | **DECIDED — tests executed; one candidate demoted, two strengthened, one class-level finding** | `gemsdoe/probes/e10_falsification.py` on the pinned raster; results in `CANDIDATE_GEOLOGY.md` §5–§6. (a) flags C-4 and 3/3 near-N–S traces tested (class finding); (b) clears C-7's flagship risk (strain earned locally, R² 0.29) and exposes `geod_shearrate` data holes at C-3/C-4; (c) refutes C-5's graben-fill kill (both C-1/C-5 are density-high/shallow-basement). |
+| **HI** | Known USGS/INGENIOUS fault pixels are masked out of scoring in both rounds | **RULE-VERIFIED (official staff, forum 11516, 2026-09-16)** — not our experiment | DrivenData staff reply quoted in `FIELD_AND_METRIC.md` §1b: masked pixels "do not count towards penalty terms", in both rounds. Mask width unspecified (flagged). Our local `metric.py` does not implement it (D8). |
+| **E11** | The score-safe, possibly score-raising file is `catalogue ∪ confident new-fault candidates` (and a 1-px corridor along the catalogue is a cheap bet on expert extensions) | **OPEN — board-testable with one slot; locally only partially testable** | D7 (masking ⇒ catalogue emission free). Concrete arms already built on our own sites: 5GEMSDOE "S5-A catalogue hedge" (+54,533 px, "cannot score lower under either reading") and GEMSDOE2 "extension arm" (+300 m corridor). Their live scores are the natural A/B — **but the registrations behind those rows are not verified as ours (F5), so as data they are field observations, not our arms.** The test for US: upload one hedge file with the confirmed account when a slot is sanctioned. |
+| **E12** | A stripe-removal (flight-line levelling) pass over `tmi_hg`/`mag_*` recovers trustworthy N–S edge evidence | **OPEN** | Class finding of E10: 3/3 near-N–S traces striping-flagged, C-2 marginal (0.233). Until fixed, N–S candidates should be restated on gravity/strain/seis/cond (as C-4/C-8/C-10 now are). Test: re-run (a) on a levelled stack; flag rate must fall below the non-N–S baseline. |
