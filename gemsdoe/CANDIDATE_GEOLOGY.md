@@ -95,6 +95,12 @@ Two things follow directly, without importing any regional model:
 
 ## 3. Per-candidate reasoning — top six `new_to_catalogue` by median probability
 
+> **Session-4 status (2026-09-26):** the three falsification tests of §4 have
+> now been run on raw bands — see §5 for the per-candidate outcomes. Net:
+> **C-4 demoted** (N–S striping artefact present in `tmi_hg`), **C-7 and C-5
+> strengthened** (their kill tests failed to kill), C-2 survived its striping
+> test marginally. Read §5 alongside each block below.
+
 ### C-1 · 40.5042°N, 118.1105°W · 1,200 m · azimuth 34.3° · p̃ 0.577 · 412 m from catalogue
 **MEASURED** famrank 0.70 / **1.00** / 0.28 / **0.93** / 0.72 / 0.72; agree4 = 2.0
 **SOURCED** Eastern Humboldt Range fault zone (N; <130,000 and <1,800,000; slip <0.2 mm/yr) in the window.
@@ -284,8 +290,180 @@ flagship candidate.
    Indian Head and Gumdrop Hills zones — dip, sense, and any published slip-rate
    estimate — and check each candidate's azimuth against the documented dip
    direction.
-3. Run falsification tests (a)–(c) above along each trace.
+3. Run falsification tests (a)–(c) above along each trace. **DONE — session 4,
+   see §5.**
 4. Extend this file past the top six: there are 260 `new_to_catalogue`
    candidates and only 6 have written reasoning. The generator
    (`scripts/candidate_writeup.py`) should emit the SOURCED lookup per candidate
    automatically rather than have it done by hand.
+
+---
+
+## 5. Session-4 falsification results (E10, 2026-09-26)
+
+**MEASURED** — `gemsdoe/probes/e10_falsification.py` against the sha-pinned
+official raster (`training_features.tif`, sha256 `4371c82e…`) this session.
+Raw bands only (`tmi_hg`, `geod_shearrate`, `geod_dilaterate`, `iso_grav_anom`,
+`det_elev`, `depth_to_base_surf`) — never `famrank`, which cannot answer any
+of these. Trace geometry: `candidates.json` stores bbox + azimuth + length but
+not pixel lists, so each trace is sampled on its **bbox-centerline segment**
+(exact for straight traces; stated approximation). Window = ±25 px (±2.5 km).
+
+| candidate | (a) N–S striping in `tmi_hg` | (b) strain-gradient inheritance | (c) gravity sign | session-4 verdict |
+|---|---|---|---|---|
+| C-1 (id 548) | not near-N–S — n/a | shear clear (R² 0.75); **dilatation FLAG** (R² 0.90, residual −0.08σ) | **+0.54σ basement HIGH** (trace 14.5 vs window 11.7) | **STRENGTHENED** on the kill-it-that-mattered; strain rank was always low (0.28) and is now doubly uninformative |
+| C-2 (id 3552) | near-N–S but **clear** — E–W power share 0.233 < 0.25 threshold (control N–S share 0.490); period 10.4 px | clear on both bands (R² 0.77/0.78, residual 0.18/0.28σ) | −0.38σ mild low; det_elev −0.52σ (basin floor), basement deeper (+0.25σ) | **SURVIVED its main kill test** — the N–S trace is not sitting on a stripe artefact (marginal: 0.233 is near the flag threshold; keep watching) |
+| C-3 (id 622) | not near-N–S — n/a | **`geod_shearrate` is data-sparse here (plane fit undefined, <30 finite px)**; dilatation FLAG (R² 0.95) | no contrast (+0.14σ) | **STRENGTHENED on its own terms** (topo-led, 0.87); its strain rank 0.34 is now known to be computed from a hole in the strain bands — uninformative either way |
+| **C-4 (id 1618)** | near-N–S (172°) and **FLAGGED** — narrowband **E–W periodicity, 18 px period, power share 0.463** under the trace (control N–S share 0.202) | `geod_shearrate` sparse (fit undefined); dilatation FLAG (R² 0.90) | no contrast (+0.21σ) | **DEMOTED from the written-up flagship set.** The exact artefact the kill-it-if named is present in the band that gives the trace its edge evidence. Restated case: grav/seis/cond-only (0.90/0.93/0.88) — a fluids-bearing transverse structure *if* those families survive independent inspection; the magnetics/trend evidence is contaminated until someone subtracts the stripe field |
+| C-5 (id 240) | not near-N–S — n/a | FLAG on both bands (R² 0.87/0.91) — but its strain rank is 0.25 (already the weak family) | **+0.27σ gravity HIGH**, **det_elev +0.86σ** (range front), **basement shallow (−0.70σ)** | **STRENGTHENED** — the kill-it-if (model responding to graben *fill*, a density low) is **refuted**: the trace sits on the dense/high/shallow-basement side. Coherent range-front reading |
+| C-7 (id 4383) | not near-N–S (159°) — n/a | **CLEAR, and this was the flagship risk**: `geod_shearrate` plane R² only **0.29** in-window, trace residual −0.53σ — the 0.97 strain rank is a **local departure**, not a smoothed-gradient inheritance | −0.62σ gravity LOW but **basement deep (+0.92σ)**, det_elev high-ish | **STRENGTHENED** — the single most important kill test failed to kill it. Gravity-low + deep section + high strain + high seismicity is the transtensional transfer-zone reading, now with the strain artefact excluded at the window scale |
+
+### What changed in the reasoning (INTERPRETATION, following the measurements)
+
+1. **One candidate (C-4) is demoted** by test (a), exactly as the pre-registered
+   rule in `HYPOTHESES.md` E10 ("a candidate killed by (a), (b) or (c) is
+   removed from the written-up set and the reason is recorded") required. The
+   test flagged rather than strictly proved the artefact (the model responds to
+   ten other channels too), so C-4 is *demoted and restated on non-magnetic
+   evidence* rather than deleted — the distinction is recorded so the next
+   reader can re-promote it if the stripe field is subtracted.
+2. **The flagship risk to C-7 is dead at the window scale.** The strain rank is
+   earned locally (R² 0.29, residual −0.53σ). Combined with the sourced Holocene
+   strike-slip neighbours, C-7 is now the best-supported candidate in the set.
+3. **The gravity-sign test separates the gravity-led pair cleanly**: C-1 and
+   C-5 are both density-HIGH / basement-shallow — basement structures, not
+   basin-fill artefacts. C-5's graben-fill kill hypothesis is refuted outright.
+4. **New finding, not in any earlier brief: `geod_shearrate` has data holes.**
+   In the C-3 and C-4 windows the band has fewer than 30 finite pixels in the
+   ±2.5 km window — the plane fit is undefined. Their `famrank_strain` values
+   (0.34 / 0.55) are computed by the `max`-over-family-members rule from
+   `geod_2ndinv` / `geod_dilaterate` alone. Any reading of a "strain rank" at
+   those two locations must state this. **FLAGGED.**
+5. **The (b) FLAG on `geod_dilaterate` is frequent (4 of 6) and mostly
+   uninformative** — the dilatation-rate band is smooth almost everywhere
+   (R² ≥ 0.9 in 4 windows), so "sits on the regional field" is the null case
+   for that band. The discriminative test is the *shear*-rate R², which is low
+   only at C-7 (0.29) and moderate at C-1/C-2 (0.75/0.77). Recorded so the
+   next reader does not over-flag from the dilatation column.
+
+### Still open per candidate (in priority order)
+
+- C-2's 0.233 E–W power share is *near* the 0.25 flag threshold — re-test after
+  any detrended/levelled `tmi_hg` becomes available.
+- C-4's conductivity question (narrow linear conductor vs basin fill) is
+  untouched by these three tests — `cond_surf` cross-sections are the next
+  measurement before any re-promotion.
+- All six: exact trace-to-trace QFFD separation (follow-up 1 above) is still
+  outstanding.
+
+---
+
+## 6. Extension set — four more written up (session 4, task 6)
+
+The brief asks for reasoning per candidate, not per pixel mask; the written-up
+set now covers **ten** of the 260 `new_to_catalogue` components. Selection:
+the previous session's "top six" **skipped rank 6 (id 1991, p̃ 0.558)** — its
+"C-7" is rank 7 — so id 1991 is written up first (flagged as a selection
+inconsistency in session 3, not silently absorbed). Then the two most
+distinctive remaining profiles (id 872: cond rank **0.98**; id 4323: strain
+rank **0.98**) and id 4209 (cond 0.93). QFFD windows queried live 2026-09-26
+with `outFields=Name,Age,Type,Source` (session 3's field set; a `Slip_Rate`
+attempt returns HTTP 400 from the service — the field does not exist there).
+
+### C-6 · id 1991 · 40.0588°N, 118.4222°W · 4,400 m · az 24.6° · p̃ 0.558 · 1,000 m from catalogue
+**MEASURED** famrank 0.81 / 0.97 / 0.60 / 0.75 / 0.59 / 0.80; agree 3.0. E10: shear
+**inherited** (plane R² 0.95, residual −0.07σ); dilatation *departs* (+1.03σ);
+gravity no contrast.
+**SOURCED** Western Humboldt Range fault zone (N; <1,800,000) plus an unnamed
+N section dated <130,000 in the window.
+**INTERPRETATION.** The longest trace after C-5 (4.4 km) on the same Humboldt
+system as C-1/C-5, at 24.6° — sub-parallel to C-1/C-5's ~34–35° but rotated
+toward the range-front trend. Gravity 0.97 is second only to C-1/C-5, but the
+E10 inheritance flag says its 0.60 strain rank is **carried by the smoothed
+regional field, not earned locally** — treat the strain column as uninformative
+here. What survives: gravity + magnetics + a sourced late-Quaternary unnamed
+segment. Read as the **central segment linking C-1 and C-5 along the Western
+Humboldt front** — if the three connect at trace resolution, the Humboldt
+structure becomes a ~17 km system, the strongest single claim in the set.
+**Confirm with:** the C-1 ↔ C-6 ↔ C-5 chain test (trend continuity over the
+full latitude span 40.05–40.62°N).
+**Kill it if:** the connecting trend is the gravity *gradient* of the basin
+margin rather than a discrete structure — check `grav_hgm_computed` for a
+single narrow ridge vs a broad ramp along the chain.
+
+### C-8 · id 872 · 40.3677°N, 118.9505°W · 800 m · az 12.8° · p̃ 0.545 · 1,005 m from catalogue
+**MEASURED** famrank 0.51 / 0.94 / 0.66 / 0.93 / **0.98** / 0.88; agree 4.0. E10:
+**(a) FLAGGED** — near-N–S, E–W periodicity 17.3 px, power share **0.526**;
+(b) strain **departs locally on both bands** (+0.64/+0.66σ on top of a smooth
+field, R² 0.87/0.89); (c) no gravity contrast.
+**SOURCED** Unnamed fault zone along Bluewing Mountains (N; <1,800,000);
+**Granite Springs Valley fault zone with a <15,000 (Holocene) segment** (N).
+**INTERPRETATION.** The highest conductivity rank in the whole top-12 (0.98)
+with seismicity 0.93 and a Holocene neighbour — on non-magnetic evidence this
+is the most geothermally pointed candidate after C-4's demotion: a conductive,
+seismically active structure beside a Holocene fault. The (a) flag contaminates
+its *magnetics/trend* evidence (az 12.8° sits in the stripe-suspect class), so
+the case is **restated on cond/seis/strain only**, exactly as C-4's is. The
+strain result here is the mirror image of C-6's: the trace is a *local*
+maximum riding a smooth field — earned, not inherited.
+**Confirm with:** `cond_surf` cross-section (narrow conductor = structural
+fluid path; broad = basin fill — the C-4 kill test, applied here where cond is
+even stronger) and the Holocene segment's mapped trace geometry from QFFD with
+`returnGeometry=true`.
+**Kill it if:** the conductivity high is the Granite Springs Valley fill
+itself (`depth_to_base_surf` at the trace reads 18.8 m vs 21.2 m window —
+shallow everywhere; if `cond_surf` maps the valley axis, the anomaly is
+stratigraphic).
+
+### C-9 · id 4209 · 38.8782°N, 117.9021°W · 1,000 m · az 24.7° · p̃ 0.542 · 412 m from catalogue
+**MEASURED** famrank 0.53 / 0.81 / 0.74 / 0.72 / **0.93** / 0.72; agree 3.0. E10:
+shear inherited (R² 0.92) but dilatation departs (−0.37σ); gravity mild (+0.22σ).
+**SOURCED** Paradise Range fault zone (N; **<130,000**) in the window.
+**INTERPRETATION.** Only 412 m from the catalogue — the nearest of the
+extension set — beside a late-Quaternary normal zone. Cond 0.93 with modest
+everything-else is the profile of a **basin-margin structure with fluid in the
+damage zone**; at 412 m this is most plausibly a mapped-trace splay or step-over
+(the PFA sweet-spot geometry of `HYPOTHESES.md` E4).
+**Confirm with:** tip-ray/step-over geometry against the nearby catalogue
+trace (E4's test); if the candidate is collinear with a catalogue trace tip,
+it is an extension, which is exactly the population the experts' "new" set is
+most likely to contain.
+**Kill it if:** the cond high is valley fill along the Paradise Range front
+(same cond_surf cross-section test).
+
+### C-10 · id 4323 · 38.7578°N, 118.6216°W · 800 m · az 1.5° · p̃ 0.534 · 2,786 m from catalogue
+**MEASURED** famrank 0.72 / 0.55 / **0.98** / 0.91 / 0.28 / 0.85; agree 3.0. E10:
+**(a) FLAGGED** — near-N–S, E–W periodicity 13 px, share **0.456**; (b) strain
+**departs on both bands** (−0.13/−0.40σ, R² 0.83/0.88); (c) **gravity HIGH
++0.67σ with basement very shallow (−1.07σ: depth_to_base 4 m vs 59 m window)
+and det_elev high (+0.25σ)**.
+**SOURCED** Agai Pah Hills fault zone (N; <1,800,000) in the window — and it
+sits ~11 km north of C-7's Indian Head/Gumdrop Hills window, the same
+southwestern corridor.
+**INTERPRETATION.** The highest strain rank anywhere (0.98) with seismicity
+0.91 — and, unlike C-7's, the E10 test says the strain is **earned locally,
+not inherited** (the second candidate with that property). It stands on a
+**shallow-basement gravity high** — a footwall/uplift setting, the opposite of
+C-7's deep basin. C-10 and C-7 are 11 km apart in the same transtensional
+corridor: one on the uplift side, one in the deep basin — the two flanks of
+one transfer zone would look exactly like this pair. The az 1.5° trend is in
+the stripe-suspect class (flagged), so the *orientation* is untrusted while
+the *evidence stack* (strain+seis local maxima on a basement high beside a
+named zone) survives.
+**Confirm with:** whether C-10 and C-7 share a connecting structure (en-échelon
+stepping between 38.70 and 38.76°N); magnetic edge map with the stripe field
+subtracted before trusting the N–S trend.
+**Kill it if:** the shallow basement high is the Agai Pah Hills range front
+itself and the candidate merely traces the topographic break (`slope_of_slope`
+vs `curv_profile` cross-sections decide).
+
+### Class-level finding (INTERPRETATION over §5 + §6 measurements)
+
+**Every near-N–S trace tested with the striping probe has now flagged (3/3) or
+sat at the threshold (C-2, 0.233).** The azimuth ≈ 0–17° emission class is
+artefact-suspect as a class, not case by case. Practical consequence for the
+next model build: N–S-oriented evidence from `tmi_hg`/`mag_*` channels should
+carry a prior discount (or a detrended/levelled magnetic stack should replace
+those channels) until a stripe-removal pass exists. Gravity, strain, seismicity
+and conductivity evidence is unaffected by this class risk and is what the
+demoted candidates are re-stated on.
