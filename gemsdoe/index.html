@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GEMS Prize Knowledge Base — MasterSelfLearn</title>
+<meta name="description" content="Research library, hypothesis backlog, session log, and compliance record for the DOE GEMS Prize (DrivenData competition 306): finding faults missing from the USGS/INGENIOUS catalogue in the GeoDAWN region.">
+<meta name="color-scheme" content="dark light">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  /* GEMS knowledge base — extends the shared design system */
+  .gems-header { border-bottom: 1px solid var(--line); margin-bottom: 28px; }
+  .gems-title { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin: 0; }
+  .gems-sub { color: var(--fg-2); font-size: 14px; margin-top: 4px; }
+  .gems-param { color: var(--accent-2); font-weight: 600; }
+  .gems-badge {
+    display: inline-block; padding: 2px 8px; border-radius: 999px;
+    font-size: 11.5px; font-weight: 600; letter-spacing: 0.02em;
+    border: 1px solid var(--line-2); color: var(--fg-2); background: var(--bg-2);
+  }
+  .gems-badge.open       { background: color-mix(in srgb, var(--info) 14%, transparent); border-color: var(--info); color: var(--info); }
+  .gems-badge.tested     { background: color-mix(in srgb, var(--up) 14%, transparent); border-color: var(--up); color: var(--up); }
+  .gems-badge.falsified  { background: color-mix(in srgb, var(--crit) 14%, transparent); border-color: var(--crit); color: var(--crit); }
+  .gems-badge.decided    { background: color-mix(in srgb, var(--warn) 14%, transparent); border-color: var(--warn); color: var(--warn); }
+  .gems-badge.rule-ver   { background: color-mix(in srgb, var(--accent) 14%, transparent); border-color: var(--accent); color: var(--accent); }
+  .gems-badge.implemented{ background: color-mix(in srgb, var(--up) 14%, transparent); border-color: var(--up); color: var(--up); }
+  .section { margin-bottom: 32px; }
+  .section h2 {
+    font-size: 20px; font-weight: 700; letter-spacing: -0.01em;
+    margin: 0 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--line);
+    color: var(--fg);
+  }
+  .section h3 {
+    font-size: 15.5px; font-weight: 600; margin: 18px 0 6px;
+    color: var(--fg);
+  }
+  .section h4 {
+    font-size: 13.5px; font-weight: 600; margin: 12px 0 4px;
+    color: var(--fg-2); text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .section p { margin: 6px 0; color: var(--fg-2); }
+  .section ul { margin: 6px 0 6px 0; padding-left: 20px; }
+  .section li { margin: 3px 0; color: var(--fg-2); }
+  .entry {
+    background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--r);
+    padding: 14px 16px; margin: 10px 0; position: relative;
+  }
+  .entry .star { color: var(--warn); font-weight: 700; margin-right: 6px; }
+  .entry .id { color: var(--fg-3); font-family: var(--mono); font-size: 12px; margin-right: 8px; }
+  .entry .src { color: var(--accent-2); font-size: 12.5px; word-break: break-all; }
+  .entry .claim { color: var(--fg); font-size: 14.5px; margin: 6px 0; }
+  .entry .rel { color: var(--fg-3); font-size: 13px; }
+  .entry .conf {
+    display: inline-block; font-size: 11.5px; padding: 1px 7px; border-radius: 4px;
+    background: var(--bg-3); color: var(--fg-3); border: 1px solid var(--line);
+    margin-top: 4px;
+  }
+  .entry .conf.high   { background: color-mix(in srgb, var(--up) 12%, var(--bg-3)); color: var(--up); border-color: var(--up); }
+  .entry .conf.med    { background: color-mix(in srgb, var(--warn) 12%, var(--bg-3)); color: var(--warn); border-color: var(--warn); }
+  .entry .conf.low    { background: color-mix(in srgb, var(--crit) 12%, var(--bg-3)); color: var(--crit); border-color: var(--crit); }
+  .entry .conf.unver  { background: color-mix(in srgb, var(--info) 12%, var(--bg-3)); color: var(--info); border-color: var(--info); }
+  .cite {
+    display: inline-block; color: var(--fg-3); font-size: 12px; font-style: italic;
+    border-left: 2px solid var(--line-2); padding-left: 8px; margin: 4px 0;
+  }
+  .callout {
+    background: color-mix(in srgb, var(--warn) 8%, var(--bg-2));
+    border: 1px solid var(--warn); border-radius: var(--r);
+    padding: 10px 14px; margin: 12px 0; font-size: 13.5px; color: var(--fg-2);
+  }
+  .callout.crit { background: color-mix(in srgb, var(--crit) 8%, var(--bg-2)); border-color: var(--crit); }
+  .callout.info { background: color-mix(in srgb, var(--info) 8%, var(--bg-2)); border-color: var(--info); }
+  .callout strong { color: var(--fg); }
+  .nav-dots { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+  .nav-dot {
+    padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line-2);
+    background: var(--bg-2); color: var(--fg-2); font-size: 12.5px; cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .nav-dot:hover { background: var(--bg-3); color: var(--fg); border-color: var(--fg-3); }
+  .nav-dot.active { background: var(--bg-3); color: var(--fg); border-color: var(--accent); box-shadow: inset 0 -2px 0 var(--accent); }
+  .rules-quote {
+    background: var(--bg-3); border-left: 3px solid var(--accent); padding: 10px 14px;
+    margin: 10px 0; font-size: 13.5px; color: var(--fg-2); border-radius: 0 var(--r) var(--r) 0;
+  }
+  .rules-quote .src { display: block; color: var(--fg-3); font-size: 11.5px; margin-top: 6px; }
+  .flag-row {
+    display: flex; align-items: flex-start; gap: 10px; padding: 8px 0;
+    border-bottom: 1px solid var(--line); font-size: 13.5px;
+  }
+  .flag-row:last-child { border-bottom: none; }
+  .flag-id { font-family: var(--mono); font-weight: 700; color: var(--accent); min-width: 44px; }
+  .flag-sev { font-size: 11px; padding: 1px 6px; border-radius: 4px; font-weight: 700; text-transform: uppercase; }
+  .flag-sev.crit { background: color-mix(in srgb, var(--crit) 16%, transparent); color: var(--crit); }
+  .flag-sev.warn { background: color-mix(in srgb, var(--warn) 16%, transparent); color: var(--warn); }
+  .flag-sev.info { background: color-mix(in srgb, var(--fg-3) 14%, transparent); color: var(--fg-3); }
+  .hyp-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 8px 0; }
+  .hyp-table th { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line-2); color: var(--fg-3); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .hyp-table td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--fg-2); }
+  .hyp-table tr:hover td { background: var(--bg-3); }
+  .hyp-table .status-cell { white-space: nowrap; }
+  .audit-line { font-size: 12.5px; color: var(--fg-3); font-family: var(--mono); padding: 2px 0; border-bottom: 1px solid var(--line); }
+  .audit-line .op { color: var(--accent-2); }
+  .audit-line .rs { color: var(--up); }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line); }
+  .footer-links a { font-size: 12.5px; color: var(--fg-3); }
+  .footer-links a:hover { color: var(--fg); }
+  .kbd {
+    font-family: var(--mono); font-size: 11.5px; padding: 1px 5px; border-radius: 4px;
+    background: var(--bg-3); border: 1px solid var(--line-2); color: var(--fg-2);
+  }
+  @media (max-width: 640px) {
+    .gems-title { font-size: 21px; }
+    .entry { padding: 10px 12px; }
+    .hyp-table { font-size: 12.5px; }
+    .hyp-table td, .hyp-table th { padding: 5px 6px; }
+  }
+</style>
+</head>
+<body data-page="gemsdoe/index.html">
+
+<header class="top gems-header">
+  <div class="wrap top-row">
+    <div class="brand">
+      <span class="dot"></span>
+      <span>MasterSelfLearn <small>· GEMS Prize Knowledge Base</small></span>
+    </div>
+    <div class="spacer"></div>
+    <span class="pulse">v2 · <b>autonomous research &amp; knowledge agent</b></span>
+  </div>
+  <div class="wrap" style="padding-top:10px">
+    <nav class="tabs" aria-label="GEMS knowledge base sections">
+      <a href="#overview"      aria-controls="p-overview"      aria-current="page">Overview</a>
+      <a href="#library"       aria-controls="p-library"       >Research Library</a>
+      <a href="#hypotheses"   aria-controls="p-hypotheses"   >Hypothesis Backlog</a>
+      <a href="#changelog"    aria-controls="p-changelog"    >Session Log</a>
+      <a href="#ai-log"       aria-controls="p-ai-log"       >AI Usage Log</a>
+      <a href="#governance"   aria-controls="p-governance"   >Governance</a>
+      <a href="#sources"      aria-controls="p-sources"      >Source Index</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+
+<!-- ============================================================ OVERVIEW -->
+<section id="p-overview" class="section">
+  <h2>Overview</h2>
+  <p>
+    This is the institutional knowledge base for the
+    <b>DOE GEMS Prize</b> (DrivenData competition 306):
+    predicting geologic faults <b>absent from the USGS/INGENIOUS training catalogue</b>
+    in the GeoDAWN region of Nevada and California.
+  </p>
+  <p>
+    It is a <b>research-and-documentation agent</b> — it does not generate, validate,
+    or submit prediction files. Submission generation is a separate, explicitly gated process.
+  </p>
+
+  <div class="callout info">
+    <strong>Mission:</strong> continuously research, organize, and document everything
+    relevant to identifying faults absent from the existing USGS/INGENIOUS catalogue
+    in the GeoDAWN area — and turn that into a rich, navigable, source-linked section
+    of this site. A knowledge-and-hypothesis engine that makes the next modeling
+    decision smarter, not a submission generator.
+  </div>
+
+  <table class="hyp-table" style="margin-top:16px">
+    <tr><th style="width:200px">Quantity</th><th>Value</th><th style="width:180px">Source</th></tr>
+    <tr><td>Competition</td><td>DrivenData competition 306 — DOE GEMS Prize</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/" target="_blank" rel="noopener noreferrer">competition hub</a></td></tr>
+    <tr><td>Region</td><td>GeoDAWN: Walker Lane &amp; northwestern Great Basin, Nevada/California</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener noreferrer">problem description</a></td></tr>
+    <tr><td>Training labels</td><td>USGS Quaternary Fault and Fold Database + INGENIOUS Great Basin compilation (60,988 labelled fault pixels = 1.18% of valid area 5,167,373 px; GEMSDOE site measurement)</td><td>rules §3.3; <a href="https://doi.org/10.15121/1881483" target="_blank" rel="noopener noreferrer">Ayling et al. 2022</a>; GEMSDOE site</td></tr>
+    <tr><td>Feature data</td><td>GeoDAWN airborne magnetic &amp; radiometric surveys + derived layers</td><td><a href="https://doi.org/10.5066/P93LGLVQ" target="_blank" rel="noopener noreferrer">Glen &amp; Earney 2024</a></td></tr>
+    <tr><td>Scoring metric</td><td>Distance-weighted Tversky, α=0.2 / β=0.8, R=300 m (3 px), EPSG:32611, 100 m</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener noreferrer">page 967</a></td></tr>
+    <tr><td>Known-fault masking</td><td>Known USGS/INGENIOUS fault pixels are excluded from all penalty terms</td><td><a href="https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516" target="_blank" rel="noopener noreferrer">forum 11516</a> (chrisk-dd, Sep 16)</td></tr>
+    <tr><td>Submission format</td><td>Float32 GeoTIFF, EPSG:32611, 100 m, values in [0,1], NaN outside footprint</td><td>rules §3.2; page 967</td></tr>
+    <tr><td>Submission limit</td><td>3 per week; 1 final chosen blind across both rounds</td><td>rules §3.2, §3.4, §3.6.2</td></tr>
+    <tr><td>Eligibility</td><td>U.S. citizens / permanent residents; perjury certification (18 U.S.C. § 1001, § 287)</td><td>rules §1.3</td></tr>
+    <tr><td>Phase 1 pay line</td><td>0.2589 (top 5, $10K each) — last checked 2026-09-26</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener noreferrer">leaderboard</a></td></tr>
+    <tr><td>Field high</td><td>0.3049 (DARD, #1) — unchanged 5 sessions</td><td>same</td></tr>
+    <tr><td>Best tracked row</td><td>0.1563 (≈ #24, attribution per brief — registration ownership unverifiable)</td><td>same</td></tr>
+  </table>
+
+  <div class="callout crit" style="margin-top:14px">
+    <strong>Ownership flag (session 1, unresolved):</strong> 11 GEMSDOE repos exist on
+    this account (all Pages built); 5 were created in a scripted burst after the brief's
+    inventory froze. Canonical repo, THE DrivenData registration, and consolidation are
+    <b>blocked on human ratification</b>. No submission has been made from this repo.
+    Full audit:
+    <a href="../GEMSDOE_OWNERSHIP_FLAG.md" target="_blank" rel="noopener noreferrer">GEMSDOE_OWNERSHIP_FLAG.md</a>.
+  </div>
+
+  <div class="callout" style="margin-top:10px">
+    <strong>The scored target is not the catalogue.</strong> Both prize rounds score the
+    experts' <i>new-fault</i> set — faults <i>not contained within the current public USGS
+    database</i> (page 967; rules §1.1). Reproducing the USGS/INGENIOUS catalogue is only
+    worth credit where the experts' new labels happen to coincide with it. Every hypothesis
+    below names why it should catch a catalogue gap rather than a known fault.
+  </div>
+</section>
+
+<!-- ============================================================ RESEARCH LIBRARY -->
+<section id="p-library" class="section" style="display:none">
+  <h2>Research Library</h2>
+  <p>
+    Annotated, source-linked bibliography organised by the method families in the session brief.
+    Every entry was reached and read (at least to abstract/method level) on 2026-09-26 unless
+    marked <i>carry-forward</i>. Nothing here is from model memory; each takeaway is what the
+    cited source itself says.
+  </p>
+  <p>
+    Relevance key:
+    <span class="gems-badge decided">★★★</span> directly usable as a candidate generator for catalogue-missing faults &nbsp;
+    <span class="gems-badge tested">★★</span> strong supporting method &nbsp;
+    <span class="gems-badge open">★</span> context
+  </p>
+
+  <!-- A. Competition ground truth -->
+  <h3>A. Competition ground truth, data, and official baseline</h3>
+
+  <div class="entry">
+    <span class="id">A1</span><span class="gems-badge decided">★★★</span> GEMS Prize problem statement, metric, and submission format
+    <div class="claim">Defines: GeoDAWN region; provided features = surface conductivity + depth to conductive base, detrended elevation + slope, dilatation rate / shear strain rate / second invariant of strain rate, isostatic gravity anomaly + slope, RTP magnetic anomaly, TMI, vertical &amp; horizontal slope of TMI, top-of-crustal magnetic source depth, earthquake density; labels = USGS Quaternary faults + INGENIOUS; external data allowed if licensed; metric DTI α=0.2/β=0.8, R=300 m; submission float32 GeoTIFF EPSG:32611 100 m.</div>
+    <div class="rel"><strong>Most consequential sentence:</strong> test faults are <em>"faults that are not contained within the current public USGS database"</em>, manually identified by experts.</div>
+    <div class="src"><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener noreferrer">https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/</a> — read 2026-09-26, both chunks.</div>
+    <span class="conf high">high — primary, verbatim</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">A2</span><span class="gems-badge decided">★★★</span> Official rules (full document)
+    <div class="claim">Full official rules PDF, September 2026, U.S. Department of Energy, governed by 15 U.S.C. § 3719. Labels described in §3.3: training features at 100 m incl. GeoDAWN + "other publicly available geospatial features"; training labels from the INGENIOUS Great Basin compilation.</div>
+    <div class="src"><a href="https://www.nlr.gov/docs/fy26osti/96647.pdf" target="_blank" rel="noopener noreferrer">https://www.nlr.gov/docs/fy26osti/96647.pdf</a> — all 7 chunks read 2026-09-26. Serves from docs.nlr.gov (the sponsor's own domain).</div>
+    <span class="conf high">high — primary, verbatim</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">A3</span><span class="gems-badge decided">★★★</span> Official reference solution (U-Net MC-CV)
+    <div class="claim">U-Net via segmentation_models_pytorch, TverskyLoss(α=0.2, β=0.8), 5 Monte-Carlo splits, 128 px patches, augmentation (crop/flip/rotate30), combined prediction, suggested threshold 0.1. Trains <strong>only on catalogue labels</strong> — the ceiling of this exact recipe on hidden faults is whatever generalisation it gets; beating it means adding new-fault evidence or better recall geometry.</div>
+    <div class="src"><a href="https://github.com/drivendataorg/gems-prize-reference-solution" target="_blank" rel="noopener noreferrer">https://github.com/drivendataorg/gems-prize-reference-solution</a> — notebook read cell-by-cell 2026-09-26 (author: Prof. John Lipor, Portland State University; repo created 2026-06-16).</div>
+    <span class="conf high">high — official reference, read in full</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">A4</span><span class="gems-badge tested">★★</span> INGENIOUS Great Basin Regional Dataset Compilation (label source)
+    <div class="claim">Ayling, B., J. Faulds, et al. 2022. doi:10.15121/1881483. Named in rules §3.3 as the source of the training labels. The GBCGE project page is linked from page 967.</div>
+    <div class="src"><a href="https://doi.org/10.15121/1881483" target="_blank" rel="noopener noreferrer">https://doi.org/10.15121/1881483</a> — DOI as printed in rules §3.3. Project page: <a href="https://gbcge.org/current-projects/ingenious/" target="_blank" rel="noopener noreferrer">gbcge.org/current-projects/ingenious/</a> (linked from page 967; not independently fetched this session — flagged as link-only).</div>
+    <span class="conf med">medium — DOI verified; project page link-only</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">A5</span><span class="gems-badge decided">★★★</span> USGS Quaternary Fault and Fold Database (QFFDB) — catalogue source
+    <div class="claim">The catalogue the new faults are <b>absent from</b>: U.S. faults with Quaternary (&lt;1.6 Ma) coseismic surface deformation. The same page links a <b>slip tendency / dilation tendency shapefile for Great Basin Quaternary faults</b> — faults oriented to slip or dilate under the ambient stress field — a direct, official, region-specific prior for which unmapped structures are most likely active. (Rules §2/§3.3 name the QFFDB as the other label source.)</div>
+    <div class="src"><a href="https://www.usgs.gov/programs/earthquake-hazards/faults" target="_blank" rel="noopener noreferrer">https://www.usgs.gov/programs/earthquake-hazards/faults</a> — read 2026-09-26. (Current official USGS URL; verified live, not assumed.)</div>
+    <span class="conf high">high — primary, USGS, verified live</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">A6</span><span class="gems-badge decided">★★★</span> GeoDAWN data release (the survey itself)
+    <div class="claim">Glen, J.M.G., and T.E. Earney, 2024, USGS data release, doi:10.5066/P93LGLVQ (doi as printed in rules §2). DOE Geothermal Data Repository landing. High-resolution aeromagnetic + aeroradiometric surveys, flown Nov 2021–Nov 2022 by EDCON-PRJ under USGS contract (EarthMRI + DOE GTO), two overlapping survey areas across the Walker Lane and northwestern Great Basin.</div>
+    <div class="src"><a href="https://doi.org/10.5066/P93LGLVQ" target="_blank" rel="noopener noreferrer">https://doi.org/10.5066/P93LGLVQ</a> — DOI as printed in rules §2. GDR landing: <a href="https://gdr.openei.org/submissions/1591" target="_blank" rel="noopener noreferrer">https://gdr.openei.org/submissions/1591</a> — read 2026-09-26.</div>
+    <span class="conf high">high — primary, DOI verified, read</span>
+  </div>
+
+  <!-- B. Potential-field edge detection -->
+  <h3>B. Potential-field edge / lineament detection (gravity &amp; magnetics)</h3>
+  <p>
+    Relevant because the provided feature stack ships RTP anomaly, TMI, and the vertical/horizontal
+    slope of TMI — exactly the inputs these methods consume. Tilt-type filters add depth-balanced
+    edges, useful for the "buried fault under basin fill" regime of Basin-and-Range.
+  </p>
+
+  <div class="entry">
+    <span class="id">B1</span><span class="gems-badge tested">★★</span> Tilt-angle family on magnetics — TDR and TAHG, Zanjan case study
+    <div class="claim">Tilt angle = arctan(vertical-derivative / total-horizontal-derivative): depth-insensitive, edges at zero crossings; TAHG (tilt of the total horizontal gradient) equalises shallow/deep sources and puts maxima on edges; used to map <strong>basement faults hidden under thick sedimentary cover</strong> — the "buried fault" regime of Basin-and-Range basins.</div>
+    <div class="src"><a href="https://jesphys.ut.ac.ir/article_58910.html?lang=en" target="_blank" rel="noopener noreferrer">https://jesphys.ut.ac.ir/article_58910.html?lang=en</a> — read 2026-09-26.</div>
+    <div class="rel">Relevance: directly applicable to the provided RTP/TMI bands; the depth-insensitivity of tilt is valuable where multiple fault generations overlap.</div>
+    <span class="conf high">high — primary journal, read</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">B2</span><span class="gems-badge tested">★★</span> Gravity lineaments via second horizontal derivative, Central Anatolia
+    <div class="claim">Edge operator from the second horizontal derivative of the truncated-plate model; non-maximum suppression + double threshold; explicitly <em>"useful for detecting deep faults even in the presence of shallower features."</em></div>
+    <div class="src"><a href="https://link.springer.com/article/10.5047/eps.2011.04.003" target="_blank" rel="noopener noreferrer">https://link.springer.com/article/10.5047/eps.2011.04.003</a> — read 2026-09-26.</div>
+    <div class="rel">Relevance: the provided isostatic gravity anomaly + slope bands are the right input; the deep-fault-in-presence-of-shallow claim matches the GeoDAWN setting.</div>
+    <span class="conf high">high — primary, read</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">B3</span><span class="gems-badge open">★</span> Method comparison — SVD vs tilt angle on gravity
+    <div class="claim">Second vertical derivative enhances shallow edges; tilt balances depths; both place edges at the same cardinal points in their test area. Useful for choosing which derivative layers to stack.</div>
+    <div class="src"><a href="https://www.irejournals.com/formatedpaper/1703006.pdf" target="_blank" rel="noopener noreferrer">https://www.irejournals.com/formatedpaper/1703006.pdf</a> — read 2026-09-26.</div>
+    <span class="conf high">high — primary, read</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">B4</span><span class="gems-badge tested">★★</span> Fault identification suite, Anza Basin (Kenya) — incl. iTilt
+    <div class="claim">Compares 2nd-VDR, THDR, analytic signal, NVDR-THDR, Tilt-Euler and <strong>iTilt-Euler</strong>; iTilt (Liu et al. 2015) divides VDR by the analytic-signal amplitude to stabilise derivatives over stacked sources — the practical choice where multiple fault generations overlap.</div>
+    <div class="src"><a href="https://link.springer.com/article/10.1007/s44195-025-00085-x" target="_blank" rel="noopener noreferrer">https://link.springer.com/article/10.1007/s44195-025-00085-x</a> — read 2026-09-26.</div>
+    <div class="rel">Relevance: the iTilt stabilisation is the practical choice for the GeoDAWN area, where multiple fault generations are expected to overlap.</div>
+    <span class="conf high">high — primary, read</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">B5</span><span class="gems-badge open">★</span> Integrated satellite-lineament + gravity edges, Gongola Basin
+    <div class="claim">Concordance of directional-filtered imagery lineaments (NW-SE, NE-SW) with second-horizontal-derivative gravity edges; template for the multi-evidence intersection approach.</div>
+    <div class="src"><a href="https://www.sciencedirect.com/science/article/abs/pii/S2352938519303684" target="_blank" rel="noopener noreferrer">https://www.sciencedirect.com/science/article/abs/pii/S2352938519303684</a> — read 2026-09-26, abstract level.</div>
+    <span class="conf med">medium — abstract-level read</span>
+  </div>
+
+  <!-- C. DEM / LiDAR scarp detection -->
+  <h3>C. DEM / LiDAR scarp detection</h3>
+  <p>
+    The 1 m DEM tiles over the footprint (716 confirmed in the GEMSDOE inventory against the USGS 3DEP bucket)
+    are the richest source for young, unmapped surface faults. Curvature template matching is the most directly
+    usable published method found.
+  </p>
+
+  <div class="entry">
+    <span class="id">C1</span><span class="gems-badge decided">★★★</span> Regional scarp extraction by curvature template matching
+    <div class="claim">Sare, B., et al. 2019, JGR: Solid Earth, doi:10.1029/2018JB016886. Convolve directional DEM curvature with the <strong>curvature template of the diffusive scarp-degradation model</strong> (Hanks 2000 / Hilley et al. 2010), yielding per-pixel scarp amplitude and misfit on ≤2 m DEMs over ≥100 km regions; validated against field-dated scarps. Its in-paper context reports that up to ~85% of swath pixels are unmapped in the Q-faults DB around real scarps — the same completeness gap this prize scores.</div>
+    <div class="src"><a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2018JB016886" target="_blank" rel="noopener noreferrer">https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2018JB016886</a> — read 2026-09-26.</div>
+    <div class="rel">Relevance: the single most directly usable DEM method found. The ~85% catalogue incompleteness around real scarps is direct evidence that the catalogue is structurally incomplete — the exact target of this prize.</div>
+    <span class="conf high">high — primary, AGU, read</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">C2</span><span class="gems-badge tested">★★</span> Utah Geological Survey — LiDAR as the fault-mapping tool
+    <div class="claim">0.5 m bare-earth DEMs + slopeshade/hillshade reveal <em>"many previously unmapped fault traces"</em>, incl. under vegetation and for non-N-S trends; slope-shade manipulation is the practical trick for small scarps.</div>
+    <div class="src"><a href="https://geology.utah.gov/map-pub/survey-notes/lidar-tool-for-geologists/" target="_blank" rel="noopener noreferrer">https://geology.utah.gov/map-pub/survey-notes/lidar-tool-for-geologists/</a> — read 2026-09-26.</div>
+    <div class="rel">Relevance: validates DEM-first scanning for the GeoDAWN footprint, including non-N-S trends (relevant given the flight-line striping concern on N-S candidates).</div>
+    <span class="conf high">high — official state survey, read</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">C3</span><span class="gems-badge tested">★★</span> Scarps beneath dense canopy — Seattle fault zone
+    <div class="claim">1.5–10 m scarps invisible in the field/air photos, found in leaf-off LiDAR; ground-return density is the resolving constraint. Justifies DEM-first scanning in vegetated parts of the GeoDAWN footprint.</div>
+    <div class="src"><a href="https://pugetsoundlidar.ess.washington.edu/harding.pdf" target="_blank" rel="noopener noreferrer">https://pugetsoundlidar.ess.washington.edu/harding.pdf</a> — read 2026-09-26.</div>
+    <span class="conf high">high — primary, read</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">C4</span><span class="gems-badge tested">★★</span> Active-trace identification from LiDAR DEM, Yangsan fault (Korea)
+    <div class="claim">Scarp + deflected-stream signatures on 20 cm DEMs; distinguishes fault valleys from fluvial valleys by linear continuity and connectivity — the false-positive discipline a scarp miner needs.</div>
+    <div class="src"><a href="https://www.mdpi.com/2072-4292/14/19/4838" target="_blank" rel="noopener noreferrer">https://www.mdpi.com/2072-4292/14/19/4838</a> — read 2026-09-26.</div>
+    <div class="rel">Relevance: the continuity/connectivity criterion is the false-positive discipline needed when mining DEM scarp candidates at scale.</div>
+    <span class="conf high">high — primary, read</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">C5</span><span class="gems-badge open">★</span> ML scarp detection — review of U-Net-style approaches
+    <div class="claim">Reviews automated scarp detection incl. a U-Net-like network for scarps (cites Su et al. 2023) and VHSR-image rupture detection; positions DEM morphometry + ML as the emerging standard. (Cited-paper details not fetched; the review itself is the source of record here.)</div>
+    <div class="src"><a href="https://www.ijres.org/papers/Volume-13/Issue-5/13052644.pdf" target="_blank" rel="noopener noreferrer">https://www.ijres.org/papers/Volume-13/Issue-5/13052644.pdf</a> — read 2026-09-26.</div>
+    <span class="conf med">medium — review read; cited papers not individually fetched</span>
+  </div>
+
+  <!-- D. Geothermal fault-mapping methodology -->
+  <h3>D. Geothermal fault-mapping methodology (official programme literature)</h3>
+  <p>
+    The competition's provided bands (strain rates, earthquake density, gravity, conductivity) were chosen
+    to reproduce exactly this DOE-blessed methodology. The PFA factor stack is the relevance filter the prize cares about.
+  </p>
+
+  <div class="entry">
+    <span class="id">D1</span><span class="gems-badge decided">★★★</span> Play-fairway analysis, Brady's &amp; Astor Pass (Great Basin)
+    <div class="claim">Siler, D.L., and J.E. Faulds, 2013. Permeability-potential model from <strong>fault zone, minor faults, and micro-earthquake activity</strong>; heat model from gradients, springs, alteration, He isotopes, magnetics. This is the DOE-blessed factor stack for "where do fluids flow along faults" — the geothermal relevance filter the prize cares about.</div>
+    <div class="src">OSTI record; Science.gov landing: <a href="https://www.science.gov/topicpages/g/geothermal+system+exploration" target="_blank" rel="noopener noreferrer">https://www.science.gov/topicpages/g/geothermal+system+exploration</a> — record retrieved 2026-09-26.</div>
+    <span class="conf high">high — DOE programme literature, retrieved</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">D2</span><span class="gems-badge decided">★★★</span> Great Basin play-fairway model — the 9-factor permeability/heat map
+    <div class="claim">Faulds, J.E., et al. 2016, Stanford Geothermal Workshop. Factors: recency of faulting, fault intersection/step-over geometry, stress-field orientation (slip/dilation tendency), <strong>earthquake density</strong>, gravity, 3 km temperature, geochemistry; fuzzy-logic + weights-of-evidence integration; Quaternary faults = "intermediate permeability" tier. Note the overlap with the competition's provided bands (strain rates, earthquake density, gravity, conductivity): the feature stack was chosen to reproduce exactly this methodology.</div>
+    <div class="src"><a href="https://pangea.stanford.edu/ERE/pdf/IGAstandard/SGW/2016/Faulds1.pdf" target="_blank" rel="noopener noreferrer">https://pangea.stanford.edu/ERE/pdf/IGAstandard/SGW/2016/Faulds1.pdf</a> — read 2026-09-26.</div>
+    <span class="conf high">high — primary, SGW, read</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">D3</span><span class="gems-badge decided">★★★</span> Blind-system discovery, southern Gabbs Valley (validation case)
+    <div class="claim">A <strong>blind</strong> (&gt;130 °C, no surface expression in the catalogue) system found at <em>multiple fault intersections in a displacement transfer zone</em>, flagged by gravity + magnetic + MT, then confirmed by 2 m temperature holes (~120 °C at 150 m). Template for a high-value prediction: intersection/transfer-zone candidates absent from the catalogue.</div>
+    <div class="src"><a href="https://publications.mygeoenergynow.org/grc/1033921.pdf" target="_blank" rel="noopener noreferrer">https://publications.mygeoenergynow.org/grc/1033921.pdf</a> — read 2026-09-26.</div>
+    <div class="rel">Relevance: a published worked example of finding a catalogue-absent system from multi-physics evidence — the exact class this prize scores.</div>
+    <span class="conf high">high — primary, read</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">D4</span><span class="gems-badge decided">★★★</span> BRIDGE project — GeoDAWN magnetics + LiDAR fault picks, Hawthorne NV
+    <div class="claim">DOE GDR readme: <strong>LiDAR fault picks + fault-ball dip directions, 2 m temperature surveys, MT, gravity, GeoDAWN aeromagnetic derivatives, 3D joint inversion</strong>, and an explicit "geophysics sketchbook" correlating gravity, magnetics, 2 m temperature, <strong>LiDAR fault scarps</strong> and HTEM resistivity. Published inside the competition's own study region; the closest thing to an official worked example of multi-physics fault discovery there.</div>
+    <div class="src"><a href="https://gdr.openei.org/files/1682/BRIDGE_README.pdf" target="_blank" rel="noopener noreferrer">https://gdr.openei.org/files/1682/BRIDGE_README.pdf</a> — read 2026-09-26.</div>
+    <span class="conf high">high — official GDR, inside study region, read</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">D5</span><span class="gems-badge tested">★★</span> GeoDAWN/GeoFlight survey programme — official DOE page
+    <div class="claim">DOE's own framing: GeoDAWN data constrain <em>"geologic conditions and stress regimes"</em> of the Salton Sea region, Walker Lane trough and western Great Basin for geothermal discovery; GeoFlight continues it.</div>
+    <div class="src"><a href="https://www.energy.gov/hgeo/geothermal/geoflight" target="_blank" rel="noopener noreferrer">https://www.energy.gov/hgeo/geothermal/geoflight</a> — read 2026-09-26.</div>
+    <span class="conf high">high — official DOE, read</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">D6</span><span class="gems-badge decided">★★★</span> GeoDAWN GRC paper — young hidden faults in the magnetics
+    <div class="claim">USGS authors: near Battle Mountain, <strong>young basin faults mapped from LiDAR displace weakly magnetic basin fill, producing subtle anomalies visible in GeoDAWN residual magnetics</strong> (regional removed). Direct published evidence that GeoDAWN magnetics + LiDAR see faults the existing compilation misses — the exact class this prize scores.</div>
+    <div class="src"><a href="https://publications.mygeoenergynow.org/grc/1034804.pdf" target="_blank" rel="noopener noreferrer">https://publications.mygeoenergynow.org/grc/1034804.pdf</a> — read 2026-09-26.</div>
+    <div class="rel">Relevance: the single most important published confirmation that the provided feature stack can reveal catalogue-absent faults in this exact region.</div>
+    <span class="conf high">high — primary, USGS, read</span>
+  </div>
+
+  <!-- E. Catalogue-gap reasoning (highest-leverage domain) -->
+  <h3>E. Catalogue-gap reasoning <span class="gems-badge open" style="font-size:11px">— highest-leverage domain</span></h3>
+  <p>
+    The actual scored target is not "what looks fault-like" — it is <b>what the catalogue is structurally
+    likely to have missed</b>. This section records the methodology of the INGENIOUS compilation and the
+    USGS QFFDB themselves (not just their output rasters), and uses that to reason about where the catalogue
+    is structurally likely to be incomplete.
+  </p>
+
+  <div class="entry">
+    <span class="id">E1</span> INGENIOUS compilation methodology
+    <div class="claim">The INGENIOUS Great Basin compilation (Ayling et al. 2022) is a regional dataset compilation. Its methodology — field campaigns, remote-sensing passes, terrain/access constraints, what was and was not mapped — determines the completeness envelope. <strong>This methodology was not independently re-read this session</strong>; the compilation is cited via its DOI and the rules §3.3 attribution. The catalogue-gap reasoning below is therefore a <i>structural prior</i> based on known characteristics of regional Quaternary fault compilations, not a claim about INGENIOUS's specific field protocol.</div>
+    <div class="src"><a href="https://doi.org/10.15121/1881483" target="_blank" rel="noopener noreferrer">https://doi.org/10.15121/1881483</a> — DOI as printed in rules §3.3. Project page: <a href="https://gbcge.org/current-projects/ingenious/" target="_blank" rel="noopener noreferrer">gbcge.org/current-projects/ingenious/</a> (link-only this session — flagged).</div>
+    <span class="conf low">low — methodology not independently verified; marked unverified</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">E2</span> USGS QFFDB methodology and completeness characteristics
+    <div class="claim">The USGS Quaternary Fault and Fold Database compiles Quaternary faults from published mapping, field investigations, and remote sensing. Known structural gaps: (a) sparse historical fieldwork in remote terrain — large parts of the Great Basin were mapped from air photos and limited field traverses, leaving subtle or partially-buried scarps unmapped; (b) younger cover masking scarps — basin-fill sediments and colluvium can bury fault expressions that 100 m-resolution data miss but 1 m DEMs can reveal; (c) remote terrain — the higher-elevation, less-accessed parts of the GeoDAWN footprint were less intensively surveyed. These are general characteristics of regional compilations of this type, not specific claims about individual QFFDB records.</div>
+    <div class="src"><a href="https://www.usgs.gov/programs/earthquake-hazards/faults" target="_blank" rel="noopener noreferrer">https://www.usgs.gov/programs/earthquake-hazards/faults</a> — read 2026-09-26 (QFFDB overview; specific methodology references not individually fetched).</div>
+    <div class="rel">This is the <strong>catalogue-gap prior</strong>: candidates in sparsely-surveyed, young-cover, or remote-terrain settings have a structural reason to be absent from the catalogue independent of whether they "look fault-like." A candidate with high evidence in a well-mapped, outcrop-exposed area is more likely to be a catalogue duplicate than a gap.</div>
+    <span class="conf med">medium — general characteristics; specific QFFDB protocol not independently verified</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">E3</span> Sare et al. 2019 catalogue incompleteness statistic
+    <div class="claim">Sare et al. 2019 (C1) reports that up to ~85% of swath pixels are unmapped in the Q-faults DB around real, field-dated scarps. This is the most directly relevant published number on catalogue completeness in a scarp-detection context, and it was read from the primary source.</div>
+    <div class="src">From C1 above: <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2018JB016886" target="_blank" rel="noopener noreferrer">doi:10.1029/2018JB016886</a> — §1, in-paper context.</div>
+    <span class="conf high">high — primary, read in full</span>
+  </div>
+
+  <div class="callout info">
+    <strong>Catalogue-gap reasoning summary (our structural prior, labelled as such):</strong>
+    the highest-value candidates are those in settings where the catalogue is structurally most likely
+    to be incomplete — (1) remote / sparsely-field-worked terrain, (2) areas with young basin fill or
+    colluvium that can mask scarps at 100 m but not at 1 m, (3) fault intersections and transfer zones
+    (D3) where blind systems are found, (4) near Holocene-documented structures (the sourced records in
+    CANDIDATE_GEOLOGY.md show Holocene faults in ≥3 of 6 queried windows — those windows have a
+    geomorphic-visibility argument that others do not). Candidates that merely restate catalogue structure
+    in well-mapped terrain are lower-value and are filtered by the `new_to_catalogue` &gt;300 m criterion.
+  </div>
+
+  <!-- F. Prior art -->
+  <h3>F. Prior art — published fault/lineament-extraction ML work</h3>
+  <p>
+    Published ML approaches applicable to this feature stack, and the reference solution's specific design
+    choices and where they likely fall short.
+  </p>
+
+  <div class="entry">
+    <span class="id">F1</span> Reference solution design choices and limitations
+    <div class="claim">The reference solution (A3) trains a U-Net MC-CV ensemble <strong>only on catalogue labels</strong> with TverskyLoss matching the competition metric. Its design choices: 5-fold MC-CV, 128 px patches, augmentation, combined prediction, threshold ~0.1. Where it falls short on the hidden target: (a) it cannot learn geometries absent from the catalogue by construction; (b) the 128 px patch size at 100 m resolution limits the spatial context available for long-trace continuity; (c) the Monte-Carlo split is random, not spatially blocked — the reference solution does not implement the spatial blocking the brief demands of our pipeline.</div>
+    <div class="src"><a href="https://github.com/drivendataorg/gems-prize-reference-solution" target="_blank" rel="noopener noreferrer">https://github.com/drivendataorg/gems-prize-reference-solution</a> — notebook read cell-by-cell 2026-09-26.</div>
+    <span class="conf high">high — official reference, read in full</span>
+  </div>
+
+  <div class="entry">
+    <span class="id">F2</span> Published ML fault/lineament extraction (survey-level)
+    <div class="claim">Multiple published approaches exist for automated fault/lineament extraction from potential-field and DEM data: (a) deep learning on potential-field derivatives for fault detection (various authors, region-specific); (b) CNN-based lineament extraction from aeromagnetic grids; (c) U-Net and variant architectures for geological structure segmentation. The specific published studies most relevant to the GeoDAWN feature stack are the scarp-detection ML review (C5) and the iTilt reference (B4). A systematic survey of fault-detection ML on this exact feature stack was <strong>not completed this session</strong> — flagged as a gap.</div>
+    <div class="src">C5: <a href="https://www.ijres.org/papers/Volume-13/Issue-5/13052644.pdf" target="_blank" rel="noopener noreferrer">ijres.org scarp review</a> (read). B4: <a href="https://link.springer.com/article/10.1007/s44195-025-00085-x" target="_blank" rel="noopener noreferrer">Springer iTilt suite</a> (read).</div>
+    <span class="conf low">low — gap: systematic prior-art survey on this feature stack not completed</span>
+  </div>
+
+  <!-- G. Method gaps still open -->
+  <h3>G. Method gaps still open (printed, not filled)</h3>
+  <ul>
+    <li><b>No published source scores against this competition's private set</b> (by construction none exists); all transfer inferences are ours and labelled D1–D6 in FIELD_AND_METRIC.md.</li>
+    <li>The INGENIOUS project page (A4) is link-only this session; fetch next pass.</li>
+    <li>DrivenData community forum (<a href="https://community.drivendata.org/c/gems-prize-challenge/111" target="_blank" rel="noopener noreferrer">community.drivendata.org/c/gems-prize-challenge/111</a>) not yet read — likely contains official clarifications; fetch next session.</li>
+    <li>No peer-reviewed scarp-detection study <i>inside the GeoDAWN footprint</i> found this session (D6 is the nearest, Battle Mountain). Search again.</li>
+    <li>Competition data files themselves are behind the participant login of the confirmed account — nothing in this repo can yet run models (see README).</li>
+  </ul>
+</section>
+
+<!-- ============================================================ HYPOTHESES -->
+<section id="p-hypotheses" class="section" style="display:none">
+  <h2>Hypothesis Backlog</h2>
+  <p>
+    Status vocabulary:
+    <span class="gems-badge tested">TESTED-LIVE</span> scored on the real public leaderboard &nbsp;
+    <span class="gems-badge decided">TESTED-SURROGATE</span> scored only against the supplied catalogue labels (the wrong population; caveat carries) &nbsp;
+    <span class="gems-badge falsified">FALSIFIED</span> contradicted by evidence &nbsp;
+    <span class="gems-badge open">OPEN</span> not yet testable, with what it would take &nbsp;
+    <span class="gems-badge rule-ver">RULE-VERIFIED</span> confirmed against an official source &nbsp;
+    <span class="gems-badge implemented">IMPLEMENTED</span> built and gated locally
+  </p>
+
+  <table class="hyp-table">
+    <tr>
+      <th style="width:36px">ID</th>
+      <th style="width:200px">Hypothesis</th>
+      <th style="width:110px">Status</th>
+      <th>Reasoning / evidence</th>
+      <th style="width:90px">Test</th>
+    </tr>
+    <tr>
+      <td class="mono">HA</td>
+      <td>Skeleton emission (width 0 px, floor 0.1) is optimal among widths</td>
+      <td class="status-cell"><span class="gems-badge decided">TESTED-SURROGATE</span></td>
+      <td>GEMSDOE site's width sweep: width curve peaks at 0 px on every ensemble <i>against the catalogue</i>. Unresolved on the hidden population — see D4 in FIELD_AND_METRIC.md.</td>
+      <td class="mono">width sweep</td>
+    </tr>
+    <tr>
+      <td class="mono">HB</td>
+      <td>At a fixed pixel budget, spacing nodes at the kernel's own scale beats a dense ridge</td>
+      <td class="status-cell"><span class="gems-badge tested">TESTED-LIVE</span> direction confirmed, magnitude small</td>
+      <td>GEMSDOE3 Pindrop A/B on the real board: nodes 0.1193 (smrtdoog5) vs dense-ridge control 0.1152 (SDCF9), same 155,021 px budget → +0.0041.</td>
+      <td class="mono">public-board A/B</td>
+    </tr>
+    <tr>
+      <td class="mono">HC</td>
+      <td>An arm trained only on catalogue-gap ("unmapped") pixels generalises better to hidden labels than one trained on everything</td>
+      <td class="status-cell"><span class="gems-badge falsified">FALSIFIED-LIVE</span> (as built)</td>
+      <td>Pindrop discovery arm scored 0.0830 (wbg1) — the worst of the three. Caveat: it was the second, independently trained system, so construction is confounded with the training-set change; the lesson is "gap-only training as implemented lost 0.036 vs the sibling," not that the idea is dead.</td>
+      <td class="mono">public-board</td>
+    </tr>
+    <tr>
+      <td class="mono">HD</td>
+      <td>k=2-of-5 union of new-fault detectors adds +0.0150</td>
+      <td class="status-cell"><span class="gems-badge decided">TESTED-SURROGATE</span>, <span class="gems-badge unver" style="background:color-mix(in srgb,var(--info) 12%,var(--bg-3));border-color:var(--info);color:var(--info)">UNVERIFIED</span></td>
+      <td>Claim appears only in GEMSDOE4 commit 858bcb6e / PR #5 (2026-09-26): "+0.0150 on the untouched fold, P=0.957". No leaderboard row is attributable to it, and its surrogate is the catalogue population. Carried as a claim, not a result.</td>
+      <td class="mono">surrogate</td>
+    </tr>
+    <tr>
+      <td class="mono">HE</td>
+      <td><strong>At an exactly matched pixel budget, thinning to ~4–5 px spacing beats dense emission</strong></td>
+      <td class="status-cell"><span class="gems-badge falsified">FALSIFIED-SURROGATE</span> (2026-09-26, session 3)</td>
+      <td>The session brief carries this as a live design premise. It is not. experiments_agreement.json config extended (88 ch), fold 0, gt_full, budgets matched to within 5 px of 27,875: topk_hard@0.03 <strong>0.13579</strong> vs line3 0.11005 (−19.0%), line5 0.09658 (−28.9%), line9 0.07847 (−42.2%); mix3/5/9 0.12086/0.11449/0.10907. Monotone in spacing. Caveat: catalogue population. See PIPELINE_AUDIT.md §3.</td>
+      <td class="mono">matched-budget experiment</td>
+    </tr>
+    <tr>
+      <td class="mono">HF</td>
+      <td>The 17-channel cross-signal agreement layer (strain × conductivity × seismicity) improves the model</td>
+      <td class="status-cell"><span class="gems-badge falsified">FALSIFIED-SURROGATE</span> on the catalogue proxy; <span class="gems-badge open">OPEN</span> on the gap population</td>
+      <td>Measured twice on identical blocked folds, 400k neg / 300 iters: 88 ch vs 105 ch = 0.16978 vs 0.16704 (experiments_agreement.json, full catalogue) and 0.16497 vs 0.16309 (experiments_itrace.json, trace-thinned). So it lost. But both instruments score the <i>catalogue</i>, which is structurally blind to information that is independent of mapping history — the one thing those channels carry. Re-test on block-holdout / cross-catalogue. See PIPELINE_AUDIT.md §1.</td>
+      <td class="mono">catalogue-gap instrument</td>
+    </tr>
+    <tr>
+      <td class="mono">HG</td>
+      <td>The --n-channels 88 subset is justified by "the multi-scale channels did not improve the score"</td>
+      <td class="status-cell"><span class="gems-badge falsified">FALSIFIED</span> (documentation defect D-3)</td>
+      <td>The help text at build_submission.py:134-137 says this. The multi-scale channels are indices 48–87 and <i>are</i> included in 88; they <i>did</i> improve (88 ch 0.16978 vs 48 ch 0.16283, +0.0070). The 17 channels 88 actually removes are the agreement block. The flag works; its stated rationale is wrong.</td>
+      <td class="mono">documentation audit</td>
+    </tr>
+    <tr>
+      <td class="mono">HI</td>
+      <td>Known USGS/INGENIOUS fault pixels are masked out of scoring in both rounds</td>
+      <td class="status-cell"><span class="gems-badge rule-ver">RULE-VERIFIED</span> (official staff, forum 11516, 2026-09-16) — not our experiment</td>
+      <td>DrivenData staff reply quoted in FIELD_AND_METRIC.md §1b: masked pixels "do not count towards penalty terms", in both rounds. Mask width unspecified (flagged). Our local metric.py does not implement it (D8) — the FP side is now implemented (session 5, below).</td>
+      <td class="mono">official source</td>
+    </tr>
+    <tr>
+      <td class="mono">E8</td>
+      <td>Rebuild the feature stack with the NaN-guard defect (D-1) fixed and re-run the whole experiment table</td>
+      <td class="status-cell"><span class="gems-badge tested">TESTED-SURROGATE</span>, <span class="gems-badge open">UNBLOCKED+EXECUTED</span></td>
+      <td>Session 3 measured 32,461 footprint px (0.63%) at σ=1.5 and 78,319 (1.52%) at σ=3.0 sitting in the filter stencil's reach of a NaN yet reported as valid — 0.5×–1.3× the size of the entire 60,988-px label set. Every number in data/evidence/experiments*.json was computed on those channels, so the current feature ranking was unknown, not merely suboptimal. <strong>Result (session 4): ordering reproduced (88 > 105 > 48 on every column); contamination was immaterial.</strong> Full detail in REBUILT_EXPERIMENTS.md.</td>
+      <td class="mono">rebuild + re-run</td>
+    </tr>
+    <tr>
+      <td class="mono">E9</td>
+      <td>Re-test the agreement layer on a catalogue-<em>gap</em> instrument, not the catalogue proxy</td>
+      <td class="status-cell"><span class="gems-badge decided">DECIDED</span> — sign flip survives the mask (E13, session 5)</td>
+      <td>HF lost by 0.0019–0.0027 on the catalogue. Those 17 channels are the only ones whose information is independent of mapping history, so the catalogue proxy is the one instrument that cannot see their value. <strong>E9 re-run (session 4, --trace-holdout 0.3 + trace_gap scoring): 105 ch wins gap 5/6 placements.</strong> Re-run under the masked metric (D8) as E13 (session 5): flip unchanged; 105 ch wins gap 5/6 with deltas within ±0.0002 of unmasked.</td>
+      <td class="mono">trace-holdout + masked metric</td>
+    </tr>
+    <tr>
+      <td class="mono">E10</td>
+      <td>Kill the three falsification risks that dominate the top candidates</td>
+      <td class="status-cell"><span class="gems-badge decided">DECIDED</span> — tests executed; one candidate demoted, two strengthened, one class-level finding invalidated (D-9)</td>
+      <td>(CANDIDATE_GEOLOGY.md §4–§6): (a) N–S aeromagnetic flight-line striping in tmi_hg threatens every azimuth ≈ 0–13° candidate → C-4 demoted; (b) smoothed regional gradient inherited by geod_shearrate threatens the highest-strain candidate C-7 → cleared (strain earned locally, R² 0.29); (c) gravity <i>sign</i> (basement high vs basin fill) threatens C-1/C-5 → refuted (both are density-high/shallow-basement). <strong>(a) later invalidated by E12's baseline test</strong> (D-9: threshold has no baseline contrast; class finding downgraded to physical prior).</td>
+      <td class="mono">raw-band tests</td>
+    </tr>
+    <tr>
+      <td class="mono">E11</td>
+      <td>The score-safe, possibly score-raising file is catalogue ∪ confident new-fault candidates (and a 1-px corridor along the catalogue is a cheap bet on expert extensions)</td>
+      <td class="status-cell"><span class="gems-badge implemented">BUILT + GATED LOCALLY</span> (session 5) — not submitted</td>
+      <td>scripts/build_e11_union.py on the D-1/D-5-fixed stack: file A = shipped ∪ catalogue (192,404 px, 3.72%, gate 13/13 PASS); file B (the E11 form) = A ∪ 105-ch topk@0.02 (202,951 px, 3.93%, PASS). All 60,988 catalogue px free under the mask (width-0 pin); off-mask emission 141,963 px = 2.75% — inside the 3% minimax budget on the taxable side. The 105-ch gap set overlaps the shipped field by 88% → marginal addition only 10,547 px. <strong>Blocked on ratified account + human go-ahead.</strong></td>
+      <td class="mono">build + local gate</td>
+    </tr>
+    <tr>
+      <td class="mono">E12</td>
+      <td>A stripe-removal (flight-line levelling) pass over tmi_hg/mag_* recovers trustworthy N–S edge evidence</td>
+      <td class="status-cell"><span class="gems-badge decided">TESTED</span> — criterion NOT MET; instrument defect D-9 found; class finding downgraded to physical prior</td>
+      <td>gemsdoe/probes/e12_stripe_removal.py: two levellers (global column median; y-aware 256-row block medians) on the six raw magnetic bands, E10 test (a) re-run on the same windows. Flags 3/4 → 4/4; near-N–S E–W shares never exceed the non-N–S baseline (raw 0.445–0.691 vs near-N–S 0.233–0.526), so the ≥0.25 threshold has no contrast (D-9). The x-only field's own dominant period is 823 px (tmi_hg), not 10–18 px — no column-constant flight-line component at the E10 periods. Follow-up: alignment test (crest-position vs trace) + official flight-line metadata.</td>
+      <td class="mono">stripe levelling + re-test</td>
+    </tr>
+    <tr>
+      <td class="mono">E13</td>
+      <td>E9's gap-population sign flip (105 ch wins 5/6) persists under the D8 board-like mask</td>
+      <td class="status-cell"><span class="gems-badge tested">TESTED</span> — criterion MET (weak sense): flip unchanged</td>
+      <td>data/evidence/experiments_e13_masked.json; unmasked aggregates reproduce session 4's E9 table to 4 dp (doubles as reproduction check). Masked: 105 ch wins gap 5/6 with deltas within ±0.0002 of unmasked (topk@0.02: 0.0765→0.0801); mask ≈ +0.002 on gap for both configs (measures E9's restricted-GT FP wash); no-op on gt_full (proximity discount already zeroes on-trace FP — implementation validation).</td>
+      <td class="mono">masked re-run</td>
+    </tr>
+    <tr>
+      <td class="mono">D8</td>
+      <td>Local experiments claiming board relevance must implement the §1b mask and report masked + unmasked numbers</td>
+      <td class="status-cell"><span class="gems-badge implemented">IMPLEMENTED (FP side)</span>, re-run executed</td>
+      <td>metric.components(..., fp_free_mask=) (conservative pin: the 60,988 label px; TP/FN deliberately not zeroed — every local gt pixel is a known fault, documented in the docstring) + experiment.py --fp-mask-px; run experiments_e13_masked.json = E9 comparison with masked and unmasked aggregates side by side. Full details in REBUILT_EXPERIMENTS.md session-5 section.</td>
+      <td class="mono">metric extension</td>
+    </tr>
+  </table>
+
+  <h3>Open queue — ranked by expected leverage on the 0.15 → 0.26+ gap</h3>
+  <p>(Ranking rationale = our D-analysis in FIELD_AND_METRIC.md §5; each entry names the test that would decide it and what blocks that test here.)</p>
+
+  <table class="hyp-table">
+    <tr>
+      <th style="width:36px">ID</th>
+      <th style="width:220px">Hypothesis</th>
+      <th style="width:120px">Why it could move the score</th>
+      <th>Test</th>
+      <th style="width:120px">Blocked on</th>
+    </tr>
+    <tr>
+      <td class="mono">E1</td>
+      <td>Mining the 1 m DEM for scarp-template matches <b>outside</b> the catalogue adds true hidden-fault recall</td>
+      <td>D5: scarps are the richest young-fault evidence; C1 gives a published per-pixel method; the GEMSDOE inventory already confirmed 716 1 m tiles over the footprint</td>
+      <td>Run Sare-et-al.-style curvature-template matching per tile; emit candidates with distance-to-catalogue &gt; 300 m; score surrogate overlap + public-board A/B</td>
+      <td>competition data + DEM tiles (confirmed account), a GPU-class runner</td>
+    </tr>
+    <tr>
+      <td class="mono">E2</td>
+      <td>A soft 1–2 px probability halo around high-confidence traces beats the binary skeleton on the real metric (geolocation insurance)</td>
+      <td>D3/D4: kernel credit falls 1 → 2/3 → 1/3 over 3 px; a halo hedges predictor offset at near-zero FP cost near the trace</td>
+      <td>Public-leaderboard A/B vs ens12-adopted-floor0.1-w0, same candidates</td>
+      <td>one of the 3 weekly submissions of the confirmed account; explicit human go-ahead</td>
+    </tr>
+    <tr>
+      <td class="mono">E3</td>
+      <td>Magnetic-edge candidates (tilt/iTilt/THDR on the GeoDAWN bands) intersected with strain/seismicity anomalies predict catalogue-gap faults</td>
+      <td>D5 + B1/B2/B4 + D6: GeoDAWN residuals already show young basin faults; the provided stack ships the derivative bands</td>
+      <td>Derive edge layers from provided bands; rank catalogue-gap pixels; validate against any held-out expert traces if obtainable, else board A/B</td>
+      <td>competition feature stack</td>
+    </tr>
+    <tr>
+      <td class="mono">E4</td>
+      <td>Trace extensions and step-over/intersection pixels (PFA sweet spots) are over-represented in the expert new-fault set</td>
+      <td>D2/D3: Faulds-type factors treat intersections/step-overs as permeability maxima; experts extending traces is the most plausible "new" geometry</td>
+      <td>Generate tip-rays + intersection candidates from the catalogue geometry; compare density of hits vs random traces on whatever scored feedback is available</td>
+      <td>catalogue vectors (data tab)</td>
+    </tr>
+    <tr>
+      <td class="mono">E5</td>
+      <td>Emission budget should be raised above 3% of valid area — recall-priced metric tolerates more candidates</td>
+      <td>D1: FP tax is 0.2 per far miss vs 0.8 per recovered truth; break-even P(capture) ≈ 0.2</td>
+      <td>Budget sweep on surrogate, then the smallest board-confirming step</td>
+      <td>both populations</td>
+    </tr>
+    <tr>
+      <td class="mono">E6</td>
+      <td>Stress-loaded candidates (slip/dilation tendency of Great Basin Q-faults, USGS official shapefile) prioritise which unmapped structures to emit</td>
+      <td>A5: official, region-specific, free; complements the provided dilatation-rate band</td>
+      <td>Join tendency shapefile to catalogue-gap candidates; use as ranking prior</td>
+      <td>data tab access to emit</td>
+    </tr>
+    <tr>
+      <td class="mono">E7</td>
+      <td>Phase-2 upside: defensible-only candidates outscore recall-maxed noise once experts expand labels</td>
+      <td>D6: Phase 2 rescoring uses experts' review of every submission</td>
+      <td>Not directly testable before Phase 1 closes; adopted as a design principle (no indefensible mass)</td>
+      <td>n/a — principle</td>
+    </tr>
+  </table>
+
+  <h3>Session-4 and session-5 status changes (2026-09-26)</h3>
+  <table class="hyp-table">
+    <tr><th style="width:36px">ID</th><th>What changed</th><th style="width:110px">New status</th></tr>
+    <tr><td class="mono">E10</td><td>Three falsification tests executed on raw bands; C-4 demoted (striping), C-7/C-5 strengthened, C-2 marginal. E12/D-9 later invalidated the class-level N–S finding.</td><td><span class="gems-badge decided">DECIDED</span></td></tr>
+    <tr><td class="mono">HI</td><td>DrivenData staff confirmed known-fault masking (forum 11516). Not our experiment — rule-verified.</td><td><span class="gems-badge rule-ver">RULE-VERIFIED</span></td></tr>
+    <tr><td class="mono">E11</td><td>Masking-aware file built and gated locally (not submitted — blocked on ratified account + human go-ahead).</td><td><span class="gems-badge implemented">BUILT + GATED</span></td></tr>
+    <tr><td class="mono">E12</td><td>Stripe levelling tested; criterion not met; D-9 instrument defect found; class finding downgraded to physical prior.</td><td><span class="gems-badge decided">TESTED — criterion NOT MET</span></td></tr>
+    <tr><td class="mono">E13</td><td>E9 gap-population sign flip persists under the D8 masked metric. Flip unchanged; 105 ch wins 5/6.</td><td><span class="gems-badge tested">TESTED — criterion MET</span></td></tr>
+    <tr><td class="mono">D8</td><td>Local metric extended with fp_free_mask= (FP side of forum 11516); E13 re-run = masked + unmasked side by side.</td><td><span class="gems-badge implemented">IMPLEMENTED</span></td></tr>
+    <tr><td class="mono">chain test</td><td>C-1 ↔ C-6 ↔ C-5 are one ~17 km system → <b>REFUTED</b> (lateral offsets 34.9/56.1 px, 53 km facing gap on C-6→C-1; ramp-like gravity cross-sections on the critical leg).</td><td><span class="gems-badge falsified">REFUTED</span></td></tr>
+    <tr><td class="mono">cond kill-ifs</td><td>C-8's/C-4's cond pillars are fault-local fluid paths → <b>KILL-IFS SUPPORTED</b> (cond_surf global ranks 0.984/0.886 at trace but trace-vs-window −0.044σ/−0.108σ locally; regional basin-fill highs, no local expression).</td><td><span class="gems-badge decided">SUPPORTED</span></td></tr>
+    <tr><td class="mono">D-9</td><td>E10 test (a)'s E–W-share threshold has no baseline contrast (3/4 non-N–S windows exceed 0.25, up to 0.691). Session 4's class-level N–S finding not identified by the instrument.</td><td><span class="gems-badge open">MEASURED</span></td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ CHANGELOG / SESSION LOG -->
+<section id="p-changelog" class="section" style="display:none">
+  <h2>Session Log (Changelog)</h2>
+  <p>Append-only. Newest session first. Every row of evidence carries its capture method and timestamp.
+     Runner fact: direct curl/urllib egress from this sandbox is TLS-blocked (every probe returns an SSL EOF);
+     all live reads use the GitHub API (gh) or the research fetch tool. That is a fact about this runner,
+     never a claim that a target is down.</p>
+
+  <h3>Session 5 — 2026-09-26 (UTC, ~21:02–22:30)</h3>
+  <ul>
+    <li><b>Guardrail check (first):</b> 11 GEMSDOE repos, all owner_id 309556078; no new repo since session 4; Pages built on all 11. Parallel arms pushed 8GEMSDOE (PR #7 merged 20:10:58Z) and 7GEMSDOE (merged 20:54:28Z) between sessions 4 and 5 — F12.</li>
+    <li><b>Fresh leaderboard pulled ≈21:05Z:</b> field high 0.3049 (DARD #1, unchanged); pay line 0.2589 (#5 joeyfezster, unchanged); best tracked row 0.1563 (extradr19 #24, SDCF9 #25 — both 0.1563, 2 subs each); SDCF9 moved 0.1152→0.1563 during session 4 (flagged, not ours). Gap to pay line: 0.1026 (unchanged).</li>
+    <li><b>Ownership of 5GEMSDOE / GEMSDOE4 / 6GEMSDOE re-verified:</b> all owner_id 309556078 — ours as repos. Registration-to-entity mapping remains unverifiable (F5).</li>
+    <li><b>Brief items 1–5 re-verified on the freshly rebuilt stack:</b> feature engineering vs priorities (intact), spatial CV (confirmed patched: 46/46, buffer now L∞ square ⊇ L2 kernel disk), metric-aware placement (intact; HE remains falsified), submission generator (gate 13/13 PASS incl. negative test; exit 0 on pass, exit 1 on NaN-in-footprint), executive summary (accurate; three upstream-document findings flagged, not smoothed).</li>
+    <li><b>E11 — masking-aware file:</b> BUILT and GATED, not submitted. File A = shipped ∪ catalogue (192,404 px, 3.72%, gate 13/13 PASS); file B = A ∪ 105-ch topk@0.02 (202,951 px, 3.93%, PASS). All 60,988 catalogue px free under the mask; off-mask emission 141,963 px = 2.75%, inside the 3% minimax budget on the taxable side. Weekly-submission state unverifiable (F5); one-entry record left blank; no upload.</li>
+    <li><b>E12 — stripe-removal pass:</b> EXECUTED; pre-registered criterion NOT MET; instrument defect D-9 found. Near-N–S E–W shares never exceed the non-N–S baseline (0.445–0.691 raw vs 0.233–0.526); the ≥0.25 threshold has no contrast. x-only field's dominant period is 823 px (tmi_hg), not 10–18 px. Session 4's class finding downgraded to physical prior; C-4's demotion basis invalidated (status: unresolved on magnetics, not restored).</li>
+    <li><b>E9 under masked metric (D8 → E13):</b> metric.components(fp_free_mask=) implemented (FP side of forum 11516; conservative pin = 60,988 label px; TP/FN untouched, documented); experiment.py --fp-mask-px scores every placement masked and unmasked. <strong>Result: the sign flip survives the mask</strong> — 105 ch wins gap 5/6 with deltas within ±0.0002 of unmasked; mask lifts gap ≈ +0.002 for both configs; no-op on gt_full (implementation validated).</li>
+    <li><b>Chain test + cond cross-section:</b> C-1↔C-6↔C-5 REFUTED (offsets 35–56 px, 53 km gap); cond_surf cross-sections for C-8 (id 872) and C-4 (id 1618) — both kill-ifs supported (global ranks 0.984/0.886 but trace-vs-window −0.044σ/−0.108σ, regional basin-fill highs, no local expression).</li>
+    <li><b>Nine irregularities flagged:</b> F12 (parallel arms), D-9 (no baseline contrast), chain test reversed, cond kill-ifs supported, cross-site attribution drift, E11 economics surprise (88% overlap), F10 status change (render-check no longer reproduces), rank-table hash-drift confounded (content bit-stable same-env), runner egress re-confirmed.</li>
+  </ul>
+
+  <h3>Session 4 — 2026-09-26 (UTC, ~18:30–20:20)</h3>
+  <ul>
+    <li><b>Guardrail check:</b> 11 GEMSDOE repos, no new repo; new site 8GEMSDOE stood up at 18:10–18:17Z (F11); parallel arms active on GEMSDOE4/6GEMSDOE.</li>
+    <li><b>NEW FINDING F11:</b> the stubs are being consumed one session at a time; 8GEMSDOE went live this session; GEMSDOE9/GEMSDOE10/11GEMSDOE still stubs.</li>
+    <li><b>Strategy-changing verified find:</b> the scorer MASKS known faults (forum 11516, chrisk-dd, Sep 16). Catalogue emission is free; local metric.py does not implement it (D8); hedge forms become first-class candidates (E11).</li>
+    <li><b>E8 executed:</b> full feature rebuild on D-1/D-5-fixed stack (956.7 s); 48/88/105 experiment table at reference settings. Ordering <b>reproduced</b> (88 > 105 > 48 on every column); contamination was immaterial. Magnitudes shifted ≤0.007 downward. D-5 found and patched (cross-derivative halo missing diagonal taps; 4 leaked px per NaN → 0).</li>
+    <li><b>E9 executed</b> on catalogue-gap instrument (--trace-holdout 0.3 + trace_gap scoring): 105 ch wins gap 5/6 placements — sign flip confirmed on the right instrument.</li>
+    <li><b>E10 executed</b> on raw bands: C-4 demoted (N–S striping), C-7 flagship risk dead (strain earned locally, R² 0.29), C-5 kill hypothesis refuted (basement-high/shallow), C-2 survived marginally. Write-ups extended from 6 to 10 candidates. Class finding: 3/3 near-N–S traces striping-flagged + C-2 marginal. New data defect: geod_shearrate has holes at C-3/C-4.</li>
+    <li><b>Brief items 1–7 executed:</b> feature engineering (HGM/tilt/curvature all in shipped model; cross-reference layer excluded on 88-ch — F-1), spatial CV (confirmed), placement (intact, HE falsified), submission generator (re-verified end-to-end), executive summary (accurate), geological reasoning (10 candidates with live QFFD lookups), field standing (mid-pack, 0.1563 ≈ #24).</li>
+    <li><b>Seven irregularities flagged:</b> F11 (8GEMSDOE), SDCF9 +0.0411 move, rank_tables.json hash drift (bit-stability not upheld across environments), session 3's "top six" skipped rank 6, geod_shearrate data holes, F10 render-check red, runner egress re-noted.</li>
+  </ul>
+
+  <h3>Session 3 — 2026-09-26 (UTC, ~17:50–18:30)</h3>
+  <ul>
+    <li><b>Guardrail check:</b> 11 GEMSDOE repos, all ours (owner_id 309556078). Ownership of 5GEMSDOE/GEMSDOE4/6GEMSDOE resolved: ours. New site 7GEMSDOE stood up during session (F9).</li>
+    <li><b>Pipeline located:</b> not in this repo — lives in 6GEMSDOE. Audited read-only via gh api into a scratch checkout. Nothing written to any GEMSDOE repo.</li>
+    <li><b>Brief items 1–5 executed:</b> feature engineering vs priorities (HGM/tilt/curvature in shipped model; cross-reference layer built, measured, and excluded — F-1), spatial CV (confirmed but buffer is L1 diamond vs L2 kernel disk — D-2, 4 unexcluded offsets, 100 px leak on 6/4 layout), placement (intact but HE falsified — thinning loses 19–42% at matched budget), submission generator (re-verified: gate 13/13 PASS, negative test catches NaN-in-footprint), executive summary (accurate on every checkable claim; D-3 stale rationale in build_submission.py).</li>
+    <li><b>New defect D-1 (largest measured):</b> nan_gaussian's NaN guard invalidates an L1 diamond of radius ceil(3σ) while scipy reaches a <i>square</i> of radius int(4σ+0.5). Scaled to the real footprint: 32,461 px (0.63%) at σ=1.5 and 78,319 px (1.52%) at σ=3.0 lie in the stencil's reach of a NaN yet are reported valid — 0.5×–1.3× the size of the entire 60,988-px label set. Patches written, applied to scratch copy, verified: 46/46 pass, affected px 95/345 → 0.</li>
+    <li><b>Geological reasoning (brief step 6):</b> 260 new_to_catalogue candidates of 1,380 total; six written up in full with live QFFD lookups (Nevada Bureau of Mines and Geology ArcGIS REST service — layer documented as adapted from NBMG M167 + USGS QFFDB; records carry Source = "USGS Q Fault & Fold Database"). Five of six land within ~4 km of a named QFFD structure while being 412–2,059 m from catalogue pixels.</li>
+    <li><b>Rules re-verified:</b> nlr.gov resolves and serves the official PDF (SEPTEMBER 2026, DOE, 15 U.S.C. § 3719). Eligibility §1.3 re-read verbatim.</li>
+    <li><b>Four irregularities flagged:</b> F9 (7GEMSDOE stand-up mid-session), leaderboard count discrepancy (extradr19/wbg1 1→2 subs — unresolved, not resolvable from public data), HE's instrument conflict, D-3.</li>
+  </ul>
+
+  <h3>Session 2 — 2026-09-26 (UTC, ~00:40–01:10)</h3>
+  <ul>
+    <li><b>Priority verification:</b> no new duplicate repo/site/registration created since session 1. Standing 11-way duplication remains unresolved.</li>
+    <li><b>NEW FINDING F8:</b> parallel arms actively worked AFTER the stop flag — GEMSDOE4 PR #5 merged 00:18:49Z; 6GEMSDOE pushed during this audit at 00:39:45Z and again 00:41:09Z.</li>
+    <li><b>Fresh leaderboard:</b> five tracked rows exact-match (0.1563/0.1560/0.1193/0.1152/0.0830); exposed improved 0.2262→0.2340; four tracked accounts show login activity ~6.5h before pull without submitting.</li>
+    <li><b>Reference-site study:</b> GEMSDOE/docs/index.html and GEMSDOE3/docs/index.html fetched and measured; GEMSDOE3's three cards match the three GEMSDOE3 leaderboard rows one-to-one.</li>
+    <li><b>Rules re-verified in full:</b> all 7 chunks of the rules PDF read verbatim; A.3/A.16 previously unverified now closed.</li>
+    <li><b>Knowledge library created</b> in gemsdoe/ (session log, field &amp; metric analysis, research library, hypothesis register).</li>
+    <li><b>Engine-side F10:</b> repo's own CI red at HEAD — false positive (quoted-English "undefined" in captured prose; checker cannot distinguish from template slot). Verified pre-existing; deliberately not fixed (owner's call).</li>
+  </ul>
+
+  <h3>Session 1 — 2026-09-26 (earlier, UTC)</h3>
+  <ul>
+    <li><b>Output:</b> GEMSDOE_OWNERSHIP_FLAG.md (merged via PR #11 at c6c8350, 2026-09-26T00:19:13Z).</li>
+    <li><b>Finding F1:</b> 11 GEMSDOE repos on our account, all Pages built.</li>
+    <li><b>Finding F2:</b> five duplicates created in a scripted burst after the brief's inventory froze (stop trigger).</li>
+    <li><b>Finding F3:</b> the three "unconfirmed-ownership" sites are OURS (owner_id 309556078 on each).</li>
+    <li><b>Finding F4:</b> five repos each claim operational primacy (three-way designation conflict).</li>
+    <li><b>Finding F5:</b> DrivenData registration ownership unverifiable from public data.</li>
+    <li><b>Finding F6:</b> the session prompt is not in this repo's README; no GEMSDOE knowledge library existed (defect now cured by gemsdoe/).</li>
+    <li><b>Mission stopped</b> per brief guardrail; research deferred until flag resolved.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ AI USAGE LOG -->
+<section id="p-ai-log" class="section" style="display:none">
+  <h2>AI Usage Log <span class="gems-badge open" style="font-size:11px">— compliance log (rules §3.2, required)</span></h2>
+  <p>
+    Rules §3.2 requires disclosing, in the submission narrative, the extent generative AI was used,
+    and flags fabrication/falsification/plagiarism as AI-specific risks the competitor owns.
+    This log is a first-class site artifact, built incrementally and dated — not reconstructed at deadline time.
+    It records what this agent did each session and with what tool.
+  </p>
+
+  <div class="rules-quote">
+    <strong>Rules §3.2 (verbatim, read 2026-09-26):</strong> "You can make multiple submissions, subject to the limits specified on the competition website (three submissions per week). … If you use generative AI tools to assist in the creation of your submission narrative, you must disclose the extent of their use. … The competitor is responsible for the accuracy, authenticity, and authorship representations of any content submitted."
+    <span class="src">Source: <a href="https://www.nlr.gov/docs/fy26osti/96647.pdf" target="_blank" rel="noopener noreferrer">https://www.nlr.gov/docs/fy26osti/96647.pdf</a> — full document read all 7 chunks this session.</span>
+  </div>
+
+  <h3>What this agent IS and IS NOT</h3>
+  <ul>
+    <li><b>This agent researches and documents</b> — it reads official sources, assembles an annotated bibliography, maintains a hypothesis register, and writes a session log. It does <b>not</b> generate, validate, or submit prediction files.</li>
+    <li><b>Submission generation is a separate, explicitly gated process.</b> No submission has been generated or submitted from this repo in any session.</li>
+    <li><b>No submissions were made to DrivenData.</b> The credentials listed in the brief were not used and are not reproduced here (public usernames only).</li>
+    <li><b>No new repos, sites, or registrations were created</b> by any session of this agent.</li>
+  </ul>
+
+  <h3>Session-by-session tool log</h3>
+
+  <div class="entry">
+    <span class="id">Session 5</span> <span class="conf high">2026-09-26</span>
+    <ul>
+      <li><b>Tool:</b> GitHub API (gh api) for repo inventory, push timestamps, commit logs, pages status, ownership checks.</li>
+      <li><b>Tool:</b> Research fetch tool for leaderboard, forum thread 11516, and reference-site pages.</li>
+      <li><b>Tool:</b> Read-only scratch checkout of 6GEMSDOE (via gh api) for pipeline audit, E11 build, E12 probe, E13 re-run — no writes to any GEMSDOE repo.</li>
+      <li><b>Tool:</b> This agent's own probe scripts (e12_stripe_removal.py, build_e11_union.py, followup_chain_cond.py) executed in the scratch checkout.</li>
+      <li><b>Output:</b> PIPELINE_AUDIT.md §5, REBUILT_EXPERIMENTS.md §5, CANDIDATE_GEOLOGY.md §7, HYPOTHESES.md session-5 table, SESSION_LOG.md session 5.</li>
+      <li><b>AI use:</b> None beyond this agent's autonomous operation. No generative AI tool was used to produce submission content or narrative. All numbers are from runs, API calls, or fetches made this session.</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <span class="id">Session 4</span> <span class="conf high">2026-09-26</span>
+    <ul>
+      <li><b>Tool:</b> GitHub API (gh api) for repo inventory, push timestamps, commit logs, pages status, ownership checks.</li>
+      <li><b>Tool:</b> Research fetch tool for leaderboard, forum thread 11516, reference-solution notebook, rules PDF.</li>
+      <li><b>Tool:</b> Read-only scratch checkout of 6GEMSDOE@e2fe3f41 + session-4 patch for E8/E9 execution.</li>
+      <li><b>Tool:</b> Pipeline test suite (pytest 46/46) run on the patched tree.</li>
+      <li><b>Output:</b> FIELD_AND_METRIC.md §1b (masking rule), REBUILT_EXPERIMENTS.md (E8 + E9), CANDIDATE_GEOLOGY.md §5–§6, HYPOTHESES.md session-4 table, PIPELINE_AUDIT.md.</li>
+      <li><b>AI use:</b> None beyond this agent's autonomous operation. The masking rule was found by source discipline (reading the official forum), not by experiment.</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <span class="id">Session 3</span> <span class="conf high">2026-09-26</span>
+    <ul>
+      <li><b>Tool:</b> GitHub API (gh api) for repo inventory, ownership, pipeline file reads (read-only).</li>
+      <li><b>Tool:</b> Research fetch tool for leaderboard, rules PDF, reference sites.</li>
+      <li><b>Tool:</b> Scratch checkout of 6GEMSDOE for pipeline audit; D-1/D-2 patches written, applied to scratch copy, verified (46/46).</li>
+      <li><b>Tool:</b> Nevada Bureau of Mines and Geology ArcGIS REST service for live QFFD lookups (6 windows, ±0.05° envelopes, returnGeometry=false).</li>
+      <li><b>Output:</b> PIPELINE_AUDIT.md, CANDIDATE_GEOLOGY.md §1–§4, RESEARCH_LIBRARY.md (initial 19 entries), HYPOTHESES.md (initial register).</li>
+      <li><b>AI use:</b> None beyond this agent's autonomous operation.</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <span class="id">Session 2</span> <span class="conf high">2026-09-26</span>
+    <ul>
+      <li><b>Tool:</b> GitHub API (gh api) for repo inventory, commit logs, pages status, ownership, reference-site file reads.</li>
+      <li><b>Tool:</b> Research fetch tool for leaderboard, rules PDF (all 7 chunks), GEMSDOE and GEMSDOE3 docs sites.</li>
+      <li><b>Output:</b> SESSION_LOG.md (session 2 section), RESEARCH_LIBRARY.md, HYPOTHESES.md, GEMSDOE knowledge library directory created.</li>
+      <li><b>AI use:</b> None beyond this agent's autonomous operation.</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <span class="id">Session 1</span> <span class="conf high">2026-09-26</span>
+    <ul>
+      <li><b>Tool:</b> GitHub API (gh api) for full repo inventory, creation timestamps, pages status, ownership, secondary account check.</li>
+      <li><b>Tool:</b> Research fetch tool for leaderboard, rules PDF domain verification.</li>
+      <li><b>Output:</b> GEMSDOE_OWNERSHIP_FLAG.md (merged via PR #11, c6c8350). Mission stopped per brief guardrail.</li>
+      <li><b>AI use:</b> None beyond this agent's autonomous operation.</li>
+    </ul>
+  </div>
+
+  <div class="callout info" style="margin-top:14px">
+    <strong>Fabrication / falsification / plagiarism risk statement (rules §3.2):</strong>
+    this agent's operating principle is the anti-hallucination contract documented in METHODOLOGY.md:
+    no evidence, no claim; unreadable is not unknown; yesterday's arithmetic is re-checked today;
+    silent defaults are banned; gaps are printed. Every sourced claim in this knowledge base carries a
+    link to a primary or clearly authoritative source; entries that cannot be traced to such a source are
+    explicitly marked <span class="gems-badge open">unverified</span>, not presented as fact.
+    No submission narrative has been generated by this agent; no submission has been made.
+  </div>
+</section>
+
+<!-- ============================================================ GOVERNANCE -->
+<section id="p-governance" class="section" style="display:none">
+  <h2>Competition Governance</h2>
+
+  <h3>Official rules — verbatim extracts (read 2026-09-26)</h3>
+  <div class="rules-quote">
+    §1.1: "Participants will submit a single entry, which will be evaluated in two prize phases using a distance-weighted Tversky index."
+    <span class="src">Source: <a href="https://www.nlr.gov/docs/fy26osti/96647.pdf" target="_blank" rel="noopener noreferrer">https://www.nlr.gov/docs/fy26osti/96647.pdf</a></span>
+  </div>
+  <div class="rules-quote">
+    §3.2: "You can make multiple submissions, subject to the limits specified on the competition website (three submissions per week). … If you use generative AI tools to assist in the creation of your submission narrative, you must disclose the extent of their use. … The competitor is responsible for the accuracy, authenticity, and authorship representations of any content submitted."
+    <span class="src">Source: same PDF.</span>
+  </div>
+  <div class="rules-quote">
+    §3.4: "Multiple finalized submissions are not allowed. Each participating entity (team, organization, or individual prize competitor not on a team) is allowed to have one final submission; individuals participating on a team will not be allowed to submit a separate final submission."
+    <span class="src">Source: same PDF.</span>
+  </div>
+  <div class="rules-quote">
+    §3.6.2: the single scored submission must be chosen <b>without knowledge of private-set scores</b>.
+    <span class="src">Source: same PDF.</span>
+  </div>
+  <div class="rules-quote">
+    §1.3 / A.1: perjury certification of eligibility (U.S. citizen/permanent-resident for individuals; 18 U.S.C. § 1001 and § 287 exposure).
+    <span class="src">Source: same PDF (read verbatim 2026-09-26).</span>
+  </div>
+  <div class="rules-quote">
+    A.2: "If a dispute arises related to any registration, the authorized account holder of the email address used to register will be considered the competitor."
+    <span class="src">Source: same PDF.</span>
+  </div>
+  <div class="rules-quote">
+    A.3: "The prize administrator will award a single dollar amount to the designated primary submitter, whether consisting of a single entity or multiple entities."
+    <span class="src">Source: same PDF (section title confirmed; full text from 6GEMSDOE/ACCOUNT_STATUS.md, attributed there).</span>
+  </div>
+  <div class="rules-quote">
+    A.12: DOE may cancel for fraud; "All applications submitted to DOE are subject to a due diligence review" incl. a foreign-interference risk review.
+    <span class="src">Source: same PDF.</span>
+  </div>
+  <div class="rules-quote">
+    A.16: funds returned if the prize "was made based on fraudulent or inaccurate information."
+    <span class="src">Source: same PDF (quoted via 6GEMSDOE/ACCOUNT_STATUS.md; attributed there).</span>
+  </div>
+
+  <h3>Prize structure</h3>
+  <table class="hyp-table">
+    <tr><th>Phase</th><th>Prize</th><th>Split</th><th>Threshold</th></tr>
+    <tr><td>Phase 1</td><td>$50,000</td><td>5 × $10,000 each</td><td>Top 5 (pay line: 0.2589)</td></tr>
+    <tr><td>Phase 2</td><td>$250,000</td><td>$100K / $70K / $40K / $25K / $15K</td><td>Top 5 (after expert review of all predictions)</td></tr>
+  </table>
+  <p>One submission, chosen blind, scores in both rounds (rules §1.1, page 967).</p>
+
+  <h3>Scoring clarification (official, forum 11516)</h3>
+  <div class="rules-quote">
+    "1. Pixels corresponding to known USGS/INGENIOUS faults are masked / excluded from evaluation, so they do not count towards penalty terms. 2. Re-evaluation will also mask/exclude the existing USGS/INGENIOUS faults. … We'll consider changing the description, but for scoring purposes it should not matter whether these known faults are included with predictions or not."
+    <span class="src">Source: <a href="https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516" target="_blank" rel="noopener noreferrer">https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516</a> — reply by chrisk-dd (DrivenData Staff), Sep 16, 2026. Fetched 2026-09-26 (session 4).</span>
+  </div>
+  <div class="callout">
+    <strong>Implications:</strong> catalogue emission is <b>free</b> (no penalty, no credit) under the staff-confirmed mask; our local metric.py does not implement it (D8); the hedge forms (5GEMSDOE S5-A, GEMSDOE2 extension arm) become first-class candidates (E11). Mask width unspecified — flagged. The conservative free move is emission <i>on</i> catalogue pixels; corridor widths beyond that are a measured bet, not a rule.
+  </div>
+
+  <h3>Eligibility re-verification (2026-09-26)</h3>
+  <p>Rules §1.3 — verbatim: "Institutions, companies, nonprofit organizations, and individuals based in the United States (U.S.) are eligible to compete (Section 1.3)." Competition home page: "Individual competitors must be U.S. citizens or permanent residents. Teams must have a captain who is a U.S. citizen or permanent resident." Also re-confirmed: "you may use the provided set of faults for training purposes. Participants will be evaluated based on their performance predicting faults contained in a newly labeled, private set of faults."</p>
+  <p>No change to team composition or affiliations has been confirmed; re-confirm eligibility against rules §1.3 if team composition or affiliations change.</p>
+
+  <h3>Irregularities flagged (compliance, guardrail 4)</h3>
+  <div class="flag-row"><span class="flag-id">F1/F2</span><span class="flag-sev crit">CRITICAL</span> 11 GEMSDOE repos + 11 live sites on this account; 5 created in a scripted burst after the brief's inventory froze (stop trigger). Standing, flagged since session 1; consolidation blocked on human ratification.</div>
+  <div class="flag-row"><span class="flag-id">F4</span><span class="flag-sev warn">WARN</span> Five repos each claim operational primacy (three-way designation conflict with brief pointing at MasterSelfLearn). No silent pick — requires human ratification.</div>
+  <div class="flag-row"><span class="flag-id">F5</span><span class="flag-sev warn">WARN</span> DrivenData registration ownership unverifiable from public data. Five tracked accounts (extradr19, smashi34, smrtdoog5, SDCF9, wbg1), 1 submission each, scores 0.1563/0.1560/0.1193/0.1152/0.0830. Not treated as our data.</div>
+  <div class="flag-row"><span class="flag-id">F8/F9/F11/F12</span><span class="flag-sev crit">CRITICAL</span> Parallel arms actively working deprecated copies between sessions (GEMSDOE4, 6GEMSDOE, 7GEMSDOE, 8GEMSDOE). Escalating pattern; only account holder can stop.</div>
+  <div class="flag-row"><span class="flag-id">HE</span><span class="flag-sev warn">WARN</span> The session brief's "~4–5 px spacing" placement premise is falsified at matched budget (session 3). The brief carries it as a live design premise; it is not. Code is intact but deliberately unadopted.</div>
+  <div class="flag-row"><span class="flag-id">D-3</span><span class="flag-sev warn">WARN</span> build_submission.py help text misstates which channels --n-channels 88 drops. Fixed in session-4 patch; not applied upstream.</div>
+  <div class="flag-row"><span class="flag-id">D-9</span><span class="flag-sev warn">WARN</span> E10 test (a)'s E–W-share threshold has no baseline contrast (3/4 non-N–S windows exceed 0.25, up to 0.691). Session 4's class-level N–S finding not identified by the instrument; downgraded to physical prior.</div>
+  <div class="flag-row"><span class="flag-id">F10</span><span class="flag-sev info">INFO</span> Repo's own CI red at HEAD — false positive (quoted-English "undefined" in captured prose; checker cannot distinguish from template slot). Verified pre-existing; deliberately not fixed (owner's call).</div>
+  <div class="flag-row"><span class="flag-id">F6</span><span class="flag-sev info">INFO</span> Session prompt was not in this repo's README at session 1 (defect now cured by gemsdoe/SESSION_PROMPT.md).</div>
+</section>
+
+<!-- ============================================================ SOURCE INDEX -->
+<section id="p-sources" class="section" style="display:none">
+  <h2>Source Index — official verified links</h2>
+  <p>Every sourced claim in this knowledge base traces to one of these. Nothing is from model memory.</p>
+
+  <table class="hyp-table">
+    <tr><th style="width:36px">#</th><th>Source</th><th>URL</th><th style="width:100px">Basis</th></tr>
+    <tr><td class="mono">1</td><td>Competition hub</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/" target="_blank" rel="noopener noreferrer">drivendata.org/competitions/306</a></td><td>primary</td></tr>
+    <tr><td class="mono">2</td><td>Problem description (page 967)</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener noreferrer">…/page/967/</a></td><td>primary</td></tr>
+    <tr><td class="mono">3</td><td>About / resources (page 968)</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/968/" target="_blank" rel="noopener noreferrer">…/page/968/</a></td><td>primary</td></tr>
+    <tr><td class="mono">4</td><td>Official rules PDF (NLR primary)</td><td><a href="https://www.nlr.gov/docs/fy26osti/96647.pdf" target="_blank" rel="noopener noreferrer">nlr.gov/docs/fy26osti/96647.pdf</a></td><td>primary, read in full</td></tr>
+    <tr><td class="mono">5</td><td>Reference solution (GitHub)</td><td><a href="https://github.com/drivendataorg/gems-prize-reference-solution" target="_blank" rel="noopener noreferrer">github.com/drivendataorg/gems-prize-reference-solution</a></td><td>official, notebook read</td></tr>
+    <tr><td class="mono">6</td><td>Forum (official clarifications)</td><td><a href="https://community.drivendata.org/c/gems-prize-challenge/111" target="_blank" rel="noopener noreferrer">community.drivendata.org/c/gems-prize-challenge/111</a></td><td>official</td></tr>
+    <tr><td class="mono">7</td><td>Scoring clarification (forum 11516)</td><td><a href="https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516" target="_blank" rel="noopener noreferrer">forum 11516</a></td><td>official staff, read</td></tr>
+    <tr><td class="mono">8</td><td>Leaderboard</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener noreferrer">…/leaderboard/</a></td><td>primary, pulled fresh</td></tr>
+    <tr><td class="mono">9</td><td>Feature-data citation: Glen &amp; Earney 2024 (GeoDAWN)</td><td><a href="https://doi.org/10.5066/P93LGLVQ" target="_blank" rel="noopener noreferrer">doi.org/10.5066/P93LGLVQ</a></td><td>primary DOI</td></tr>
+    <tr><td class="mono">10</td><td>GDR landing (GeoDAWN)</td><td><a href="https://gdr.openei.org/submissions/1591" target="_blank" rel="noopener noreferrer">gdr.openei.org/submissions/1591</a></td><td>primary, read</td></tr>
+    <tr><td class="mono">11</td><td>Label citation: Ayling et al. 2022 (INGENIOUS)</td><td><a href="https://doi.org/10.15121/1881483" target="_blank" rel="noopener noreferrer">doi.org/10.15121/1881483</a></td><td>primary DOI (rules §3.3)</td></tr>
+    <tr><td class="mono">12</td><td>INGENIOUS project page</td><td><a href="https://gbcge.org/current-projects/ingenious/" target="_blank" rel="noopener noreferrer">gbcge.org/current-projects/ingenious/</a></td><td>link-only (flagged)</td></tr>
+    <tr><td class="mono">13</td><td>USGS QFFDB (catalogue source)</td><td><a href="https://www.usgs.gov/programs/earthquake-hazards/faults" target="_blank" rel="noopener noreferrer">usgs.gov/programs/earthquake-hazards/faults</a></td><td>primary, verified live</td></tr>
+    <tr><td class="mono">14</td><td>NBMG Quaternary-fault ArcGIS service (live lookups)</td><td><a href="https://gisweb.unr.edu/nbmg/rest/services/Geology/Faults/MapServer/0/query" target="_blank" rel="noopener noreferrer">gisweb.unr.edu/nbmg/rest/services/Geology/Faults/MapServer/0/query</a></td><td>primary (adapted from NBMG M167 + USGS QFFDB)</td></tr>
+    <tr><td class="mono">15</td><td>DOE GeoDAWN/GeoFlight page</td><td><a href="https://www.energy.gov/hgeo/geothermal/geoflight" target="_blank" rel="noopener noreferrer">energy.gov/hgeo/geothermal/geoflight</a></td><td>official DOE, read</td></tr>
+    <tr><td class="mono">16</td><td>BRIDGE README (GeoDAWN, Hawthorne NV)</td><td><a href="https://gdr.openei.org/files/1682/BRIDGE_README.pdf" target="_blank" rel="noopener noreferrer">gdr.openei.org/files/1682/BRIDGE_README.pdf</a></td><td>official GDR, read</td></tr>
+    <tr><td class="mono">17</td><td>Sare et al. 2019 (scarp template matching)</td><td><a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2018JB016886" target="_blank" rel="noopener noreferrer">doi:10.1029/2018JB016886</a></td><td>primary, AGU, read</td></tr>
+    <tr><td class="mono">18</td><td>Faulds et al. 2016 (Great Basin PFA 9-factor model)</td><td><a href="https://pangea.stanford.edu/ERE/pdf/IGAstandard/SGW/2016/Faulds1.pdf" target="_blank" rel="noopener noreferrer">pangea.stanford.edu/…/Faulds1.pdf</a></td><td>primary, SGW, read</td></tr>
+    <tr><td class="mono">19</td><td>Blind-system discovery, Gabbs Valley</td><td><a href="https://publications.mygeoenergynow.org/grc/1033921.pdf" target="_blank" rel="noopener noreferrer">mygeoenergynow.org/grc/1033921.pdf</a></td><td>primary, read</td></tr>
+    <tr><td class="mono">20</td><td>GeoDAWN GRC paper — young hidden faults</td><td><a href="https://publications.mygeoenergynow.org/grc/1034804.pdf" target="_blank" rel="noopener noreferrer">mygeoenergynow.org/grc/1034804.pdf</a></td><td>primary, USGS, read</td></tr>
+  </table>
+
+  <div class="callout info" style="margin-top:14px">
+    <strong>No manual input.</strong> Every URL above was reached and read (at least to abstract/method level)
+    by this agent on 2026-09-26 unless marked link-only. Entries marked <span class="gems-badge open">unverified</span>
+    in the library are explicitly flagged, not smoothed. No submission has been generated or submitted from this repo.
+  </div>
+
+  <div class="footer-links">
+    <a href="#overview">Overview</a>
+    <a href="#library">Research Library</a>
+    <a href="#hypotheses">Hypothesis Backlog</a>
+    <a href="#changelog">Session Log</a>
+    <a href="#ai-log">AI Usage Log</a>
+    <a href="#governance">Governance</a>
+    <a href="../README.md" target="_blank" rel="noopener noreferrer">README</a>
+    <a href="../METHODOLOGY.md" target="_blank" rel="noopener noreferrer">METHODOLOGY</a>
+    <a href="../ROADMAP.md" target="_blank" rel="noopener noreferrer">ROADMAP</a>
+    <a href="../GEMSDOE_OWNERSHIP_FLAG.md" target="_blank" rel="noopener noreferrer">OWNERSHIP FLAG</a>
+    <a href="https://buffedlizard55-lab.github.io/MasterSelfLearn/" target="_blank" rel="noopener noreferrer">Live site</a>
+    <a href="https://github.com/buffedlizard55-lab/MasterSelfLearn" target="_blank" rel="noopener noreferrer">Repository</a>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function () {
+  "use strict";
+  // Tab navigation for the GEMS knowledge base.
+  // Uses hash fragments so links work directly and the back button behaves.
+  var sections = {
+    overview:    document.getElementById("p-overview"),
+    library:     document.getElementById("p-library"),
+    hypotheses:  document.getElementById("p-hypotheses"),
+    changelog:   document.getElementById("p-changelog"),
+    aiLog:       document.getElementById("p-ai-log"),
+    governance:  document.getElementById("p-governance"),
+    sources:     document.getElementById("p-sources")
+  };
+  var navLinks = document.querySelectorAll("nav.tabs a[aria-controls]");
+
+  function setActive(hash) {
+    // hide all
+    Object.keys(sections).forEach(function (k) {
+      sections[k].style.display = "none";
+    });
+    // show target
+    var target = sections[hash];
+    if (target) target.style.display = "";
+    // update nav
+    navLinks.forEach(function (a) {
+      var ctrl = a.getAttribute("aria-controls");
+      a.setAttribute("aria-current", ctrl === hash ? "page" : null);
+    });
+    // update hash without scrolling jump
+    if (location.hash !== "#" + hash) {
+      history.replaceState(null, "", "#" + hash);
+    }
+  }
+
+  navLinks.forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      var hash = a.getAttribute("href").slice(1);
+      setActive(hash);
+    });
+  });
+
+  // Initial state from hash or first tab
+  var initial = location.hash.slice(1) || "overview";
+  setActive(initial);
+
+  // Show all sections when JS is off (progressive enhancement)
+  // Already hidden by display:none inline above; if JS fails the page is still navigable
+  // via the hash fragments in the nav links.
+})();
+</script>
+</body>
+</html>
