@@ -1,9 +1,9 @@
 # gemsdoe/probes — the audit's runnable evidence
 
-Seven small scripts. They produced every measurement quoted in
+Nine small scripts. They produced every measurement quoted in
 [`../PIPELINE_AUDIT.md`](../PIPELINE_AUDIT.md),
-[`../CANDIDATE_GEOLOGY.md`](../CANDIDATE_GEOLOGY.md) §5–§7 and
-[`../HYPOTHESES.md`](../HYPOTHESES.md) (E12); they exist so the
+[`../CANDIDATE_GEOLOGY.md`](../CANDIDATE_GEOLOGY.md) §5–§8 and
+[`../HYPOTHESES.md`](../HYPOTHESES.md) (E12, E14); they exist so the
 next session can re-derive those numbers instead of trusting the write-up.
 
 **They are deliberately not part of this repository's test suite.**
@@ -27,7 +27,35 @@ python3 probe_crossder_halo.py   # D-5  — second_derivatives cross-term halo
 python3 e10_falsification.py     # E10  — striping / strain-inheritance / gravity-sign
 python3 e12_stripe_removal.py    # E12  — levelling vs test (a), baseline contrast (D-9)
 python3 followup_chain_cond.py   # C-1↔C-6↔C-5 chain test, cond_surf cross-sections
+python3 e14_alignment.py         # E14  — tie-scale crest alignment ( stripe question, sourced geometry)
+python3 followup_cond_multiprofile.py  # cond 5-profile re-measure + famrank_cond member attribution
 ```
+
+`e14_alignment.py` needs `--features` and `--candidates` (raw raster; same
+written-up set as e10/e12). `followup_cond_multiprofile.py` needs `--features`,
+`--candidates` and `--rank-tables` (raw raster + the built rank tables; the
+derived stack is NOT required). Session-6 reproduction from the standard
+scratch checkout (6GEMSDOE@e2fe3f41 + session-4 patch; `build_rank_tables.py`
+run first):
+
+```bash
+python3 scripts/build_rank_tables.py    # ~2 min, needed by arm B
+GEMS_SRC=src python3 e14_alignment.py --features data/training_features.tif \
+    --candidates data/evidence/candidates.json --out e14_results.json
+GEMS_SRC=src python3 followup_cond_multiprofile.py \
+    --features data/training_features.tif \
+    --candidates data/evidence/candidates.json \
+    --rank-tables data/evidence/rank_tables.json --out cond6_results.json
+```
+
+**Known staleness, stated (session 6):** `probe_real_footprint.py` part (b)
+hard-codes the LEGACY `nan_gaussian` guard (`ceil(3σ)`, L1 diamond) and its
+inline comment calls it "what the code uses". That is true only of the
+unpatched `6GEMSDOE@e2fe3f41`; on a session-4/5-patched tree it measures the
+pre-patch gap by design (it is the pre/post record, not a live read of the
+code). The live instrument for the patched guard is `probe_feature_guard.py`
+(0 leaks). Left as-is this session per the "probes are evidence" convention;
+a `--patched` switch is a future nicety, not data.
 
 Probe 3 re-verifies the template's sha256 against `spec.PINS` before using it
 and raises if it does not match, so it cannot silently measure the wrong grid.
@@ -59,7 +87,9 @@ GEMS_SRC=src python3 followup_chain_cond.py --features data/training_features.ti
 | `probe_crossder_halo.py` | D-5 (new, session 4) | 4 leaked `s`-px per NaN (the diagonal taps) | 0 |
 | `e10_falsification.py` | E10 (a)/(b)/(c) | — (new instrument) | C-4 + 3/3 near-N–S flagged (a); C-7 cleared (b); C-1/C-5 basement-high (c). **(a) invalidated by e12's baseline test — D-9.** |
 | `e12_stripe_removal.py` | E12 + D-9 (new, session 5) | — (new instrument) | Criterion NOT MET: flags 3/4 → 4/4 under both levellers; non-N–S baseline shares equal/higher (0.445–0.691 raw); x-only field dominant period 823 px, not 10–18 px |
-| `followup_chain_cond.py` | chain test + cond kill-ifs (new, session 5) | — (new instrument) | Chain REFUTED (offsets 34.9/56.1 px, 53 km gap); both cond kill-ifs SUPPORTED (regional high, no trace-local expression) |
+| `followup_chain_cond.py` | chain test + cond kill-ifs (new, session 5) | — (new instrument) | Chain REFUTED (offsets 34.9/56.1 px, 53 km gap); both cond kill-ifs SUPPORTED (regional high, no trace-local expression). **Re-run session 6 on the fresh rebuild: exact reproduction (34.91/56.08 px, 53,363 m, −0.044/−0.108σ, 0.241/0.414, 0.286/0.571).** |
+| `e14_alignment.py` | E14 (new, session 6) | — (new instrument) | Class verdict FALSE: 0/4 near-N–S traces tie-stripe locked (C-2/C-8/C-10 A_x = 0.000; C-4 0.938 tmi_hg-only, emp. p 0.22, non-replicating — below the pre-registered bar); stripe question closed on the sourced GeoDAWN geometry |
+| `followup_cond_multiprofile.py` | cond multi-profile + member attribution (new, session 6) | — (new instrument) | C-8 0/5, C-9 0/5 local-max (kill-ifs stand); C-4 2/5 on MAD-residuals → inconclusive; 24/89 high-cond candidates depth-carried (max-rule mislabels 27%) |
 
 Every "after the patch" figure was measured on a scratch checkout with
 [`../patches/session4_d1_d2_d3_d5_e9.patch`](../patches/session4_d1_d2_d3_d5_e9.patch)

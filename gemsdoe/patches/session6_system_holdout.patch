@@ -1,0 +1,106 @@
+diff --git a/scripts/experiment.py b/scripts/experiment.py
+index 6a0ce9e..0b98a7e 100644
+--- a/scripts/experiment.py
++++ b/scripts/experiment.py
+@@ -452,6 +452,22 @@ def main() -> int:
+                     help="diagnostic: fraction of whole fault traces excluded "
+                          "from training in EVERY fold (rediscovery test — the "
+                          "model has never seen those faults)")
++    ap.add_argument("--system-holdout", type=float, default=0.0,
++                    help="diagnostic: fraction of whole fault SYSTEMS excluded "
++                         "from training in EVERY fold (systems = traces "
++                         "chained by --system-link-px; the hardest local "
++                         "proxy for the hidden expert set — whole unmapped "
++                         "systems, not just unmapped strands). Mutually "
++                         "exclusive with --trace-holdout.")
++    ap.add_argument("--system-link-px", type=float, default=10.0,
++                    help="linking radius for the system grouping, px: the "
++                         "catalogue is dilated by this radius and "
++                         "8-connected components of the dilation are the "
++                         "systems (nearest-pixel merge distance = 2x this; "
++                         "10 px = 1 km radius / 2 km linkage). Grouping "
++                         "probe: r=10 px -> 266 systems (largest 10.8%% of "
++                         "labels); r=25 px -> 39 systems (largest 36.6%%); "
++                         "r=50 px degenerates to 3.")
+     ap.add_argument("--fp-mask-px", type=int, default=-1,
+                     help="D8/§1b: also score every placement with the official "
+                          "known-fault mask (forum 11516) applied to FP_w. -1 = "
+@@ -498,7 +514,57 @@ def main() -> int:
+ 
+     trace_excl = None
+     n_held_traces = 0
+-    if args.trace_holdout > 0.0:
++    n_systems = 0
++    n_held_systems = 0
++    if args.system_holdout > 0.0 and args.trace_holdout > 0.0:
++        print("ERROR: --system-holdout and --trace-holdout are mutually "
++              "exclusive (trace_excl would mean two different populations)",
++              file=sys.stderr)
++        return 2
++    if args.system_holdout > 0.0:
++        # Whole-system holdout (6GEMSDOE NEXT_STEPS item 6). Grouping key:
++        # 8-connected components of the catalogue after Euclidean dilation
++        # by the linking radius. Every 8-connected trace's pixels chain into
++        # one dilated component (consecutive trace pixels are adjacent, so
++        # the trace -> system map is total and single-valued — verified: we
++        # assert every trace maps to exactly one system).
++        radius = float(args.system_link_px)
++        dil = ndimage.distance_transform_edt(~gt) <= radius
++        sys_map, n_systems = ndimage.label(dil, structure=np.ones((3, 3), dtype=int))
++        del dil
++        # trace -> system; assert the map is single-valued per trace.
++        # Vectorised over gt pixels (do NOT scan the full grid per trace).
++        tflat = trace_id[gt]
++        sflat = sys_map[gt]
++        order = np.argsort(tflat, kind="stable")
++        ts, ss = tflat[order], sflat[order]
++        bounds = np.nonzero(np.diff(ts) != 0)[0] + 1
++        starts = np.concatenate([[0], bounds])
++        ends = np.concatenate([bounds, [ts.size]])
++        n_sys_per = np.fromiter(
++            (np.unique(ss[a:b]).size for a, b in zip(starts, ends)),
++            dtype=np.int64, count=len(starts))
++        ambiguous = int((n_sys_per > 1).sum())
++        sys_of_trace = np.zeros(n_trace + 1, dtype=np.int64)
++        sys_of_trace[ts[starts]] = ss[starts]
++        if ambiguous:
++            print(f"WARNING: {ambiguous} traces span >1 dilated component "
++                  f"(assigned to their first component)", file=sys.stderr)
++        rng = np.random.default_rng(20240925)
++        drop_sys = rng.choice(n_systems,
++                              size=int(round(args.system_holdout * n_systems)),
++                              replace=False) + 1
++        drop_table = np.zeros(n_systems + 1, dtype=bool)
++        drop_table[drop_sys] = True
++        held_trace_ids = np.nonzero(drop_table[sys_of_trace])[0]
++        trace_excl = np.isin(trace_id, held_trace_ids) & gt
++        n_held_traces = int(len(held_trace_ids))
++        n_held_systems = int(len(drop_sys))
++        print(f"system_holdout={args.system_holdout} (link {radius:g} px): "
++              f"{n_held_systems} of {n_systems} systems = {n_held_traces} "
++              f"whole traces excluded from ALL training "
++              f"({int(trace_excl.sum()):,} gt px)", flush=True)
++    elif args.trace_holdout > 0.0:
+         rng = np.random.default_rng(20240925)
+         drop_ids = rng.choice(n_trace, size=int(round(args.trace_holdout * n_trace)),
+                               replace=False) + 1
+@@ -561,6 +627,10 @@ def main() -> int:
+             "pos_weight": args.pos_weight,
+             "trace_holdout": args.trace_holdout,
+             "trace_holdout_traces": n_held_traces,
++            "system_holdout": args.system_holdout,
++            "system_link_px": args.system_link_px,
++            "system_holdout_systems": (f"{n_held_systems}/{n_systems}"
++                                       if n_systems else None),
+             "fp_mask_px": args.fp_mask_px,
+             "fp_mask_note": (
+                 None if args.fp_mask_px < 0 else
+@@ -611,7 +681,7 @@ def main() -> int:
+             top = list(out["configs"][name]["aggregate_gt_full_masked"].items())[:3]
+             print("  gt_full_masked best: " + ", ".join(
+                 f"{n}={v['mean_dti']:.4f}" for n, v in top), flush=True)
+-        if args.trace_holdout > 0.0:
++        if args.trace_holdout > 0.0 or args.system_holdout > 0.0:
+             out["configs"][name]["aggregate_trace_gap"] = aggregate(
+                 folds_rec, ("trace_gap",))
+             out["configs"][name]["aggregate_trace_seen"] = aggregate(

@@ -395,3 +395,31 @@ repo/site, resolution of the one-account posture, any submission, any
 cross-repo change. These remain blocked on human ratification; the brief's
 "work autonomously" clause cannot substitute for an eligibility decision that
 rules §1.3/A.2/A.16 place under perjury and clawback exposure.
+
+## F13 — addendum (session 6, 2026-09-26 ~23:16–00:20Z): parallel-arm activity now MID-SESSION
+
+Fresh `gh api` re-check at ~23:16Z, before any session-6 experiment ran:
+
+- `7GEMSDOE` merged PRs #7 and #8 at **22:53:02Z and 22:58:49Z** (branch
+  `arena/01a0dfad-7gemsdoe`) — i.e., **during** session 6's own working
+  window, a first: prior F8/F12 activity fell between sessions.
+- `8GEMSDOE` `pushed_at` **23:15:58Z**, its Pages caught `building` at the
+  time of the API read (a deploy in progress while the audit was running).
+- Inventory otherwise unchanged: 11 repos, all `owner_id 309556078`, newest
+  `created_at` still 2026-09-25T18:33:56Z (no new repo), the three genuine
+  stubs (`GEMSDOE9`, `GEMSDOE10`, `11GEMSDOE`) still untouched
+  (`pushed_at == created_at`), secondary account `kanlerxz87-cyber` still
+  0 public repos.
+- Ownership of `5GEMSDOE` / `GEMSDOE4` / `6GEMSDOE` re-verified with this
+  session's own API calls (**fifth consecutive confirmation**); all six
+  reference sites re-visited and byte-comparable to their session-5 states
+  (GEMSDOE1–3, 5GEMSDOE, GEMSDOE4, 6GEMSDOE — 6GEMSDOE's F4
+  "single canonical entry" claim still stands upstream, still un-ratified).
+- Runner fact, flagged: the sandbox's `GH_TOKEN` **expired mid-session**
+  (~00:35Z, "Bad credentials" on `gh api` and clone paths after ~23:16Z
+  reads succeeded). Session-6's verification steps after that point used the
+  locally pinned clone; no conclusion in the session-6 log depends on an
+  API call made after the token died.
+- Posture unchanged: no creation, no submission, no consolidation; this
+  session wrote to no GEMSDOE repository. Human ratification is now blocked
+  for the **sixth** session (see `gemsdoe/SESSION_LOG.md` session 6 §8).

@@ -1,0 +1,745 @@
+{
+  "design": {
+    "tie_band_px": [
+      12.0,
+      45.0
+    ],
+    "line_band_px": [
+      2.0,
+      6.0
+    ],
+    "tol_x": 2.0,
+    "tol_y": 1.0,
+    "n_null": 300,
+    "geometry_source": "USGS data release 10.5066/P93LGLVQ: flight lines az 90 (E-W) 200/400 m; tie lines az 180 (N-S) 2000/4000 m -> at 100 m sampling: E-W stripes 2-4 px period, N-S stripes 20-40 px"
+  },
+  "candidates": {
+    "C-2": {
+      "azimuth_deg": 2.0,
+      "near_n_s": true,
+      "length_px": 20,
+      "tmi_hg": {
+        "tie": {
+          "ok": true,
+          "n_crests": 5,
+          "A_x": 0.0,
+          "chance_coverage_analytic": 0.2717,
+          "null_mean": 0.24583333333333332,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 1.0,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 92,
+          "band_px": [
+            12.0,
+            45.0
+          ],
+          "verdict_tie_stripe_aligned": false
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 20,
+          "A_y": 0.55,
+          "chance_coverage_analytic": 0.5455,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "tmi": {
+        "tie": {
+          "ok": true,
+          "n_crests": 5,
+          "A_x": 0.0,
+          "chance_coverage_analytic": 0.2717,
+          "null_mean": 0.25983333333333336,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 1.0,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 92,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 19,
+          "A_y": 0.45,
+          "chance_coverage_analytic": 0.5182,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "rtp": {
+        "tie": {
+          "ok": true,
+          "n_crests": 5,
+          "A_x": 0.0,
+          "chance_coverage_analytic": 0.2717,
+          "null_mean": 0.26449999999999996,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 1.0,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 92,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 21,
+          "A_y": 0.5,
+          "chance_coverage_analytic": 0.5727,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      }
+    },
+    "C-4": {
+      "azimuth_deg": 172.0,
+      "near_n_s": true,
+      "length_px": 16,
+      "tmi_hg": {
+        "tie": {
+          "ok": true,
+          "n_crests": 5,
+          "A_x": 0.9375,
+          "chance_coverage_analytic": 0.266,
+          "null_mean": 0.319375,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 0.22,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 94,
+          "band_px": [
+            12.0,
+            45.0
+          ],
+          "verdict_tie_stripe_aligned": false
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 20,
+          "A_y": 0.6875,
+          "chance_coverage_analytic": 0.566,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "tmi": {
+        "tie": {
+          "ok": true,
+          "n_crests": 4,
+          "A_x": 0.0,
+          "chance_coverage_analytic": 0.2128,
+          "null_mean": 0.156875,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 1.0,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 94,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 17,
+          "A_y": 0.5,
+          "chance_coverage_analytic": 0.4811,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "rtp": {
+        "tie": {
+          "ok": true,
+          "n_crests": 4,
+          "A_x": 0.0,
+          "chance_coverage_analytic": 0.2128,
+          "null_mean": 0.155625,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 1.0,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 94,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 17,
+          "A_y": 0.5,
+          "chance_coverage_analytic": 0.4811,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      }
+    },
+    "C-8": {
+      "azimuth_deg": 12.8,
+      "near_n_s": true,
+      "length_px": 9,
+      "tmi_hg": {
+        "tie": {
+          "ok": true,
+          "n_crests": 4,
+          "A_x": 0.0,
+          "chance_coverage_analytic": 0.2174,
+          "null_mean": 0.3233333333333333,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 1.0,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 92,
+          "band_px": [
+            12.0,
+            45.0
+          ],
+          "verdict_tie_stripe_aligned": false
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 20,
+          "A_y": 0.7777777777777778,
+          "chance_coverage_analytic": 0.6122,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "tmi": {
+        "tie": {
+          "ok": true,
+          "n_crests": 4,
+          "A_x": 0.0,
+          "chance_coverage_analytic": 0.2174,
+          "null_mean": 0.16777777777777778,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 1.0,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 92,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 16,
+          "A_y": 0.4444444444444444,
+          "chance_coverage_analytic": 0.4898,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "rtp": {
+        "tie": {
+          "ok": true,
+          "n_crests": 5,
+          "A_x": 0.0,
+          "chance_coverage_analytic": 0.2717,
+          "null_mean": 0.21148148148148146,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 1.0,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 92,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 19,
+          "A_y": 0.7777777777777778,
+          "chance_coverage_analytic": 0.5816,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      }
+    },
+    "C-10": {
+      "azimuth_deg": 1.5,
+      "near_n_s": true,
+      "length_px": 9,
+      "tmi_hg": {
+        "tie": {
+          "ok": true,
+          "n_crests": 4,
+          "A_x": 0.0,
+          "chance_coverage_analytic": 0.2174,
+          "null_mean": 0.2381481481481482,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 1.0,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 92,
+          "band_px": [
+            12.0,
+            45.0
+          ],
+          "verdict_tie_stripe_aligned": false
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 16,
+          "A_y": 0.5555555555555556,
+          "chance_coverage_analytic": 0.4848,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "tmi": {
+        "tie": {
+          "ok": true,
+          "n_crests": 4,
+          "A_x": 0.0,
+          "chance_coverage_analytic": 0.2174,
+          "null_mean": 0.167037037037037,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 1.0,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 92,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 16,
+          "A_y": 0.4444444444444444,
+          "chance_coverage_analytic": 0.4848,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "rtp": {
+        "tie": {
+          "ok": true,
+          "n_crests": 4,
+          "A_x": 0.0,
+          "chance_coverage_analytic": 0.2174,
+          "null_mean": 0.17,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 1.0,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 92,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 16,
+          "A_y": 0.5555555555555556,
+          "chance_coverage_analytic": 0.4848,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      }
+    },
+    "C-1": {
+      "azimuth_deg": 34.3,
+      "near_n_s": false,
+      "length_px": 13,
+      "tmi_hg": {
+        "tie": {
+          "ok": true,
+          "n_crests": 5,
+          "A_x": 0.0,
+          "chance_coverage_analytic": 0.2577,
+          "null_mean": 0.2876923076923077,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 1.0,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 97,
+          "band_px": [
+            12.0,
+            45.0
+          ],
+          "verdict_tie_stripe_aligned": false
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 16,
+          "A_y": 0.46153846153846156,
+          "chance_coverage_analytic": 0.4752,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "tmi": {
+        "tie": {
+          "ok": true,
+          "n_crests": 5,
+          "A_x": 0.0,
+          "chance_coverage_analytic": 0.2577,
+          "null_mean": 0.22153846153846152,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 1.0,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 97,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 16,
+          "A_y": 0.46153846153846156,
+          "chance_coverage_analytic": 0.4752,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "rtp": {
+        "tie": {
+          "ok": true,
+          "n_crests": 5,
+          "A_x": 0.0,
+          "chance_coverage_analytic": 0.2577,
+          "null_mean": 0.2053846153846154,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 1.0,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 97,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 16,
+          "A_y": 0.38461538461538464,
+          "chance_coverage_analytic": 0.4752,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      }
+    },
+    "C-3": {
+      "azimuth_deg": 32.3,
+      "near_n_s": false,
+      "length_px": 34,
+      "tmi_hg": {
+        "tie": {
+          "ok": true,
+          "n_crests": 4,
+          "A_x": 0.2647058823529412,
+          "chance_coverage_analytic": 0.1852,
+          "null_mean": 0.09833333333333333,
+          "null_p50": 0.0,
+          "null_p95": 0.7058823529411765,
+          "null_empirical_p_ge_trace": 0.14333333333333334,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 108,
+          "band_px": [
+            12.0,
+            45.0
+          ],
+          "verdict_tie_stripe_aligned": false
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 20,
+          "A_y": 0.5588235294117647,
+          "chance_coverage_analytic": 0.5085,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "tmi": {
+        "tie": {
+          "ok": true,
+          "n_crests": 5,
+          "A_x": 0.11764705882352941,
+          "chance_coverage_analytic": 0.2315,
+          "null_mean": 0.18254901960784314,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 0.35,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 108,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 19,
+          "A_y": 0.5,
+          "chance_coverage_analytic": 0.4831,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "rtp": {
+        "tie": {
+          "ok": true,
+          "n_crests": 4,
+          "A_x": 0.17647058823529413,
+          "chance_coverage_analytic": 0.1852,
+          "null_mean": 0.19627450980392158,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 0.3233333333333333,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 108,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 19,
+          "A_y": 0.5,
+          "chance_coverage_analytic": 0.4831,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      }
+    },
+    "C-5": {
+      "azimuth_deg": 35.0,
+      "near_n_s": false,
+      "length_px": 70,
+      "tmi_hg": {
+        "tie": {
+          "ok": true,
+          "n_crests": 5,
+          "A_x": 0.24285714285714285,
+          "chance_coverage_analytic": 0.1923,
+          "null_mean": 0.16876190476190478,
+          "null_p50": 0.0,
+          "null_p95": 0.7721428571428574,
+          "null_empirical_p_ge_trace": 0.31333333333333335,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 130,
+          "band_px": [
+            12.0,
+            45.0
+          ],
+          "verdict_tie_stripe_aligned": false
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 30,
+          "A_y": 0.6428571428571429,
+          "chance_coverage_analytic": 0.6081,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "tmi": {
+        "tie": {
+          "ok": true,
+          "n_crests": 6,
+          "A_x": 0.38571428571428573,
+          "chance_coverage_analytic": 0.2308,
+          "null_mean": 0.23519047619047617,
+          "null_p50": 0.2,
+          "null_p95": 0.6864285714285716,
+          "null_empirical_p_ge_trace": 0.26,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 130,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 24,
+          "A_y": 0.45714285714285713,
+          "chance_coverage_analytic": 0.4865,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "rtp": {
+        "tie": {
+          "ok": true,
+          "n_crests": 6,
+          "A_x": 0.37142857142857144,
+          "chance_coverage_analytic": 0.2308,
+          "null_mean": 0.2363333333333333,
+          "null_p50": 0.18571428571428572,
+          "null_p95": 0.7150000000000002,
+          "null_empirical_p_ge_trace": 0.28,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 130,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 25,
+          "A_y": 0.5142857142857142,
+          "chance_coverage_analytic": 0.5068,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      }
+    },
+    "C-7": {
+      "azimuth_deg": 159.0,
+      "near_n_s": false,
+      "length_px": 23,
+      "tmi_hg": {
+        "tie": {
+          "ok": true,
+          "n_crests": 4,
+          "A_x": 0.43478260869565216,
+          "chance_coverage_analytic": 0.202,
+          "null_mean": 0.2026086956521739,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 0.22,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 99,
+          "band_px": [
+            12.0,
+            45.0
+          ],
+          "verdict_tie_stripe_aligned": false
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 18,
+          "A_y": 0.4782608695652174,
+          "chance_coverage_analytic": 0.4865,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "tmi": {
+        "tie": {
+          "ok": true,
+          "n_crests": 5,
+          "A_x": 0.43478260869565216,
+          "chance_coverage_analytic": 0.2525,
+          "null_mean": 0.29840579710144927,
+          "null_p50": 0.0,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 0.33,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 99,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 18,
+          "A_y": 0.4782608695652174,
+          "chance_coverage_analytic": 0.4865,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "rtp": {
+        "tie": {
+          "ok": true,
+          "n_crests": 4,
+          "A_x": 0.21739130434782608,
+          "chance_coverage_analytic": 0.202,
+          "null_mean": 0.3388405797101449,
+          "null_p50": 0.08695652173913043,
+          "null_p95": 1.0,
+          "null_empirical_p_ge_trace": 0.4533333333333333,
+          "trace_exceeds_null_p95": false,
+          "profile_len": 99,
+          "band_px": [
+            12.0,
+            45.0
+          ]
+        },
+        "line": {
+          "ok": true,
+          "n_crests": 18,
+          "A_y": 0.4782608695652174,
+          "chance_coverage_analytic": 0.4865,
+          "band_px": [
+            2.0,
+            6.0
+          ]
+        }
+      }
+    }
+  },
+  "summary": {
+    "oblique_control_max_A_x": 0.43478260869565216,
+    "near_ns_tie_aligned": 0,
+    "near_ns_median_A_x": 0.0,
+    "oblique_median_A_x": 0.253781512605042,
+    "class_verdict_tie_stripe_locked": false
+  }
+}

@@ -18,6 +18,323 @@ tool. That is a fact about this runner, never a claim that a target is down.
 
 ---
 
+## Session 6 — 2026-09-26 (UTC, ~23:10–00:30) · branch `arena/01a0dffd-masterselflearn`
+
+### 0. Mandate check
+
+Read session 5's carry-forward (§8 of that entry) and the standing brief
+before anything new. Carry-forward order: (1) human ratification,
+(2) E11 submission decision, (3) apply session-4+5 patches in the ratified
+repo, (4) E12 as an alignment test + GeoDAWN flight-line metadata,
+(5) cond multi-profile follow-ups + famrank_cond member decision,
+(6) whole-system holdout, (7) engine-side F10. Items 1–3 remain blocked on a
+human; **items 4, 5 AND 6 were all executed** (6 needed a grouping key that
+did not exist — this session built it). The brief's own items 1–7 were
+verified against fresh runs, not cited. Outputs: two new probes, one new
+experiment instrument (`--system-holdout`), one verified patch, the sourced
+flight-geometry correction, and the write-ups below. Raw outputs committed at
+[`gemsdoe/evidence/session6/`](evidence/session6/).
+
+### 1. Guardrail check first: one account, one repo (brief guardrail 1)
+
+| Check | Method (this session, ~23:16Z) | Result |
+|---|---|---|
+| GEMSDOE repo inventory | `gh api search/repositories?q=GEMSDOE+in:name` | `total_count: 11`, all `owner_id 309556078`. Newest `created_at` still 2026-09-25T18:33:56Z — **no new repo created**. |
+| New pushes since session 5 | `pushed_at` + commit logs | **YES — during this session**: `7GEMSDOE` merged PRs #7/#8 at 22:53:02Z and 22:58:49Z (branch `arena/01a0dfad-7gemsdoe`), `8GEMSDOE.pushed_at` 23:15:58Z with Pages `building` (its Pages was caught mid-deploy). F12 pattern continues, now mid-session, not just between sessions. |
+| Stub status | `created_at`/`pushed_at` on `GEMSDOE9`, `GEMSDOE10`, `11GEMSDOE` | All three still `pushed_at == created_at` (untouched stubs, Pages built). |
+| Secondary account | `gh api users/kanlerxz87-cyber` | Still 0 public repos (id 312694378). |
+| Pages status ×11 | `gh api repos/<r>/pages` | 10 **built**, `8GEMSDOE` **building** (a deploy was in progress at 23:16Z). |
+| DrivenData registrations | fresh leaderboard pull (§2) | Unverifiable from public data (F5, unchanged). No registration treated as ours. |
+
+**Verdict, not smoothed:** the "ONE repo" condition remains **violated**
+(standing since session 1; consolidation still blocked on human ratification,
+sixth session). No new repo/registration was created; two parallel arms were
+provably active *during* this session. This session created nothing, treated
+no other entrant's registration or score as our data or as an arm, and wrote
+to no GEMSDOE repository (scratch checkout in `/tmp` only).
+
+### 2. Fresh leaderboard — pulled ≈23:16Z via research fetch (brief item 7)
+
+Source: <https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/>
+(static render through #50 = 0.0878; the board got denser at the bottom).
+
+| Rank | Participant | Score | Subs | Last activity | Note |
+|---|---|---|---|---|---|
+| #1 | DARD | **0.3049** | 10 | 4d | field high, **unchanged across six sessions** |
+| #5 | joeyfezster | 0.2589 | 12 | 1d 5h | **pay line**, unchanged |
+| #24 | extradr19 | 0.1563 | 2 | 1d 22h | brief row: GEMSDOE |
+| #25 | SDCF9 | 0.1563 | 2 | **5h 20m** | brief row: GEMSDOE3; activity without count change |
+| #26 | smashi34 | 0.1560 | 1 | 1d 5h | brief row: GEMSDOE2 |
+| #42 | smrtdoog5 | 0.1193 | 1 | 1d 5h | brief row: GEMSDOE3 |
+| >#50 | wbg1 | 0.0830 (session-5 value) | 2 | — | **fell off the visible board**: #50 is now tarabird90 0.0878 |
+
+All five tracked rows exact-match session 5's scores; no new attributable
+registration appeared in the visible ranks. Field reading: gap from the best
+tracked row (0.1563) to the pay line = **0.1026** (unchanged); to field high
+0.1486. **Flagged:** wbg1's row is now untraceable from public data — the
+static render ends at #50 and rows below load via JavaScript, so any future
+score changes below 0.0878 are invisible to this runner. We plausibly sit
+mid-pack: best tracked row at #24 of 50 visible.
+
+### 3. Ownership of the three "unconfirmed" sites — RESOLVED again, this session's own calls (brief item 7)
+
+Fresh `gh api repos/...` calls at ~23:16Z: `5GEMSDOE`, `GEMSDOE4`, `6GEMSDOE`
+all return `owner.login = buffedlizard55-lab`, `owner_id = 309556078` —
+identical to every other GEMSDOE repo. **They are ours as repositories**
+(confirmed for the fifth time, always with the session's own API calls).
+All three sites were **visited this session** plus GEMSDOE1/2/3 and the
+6GEMSDOE root site: GEMSDOE1 `7f00890a…` (unchanged), GEMSDOE2 dual-family
+union `f68e590f…` + the three-arm week plan (unchanged; still attributing
+"0.1563 = the recall-union's board score" across sites), GEMSDOE3 Pindrop v4
+(unchanged), 5GEMSDOE `7f00890a…` + its S5-A hedge candidate 227,507 px
+(unchanged), GEMSDOE4 `237f0063…` k=3-of-5 union 264,247 px (unchanged),
+6GEMSDOE shipped file + 13-check table + its own canonical claim
+(unchanged — F4 conflict stands upstream). What remains unverified (F5):
+which DrivenData *registrations* the scores belong to; none is treated as
+our own.
+
+### 4. Brief items 1–5, re-verified this session (fresh runs, not citations)
+
+Environment: fresh scratch clone `6GEMSDOE@e2fe3f41` (HEAD = pin) + session-4
+patch + session-5 patch (both `git apply --check` clean again); Python 3.11.2,
+numpy 2.4.6, scipy 1.17.1, rasterio 1.4.4, sklearn 1.9.1, pytest 9.1.1.
+Bridge reassembled, sha256 `4371c82e…` matches `spec.PINS` (plus labels
+`7ba308cc…`, template `2176d08e…`, shipped file `33cec71f…` — all four
+pins exact). Rank tables 129.2 s; feature build 1,031.8 s; valid mask
+**5,165,840** — byte-consistent with sessions 4/5 rebuilds.
+
+| Brief item | Verdict |
+|---|---|
+| 1. Feature engineering vs the priorities | Re-derived from the rebuilt `features_meta.json`: 105 channels; HGM/tilt on mag+grav = 26 channels, curvature/slope-break on DEM = 14 — **all inside the shipped 88**; the strain×cond×seis cross-reference block (famrank/agree, indices 88–104) is the 17-channel block excluded by `--n-channels 88` (only the three `x_*` products survive inside). Evidence for/against that exclusion: E9/E13 (gap-population win for 105) is now **weakened by E14-SYS** — see §5.4: the whole-system holdout, the harder instrument, shrinks the 105-ch gap advantage to ≈0–0.0017. |
+| 2. Spatially blocked + buffered CV | **Confirmed on the patched tree**: `probe_cv_buffer.py` → 0/29 unexcluded kernel offsets; 0.000% leakage at every layout incl. 6-blocks/4-folds; `probe_feature_guard.py` → 0 affected-but-finite px at σ=1.5/3.0; `probe_crossder_halo.py` → 0. The only randomness anywhere is negative subsampling inside already-blocked masks; standardisation train-only. **No random pixel split.** 46/46 tests pass. |
+| 3. Metric-aware placement intact | **Intact** — `thin_keep`/`_skeleton`/`skeleton_spaced4`/`topk_mask`/`gated_topk`/`breakeven_posterior` all present; 17 metric/placement tests pass. The ~4–5 px spacing premise stays **falsified** (HE, session 3, budget-matched); intactness ≠ adopted and that's unchanged. |
+| 4. Submission generator + gate | **Re-verified end to end this session**: shipped file sha `33cec71ff0…` matches pin; gate **13/13 PASS** incl. `NAN-INSIDE-FOOTPRINT`, exit 0; negative test (one NaN injected at (936,1221) inside the footprint, on a copy): `values-in-0-1` still passes, `NAN-INSIDE-FOOTPRINT` **fails**, exit **1**. Hard-gate requirement met. |
+| 5. Executive summary / how-to-submit | Checkable claims still accurate: file name/sha/1,652,883 bytes, 155,021 px = 3.00%, {0,1} values, model string, the DTI-monotonicity argument, the 13-check list, the minimax table; the "one-entry record" in SUBMISSION_GUIDE.md is still correctly blank. **Standing upstream flags unchanged** (session 5): both guides pre-date forum-11516 masking; `EXECUTIVE_SUMMARY.md`/`ACCOUNT_STATUS.md`/README assert the "designated single entry" designation as fact while F4 records it was never ratified; the "what did NOT work" framing treats the agreement channels on the catalogue proxy only, now fully superseded by E9/E13/E14-SYS. Nothing written upstream. |
+| 6. Geological reasoning | Extended — `CANDIDATE_GEOLOGY.md` **§8**: E14 stripe-closure, cond multi-profiles + member attribution, per-candidate status-change table. |
+| 7. Field standing + ownership | §2–§3. Mid-pack; ownership of the three sites resolved ours (fifth confirmation). |
+
+### 5. What was executed (carry-forward 4, 5, 6)
+
+#### 5.1 Sourced flight metadata (carry 4b) — the physical prior was wrong for GeoDAWN
+
+USGS Science Data Catalog, GeoDAWN data release (Glen & Earney 2024,
+DOI 10.5066/P93LGLVQ,
+<https://data.usgs.gov/datacatalog/data/USGS:657e1d85d34e23d3533209f7>,
+fetched verbatim this session): Area 1 flight lines **200 m at azimuth
+90°**, ties 2000 m az 180°; **Area 2** (the geothermal block covering the
+study area — interpretation from the page's own area descriptions, stated)
+flight lines **400 m at azimuth 90°**, ties **4000 m az 180°**. Magnetic
+processing includes "tie-line leveling, **micro-leveling**" (already
+applied by the contractor). Session 3's prior ("N–S = classic flight-line
+direction") is therefore wrong for GeoDAWN: flight lines are **E–W**; N–S is
+the tie direction (20–40 px E–W period at 100 m sampling). Recorded verbatim
+in `CANDIDATE_GEOLOGY.md` §8.1.
+
+#### 5.2 E14 — the alignment test (carry 4a), executed
+
+New probe `gemsdoe/probes/e14_alignment.py` (design pre-registered in the
+probe's header before the first run): trace-self-masked 12–45 px band-pass
+crest alignment in ±45 px windows; null = 300 random N–S segments/window;
+verdict bar A_x ≥ null p95 AND ≥ oblique max. First run caught and fixed an
+instrument insufficiency **by its own output**: at E10's ±25 px window the
+shortest trace's window (62 px) could not hold two cycles of the 45 px tie
+edge — the window was widened to ±45 px and the change stated in the probe,
+not hidden. Results (raw: `evidence/session6/e14_results.json`):
+
+- **C-2, C-8, C-10: A_x = 0.000 on all three bands (emp. p 1.00)** —
+  decisively not tie-stripe locked.
+- **C-4: A_x = 0.938 on `tmi_hg` only; emp. p = 0.22; replicates `tmi`/`rtp`
+  = 0.000** — below the pre-registered bar (null p95 = 1.0) and
+  non-replicating: recorded as an anomaly, not a detection.
+- **Class verdict: 0/4 aligned; near-N–S median 0.000 vs oblique median
+  0.254 → NOT tie-stripe locked.**
+- Line arm (E–W stripes 2–6 px, the sourced flight direction): per-candidate
+  A_y 0.38–0.78 against analytic chance coverage 0.48–0.61 (min/max over
+  candidates × the three bands) — at chance everywhere; comparative-only
+  instrument, stated.
+
+**The stripe question is closed for the written-up set; the "N–S emission
+class is artefact-suspect" framing is retired** (`CANDIDATE_GEOLOGY.md`
+§8.2/§8.4). C-4's magnetics return to neutral standing; the demoted-status
+basis (D-9) is now invalidated on two independent legs.
+
+#### 5.3 Cond multi-profiles + member attribution (carry 5), executed
+
+New probe `gemsdoe/probes/followup_cond_multiprofile.py`, pre-registered
+verdict rules (raw: `evidence/session6/cond6_results.json`):
+
+- **C-8: 0/5 profiles local-max → kill-if stands (regional)** — session 5's
+  single-profile conclusion confirmed beyond its own caveat.
+- **C-9: 0/5 → kill-if stands**, measured for the first time (session 5 had
+  rank-check only). Its cond pillar is regional.
+- **C-4: 2/5 local-max (fracs 0.70/0.85) on MAD-scale residuals, all five
+  raw trace means below window medians → "inconclusive" per the
+  pre-registered rule** — refined from session 5's "kill-if supported"; the
+  multi-profile extension does not support the conductor story anywhere
+  either (trace never a raw high). Flagged precisely, not resolved into a
+  cleaner-sounding verdict.
+- **Member attribution over 260 candidates**: `famrank_cond` = max of the
+  two member ranks, NO inversion on `depth_to_base_surf` (verified in
+  `build_features.py`). 89 candidates ≥ 0.75; **24/89 (27%) carried by
+  `depth_to_base_surf` alone** (e.g. id 4176: fam 0.991 = max(cond **0.097**,
+  d2b 0.991)) — sediment thickness, not subsurface conductivity, under the
+  official band descriptions. Written-up set: 9/10 fire on cond_surf
+  (C-2's 0.431 the exception, always its weak family).
+- **Decision recorded (recommendation level)**: report `famrank_cond` as two
+  sub-signals; the drop-the-depth-member ablation is queued but was not run.
+
+#### 5.4 Whole-system holdout (carry 6) — grouping key built, instrument implemented, experiment run
+
+Session 5 noted this was blocked on "a grouping key that does not exist
+yet". This session built it: **8-connected components of the catalogue after
+Euclidean dilation by a link radius**. Radius scan (this session): r=10 px →
+**266 systems** (median 3 traces, largest 10.8% of labels); r=25 px → 39
+systems (largest 36.6%); r=50 px → 3 (degenerate). Default link radius 10 px
+(nearest-pixel merge distance 2 km). Single-valuedness asserted: **0 of
+3,199 traces span >1 component** (chain argument verified numerically, not
+assumed). Implemented as `--system-holdout/--system-link-px` in
+`experiment.py` (mutually exclusive with `--trace-holdout`; reuses the
+`trace_excl` train-exclusion and the whole trace_gap/trace_seen/masked
+reporting), 46/46 tests pass with it in place, patch delivered:
+[`patches/session6_system_holdout.patch`](patches/session6_system_holdout.patch)
+— **not applied upstream**, same rule as sessions 4/5.
+
+Run (exactly E13's recipe, system holdout replacing trace holdout):
+`experiment.py --configs extended,agreement --system-holdout 0.3
+--max-train-px 400000 --iters 300 --fp-mask-px 0` →
+`evidence/session6/experiments_e14sys.json`. Holdout: **80 of 266 systems =
+787 traces = 14,128 gt px** (23.2% of labels).
+
+**E14-SYS result — the E9/E13 gap win does *not* transfer at whole-system
+scale.** Mean blocked-CV DTI, system-gap truth, 88 vs 105 channels
+(masked = FP side of forum-11516 at width-0):
+
+| placement | gap 88 | gap 105 | Δ | gap masked 88 | gap masked 105 | Δ masked |
+|---|---|---|---|---|---|---|
+| topk_hard@0.01 | 0.0462 | 0.0447 | −0.0014 | 0.0475 | 0.0459 | −0.0016 |
+| topk_hard@0.02 | 0.0470 | 0.0473 | +0.0003 | 0.0483 | 0.0485 | +0.0002 |
+| topk_hard@0.03 | 0.0445 | 0.0460 | +0.0015 | 0.0457 | 0.0471 | +0.0014 |
+| topk_hard@0.05 | 0.0406 | 0.0416 | +0.0010 | 0.0416 | 0.0426 | +0.0010 |
+| topk_hard@0.1 | 0.0336 | 0.0353 | +0.0017 | 0.0343 | 0.0359 | +0.0017 |
+| hard@0.2 | 0.0434 | 0.0436 | +0.0001 | 0.0446 | 0.0446 | +0.0000 |
+| hard@0.3 | 0.0447 | 0.0444 | −0.0003 | 0.0459 | 0.0455 | −0.0004 |
+
+vs E13's trace-holdout flip of +0.0023…+0.0062 (5/6 placements). Fold-level
+at topk@0.02: 105 wins folds 0/1/3 but **loses fold 2** (0.0391 → 0.0273).
+`trace_seen`/`gt_full` orderings unchanged (88 > 105 everywhere, as always).
+
+**Verdicts (flagged, not smoothed):**
+
+1. **The agreement layer's gap advantage is a trace-level effect.** At
+   system level it shrinks ~10× to +0.0000…+0.0017 (6/9 placements positive,
+   fold-inconsistent at the reference placement). Most of what E9 measured
+   was rediscovery of strands next to mapped systems — which may still be
+   board-relevant (the hidden set is unknown), but "weak gap evidence", not
+   "the 105-ch case". The recommendation is **downgraded**: from
+   "re-enable in gap-oriented builds" to "neutral-to-slightly-positive at
+   system scale; the E11 file's 10.5k-px 105-ch marginal addition is neither
+   helped nor hurt by this instrument".
+2. **Absolute gap scores drop ~35–40% from trace- to system-holdout**
+   (topk@0.02 masked: 0.0482 vs 0.0780) — a measurement of how much harder
+   whole-system discovery is than strand rediscovery, i.e. the true size of
+   the generalisation the hidden set demands, insofar as the labels proxy it.
+3. The instrument itself is the deliverable that outlasts this session's
+   number: every future build claim can now be priced on three populations
+   (catalogue / held traces / held systems) with one flag.
+
+### 6. Irregularities flagged this session (guardrail 4)
+
+1. **F13 — parallel arms active DURING this session** (§1): `7GEMSDOE` two
+   merges 22:53/22:58Z, `8GEMSDOE` pushed 23:15:58Z with Pages caught
+   mid-deploy. Eleven repos, eleven Pages sites (one building), three stubs
+   untouched; zero consolidation decisions; human ratification now blocked
+   for a sixth session.
+2. **wbg1 fell off the visible leaderboard** (§2) — sub-#50 rows are no
+   longer publicly trackable from this runner; recorded, not guessed.
+3. **Session 3's striping prior corrected by sourced metadata** (§5.1) — the
+   "N–S flight-line" basis of E10(a)'s candidate-set suspicion was wrong
+   for GeoDAWN; corrected in the library with a verbatim official quote.
+4. **Session 5's C-4 cond verdict refined** (§5.3): "kill-if supported"
+   became "inconclusive" under the multi-profile rule — the extension showed
+   the single centre profile did not generalise, even though no profile
+   supports a conductor either.
+5. **E9/E13 over-reading risk** (§5.4): the 105-ch gap win was priced in
+   session 4/5 recommendations at full strength; the harder instrument says
+   it is a trace-level effect. Downgrade recorded in `HYPOTHESES.md`.
+6. **`famrank_cond` max-rule materially mislabels** 24/89 cond-strong
+   candidates (§5.3) — recommendation recorded; upstream unchanged.
+7. **Probe-comment staleness**: `probe_real_footprint.py` part (b) hard-codes
+   the legacy guard and calls it "what the code uses" — true only of the
+   unpatched upstream; documented in `probes/README.md` rather than silently
+   edited (probes are the evidence record).
+8. **Engine-side F10 unchanged**: this repo's own suite is **350/350 green**
+   this session; the quoted-prose blind spot in `tools/render_check.js` is
+   latent, remains the owner's call, and was not touched.
+9. Runner facts re-confirmed: `gh api` fine; direct TLS egress still
+   blocked; the `probe_sources.py` live pass not run (documented runner
+   fact, not a source verdict).
+
+### 7. Three-pass review notes
+
+1. **Implement.** Every number above came from this session's own runs, API
+   calls or fetches: all four pins re-hashed; gate 13/13 and the negative
+   test **executed** (not cited); E14 run twice (the ±25 px window was
+   judged insufficient by the instrument's own output and replaced with
+   ±45 px, stated in the probe header); cond probe run once (its arm-B LUT
+   re-implements `build_features.py`'s exact bin rule); the system grouping
+   was probed at three radii before wiring it in; the E14-SYS run used
+   E13's recipe verbatim (80/266 systems = 787 traces / 14,128 px verified
+   in the log before interpreting anything) and the session-5 chain/cond
+   probe **reproduced session 5's numbers exactly** on this session's
+   rebuild (instrument-chain regression check).
+2. **Review for bugs/gaps.** The null-empirical-p was added to E14 after
+   review showed the p95 bar alone was uninformative on a bimodal null; the
+   per-trace system assignment was re-written vectorised after review
+   (the naive loop would have scanned the full grid per trace); C-4's
+   "2/5 local-max" profiles were re-inspected and reported as MAD-scale
+   residual classes rather than conductor evidence; the analytic chance
+   coverage was added to both E14 arms so no instrument can quietly sit at
+   chance. **Patch verified in a fresh clone** (the session-5 discipline):
+   `6GEMSDOE@e2fe3f41` → s4 applies clean → s5 applies clean → s6 applies
+   clean → `scripts/experiment.py` byte-identical to the tested state →
+   pytest **46/46** → `--system-holdout` present in `--help`. Every number
+   quoted in §2–§5 was re-extracted from the committed JSONs and matched.
+3. **Re-check vs prompt + rules.** Guardrail 1 executed first (§1); nothing
+   created, nothing submitted, nothing consolidated, no GEMSDOE repo
+   written to. The rules were not re-quoted this session (session 2's
+   verbatim full read stands; no submission was made or planned); the one
+   newly cited external document (the GeoDAWN flight specs) is an official
+   USGS .gov page fetched verbatim. Brief items 1–7 all executed or
+   explicitly scoped; guardrails 2–4 honoured (links on every sourced
+   claim; fully autonomous; nine irregularities flagged, including two that
+   weakened earlier sessions' findings).
+
+### 8. Carry-forward (next session, in order)
+
+1. **Human ratification — sixth session running, and the arms are now
+   merging mid-session.** Canonical repo/site, THE DrivenData registration,
+   fate of the eleven sites (three stubs left). F13: parallel arms pushed
+   during this very session. Until this lands: no submission, no
+   consolidation.
+2. **E11 submission decision** (needs 1 + go-ahead): the file exists and
+   gates (`gems6_hgb88topk03_hedge105topk02_984e11e4d7.tif`); E14-SYS says
+   its 105-ch component is neither helped nor hurt; record the weekly state
+   on the confirmed account first (F5).
+3. **Apply session-4, session-5 AND session-6 patches in the ratified
+   canonical repo only** — all three verified this session (46/46 on the
+   fully patched tree in a fresh clone).
+4. **famrank_cond ablation**: `agreement-minus-depth-member` config on the
+   E9/E13/E14-SYS machinery; the member-attribution measurement (24/89)
+   says the max-rule is load-bearing for the wrong reason on a quarter of
+   the cond-strong population.
+5. **Extend the written-up set past 10** — unchanged queue item; use the
+   session-6 status table so the new write-ups inherit the closed stripe
+   question and the cond member attribution automatically.
+6. **Engine-side latent F10**: quoted-prose blind spot in
+   `tools/render_check.js`; suite green; owner's call, unchanged.
+
+---
+
 ## Session 5 — 2026-09-26 (UTC, ~21:02–22:30) · branch `arena/01a0df86-masterselflearn`
 
 ### 0. Mandate check
