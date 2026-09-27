@@ -1,0 +1,2318 @@
+{
+  "multiprofile": {
+    "C-8": {
+      "id": 872,
+      "azimuth_deg": 12.8,
+      "n_profiles": 5,
+      "local_max_at_trace": 0,
+      "centre_profile": {
+        "frac": 0.5,
+        "at_rowcol": [
+          382,
+          910
+        ],
+        "shape": "flat/other",
+        "contrast_mad_z": -0.775,
+        "contrast_window_z": 0.0,
+        "peak_offset_px": -25
+      },
+      "profiles": [
+        {
+          "frac": 0.15,
+          "at_rowcol": [
+            384,
+            910
+          ],
+          "shape": "monotone",
+          "contrast_mad_z": -0.734,
+          "contrast_window_z": 0.0,
+          "peak_offset_px": -25
+        },
+        {
+          "frac": 0.3,
+          "at_rowcol": [
+            383,
+            910
+          ],
+          "shape": "flat/other",
+          "contrast_mad_z": -0.752,
+          "contrast_window_z": 0.0,
+          "peak_offset_px": -25
+        },
+        {
+          "frac": 0.5,
+          "at_rowcol": [
+            382,
+            910
+          ],
+          "shape": "flat/other",
+          "contrast_mad_z": -0.775,
+          "contrast_window_z": 0.0,
+          "peak_offset_px": -25
+        },
+        {
+          "frac": 0.7,
+          "at_rowcol": [
+            380,
+            911
+          ],
+          "shape": "flat/other",
+          "contrast_mad_z": -0.99,
+          "contrast_window_z": -0.048,
+          "peak_offset_px": -25
+        },
+        {
+          "frac": 0.85,
+          "at_rowcol": [
+            379,
+            911
+          ],
+          "shape": "flat/other",
+          "contrast_mad_z": -1.183,
+          "contrast_window_z": -0.177,
+          "peak_offset_px": -25
+        }
+      ],
+      "verdict": "kill-if stands (regional; no trace-local conductor)"
+    },
+    "C-4": {
+      "id": 1618,
+      "azimuth_deg": 172.0,
+      "n_profiles": 5,
+      "local_max_at_trace": 2,
+      "centre_profile": {
+        "frac": 0.5,
+        "at_rowcol": [
+          639,
+          2796
+        ],
+        "shape": "flat/other",
+        "contrast_mad_z": 0.37,
+        "contrast_window_z": -0.092,
+        "peak_offset_px": -25
+      },
+      "profiles": [
+        {
+          "frac": 0.15,
+          "at_rowcol": [
+            633,
+            2795
+          ],
+          "shape": "local-min-at-trace",
+          "contrast_mad_z": -1.319,
+          "contrast_window_z": -0.141,
+          "peak_offset_px": -25
+        },
+        {
+          "frac": 0.3,
+          "at_rowcol": [
+            635,
+            2795
+          ],
+          "shape": "local-min-at-trace",
+          "contrast_mad_z": -1.039,
+          "contrast_window_z": -0.159,
+          "peak_offset_px": -25
+        },
+        {
+          "frac": 0.5,
+          "at_rowcol": [
+            639,
+            2796
+          ],
+          "shape": "flat/other",
+          "contrast_mad_z": 0.37,
+          "contrast_window_z": -0.092,
+          "peak_offset_px": -25
+        },
+        {
+          "frac": 0.7,
+          "at_rowcol": [
+            641,
+            2796
+          ],
+          "shape": "local-max-at-trace",
+          "contrast_mad_z": 1.071,
+          "contrast_window_z": -0.049,
+          "peak_offset_px": -25
+        },
+        {
+          "frac": 0.85,
+          "at_rowcol": [
+            644,
+            2796
+          ],
+          "shape": "local-max-at-trace",
+          "contrast_mad_z": 1.461,
+          "contrast_window_z": -0.009,
+          "peak_offset_px": -25
+        }
+      ],
+      "verdict": "inconclusive"
+    },
+    "C-9": {
+      "id": 4209,
+      "azimuth_deg": 24.7,
+      "n_profiles": 5,
+      "local_max_at_trace": 0,
+      "centre_profile": {
+        "frac": 0.5,
+        "at_rowcol": [
+          2049,
+          1784
+        ],
+        "shape": "flat/other",
+        "contrast_mad_z": -0.025,
+        "contrast_window_z": 0.0,
+        "peak_offset_px": 23
+      },
+      "profiles": [
+        {
+          "frac": 0.15,
+          "at_rowcol": [
+            2052,
+            1783
+          ],
+          "shape": "flat/other",
+          "contrast_mad_z": -0.643,
+          "contrast_window_z": 0.0,
+          "peak_offset_px": 23
+        },
+        {
+          "frac": 0.3,
+          "at_rowcol": [
+            2051,
+            1783
+          ],
+          "shape": "flat/other",
+          "contrast_mad_z": -0.541,
+          "contrast_window_z": 0.0,
+          "peak_offset_px": 23
+        },
+        {
+          "frac": 0.5,
+          "at_rowcol": [
+            2049,
+            1784
+          ],
+          "shape": "flat/other",
+          "contrast_mad_z": -0.025,
+          "contrast_window_z": 0.0,
+          "peak_offset_px": 23
+        },
+        {
+          "frac": 0.7,
+          "at_rowcol": [
+            2047,
+            1785
+          ],
+          "shape": "flat/other",
+          "contrast_mad_z": 0.491,
+          "contrast_window_z": 0.0,
+          "peak_offset_px": 23
+        },
+        {
+          "frac": 0.85,
+          "at_rowcol": [
+            2046,
+            1785
+          ],
+          "shape": "flat/other",
+          "contrast_mad_z": 0.678,
+          "contrast_window_z": 0.0,
+          "peak_offset_px": 23
+        }
+      ],
+      "verdict": "kill-if stands (regional; no trace-local conductor)"
+    }
+  },
+  "member_attribution": {
+    "n_new_to_catalogue": 260,
+    "famrank_ge_075": 89,
+    "carried_by_d2b_alone_ge_075": 24,
+    "candidates": [
+      {
+        "id": 5061,
+        "median_rank_cond_surf": 0.996,
+        "median_rank_depth_to_base": 0.265,
+        "famrank_cond_median": 0.996,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.731
+      },
+      {
+        "id": 4176,
+        "median_rank_cond_surf": 0.097,
+        "median_rank_depth_to_base": 0.991,
+        "famrank_cond_median": 0.991,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.895
+      },
+      {
+        "id": 4868,
+        "median_rank_cond_surf": 0.988,
+        "median_rank_depth_to_base": 0.187,
+        "famrank_cond_median": 0.988,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.801
+      },
+      {
+        "id": 4889,
+        "median_rank_cond_surf": 0.988,
+        "median_rank_depth_to_base": 0.458,
+        "famrank_cond_median": 0.988,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.53
+      },
+      {
+        "id": 1853,
+        "median_rank_cond_surf": 0.987,
+        "median_rank_depth_to_base": 0.506,
+        "famrank_cond_median": 0.987,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.481
+      },
+      {
+        "id": 1702,
+        "median_rank_cond_surf": 0.987,
+        "median_rank_depth_to_base": 0.526,
+        "famrank_cond_median": 0.987,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.461
+      },
+      {
+        "id": 830,
+        "median_rank_cond_surf": 0.987,
+        "median_rank_depth_to_base": 0.152,
+        "famrank_cond_median": 0.987,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.836
+      },
+      {
+        "id": 865,
+        "median_rank_cond_surf": 0.985,
+        "median_rank_depth_to_base": 0.044,
+        "famrank_cond_median": 0.985,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.942
+      },
+      {
+        "id": 872,
+        "median_rank_cond_surf": 0.984,
+        "median_rank_depth_to_base": 0.11,
+        "famrank_cond_median": 0.984,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.874
+      },
+      {
+        "id": 1669,
+        "median_rank_cond_surf": 0.975,
+        "median_rank_depth_to_base": 0.357,
+        "famrank_cond_median": 0.975,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.618
+      },
+      {
+        "id": 1301,
+        "median_rank_cond_surf": 0.973,
+        "median_rank_depth_to_base": 0.159,
+        "famrank_cond_median": 0.973,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.814
+      },
+      {
+        "id": 1802,
+        "median_rank_cond_surf": 0.349,
+        "median_rank_depth_to_base": 0.973,
+        "famrank_cond_median": 0.973,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.625
+      },
+      {
+        "id": 1299,
+        "median_rank_cond_surf": 0.904,
+        "median_rank_depth_to_base": 0.972,
+        "famrank_cond_median": 0.972,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.068
+      },
+      {
+        "id": 4477,
+        "median_rank_cond_surf": 0.97,
+        "median_rank_depth_to_base": 0.006,
+        "famrank_cond_median": 0.97,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.964
+      },
+      {
+        "id": 4490,
+        "median_rank_cond_surf": 0.97,
+        "median_rank_depth_to_base": 0.007,
+        "famrank_cond_median": 0.97,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.962
+      },
+      {
+        "id": 794,
+        "median_rank_cond_surf": 0.969,
+        "median_rank_depth_to_base": 0.04,
+        "famrank_cond_median": 0.969,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.929
+      },
+      {
+        "id": 4493,
+        "median_rank_cond_surf": 0.966,
+        "median_rank_depth_to_base": 0.066,
+        "famrank_cond_median": 0.966,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.9
+      },
+      {
+        "id": 1889,
+        "median_rank_cond_surf": 0.332,
+        "median_rank_depth_to_base": 0.965,
+        "famrank_cond_median": 0.965,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.633
+      },
+      {
+        "id": 2692,
+        "median_rank_cond_surf": 0.774,
+        "median_rank_depth_to_base": 0.965,
+        "famrank_cond_median": 0.965,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.191
+      },
+      {
+        "id": 1313,
+        "median_rank_cond_surf": 0.827,
+        "median_rank_depth_to_base": 0.961,
+        "famrank_cond_median": 0.961,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.134
+      },
+      {
+        "id": 1058,
+        "median_rank_cond_surf": 0.955,
+        "median_rank_depth_to_base": 0.361,
+        "famrank_cond_median": 0.955,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.594
+      },
+      {
+        "id": 923,
+        "median_rank_cond_surf": 0.954,
+        "median_rank_depth_to_base": 0.728,
+        "famrank_cond_median": 0.954,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.226
+      },
+      {
+        "id": 2886,
+        "median_rank_cond_surf": 0.953,
+        "median_rank_depth_to_base": 0.458,
+        "famrank_cond_median": 0.953,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.495
+      },
+      {
+        "id": 1293,
+        "median_rank_cond_surf": 0.793,
+        "median_rank_depth_to_base": 0.952,
+        "famrank_cond_median": 0.952,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.16
+      },
+      {
+        "id": 2906,
+        "median_rank_cond_surf": 0.95,
+        "median_rank_depth_to_base": 0.599,
+        "famrank_cond_median": 0.95,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.35
+      },
+      {
+        "id": 1592,
+        "median_rank_cond_surf": 0.949,
+        "median_rank_depth_to_base": 0.588,
+        "famrank_cond_median": 0.949,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.361
+      },
+      {
+        "id": 720,
+        "median_rank_cond_surf": 0.038,
+        "median_rank_depth_to_base": 0.947,
+        "famrank_cond_median": 0.947,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.909
+      },
+      {
+        "id": 882,
+        "median_rank_cond_surf": 0.946,
+        "median_rank_depth_to_base": 0.294,
+        "famrank_cond_median": 0.946,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.651
+      },
+      {
+        "id": 5558,
+        "median_rank_cond_surf": 0.938,
+        "median_rank_depth_to_base": 0.262,
+        "famrank_cond_median": 0.938,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.675
+      },
+      {
+        "id": 1899,
+        "median_rank_cond_surf": 0.937,
+        "median_rank_depth_to_base": 0.21,
+        "famrank_cond_median": 0.937,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.727
+      },
+      {
+        "id": 4209,
+        "median_rank_cond_surf": 0.93,
+        "median_rank_depth_to_base": 0.156,
+        "famrank_cond_median": 0.93,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.774
+      },
+      {
+        "id": 2725,
+        "median_rank_cond_surf": 0.509,
+        "median_rank_depth_to_base": 0.927,
+        "famrank_cond_median": 0.927,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.419
+      },
+      {
+        "id": 620,
+        "median_rank_cond_surf": 0.925,
+        "median_rank_depth_to_base": 0.756,
+        "famrank_cond_median": 0.925,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.169
+      },
+      {
+        "id": 2615,
+        "median_rank_cond_surf": 0.92,
+        "median_rank_depth_to_base": 0.555,
+        "famrank_cond_median": 0.92,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.365
+      },
+      {
+        "id": 4598,
+        "median_rank_cond_surf": 0.915,
+        "median_rank_depth_to_base": 0.094,
+        "famrank_cond_median": 0.915,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.821
+      },
+      {
+        "id": 4537,
+        "median_rank_cond_surf": 0.915,
+        "median_rank_depth_to_base": 0.011,
+        "famrank_cond_median": 0.915,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.903
+      },
+      {
+        "id": 729,
+        "median_rank_cond_surf": 0.914,
+        "median_rank_depth_to_base": 0.735,
+        "famrank_cond_median": 0.914,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.179
+      },
+      {
+        "id": 3791,
+        "median_rank_cond_surf": 0.912,
+        "median_rank_depth_to_base": 0.546,
+        "famrank_cond_median": 0.912,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.366
+      },
+      {
+        "id": 5038,
+        "median_rank_cond_surf": 0.792,
+        "median_rank_depth_to_base": 0.906,
+        "famrank_cond_median": 0.906,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.114
+      },
+      {
+        "id": 2516,
+        "median_rank_cond_surf": 0.89,
+        "median_rank_depth_to_base": 0.905,
+        "famrank_cond_median": 0.905,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.015
+      },
+      {
+        "id": 775,
+        "median_rank_cond_surf": 0.904,
+        "median_rank_depth_to_base": 0.786,
+        "famrank_cond_median": 0.904,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.118
+      },
+      {
+        "id": 1365,
+        "median_rank_cond_surf": 0.19,
+        "median_rank_depth_to_base": 0.901,
+        "famrank_cond_median": 0.901,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.711
+      },
+      {
+        "id": 3147,
+        "median_rank_cond_surf": 0.889,
+        "median_rank_depth_to_base": 0.544,
+        "famrank_cond_median": 0.889,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.345
+      },
+      {
+        "id": 1618,
+        "median_rank_cond_surf": 0.886,
+        "median_rank_depth_to_base": 0.758,
+        "famrank_cond_median": 0.886,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.128
+      },
+      {
+        "id": 1594,
+        "median_rank_cond_surf": 0.882,
+        "median_rank_depth_to_base": 0.837,
+        "famrank_cond_median": 0.882,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.045
+      },
+      {
+        "id": 2807,
+        "median_rank_cond_surf": 0.339,
+        "median_rank_depth_to_base": 0.881,
+        "famrank_cond_median": 0.881,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.542
+      },
+      {
+        "id": 1533,
+        "median_rank_cond_surf": 0.878,
+        "median_rank_depth_to_base": 0.203,
+        "famrank_cond_median": 0.878,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.675
+      },
+      {
+        "id": 5661,
+        "median_rank_cond_surf": 0.213,
+        "median_rank_depth_to_base": 0.872,
+        "famrank_cond_median": 0.872,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.659
+      },
+      {
+        "id": 4731,
+        "median_rank_cond_surf": 0.872,
+        "median_rank_depth_to_base": 0.428,
+        "famrank_cond_median": 0.872,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.444
+      },
+      {
+        "id": 1861,
+        "median_rank_cond_surf": 0.87,
+        "median_rank_depth_to_base": 0.83,
+        "famrank_cond_median": 0.87,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.039
+      },
+      {
+        "id": 2700,
+        "median_rank_cond_surf": 0.87,
+        "median_rank_depth_to_base": 0.759,
+        "famrank_cond_median": 0.87,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.111
+      },
+      {
+        "id": 1915,
+        "median_rank_cond_surf": 0.867,
+        "median_rank_depth_to_base": 0.304,
+        "famrank_cond_median": 0.867,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.563
+      },
+      {
+        "id": 2985,
+        "median_rank_cond_surf": 0.865,
+        "median_rank_depth_to_base": 0.744,
+        "famrank_cond_median": 0.865,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.121
+      },
+      {
+        "id": 1608,
+        "median_rank_cond_surf": 0.605,
+        "median_rank_depth_to_base": 0.861,
+        "famrank_cond_median": 0.861,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.256
+      },
+      {
+        "id": 2782,
+        "median_rank_cond_surf": 0.448,
+        "median_rank_depth_to_base": 0.859,
+        "famrank_cond_median": 0.859,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.411
+      },
+      {
+        "id": 2243,
+        "median_rank_cond_surf": 0.858,
+        "median_rank_depth_to_base": 0.238,
+        "famrank_cond_median": 0.858,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.62
+      },
+      {
+        "id": 1822,
+        "median_rank_cond_surf": 0.853,
+        "median_rank_depth_to_base": 0.391,
+        "famrank_cond_median": 0.853,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.462
+      },
+      {
+        "id": 3788,
+        "median_rank_cond_surf": 0.012,
+        "median_rank_depth_to_base": 0.847,
+        "famrank_cond_median": 0.847,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.835
+      },
+      {
+        "id": 1137,
+        "median_rank_cond_surf": 0.846,
+        "median_rank_depth_to_base": 0.309,
+        "famrank_cond_median": 0.846,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.537
+      },
+      {
+        "id": 5652,
+        "median_rank_cond_surf": 0.228,
+        "median_rank_depth_to_base": 0.845,
+        "famrank_cond_median": 0.845,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.616
+      },
+      {
+        "id": 1542,
+        "median_rank_cond_surf": 0.618,
+        "median_rank_depth_to_base": 0.842,
+        "famrank_cond_median": 0.842,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.224
+      },
+      {
+        "id": 2865,
+        "median_rank_cond_surf": 0.378,
+        "median_rank_depth_to_base": 0.842,
+        "famrank_cond_median": 0.842,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.464
+      },
+      {
+        "id": 3643,
+        "median_rank_cond_surf": 0.833,
+        "median_rank_depth_to_base": 0.66,
+        "famrank_cond_median": 0.833,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.174
+      },
+      {
+        "id": 2428,
+        "median_rank_cond_surf": 0.833,
+        "median_rank_depth_to_base": 0.123,
+        "famrank_cond_median": 0.833,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.709
+      },
+      {
+        "id": 240,
+        "median_rank_cond_surf": 0.832,
+        "median_rank_depth_to_base": 0.491,
+        "famrank_cond_median": 0.832,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.341
+      },
+      {
+        "id": 1616,
+        "median_rank_cond_surf": 0.12,
+        "median_rank_depth_to_base": 0.828,
+        "famrank_cond_median": 0.828,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.707
+      },
+      {
+        "id": 4383,
+        "median_rank_cond_surf": 0.821,
+        "median_rank_depth_to_base": 0.522,
+        "famrank_cond_median": 0.821,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.299
+      },
+      {
+        "id": 2438,
+        "median_rank_cond_surf": 0.82,
+        "median_rank_depth_to_base": 0.177,
+        "famrank_cond_median": 0.82,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.643
+      },
+      {
+        "id": 3799,
+        "median_rank_cond_surf": 0.012,
+        "median_rank_depth_to_base": 0.82,
+        "famrank_cond_median": 0.82,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.808
+      },
+      {
+        "id": 1609,
+        "median_rank_cond_surf": 0.122,
+        "median_rank_depth_to_base": 0.813,
+        "famrank_cond_median": 0.813,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.692
+      },
+      {
+        "id": 1255,
+        "median_rank_cond_surf": 0.688,
+        "median_rank_depth_to_base": 0.804,
+        "famrank_cond_median": 0.804,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.115
+      },
+      {
+        "id": 2550,
+        "median_rank_cond_surf": 0.73,
+        "median_rank_depth_to_base": 0.804,
+        "famrank_cond_median": 0.804,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.074
+      },
+      {
+        "id": 1662,
+        "median_rank_cond_surf": 0.798,
+        "median_rank_depth_to_base": 0.21,
+        "famrank_cond_median": 0.798,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.588
+      },
+      {
+        "id": 3333,
+        "median_rank_cond_surf": 0.298,
+        "median_rank_depth_to_base": 0.794,
+        "famrank_cond_median": 0.794,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.497
+      },
+      {
+        "id": 2546,
+        "median_rank_cond_surf": 0.792,
+        "median_rank_depth_to_base": 0.672,
+        "famrank_cond_median": 0.792,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.12
+      },
+      {
+        "id": 1995,
+        "median_rank_cond_surf": 0.79,
+        "median_rank_depth_to_base": 0.543,
+        "famrank_cond_median": 0.79,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.247
+      },
+      {
+        "id": 1988,
+        "median_rank_cond_surf": 0.79,
+        "median_rank_depth_to_base": 0.635,
+        "famrank_cond_median": 0.79,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.154
+      },
+      {
+        "id": 8,
+        "median_rank_cond_surf": 0.79,
+        "median_rank_depth_to_base": 0.003,
+        "famrank_cond_median": 0.79,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.788
+      },
+      {
+        "id": 1975,
+        "median_rank_cond_surf": 0.79,
+        "median_rank_depth_to_base": 0.707,
+        "famrank_cond_median": 0.79,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.083
+      },
+      {
+        "id": 823,
+        "median_rank_cond_surf": 0.788,
+        "median_rank_depth_to_base": 0.734,
+        "famrank_cond_median": 0.788,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.053
+      },
+      {
+        "id": 4123,
+        "median_rank_cond_surf": 0.544,
+        "median_rank_depth_to_base": 0.787,
+        "famrank_cond_median": 0.787,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.243
+      },
+      {
+        "id": 94,
+        "median_rank_cond_surf": 0.776,
+        "median_rank_depth_to_base": 0.616,
+        "famrank_cond_median": 0.776,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.16
+      },
+      {
+        "id": 4110,
+        "median_rank_cond_surf": 0.544,
+        "median_rank_depth_to_base": 0.768,
+        "famrank_cond_median": 0.768,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.224
+      },
+      {
+        "id": 5041,
+        "median_rank_cond_surf": 0.768,
+        "median_rank_depth_to_base": 0.533,
+        "famrank_cond_median": 0.768,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.236
+      },
+      {
+        "id": 4834,
+        "median_rank_cond_surf": 0.767,
+        "median_rank_depth_to_base": 0.241,
+        "famrank_cond_median": 0.767,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.526
+      },
+      {
+        "id": 4881,
+        "median_rank_cond_surf": 0.767,
+        "median_rank_depth_to_base": 0.213,
+        "famrank_cond_median": 0.767,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.554
+      },
+      {
+        "id": 4457,
+        "median_rank_cond_surf": 0.043,
+        "median_rank_depth_to_base": 0.763,
+        "famrank_cond_median": 0.763,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.72
+      },
+      {
+        "id": 2610,
+        "median_rank_cond_surf": 0.626,
+        "median_rank_depth_to_base": 0.756,
+        "famrank_cond_median": 0.756,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.13
+      },
+      {
+        "id": 1067,
+        "median_rank_cond_surf": 0.752,
+        "median_rank_depth_to_base": 0.244,
+        "famrank_cond_median": 0.752,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.508
+      },
+      {
+        "id": 599,
+        "median_rank_cond_surf": 0.748,
+        "median_rank_depth_to_base": 0.442,
+        "famrank_cond_median": 0.748,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.307
+      },
+      {
+        "id": 4338,
+        "median_rank_cond_surf": 0.747,
+        "median_rank_depth_to_base": 0.44,
+        "famrank_cond_median": 0.747,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.307
+      },
+      {
+        "id": 3906,
+        "median_rank_cond_surf": 0.746,
+        "median_rank_depth_to_base": 0.697,
+        "famrank_cond_median": 0.746,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.048
+      },
+      {
+        "id": 4111,
+        "median_rank_cond_surf": 0.61,
+        "median_rank_depth_to_base": 0.746,
+        "famrank_cond_median": 0.746,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.136
+      },
+      {
+        "id": 166,
+        "median_rank_cond_surf": 0.745,
+        "median_rank_depth_to_base": 0.126,
+        "famrank_cond_median": 0.745,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.618
+      },
+      {
+        "id": 954,
+        "median_rank_cond_surf": 0.744,
+        "median_rank_depth_to_base": 0.269,
+        "famrank_cond_median": 0.744,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.475
+      },
+      {
+        "id": 1001,
+        "median_rank_cond_surf": 0.744,
+        "median_rank_depth_to_base": 0.344,
+        "famrank_cond_median": 0.744,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.4
+      },
+      {
+        "id": 4428,
+        "median_rank_cond_surf": 0.743,
+        "median_rank_depth_to_base": 0.698,
+        "famrank_cond_median": 0.743,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.045
+      },
+      {
+        "id": 4440,
+        "median_rank_cond_surf": 0.043,
+        "median_rank_depth_to_base": 0.739,
+        "famrank_cond_median": 0.739,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.695
+      },
+      {
+        "id": 3443,
+        "median_rank_cond_surf": 0.732,
+        "median_rank_depth_to_base": 0.447,
+        "famrank_cond_median": 0.732,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.285
+      },
+      {
+        "id": 548,
+        "median_rank_cond_surf": 0.73,
+        "median_rank_depth_to_base": 0.455,
+        "famrank_cond_median": 0.73,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.275
+      },
+      {
+        "id": 622,
+        "median_rank_cond_surf": 0.727,
+        "median_rank_depth_to_base": 0.294,
+        "famrank_cond_median": 0.727,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.434
+      },
+      {
+        "id": 2683,
+        "median_rank_cond_surf": 0.405,
+        "median_rank_depth_to_base": 0.724,
+        "famrank_cond_median": 0.724,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.319
+      },
+      {
+        "id": 1598,
+        "median_rank_cond_surf": 0.294,
+        "median_rank_depth_to_base": 0.718,
+        "famrank_cond_median": 0.718,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.425
+      },
+      {
+        "id": 3933,
+        "median_rank_cond_surf": 0.607,
+        "median_rank_depth_to_base": 0.709,
+        "famrank_cond_median": 0.709,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.102
+      },
+      {
+        "id": 2846,
+        "median_rank_cond_surf": 0.448,
+        "median_rank_depth_to_base": 0.699,
+        "famrank_cond_median": 0.699,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.25
+      },
+      {
+        "id": 3138,
+        "median_rank_cond_surf": 0.341,
+        "median_rank_depth_to_base": 0.698,
+        "famrank_cond_median": 0.698,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.357
+      },
+      {
+        "id": 3000,
+        "median_rank_cond_surf": 0.575,
+        "median_rank_depth_to_base": 0.693,
+        "famrank_cond_median": 0.693,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.118
+      },
+      {
+        "id": 3023,
+        "median_rank_cond_surf": 0.508,
+        "median_rank_depth_to_base": 0.69,
+        "famrank_cond_median": 0.69,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.182
+      },
+      {
+        "id": 1730,
+        "median_rank_cond_surf": 0.436,
+        "median_rank_depth_to_base": 0.684,
+        "famrank_cond_median": 0.684,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.248
+      },
+      {
+        "id": 1077,
+        "median_rank_cond_surf": 0.217,
+        "median_rank_depth_to_base": 0.678,
+        "famrank_cond_median": 0.678,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.461
+      },
+      {
+        "id": 1228,
+        "median_rank_cond_surf": 0.674,
+        "median_rank_depth_to_base": 0.304,
+        "famrank_cond_median": 0.674,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.37
+      },
+      {
+        "id": 832,
+        "median_rank_cond_surf": 0.665,
+        "median_rank_depth_to_base": 0.37,
+        "famrank_cond_median": 0.665,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.295
+      },
+      {
+        "id": 870,
+        "median_rank_cond_surf": 0.652,
+        "median_rank_depth_to_base": 0.551,
+        "famrank_cond_median": 0.652,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.1
+      },
+      {
+        "id": 5140,
+        "median_rank_cond_surf": 0.651,
+        "median_rank_depth_to_base": 0.381,
+        "famrank_cond_median": 0.651,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.27
+      },
+      {
+        "id": 1168,
+        "median_rank_cond_surf": 0.115,
+        "median_rank_depth_to_base": 0.648,
+        "famrank_cond_median": 0.648,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.534
+      },
+      {
+        "id": 1916,
+        "median_rank_cond_surf": 0.645,
+        "median_rank_depth_to_base": 0.392,
+        "famrank_cond_median": 0.645,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.253
+      },
+      {
+        "id": 3226,
+        "median_rank_cond_surf": 0.203,
+        "median_rank_depth_to_base": 0.644,
+        "famrank_cond_median": 0.644,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.44
+      },
+      {
+        "id": 567,
+        "median_rank_cond_surf": 0.638,
+        "median_rank_depth_to_base": 0.121,
+        "famrank_cond_median": 0.638,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.518
+      },
+      {
+        "id": 1699,
+        "median_rank_cond_surf": 0.275,
+        "median_rank_depth_to_base": 0.638,
+        "famrank_cond_median": 0.638,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.363
+      },
+      {
+        "id": 1,
+        "median_rank_cond_surf": 0.632,
+        "median_rank_depth_to_base": 0.415,
+        "famrank_cond_median": 0.632,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.217
+      },
+      {
+        "id": 3104,
+        "median_rank_cond_surf": 0.341,
+        "median_rank_depth_to_base": 0.631,
+        "famrank_cond_median": 0.631,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.291
+      },
+      {
+        "id": 3268,
+        "median_rank_cond_surf": 0.21,
+        "median_rank_depth_to_base": 0.63,
+        "famrank_cond_median": 0.63,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.42
+      },
+      {
+        "id": 5322,
+        "median_rank_cond_surf": 0.629,
+        "median_rank_depth_to_base": 0.166,
+        "famrank_cond_median": 0.629,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.464
+      },
+      {
+        "id": 5206,
+        "median_rank_cond_surf": 0.624,
+        "median_rank_depth_to_base": 0.212,
+        "famrank_cond_median": 0.624,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.413
+      },
+      {
+        "id": 5278,
+        "median_rank_cond_surf": 0.161,
+        "median_rank_depth_to_base": 0.612,
+        "famrank_cond_median": 0.612,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.451
+      },
+      {
+        "id": 4113,
+        "median_rank_cond_surf": 0.61,
+        "median_rank_depth_to_base": 0.522,
+        "famrank_cond_median": 0.61,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.088
+      },
+      {
+        "id": 5294,
+        "median_rank_cond_surf": 0.145,
+        "median_rank_depth_to_base": 0.61,
+        "famrank_cond_median": 0.61,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.465
+      },
+      {
+        "id": 2066,
+        "median_rank_cond_surf": 0.608,
+        "median_rank_depth_to_base": 0.276,
+        "famrank_cond_median": 0.608,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.332
+      },
+      {
+        "id": 2112,
+        "median_rank_cond_surf": 0.608,
+        "median_rank_depth_to_base": 0.179,
+        "famrank_cond_median": 0.608,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.429
+      },
+      {
+        "id": 1277,
+        "median_rank_cond_surf": 0.172,
+        "median_rank_depth_to_base": 0.605,
+        "famrank_cond_median": 0.605,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.433
+      },
+      {
+        "id": 1556,
+        "median_rank_cond_surf": 0.524,
+        "median_rank_depth_to_base": 0.601,
+        "famrank_cond_median": 0.601,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.077
+      },
+      {
+        "id": 5290,
+        "median_rank_cond_surf": 0.161,
+        "median_rank_depth_to_base": 0.596,
+        "famrank_cond_median": 0.596,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.435
+      },
+      {
+        "id": 1991,
+        "median_rank_cond_surf": 0.587,
+        "median_rank_depth_to_base": 0.3,
+        "famrank_cond_median": 0.587,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.286
+      },
+      {
+        "id": 1078,
+        "median_rank_cond_surf": 0.587,
+        "median_rank_depth_to_base": 0.148,
+        "famrank_cond_median": 0.587,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.439
+      },
+      {
+        "id": 5310,
+        "median_rank_cond_surf": 0.583,
+        "median_rank_depth_to_base": 0.038,
+        "famrank_cond_median": 0.583,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.546
+      },
+      {
+        "id": 5291,
+        "median_rank_cond_surf": 0.07,
+        "median_rank_depth_to_base": 0.582,
+        "famrank_cond_median": 0.582,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.512
+      },
+      {
+        "id": 1819,
+        "median_rank_cond_surf": 0.574,
+        "median_rank_depth_to_base": 0.501,
+        "famrank_cond_median": 0.574,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.073
+      },
+      {
+        "id": 2288,
+        "median_rank_cond_surf": 0.419,
+        "median_rank_depth_to_base": 0.572,
+        "famrank_cond_median": 0.572,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.152
+      },
+      {
+        "id": 1655,
+        "median_rank_cond_surf": 0.436,
+        "median_rank_depth_to_base": 0.569,
+        "famrank_cond_median": 0.569,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.133
+      },
+      {
+        "id": 2167,
+        "median_rank_cond_surf": 0.556,
+        "median_rank_depth_to_base": 0.567,
+        "famrank_cond_median": 0.567,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.011
+      },
+      {
+        "id": 1323,
+        "median_rank_cond_surf": 0.09,
+        "median_rank_depth_to_base": 0.564,
+        "famrank_cond_median": 0.564,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.475
+      },
+      {
+        "id": 2058,
+        "median_rank_cond_surf": 0.094,
+        "median_rank_depth_to_base": 0.564,
+        "famrank_cond_median": 0.564,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.471
+      },
+      {
+        "id": 3004,
+        "median_rank_cond_surf": 0.238,
+        "median_rank_depth_to_base": 0.562,
+        "famrank_cond_median": 0.562,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.324
+      },
+      {
+        "id": 2991,
+        "median_rank_cond_surf": 0.422,
+        "median_rank_depth_to_base": 0.55,
+        "famrank_cond_median": 0.55,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.129
+      },
+      {
+        "id": 5612,
+        "median_rank_cond_surf": 0.406,
+        "median_rank_depth_to_base": 0.549,
+        "famrank_cond_median": 0.549,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.143
+      },
+      {
+        "id": 4971,
+        "median_rank_cond_surf": 0.54,
+        "median_rank_depth_to_base": 0.323,
+        "famrank_cond_median": 0.54,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.217
+      },
+      {
+        "id": 1758,
+        "median_rank_cond_surf": 0.539,
+        "median_rank_depth_to_base": 0.324,
+        "famrank_cond_median": 0.539,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.214
+      },
+      {
+        "id": 1794,
+        "median_rank_cond_surf": 0.539,
+        "median_rank_depth_to_base": 0.393,
+        "famrank_cond_median": 0.539,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.146
+      },
+      {
+        "id": 5365,
+        "median_rank_cond_surf": 0.537,
+        "median_rank_depth_to_base": 0.13,
+        "famrank_cond_median": 0.537,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.407
+      },
+      {
+        "id": 5389,
+        "median_rank_cond_surf": 0.537,
+        "median_rank_depth_to_base": 0.113,
+        "famrank_cond_median": 0.537,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.424
+      },
+      {
+        "id": 5403,
+        "median_rank_cond_surf": 0.537,
+        "median_rank_depth_to_base": 0.083,
+        "famrank_cond_median": 0.537,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.454
+      },
+      {
+        "id": 5357,
+        "median_rank_cond_surf": 0.537,
+        "median_rank_depth_to_base": 0.131,
+        "famrank_cond_median": 0.537,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.406
+      },
+      {
+        "id": 5377,
+        "median_rank_cond_surf": 0.537,
+        "median_rank_depth_to_base": 0.123,
+        "famrank_cond_median": 0.537,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.415
+      },
+      {
+        "id": 2432,
+        "median_rank_cond_surf": 0.462,
+        "median_rank_depth_to_base": 0.533,
+        "famrank_cond_median": 0.533,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.07
+      },
+      {
+        "id": 3466,
+        "median_rank_cond_surf": 0.146,
+        "median_rank_depth_to_base": 0.532,
+        "famrank_cond_median": 0.532,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.386
+      },
+      {
+        "id": 4833,
+        "median_rank_cond_surf": 0.53,
+        "median_rank_depth_to_base": 0.327,
+        "famrank_cond_median": 0.53,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.203
+      },
+      {
+        "id": 1188,
+        "median_rank_cond_surf": 0.366,
+        "median_rank_depth_to_base": 0.528,
+        "famrank_cond_median": 0.528,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.162
+      },
+      {
+        "id": 757,
+        "median_rank_cond_surf": 0.528,
+        "median_rank_depth_to_base": 0.337,
+        "famrank_cond_median": 0.528,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.191
+      },
+      {
+        "id": 2904,
+        "median_rank_cond_surf": 0.117,
+        "median_rank_depth_to_base": 0.528,
+        "famrank_cond_median": 0.528,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.41
+      },
+      {
+        "id": 4668,
+        "median_rank_cond_surf": 0.263,
+        "median_rank_depth_to_base": 0.524,
+        "famrank_cond_median": 0.524,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.261
+      },
+      {
+        "id": 5724,
+        "median_rank_cond_surf": 0.213,
+        "median_rank_depth_to_base": 0.517,
+        "famrank_cond_median": 0.517,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.304
+      },
+      {
+        "id": 3144,
+        "median_rank_cond_surf": 0.396,
+        "median_rank_depth_to_base": 0.51,
+        "famrank_cond_median": 0.51,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.113
+      },
+      {
+        "id": 4010,
+        "median_rank_cond_surf": 0.154,
+        "median_rank_depth_to_base": 0.509,
+        "famrank_cond_median": 0.509,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.355
+      },
+      {
+        "id": 4028,
+        "median_rank_cond_surf": 0.025,
+        "median_rank_depth_to_base": 0.508,
+        "famrank_cond_median": 0.508,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.483
+      },
+      {
+        "id": 400,
+        "median_rank_cond_surf": 0.453,
+        "median_rank_depth_to_base": 0.507,
+        "famrank_cond_median": 0.507,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.053
+      },
+      {
+        "id": 2282,
+        "median_rank_cond_surf": 0.506,
+        "median_rank_depth_to_base": 0.391,
+        "famrank_cond_median": 0.506,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.115
+      },
+      {
+        "id": 2896,
+        "median_rank_cond_surf": 0.117,
+        "median_rank_depth_to_base": 0.503,
+        "famrank_cond_median": 0.503,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.386
+      },
+      {
+        "id": 462,
+        "median_rank_cond_surf": 0.453,
+        "median_rank_depth_to_base": 0.502,
+        "famrank_cond_median": 0.502,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.049
+      },
+      {
+        "id": 2179,
+        "median_rank_cond_surf": 0.204,
+        "median_rank_depth_to_base": 0.5,
+        "famrank_cond_median": 0.5,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.296
+      },
+      {
+        "id": 970,
+        "median_rank_cond_surf": 0.498,
+        "median_rank_depth_to_base": 0.167,
+        "famrank_cond_median": 0.498,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.331
+      },
+      {
+        "id": 2447,
+        "median_rank_cond_surf": 0.495,
+        "median_rank_depth_to_base": 0.157,
+        "famrank_cond_median": 0.495,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.339
+      },
+      {
+        "id": 1345,
+        "median_rank_cond_surf": 0.172,
+        "median_rank_depth_to_base": 0.494,
+        "famrank_cond_median": 0.494,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.322
+      },
+      {
+        "id": 4674,
+        "median_rank_cond_surf": 0.263,
+        "median_rank_depth_to_base": 0.489,
+        "famrank_cond_median": 0.489,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.226
+      },
+      {
+        "id": 2301,
+        "median_rank_cond_surf": 0.488,
+        "median_rank_depth_to_base": 0.44,
+        "famrank_cond_median": 0.488,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.048
+      },
+      {
+        "id": 511,
+        "median_rank_cond_surf": 0.268,
+        "median_rank_depth_to_base": 0.487,
+        "famrank_cond_median": 0.487,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.219
+      },
+      {
+        "id": 2013,
+        "median_rank_cond_surf": 0.298,
+        "median_rank_depth_to_base": 0.486,
+        "famrank_cond_median": 0.486,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.187
+      },
+      {
+        "id": 2809,
+        "median_rank_cond_surf": 0.142,
+        "median_rank_depth_to_base": 0.485,
+        "famrank_cond_median": 0.485,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.342
+      },
+      {
+        "id": 2139,
+        "median_rank_cond_surf": 0.484,
+        "median_rank_depth_to_base": 0.369,
+        "famrank_cond_median": 0.484,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.115
+      },
+      {
+        "id": 2176,
+        "median_rank_cond_surf": 0.483,
+        "median_rank_depth_to_base": 0.33,
+        "famrank_cond_median": 0.483,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.153
+      },
+      {
+        "id": 4729,
+        "median_rank_cond_surf": 0.344,
+        "median_rank_depth_to_base": 0.48,
+        "famrank_cond_median": 0.48,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.136
+      },
+      {
+        "id": 3364,
+        "median_rank_cond_surf": 0.476,
+        "median_rank_depth_to_base": 0.223,
+        "famrank_cond_median": 0.476,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.253
+      },
+      {
+        "id": 4942,
+        "median_rank_cond_surf": 0.475,
+        "median_rank_depth_to_base": 0.18,
+        "famrank_cond_median": 0.475,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.295
+      },
+      {
+        "id": 3262,
+        "median_rank_cond_surf": 0.269,
+        "median_rank_depth_to_base": 0.475,
+        "famrank_cond_median": 0.475,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.206
+      },
+      {
+        "id": 2196,
+        "median_rank_cond_surf": 0.473,
+        "median_rank_depth_to_base": 0.396,
+        "famrank_cond_median": 0.473,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.077
+      },
+      {
+        "id": 2287,
+        "median_rank_cond_surf": 0.472,
+        "median_rank_depth_to_base": 0.179,
+        "famrank_cond_median": 0.472,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.293
+      },
+      {
+        "id": 2220,
+        "median_rank_cond_surf": 0.472,
+        "median_rank_depth_to_base": 0.383,
+        "famrank_cond_median": 0.472,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.089
+      },
+      {
+        "id": 4938,
+        "median_rank_cond_surf": 0.464,
+        "median_rank_depth_to_base": 0.189,
+        "famrank_cond_median": 0.464,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.275
+      },
+      {
+        "id": 5681,
+        "median_rank_cond_surf": 0.316,
+        "median_rank_depth_to_base": 0.463,
+        "famrank_cond_median": 0.463,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.147
+      },
+      {
+        "id": 1909,
+        "median_rank_cond_surf": 0.392,
+        "median_rank_depth_to_base": 0.462,
+        "famrank_cond_median": 0.462,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.07
+      },
+      {
+        "id": 5492,
+        "median_rank_cond_surf": 0.001,
+        "median_rank_depth_to_base": 0.462,
+        "famrank_cond_median": 0.462,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.461
+      },
+      {
+        "id": 5419,
+        "median_rank_cond_surf": 0.46,
+        "median_rank_depth_to_base": 0.044,
+        "famrank_cond_median": 0.46,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.416
+      },
+      {
+        "id": 5441,
+        "median_rank_cond_surf": 0.46,
+        "median_rank_depth_to_base": 0.233,
+        "famrank_cond_median": 0.46,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.227
+      },
+      {
+        "id": 3180,
+        "median_rank_cond_surf": 0.396,
+        "median_rank_depth_to_base": 0.46,
+        "famrank_cond_median": 0.46,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.063
+      },
+      {
+        "id": 3192,
+        "median_rank_cond_surf": 0.396,
+        "median_rank_depth_to_base": 0.459,
+        "famrank_cond_median": 0.459,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.063
+      },
+      {
+        "id": 3554,
+        "median_rank_cond_surf": 0.4,
+        "median_rank_depth_to_base": 0.458,
+        "famrank_cond_median": 0.458,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.058
+      },
+      {
+        "id": 3187,
+        "median_rank_cond_surf": 0.396,
+        "median_rank_depth_to_base": 0.457,
+        "famrank_cond_median": 0.457,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.061
+      },
+      {
+        "id": 1817,
+        "median_rank_cond_surf": 0.434,
+        "median_rank_depth_to_base": 0.452,
+        "famrank_cond_median": 0.452,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.018
+      },
+      {
+        "id": 5508,
+        "median_rank_cond_surf": 0.001,
+        "median_rank_depth_to_base": 0.444,
+        "famrank_cond_median": 0.444,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.443
+      },
+      {
+        "id": 2177,
+        "median_rank_cond_surf": 0.44,
+        "median_rank_depth_to_base": 0.356,
+        "famrank_cond_median": 0.44,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.085
+      },
+      {
+        "id": 279,
+        "median_rank_cond_surf": 0.432,
+        "median_rank_depth_to_base": 0.19,
+        "famrank_cond_median": 0.432,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.242
+      },
+      {
+        "id": 254,
+        "median_rank_cond_surf": 0.432,
+        "median_rank_depth_to_base": 0.145,
+        "famrank_cond_median": 0.432,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.287
+      },
+      {
+        "id": 3552,
+        "median_rank_cond_surf": 0.356,
+        "median_rank_depth_to_base": 0.431,
+        "famrank_cond_median": 0.431,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.075
+      },
+      {
+        "id": 2670,
+        "median_rank_cond_surf": 0.074,
+        "median_rank_depth_to_base": 0.429,
+        "famrank_cond_median": 0.429,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.355
+      },
+      {
+        "id": 4909,
+        "median_rank_cond_surf": 0.429,
+        "median_rank_depth_to_base": 0.391,
+        "famrank_cond_median": 0.429,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.038
+      },
+      {
+        "id": 4836,
+        "median_rank_cond_surf": 0.429,
+        "median_rank_depth_to_base": 0.144,
+        "famrank_cond_median": 0.429,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.285
+      },
+      {
+        "id": 5534,
+        "median_rank_cond_surf": 0.001,
+        "median_rank_depth_to_base": 0.424,
+        "famrank_cond_median": 0.424,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.423
+      },
+      {
+        "id": 1800,
+        "median_rank_cond_surf": 0.423,
+        "median_rank_depth_to_base": 0.349,
+        "famrank_cond_median": 0.423,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.074
+      },
+      {
+        "id": 478,
+        "median_rank_cond_surf": 0.296,
+        "median_rank_depth_to_base": 0.421,
+        "famrank_cond_median": 0.421,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.125
+      },
+      {
+        "id": 5544,
+        "median_rank_cond_surf": 0.001,
+        "median_rank_depth_to_base": 0.417,
+        "famrank_cond_median": 0.417,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.415
+      },
+      {
+        "id": 5193,
+        "median_rank_cond_surf": 0.416,
+        "median_rank_depth_to_base": 0.403,
+        "famrank_cond_median": 0.416,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.013
+      },
+      {
+        "id": 2190,
+        "median_rank_cond_surf": 0.135,
+        "median_rank_depth_to_base": 0.414,
+        "famrank_cond_median": 0.414,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.28
+      },
+      {
+        "id": 3903,
+        "median_rank_cond_surf": 0.006,
+        "median_rank_depth_to_base": 0.413,
+        "famrank_cond_median": 0.413,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.406
+      },
+      {
+        "id": 550,
+        "median_rank_cond_surf": 0.268,
+        "median_rank_depth_to_base": 0.411,
+        "famrank_cond_median": 0.411,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.144
+      },
+      {
+        "id": 2136,
+        "median_rank_cond_surf": 0.41,
+        "median_rank_depth_to_base": 0.346,
+        "famrank_cond_median": 0.41,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.064
+      },
+      {
+        "id": 1888,
+        "median_rank_cond_surf": 0.392,
+        "median_rank_depth_to_base": 0.407,
+        "famrank_cond_median": 0.407,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.015
+      },
+      {
+        "id": 5471,
+        "median_rank_cond_surf": 0.002,
+        "median_rank_depth_to_base": 0.406,
+        "famrank_cond_median": 0.406,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.404
+      },
+      {
+        "id": 2214,
+        "median_rank_cond_surf": 0.262,
+        "median_rank_depth_to_base": 0.405,
+        "famrank_cond_median": 0.405,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.143
+      },
+      {
+        "id": 5289,
+        "median_rank_cond_surf": 0.24,
+        "median_rank_depth_to_base": 0.399,
+        "famrank_cond_median": 0.399,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.159
+      },
+      {
+        "id": 2141,
+        "median_rank_cond_surf": 0.397,
+        "median_rank_depth_to_base": 0.271,
+        "famrank_cond_median": 0.397,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.126
+      },
+      {
+        "id": 5506,
+        "median_rank_cond_surf": 0.001,
+        "median_rank_depth_to_base": 0.394,
+        "famrank_cond_median": 0.394,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.393
+      },
+      {
+        "id": 2035,
+        "median_rank_cond_surf": 0.392,
+        "median_rank_depth_to_base": 0.382,
+        "famrank_cond_median": 0.392,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.009
+      },
+      {
+        "id": 5530,
+        "median_rank_cond_surf": 0.387,
+        "median_rank_depth_to_base": 0.197,
+        "famrank_cond_median": 0.387,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.19
+      },
+      {
+        "id": 5525,
+        "median_rank_cond_surf": 0.387,
+        "median_rank_depth_to_base": 0.142,
+        "famrank_cond_median": 0.387,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.244
+      },
+      {
+        "id": 3124,
+        "median_rank_cond_surf": 0.386,
+        "median_rank_depth_to_base": 0.369,
+        "famrank_cond_median": 0.386,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.016
+      },
+      {
+        "id": 2031,
+        "median_rank_cond_surf": 0.206,
+        "median_rank_depth_to_base": 0.385,
+        "famrank_cond_median": 0.385,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.179
+      },
+      {
+        "id": 1832,
+        "median_rank_cond_surf": 0.384,
+        "median_rank_depth_to_base": 0.241,
+        "famrank_cond_median": 0.384,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.143
+      },
+      {
+        "id": 1820,
+        "median_rank_cond_surf": 0.384,
+        "median_rank_depth_to_base": 0.216,
+        "famrank_cond_median": 0.384,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.168
+      },
+      {
+        "id": 4696,
+        "median_rank_cond_surf": 0.27,
+        "median_rank_depth_to_base": 0.379,
+        "famrank_cond_median": 0.379,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.109
+      },
+      {
+        "id": 3306,
+        "median_rank_cond_surf": 0.269,
+        "median_rank_depth_to_base": 0.372,
+        "famrank_cond_median": 0.372,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.104
+      },
+      {
+        "id": 857,
+        "median_rank_cond_surf": 0.269,
+        "median_rank_depth_to_base": 0.37,
+        "famrank_cond_median": 0.37,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.101
+      },
+      {
+        "id": 1897,
+        "median_rank_cond_surf": 0.37,
+        "median_rank_depth_to_base": 0.151,
+        "famrank_cond_median": 0.37,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.219
+      },
+      {
+        "id": 458,
+        "median_rank_cond_surf": 0.296,
+        "median_rank_depth_to_base": 0.363,
+        "famrank_cond_median": 0.363,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.068
+      },
+      {
+        "id": 2187,
+        "median_rank_cond_surf": 0.204,
+        "median_rank_depth_to_base": 0.362,
+        "famrank_cond_median": 0.362,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.158
+      },
+      {
+        "id": 385,
+        "median_rank_cond_surf": 0.362,
+        "median_rank_depth_to_base": 0.313,
+        "famrank_cond_median": 0.362,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.048
+      },
+      {
+        "id": 1074,
+        "median_rank_cond_surf": 0.358,
+        "median_rank_depth_to_base": 0.134,
+        "famrank_cond_median": 0.358,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.224
+      },
+      {
+        "id": 1392,
+        "median_rank_cond_surf": 0.357,
+        "median_rank_depth_to_base": 0.216,
+        "famrank_cond_median": 0.357,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.141
+      },
+      {
+        "id": 5481,
+        "median_rank_cond_surf": 0.001,
+        "median_rank_depth_to_base": 0.356,
+        "famrank_cond_median": 0.356,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.355
+      },
+      {
+        "id": 3414,
+        "median_rank_cond_surf": 0.328,
+        "median_rank_depth_to_base": 0.344,
+        "famrank_cond_median": 0.344,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.016
+      },
+      {
+        "id": 1590,
+        "median_rank_cond_surf": 0.303,
+        "median_rank_depth_to_base": 0.341,
+        "famrank_cond_median": 0.341,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.038
+      },
+      {
+        "id": 3693,
+        "median_rank_cond_surf": 0.046,
+        "median_rank_depth_to_base": 0.339,
+        "famrank_cond_median": 0.339,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.293
+      },
+      {
+        "id": 5818,
+        "median_rank_cond_surf": 0.314,
+        "median_rank_depth_to_base": 0.328,
+        "famrank_cond_median": 0.328,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.014
+      },
+      {
+        "id": 2001,
+        "median_rank_cond_surf": 0.321,
+        "median_rank_depth_to_base": 0.146,
+        "famrank_cond_median": 0.321,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.174
+      },
+      {
+        "id": 3337,
+        "median_rank_cond_surf": 0.269,
+        "median_rank_depth_to_base": 0.31,
+        "famrank_cond_median": 0.31,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.042
+      },
+      {
+        "id": 4748,
+        "median_rank_cond_surf": 0.25,
+        "median_rank_depth_to_base": 0.3,
+        "famrank_cond_median": 0.3,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.05
+      },
+      {
+        "id": 303,
+        "median_rank_cond_surf": 0.008,
+        "median_rank_depth_to_base": 0.291,
+        "famrank_cond_median": 0.291,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.283
+      },
+      {
+        "id": 4323,
+        "median_rank_cond_surf": 0.277,
+        "median_rank_depth_to_base": 0.027,
+        "famrank_cond_median": 0.277,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.251
+      },
+      {
+        "id": 4329,
+        "median_rank_cond_surf": 0.277,
+        "median_rank_depth_to_base": 0.269,
+        "famrank_cond_median": 0.277,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.009
+      },
+      {
+        "id": 2691,
+        "median_rank_cond_surf": 0.086,
+        "median_rank_depth_to_base": 0.276,
+        "famrank_cond_median": 0.276,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.189
+      },
+      {
+        "id": 786,
+        "median_rank_cond_surf": 0.275,
+        "median_rank_depth_to_base": 0.254,
+        "famrank_cond_median": 0.275,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.02
+      },
+      {
+        "id": 85,
+        "median_rank_cond_surf": 0.054,
+        "median_rank_depth_to_base": 0.272,
+        "famrank_cond_median": 0.272,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.219
+      },
+      {
+        "id": 242,
+        "median_rank_cond_surf": 0.242,
+        "median_rank_depth_to_base": 0.218,
+        "famrank_cond_median": 0.242,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.024
+      },
+      {
+        "id": 2266,
+        "median_rank_cond_surf": 0.148,
+        "median_rank_depth_to_base": 0.221,
+        "famrank_cond_median": 0.221,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.073
+      },
+      {
+        "id": 1013,
+        "median_rank_cond_surf": 0.137,
+        "median_rank_depth_to_base": 0.214,
+        "famrank_cond_median": 0.214,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.077
+      },
+      {
+        "id": 4913,
+        "median_rank_cond_surf": 0.151,
+        "median_rank_depth_to_base": 0.198,
+        "famrank_cond_median": 0.198,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.047
+      },
+      {
+        "id": 77,
+        "median_rank_cond_surf": 0.069,
+        "median_rank_depth_to_base": 0.191,
+        "famrank_cond_median": 0.191,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.122
+      },
+      {
+        "id": 1254,
+        "median_rank_cond_surf": 0.182,
+        "median_rank_depth_to_base": 0.143,
+        "famrank_cond_median": 0.182,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.039
+      },
+      {
+        "id": 2281,
+        "median_rank_cond_surf": 0.148,
+        "median_rank_depth_to_base": 0.182,
+        "famrank_cond_median": 0.182,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.034
+      },
+      {
+        "id": 2330,
+        "median_rank_cond_surf": 0.132,
+        "median_rank_depth_to_base": 0.181,
+        "famrank_cond_median": 0.181,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.049
+      },
+      {
+        "id": 2328,
+        "median_rank_cond_surf": 0.124,
+        "median_rank_depth_to_base": 0.139,
+        "famrank_cond_median": 0.139,
+        "firing_member": "depth_to_base_surf",
+        "fire_margin": 0.015
+      },
+      {
+        "id": 4633,
+        "median_rank_cond_surf": 0.069,
+        "median_rank_depth_to_base": 0.001,
+        "famrank_cond_median": 0.069,
+        "firing_member": "cond_surf",
+        "fire_margin": 0.068
+      }
+    ],
+    "n_depth_fired_of_rankable": 125,
+    "note": "famrank >= 0.75 while cond_surf itself < 0.75: the pillar is sediment-thickness evidence, not subsurface-conductivity evidence, under the band descriptions in spec.py"
+  }
+}

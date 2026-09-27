@@ -282,3 +282,75 @@ in-environment (session-5 log §6.8: two builds, identical content hash sans
 `built_utc`), so no table drift rides on these rows beyond session 4's
 original cross-environment question, which remains untestable from here.
 
+---
+
+## 6. Session 6 — E14-SYS: the E9/E13 question re-priced at whole-system scale (2026-09-26)
+
+**Why.** Session 5's whole-system-holdout step was blocked on a grouping key
+that did not exist. Session 6 built one (8-connected components of the
+catalogue after a 10 px Euclidean dilation; 100 m sampling → nearest-pixel
+merge distance 2 km; **266 systems**, median 3 traces, largest 10.8% of
+labels; **0 of 3,199 traces span two components** — verified, not assumed)
+and implemented it as `--system-holdout/--system-link-px` in
+`experiment.py` (mutually exclusive with `--trace-holdout`; reuses the
+`trace_excl` train exclusion and the full trace_gap/trace_seen/masked
+reporting; 46/46 pipeline tests pass; patch
+[`patches/session6_system_holdout.patch`](patches/session6_system_holdout.patch),
+verified in a fresh clone against `6GEMSDOE@e2fe3f41` + session-4 + session-5
+patches — byte-identical `experiment.py`; **not applied upstream**).
+
+**Recipe.** Exactly E13's, with the holdout switched to systems:
+`experiment.py --configs extended,agreement --system-holdout 0.3
+--max-train-px 400000 --iters 300 --fp-mask-px 0`. Holdout **80/266 systems =
+787 traces = 14,128 gt px** (23.2% of labels). Raw:
+[`evidence/session6/experiments_e14sys.json`](evidence/session6/experiments_e14sys.json).
+
+**Result.** Mean blocked-CV distance-transform index (DTI) on the system-gap
+population (88 = shipped 88ch; 105 = +17 agreement channels; masked = D8 FP
+side of forum-11516 at width 0):
+
+| placement | gap 88 | gap 105 | Δ(105−88) | gap masked 88 | masked 105 | Δmasked |
+|---|---|---|---|---|---|---|
+| topk_hard@0.01 | 0.0462 | 0.0447 | −0.0014 | 0.0475 | 0.0459 | −0.0016 |
+| topk_hard@0.02 | 0.0470 | 0.0473 | +0.0003 | 0.0483 | 0.0485 | +0.0002 |
+| topk_hard@0.03 | 0.0445 | 0.0460 | +0.0015 | 0.0457 | 0.0471 | +0.0014 |
+| topk_hard@0.05 | 0.0406 | 0.0416 | +0.0010 | 0.0416 | 0.0426 | +0.0010 |
+| topk_hard@0.1 | 0.0336 | 0.0353 | +0.0017 | 0.0343 | 0.0359 | +0.0017 |
+| hard@0.1 | 0.0318 | 0.0334 | +0.0015 | 0.0325 | 0.0340 | +0.0015 |
+| hard@0.2 | 0.0434 | 0.0436 | +0.0001 | 0.0446 | 0.0446 | +0.0000 |
+| hard@0.3 | 0.0447 | 0.0444 | −0.0003 | 0.0459 | 0.0455 | −0.0004 |
+| gt_full (any) | 0.1503* | 0.1449* | −0.0054 | identical unmasked | | |
+
+*at topk@0.05 — ordering unchanged from every previous run (88 > 105 on
+catalogue-character truth).
+
+**Verdicts:**
+
+1. **The E9/E13 gap win is a trace-level effect: it does NOT transfer at
+   whole-system scale.** E13's flip was +0.0023…+0.0062 on trace holdout
+   (5/6 placements); on system holdout the deltas collapse ~10× to
+   −0.0016…+0.0017 (6/9 positive, three ≤ 0.0003, and at the reference
+   placement topk@0.02 the fold split is 3:1 with **fold 2 flipping against
+   105**: 0.0391 → 0.0273). What E9 measured is mostly rediscovery of
+   strands adjacent to mapped systems; once a whole system is unseen, the
+   agreement channels add ≈ nothing to local recall.
+2. **Consequence for builds (recorded, not applied):** the session-5
+   recommendation "re-enable the agreement layer in gap-oriented builds" is
+   **downgraded to "neutral-to-slightly-positive at system scale"**. The E11
+   file's 10.5k-px 105-ch marginal addition is *neither helped nor hurt*
+   by this instrument; include or exclude the 17 channels on other grounds
+   (geological legibility, hedging), not on a measured recall advantage.
+   The `agreement-minus-depth-member` ablation (from the famrank_cond
+   member-attribution measurement — 24/89 depth-carried, see
+   `CANDIDATE_GEOLOGY.md` §8.3) is the queued next config.
+3. **System discovery is ~35–40% harder than strand rediscovery** at the
+   same placements (topk@0.02 masked: 0.0482 system-gap vs 0.0780
+   trace-gap): the first quantitative bracket on how much of E9's gap win
+   was nearness leakage, and on the true size of the generalisation the
+   hidden set demands — insofar as the labels proxy it (standing caveat).
+
+Caveats: n = 4 blocked folds on a 4-block split; the grouping key's 10 px
+radius is a choice (25 px → 39 systems, largest 36.6% of labels, too coarse;
+50 px → 3 systems, degenerate — sensitivity probed, recorded); system-gap
+truth is still catalogue-character, not the hidden expert set; the D8 mask
+covers the FP side only (documented in §5).

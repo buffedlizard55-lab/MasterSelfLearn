@@ -607,3 +607,159 @@ the physical prior into a sourced fact.
 | **C-8** | cond 0.98 = confirmation pending | cond **measured regional, not trace-local** (§7.2) — kill-if supported; case restated on seis/strain/sourced-Holocene. |
 | **C-2** | "survived (a) marginally, re-test after levelled tmi_hg" | re-test **executed and uninformative** (§7.3): levelling does not change the instrument; (a) cannot answer the question either way. Survival status vacuous; physical prior remains. |
 | **C-1 / C-3 / C-5 / C-7 / C-9 / C-10** | as §5–§6 | unchanged; C-1/C-5 lose the chain narrative only (§7.1), C-4's sibling C-10 unaffected. |
+
+---
+
+## 8. Session-6 measurements: the stripe question closed on sourced geometry (E14), and the cond pillars re-measured properly (2026-09-26)
+
+**MEASURED** this session by `gemsdoe/probes/e14_alignment.py` and
+`gemsdoe/probes/followup_cond_multiprofile.py` against the pinned official
+raster and the D-1/D-5-fixed derived stack (same provenance as §5; the §7
+chain/cond probe was also re-run this session and **reproduces session 5's
+numbers exactly** — offsets 34.91/56.08 px, 53,363 m gap, cond −0.044/−0.108σ,
+ridge fractions 0.241/0.414 and 0.286/0.571 — instrument-chain stability
+across rebuilds is now verified, not assumed).
+
+### 8.1 The flight geometry is now SOURCED, and the session-3 prior was wrong for GeoDAWN
+
+Source: USGS Science Data Catalog entry for the GeoDAWN data release
+(Glen, J.M., and Earney, T.E., 2024, *GeoDAWN: Airborne magnetic and
+radiometric surveys of the northwestern Great Basin, Nevada and California*,
+U.S. Geological Survey data release, DOI https://doi.org/10.5066/P93LGLVQ :
+<https://data.usgs.gov/datacatalog/data/USGS:657e1d85d34e23d3533209f7> —
+fetched verbatim this session):
+
+> "Area 1 … Flight lines were spaced 200 m apart at an azimuth of 90 degrees,
+> and tie lines were spaced 2000 m apart at an azimuth of 180 degrees." ·
+> "Area 2 … was flown with flight lines spaced 400 m apart at an azimuth of
+> 90 degrees, and tie lines spaced 4000 m apart at an azimuth of 180 degrees."
+> · "Magnetic data … include corrections for diurnal variations of the Earth's
+> magnetic field, magnetic field of the aircraft, **tie-line leveling,
+> micro-leveling**, and an International Geomagnetic Reference …"
+
+Area 2 is "the remainder of the GeoDAWN extent, … selected primarily with a
+focus on geothermal resources"; Area 1 is "centered over Clayton Valley in
+western Nevada" (~37.8°N, Silver Peak). All ten written-up candidates sit at
+38.70–40.62°N, far north of Clayton Valley, so **Area 2 specifications are
+the relevant ones** (400 m flight lines / 4000 m tie lines — INTERPRETATION,
+from the same page's area descriptions; the four acquisition blocks
+Winnemucca/Fallon/Hawthorne/Tonopah are also named there).
+
+**Consequences (this corrects §6's class-level prior):**
+
+1. Session 3's prior — "N–S azimuth is the classic aeromagnetic flight-line
+   direction" — does **not** hold for GeoDAWN: the flight lines run **E–W**
+   (azimuth 90°). At 100 m sampling, flight-line striping would appear as
+   E–W stripes with a 2–4 px N–S period — mostly sub-Nyquist and doubly
+   smoothed (gridding plus the contractor's *micro-leveling*, which is the
+   standard destriping step, quoted above as already applied).
+2. N–S is the **tie-line** direction: residual tie-to-line levelling
+   artefacts would appear as N–S stripes with a **20–40 px E–W** period
+   (2000/4000 m). E10's 10–18 px window-FFT observations sit at half to full
+   the tie scale — and E10/E12 were therefore testing a geometry the sourced
+   metadata does not predict, on top of the D-9 baseline-contrast defect.
+3. The physically adequate question for a near-N–S trace is: *is it locked
+   to a tie-scale N–S stripe crest?* That is E14.
+
+### 8.2 E14 executed — crest alignment, not presence (tie scale; trace self-masked)
+
+`e14_alignment.py`, pre-registered before running. Per candidate, ±45 px
+windows (wider than E10/E12's ±25 px, deliberately: the instrument needs
+≥2 cycles of the 45 px tie edge in every window — stated in the probe).
+The trace's own pixels are masked (±1) before the column-mean profile is
+taken, so the trace cannot create its own crest; the profile is FFT
+band-passed to 12–45 px; crests = local maxima ≥12 px apart; **A_x** =
+share of the trace's per-row x-positions within ±2 px of a crest; null = 300
+random N–S-band segments of the same length per window against the same
+trace-masked profile; empirical p = share of nulls scoring ≥ the trace.
+Verdict bar (pre-registered): A_x ≥ null p95 AND ≥ the oblique-control max.
+
+| candidate | band | A_x | emp. p | tmi/rtp replicate A_x | verdict per rule |
+|---|---|---|---|---|---|
+| **C-2** (id 3552, az 2.0°) | tmi_hg | **0.000** | 1.00 | 0.000 / 0.000 | NOT tie-stripe aligned |
+| **C-4** (id 1618, az 172.0°) | tmi_hg | 0.938 | **0.22** | **0.000 / 0.000** | NOT aligned (bar unmet, non-replicating) — anomaly recorded |
+| **C-8** (id 872, az 12.8°) | tmi_hg | **0.000** | 1.00 | 0.000 / 0.000 | NOT tie-stripe aligned |
+| **C-10** (id 4323, az 1.5°) | tmi_hg | **0.000** | 1.00 | 0.000 / 0.000 | NOT tie-stripe aligned |
+| C-1/C-3/C-5/C-7 (oblique controls) | tmi_hg | 0.000–0.435 | 0.14–1.00 | — | within null |
+
+**Class verdict (pre-registered: ≥3/4 near-N–S aligned AND median_Ax(near-N-S)
+> median_Ax(oblique)): NOT MET** — 0/4 near-N–S traces are tie-stripe locked;
+medians 0.000 (near-N–S) vs 0.254 (oblique). C-4's tmi_hg-only 0.938 is the
+one anomaly: 15 of 16 trace-row x-positions sit on one band-passed crest, but
+22% of random N–S segments score as high in the same window (bivariate null:
+short vertical segments are either fully on or fully off a crest), it never
+replicates on `tmi`/`rtp`, and it misses the pre-registered bar (null p95 =
+1.0). It is recorded as a curiosity below every bar, not a detection.
+
+Line arm (the sourced flight-line direction, E–W stripes at 2–6 px):
+per-candidate A_y 0.38–0.78 against an analytic chance coverage 0.48–0.61
+(min/max over candidates × the three bands) — at chance everywhere, and the
+instrument is comparative-only by construction (stated in the probe); no
+written-up candidate trends E–W, so no candidate structure has the
+flight-line-stripe geometry in any case.
+
+**What this closes.** The E10(a) → E12/D-9 arc is closed on the sourced
+geometry: (i) the striping prior's direction was wrong for GeoDAWN (§8.1);
+(ii) on the correct geometry (tie-scale N–S crests), no written-up near-N–S
+trace is stripe-locked (this section); (iii) the E12 levelling result (no
+removable column-constant field at the 10–18 px periods; x-only field period
+823 px) stands as the third, consistent leg. **The "azimuth ≈ 0–17° emission
+class is artefact-suspect as a class" framing is retired** — first downgraded
+to a physical prior by D-9 (session 5), now with the prior itself corrected
+and the alignment test negative. Magnetics evidence at the four near-N–S
+candidates returns to neutral standing: neither discounted nor specially
+endorsed. C-4's demotion basis (already invalidated by D-9) stays
+invalidated, for a second, independent reason.
+
+### 8.3 Cond pillars re-measured: five profiles per trace, and which family member actually fires
+
+`followup_cond_multiprofile.py`, pre-registered verdicts before running
+(≥3/5 profiles local-max-at-trace ⇒ locally supported; ≤1/5 with
+|centre z| < 0.5 ⇒ kill-if stands; else inconclusive):
+
+| candidate | profiles local-max | centre z(win) | verdict | vs session 5 |
+|---|---|---|---|---|
+| **C-8** (id 872) | **0/5** | 0.000 | **kill-if stands (regional)** | confirms §7.2 beyond the single-profile caveat |
+| **C-9** (id 4209) | **0/5** | 0.000 | **kill-if stands (regional)** | §7.2 had rank-check only → now MEASURED; cond pillar demoted from "confirmation pending" to regional |
+| **C-4** (id 1618) | 2/5 (fracs 0.70/0.85) | −0.092 | **inconclusive** (per rule) | refines §7.2: the southern half of the trace carries two local-max classifications — but on MAD-scale residuals, ALL five raw trace means stay below their window medians (z −0.009…−0.159) and every profile's maximum sits at the profile edge. The multi-profile extension does not support the conductor story anywhere; the honest verdict is "inconclusive", with the trace never a raw high |
+
+**Member attribution over all 260 `new_to_catalogue` candidates**
+(carry-forward 5's second half). `famrank_cond =
+max(rank(cond_surf), rank(depth_to_base_surf))`, **no inversion on either
+member** (verified in `build_features.py`: only `deq_n100a15` is inverted,
+in the seis family). Median trace ranks recomputed from `rank_tables.json`
+with the identical bin rule:
+
+- 89/260 candidates have `famrank_cond ≥ 0.75`;
+- **24 of those 89 (27%) are carried by `depth_to_base_surf` alone**
+  (cond_surf itself < 0.75) — under the official band descriptions
+  (`cond_surf` = "electrical conductivity of subsurface";
+  `depth_to_base_surf` = "depth to basement surface — thickness of
+  sedimentary cover") those candidates' "cond pillar" is **sediment
+  thickness, not a subsurface conductor**. Example: id 4176 —
+  famrank_cond 0.991 = max(cond_surf **0.097**, depth 0.991).
+- Overall firing splits 135 cond_surf / 125 depth_to_base / 0 tie.
+- **The written-up set is clean on this**: 9 of 10 fire on cond_surf itself
+  (C-8's 0.984, C-9's 0.930, C-4's 0.886 are all cond_surf-real; C-7's 0.821
+  too). Only C-2 (0.431) fires on depth — and cond was always its weak
+  family, so no written reasoning rests on it.
+
+**Decision this feeds (recommendation, recorded for the next build):** report
+`famrank_cond` as two sub-signals — `cond_surf` rank and
+`depth_to_base_surf` rank — instead of / alongside the max, because a
+quarter of the cond-strong candidate population is depth-carried and the
+max-rule materially mislabels them as conductivity evidence. Whether the
+depth member should be *dropped* from the channel in gap-oriented builds is
+a build question (measurably testable with the E9/E13/E14-SYS machinery:
+an ablation `agreement-minus-depth-member` config); it was not run this
+session.
+
+### 8.4 Status changes this section forces
+
+| candidate | before (session 5) | after (session 6) |
+|---|---|---|
+| **C-2 / C-8 / C-10** | "striping: test (a) uninformative either way; physical prior remains" | **stripe question CLOSED, negative**: prior corrected (§8.1) and no tie-scale crest lock on any band (§8.2). Magnetics standing: neutral. |
+| **C-4** | "demotion basis invalidated (D-9); unresolved on magnetics" | **also NOT tie-stripe locked per E14** (the tmi_hg anomaly is below the pre-registered bar and non-replicating); magnetics no longer discounted. Cond pillar: single-profile "no conductor" refined to **multi-profile inconclusive** — never a raw high in any of 5 profiles (§8.3). Case still rests on grav/seis (0.90/0.93). |
+| **C-8** | cond measured regional (single profile) | cond regional **confirmed on 5 profiles**; case rests on seis/strain/sourced-Holocene, unchanged in strength but now caveat-free. |
+| **C-9** | cond rank-check only | cond regional **measured**; its "splay/step-over with fluids in the damage zone" reading (§6) loses the cond leg and rests on proximity + the sourced <130,000 Paradise Range zone. Tip-ray/step-over geometry check (E4) stays its open test. |
+| **class framing** | "N–S class artefact-suspect" downgraded to physical prior | **retired** (§8.2); the E10(a)/E12/E14 chain lives in this file and `HYPOTHESES.md` as the record. |

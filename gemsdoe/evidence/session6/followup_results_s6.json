@@ -1,0 +1,369 @@
+{
+  "chain": {
+    "segments": {
+      "C-6": {
+        "id": 1991,
+        "azimuth_deg": 24.6,
+        "length_m": 4400.0,
+        "start_rowcol": [
+          753,
+          1344
+        ],
+        "end_rowcol": [
+          713,
+          1363
+        ]
+      },
+      "C-1": {
+        "id": 548,
+        "azimuth_deg": 34.3,
+        "length_m": 1200.0,
+        "start_rowcol": [
+          247,
+          1623
+        ],
+        "end_rowcol": [
+          237,
+          1629
+        ]
+      },
+      "C-5": {
+        "id": 240,
+        "azimuth_deg": 35.0,
+        "length_m": 6900.0,
+        "start_rowcol": [
+          140,
+          1617
+        ],
+        "end_rowcol": [
+          83,
+          1656
+        ]
+      }
+    },
+    "lateral_offsets": {
+      "C-6->C-1": {
+        "facing_endpoint_gap_px": 533.6,
+        "facing_endpoint_gap_m": 53363.0,
+        "B_on_A_line_min_offset_px": 34.91,
+        "A_end_on_B_line_offset_px": 16.81,
+        "continuous_at_trace_resolution": false
+      },
+      "C-1->C-5": {
+        "facing_endpoint_gap_px": 97.7,
+        "facing_endpoint_gap_m": 9774.0,
+        "B_on_A_line_min_offset_px": 56.08,
+        "A_end_on_B_line_offset_px": 64.68,
+        "continuous_at_trace_resolution": false
+      }
+    },
+    "intermediate_candidates_within_2km": {
+      "C-6-C-1_intermediates": [
+        {
+          "id": 1758,
+          "dist_to_leg_m": 703.0,
+          "azimuth_deg": 58.1
+        },
+        {
+          "id": 1794,
+          "dist_to_leg_m": 736.0,
+          "azimuth_deg": 0.8
+        },
+        {
+          "id": 970,
+          "dist_to_leg_m": 1072.0,
+          "azimuth_deg": 179.0
+        }
+      ],
+      "C-1-C-5_intermediates": []
+    },
+    "gravity_cross_sections": {
+      "C-6-C-1": {
+        "n_sections": 29,
+        "raw_iso_grav_anom_hg": {
+          "narrow_ridge_sections": 7,
+          "narrow_ridge_fraction": 0.241,
+          "median_prominence_mad": 1.857,
+          "verdict": "broad/ramp-like \u2014 narrow-ridge fraction below 0.5"
+        },
+        "derived_grav_hgm_computed": {
+          "narrow_ridge_sections": 12,
+          "narrow_ridge_fraction": 0.414,
+          "median_prominence_mad": 1.911,
+          "verdict": "broad/ramp-like \u2014 narrow-ridge fraction below 0.5"
+        }
+      },
+      "C-1-C-5": {
+        "n_sections": 7,
+        "raw_iso_grav_anom_hg": {
+          "narrow_ridge_sections": 2,
+          "narrow_ridge_fraction": 0.286,
+          "median_prominence_mad": -0.279,
+          "verdict": "broad/ramp-like \u2014 narrow-ridge fraction below 0.5"
+        },
+        "derived_grav_hgm_computed": {
+          "narrow_ridge_sections": 4,
+          "narrow_ridge_fraction": 0.571,
+          "median_prominence_mad": 1.601,
+          "verdict": "narrow ridge \u2014 discrete structure along the leg"
+        }
+      }
+    }
+  },
+  "cond_cross_sections": {
+    "C-8": {
+      "id": 872,
+      "azimuth_deg": 12.8,
+      "verdict_shape": "NO conductor at the trace in cond_surf \u2014 the kill-if is NOT cleared (the cond evidence, if any, is elsewhere or offset from the trace)",
+      "cond_surf": {
+        "trace_mean": 4.316,
+        "window_median": 4.321,
+        "trace_minus_window_std": -0.044,
+        "elevated_width_px": 1,
+        "elevated_width_m": 100,
+        "peak_offset_from_trace_px": -25,
+        "profile": [
+          4.608,
+          4.608,
+          4.608,
+          4.608,
+          4.608,
+          4.608,
+          4.608,
+          4.608,
+          4.606,
+          4.577,
+          4.547,
+          4.518,
+          4.489,
+          4.459,
+          4.43,
+          4.4,
+          4.371,
+          4.342,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316,
+          4.316
+        ]
+      },
+      "depth_to_base_surf": {
+        "trace_mean": 16.768,
+        "window_median": 21.219,
+        "trace_minus_window_std": -0.067,
+        "elevated_width_px": 1,
+        "elevated_width_m": 100,
+        "peak_offset_from_trace_px": 25,
+        "profile": [
+          6.804,
+          6.886,
+          7.114,
+          7.342,
+          7.571,
+          7.263,
+          7.451,
+          8.211,
+          9.267,
+          10.324,
+          10.375,
+          11.256,
+          12.138,
+          13.019,
+          12.188,
+          12.894,
+          13.601,
+          14.675,
+          15.873,
+          14.335,
+          15.306,
+          16.278,
+          17.251,
+          14.577,
+          15.323,
+          16.069,
+          16.816,
+          18.504,
+          18.834,
+          20.55,
+          22.266,
+          23.983,
+          23.745,
+          25.32,
+          26.896,
+          28.471,
+          30.048,
+          30.744,
+          34.085,
+          37.425,
+          40.766,
+          41.093,
+          44.337,
+          47.58,
+          50.823,
+          54.067,
+          50.66,
+          53.91,
+          60.713,
+          67.516,
+          70.901
+        ]
+      }
+    },
+    "C-4": {
+      "id": 1618,
+      "azimuth_deg": 172.0,
+      "verdict_shape": "NO conductor at the trace in cond_surf \u2014 the kill-if is NOT cleared (the cond evidence, if any, is elsewhere or offset from the trace)",
+      "cond_surf": {
+        "trace_mean": 3.504,
+        "window_median": 3.528,
+        "trace_minus_window_std": -0.108,
+        "elevated_width_px": 1,
+        "elevated_width_m": 100,
+        "peak_offset_from_trace_px": -25,
+        "profile": [
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.528,
+          3.524,
+          3.519,
+          3.514,
+          3.509,
+          3.504,
+          3.499,
+          3.494,
+          3.489,
+          3.484,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48,
+          3.48
+        ]
+      },
+      "depth_to_base_surf": {
+        "trace_mean": 726.307,
+        "window_median": 631.58,
+        "trace_minus_window_std": 0.333,
+        "elevated_width_px": 1,
+        "elevated_width_m": 100,
+        "peak_offset_from_trace_px": 18,
+        "profile": [
+          375.859,
+          379.784,
+          384.319,
+          394.187,
+          404.055,
+          413.923,
+          423.791,
+          433.659,
+          459.528,
+          469.703,
+          479.878,
+          490.052,
+          501.08,
+          515.609,
+          530.139,
+          563.259,
+          578.232,
+          593.205,
+          608.178,
+          623.151,
+          638.124,
+          653.097,
+          686.693,
+          699.898,
+          713.103,
+          726.307,
+          739.512,
+          752.716,
+          765.921,
+          799.061,
+          812.39,
+          825.719,
+          835.89,
+          840.976,
+          846.062,
+          851.147,
+          876.129,
+          881.131,
+          886.134,
+          891.137,
+          896.139,
+          901.142,
+          900.133,
+          911.038,
+          902.806,
+          894.574,
+          886.342,
+          878.11,
+          869.879,
+          861.648,
+          853.416
+        ]
+      }
+    }
+  }
+}
