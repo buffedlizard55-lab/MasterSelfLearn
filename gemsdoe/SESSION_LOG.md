@@ -6,15 +6,7 @@ method (`gh api`, research fetch, …) and timestamp. Runner fact: direct
 an SSL EOF); all live reads use the GitHub API (`gh`) or the research fetch
 tool. That is a fact about this runner, never a claim that a target is down.
 
----
-
-# SESSION LOG — GEMS Prize work in MasterSelfLearn
-
-Append-only. Newest session first. Every row of evidence carries its capture
-method (`gh api`, research fetch, …) and timestamp. Runner fact: direct
-`curl`/`urllib` egress from this sandbox is TLS-blocked (every probe returns
-an SSL EOF); all live reads use the GitHub API (`gh`) or the research fetch
-tool. That is a fact about this runner, never a claim that a target is down.
+(Duplicated preamble from an earlier append removed in session 6, pass 3.)
 
 ---
 
