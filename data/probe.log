@@ -1,33 +1,33 @@
-OK     200   291ms     5478B  github_search          
-OK     200   201ms     5497B  github_repos           
-OK     200   192ms     5824B  github_repo            
-OK     200   160ms        2B  github_releases        
-OK     200   479ms  1107074B  master_site_catalog    
-OK     200    52ms   192973B  pypi_json              
-OK     200    44ms     3065B  npm_registry           
-OK     200   101ms     1138B  wikimedia_pageviews    
-OK     200    96ms    30571B  federal_register       
-OK     200   380ms       31B  usgs_fdsn              
-OK     200   121ms     4501B  hn_firebase            
-OK     200   102ms     3473B  arxiv                  
-OK     200   422ms      509B  pubmed                 
-OK     200   166ms     8843B  clinicaltrials         
-OK     200   823ms    16147B  openalex               
-OK     200  1342ms     3914B  crossref               
-OK     200   161ms      890B  stackexchange          
-OK     200   116ms      472B  huggingface            
-OK     200   284ms    26141B  nws_alerts             
-OK     200   151ms      302B  worldbank              
-OK     200   505ms     3064B  ecb_sdmx               
-OK     200   620ms       85B  frankfurter            
-ERR    403   107ms     2165B  sec_edgar              HTTPError: HTTP 403 Forbidden
-OK     200   398ms     8531B  census_acs             
-ERR    503   576ms     2602B  bls                    HTTPError: HTTP 503 Service Unavailable
-OK     200   660ms      438B  nominatim              
-OK     200   940ms     1277B  europepmc              
-OK     200    95ms     3758B  kalshi_public          
-OK     200   133ms      262B  mlb_statsapi           
-OK     200    78ms   122874B  nhl_web                
-ERR    403   225ms      443B  nba_cdn                HTTPError: HTTP 403 Forbidden
+OK     200   625ms     5478B  github_search          
+OK     200   154ms     5497B  github_repos           
+OK     200   146ms     5824B  github_repo            
+OK     200   142ms        2B  github_releases        
+OK     200   275ms  1107074B  master_site_catalog    
+OK     200    26ms   192973B  pypi_json              
+OK     200    46ms     3065B  npm_registry           
+OK     200    77ms     1138B  wikimedia_pageviews    
+OK     200    42ms    30571B  federal_register       
+OK     200   216ms       31B  usgs_fdsn              
+OK     200   122ms     4501B  hn_firebase            
+OK     200    56ms     2885B  arxiv                  
+OK     200   142ms      509B  pubmed                 
+OK     200   120ms     8843B  clinicaltrials         
+OK     200   745ms    16147B  openalex               
+OK     200  1503ms     4572B  crossref               
+OK     200   142ms      890B  stackexchange          
+OK     200    43ms      472B  huggingface            
+OK     200   298ms    49547B  nws_alerts             
+OK     200    77ms      302B  worldbank              
+OK     200   403ms     3064B  ecb_sdmx               
+OK     200   452ms       85B  frankfurter            
+ERR    403    65ms     2164B  sec_edgar              HTTPError: HTTP 403 Forbidden
+OK     200   135ms     8531B  census_acs             
+OK     200   389ms     3114B  bls                    
+OK     200   371ms      438B  nominatim              
+OK     200  2042ms     1277B  europepmc              
+OK     200    94ms     3886B  kalshi_public          
+OK     200   121ms     1641B  mlb_statsapi           
+OK     200    47ms   128542B  nhl_web                
+ERR    403    85ms      445B  nba_cdn                HTTPError: HTTP 403 Forbidden
 
-28 ok / 3 failed → /home/runner/work/MasterSelfLearn/MasterSelfLearn/data/source_health.json
+29 ok / 2 failed → /home/runner/work/MasterSelfLearn/MasterSelfLearn/data/source_health.json
